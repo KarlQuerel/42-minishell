@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/02 14:44:47 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/02 17:27:15 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
 #include <unistd.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-# include <signal.h>
-# include <sys/wait.h>
-# include <fcntl.h>
+#include <signal.h>
+#include <sys/wait.h>
+#include <fcntl.h>
 
 /*Macros*/
 

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/02 14:40:23 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/02 17:08:59 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ bool	is_this_command(char *buffer, char* command)
 	int	i;
 
 	i = 0;
+	if (!buffer)
+		return (false);
 	while (buffer[i])
 	{
 		if (buffer[i] != command[i])

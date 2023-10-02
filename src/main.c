@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/02 16:06:52 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/02 17:29:33 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,15 @@ int main (int argc, char **argv, char **env)
 	using_history(); // initialisation de l'historique
 	line = NULL;
 	line = readline("Karlinashell $ ");
-	check_commands_grammar(line);
+	//check_commands_grammar(line); //fonction pas encore terminee
 	while (is_this_command(line, "exit") == false)
 	{
+		if (feof(stdin)) // pour ctrl + D?? // ne le comprend pas
+		{
+			printf("CTRL + D detected\n");
+			final_free(line, env_list);
+			return (EXIT_SUCCESS);
+		}
 		add_history(line);
 		line = commands(line, env_list);
 		cmd_list = parsing(line); //KARL : cmd_line est la liste doublement chainee avec toutes les commandes
@@ -54,8 +60,6 @@ int main (int argc, char **argv, char **env)
 		free(line);
 		free_cmd_list(cmd_list);
 		line = readline("Karlinashell $ ");
-		// if (feof(stdin)) // pour ctrl + D??
-		// 	return (EXIT_SUCCESS);
 	}
 	final_free(line, env_list);
 	return (EXIT_SUCCESS);
