@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/09/30 17:20:47 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/02 14:53:04 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ void printlist_test(t_element *head) // A EFFACER A LA FIN
 
 int determine_command_type(char *str, char *line, int end, int start)
 {
-	printf("str[0] = [%c]\n", str[0]);
+	//printf("str[0] = [%c]\n", str[0]);
 	//  printf("str[1] = %c\n", str[1]);
 	// printf("str[2] = %c\n", str[2]);
 	// printf("str[ft_strlen(str) - 1] = %c\n", str[ft_strlen(str) - 1]);
-	printf("length str = %d\n", ft_strlen(str));
+	//printf("length str = %d\n", ft_strlen(str));
 
 	if ((str[0] == '-' && ft_isalpha(str[1]) == 1) ||
 		(str[ft_strlen(str)] >= 4 && str[0] == '-' && (str[1] == '\'' || str[1] == '\"') && ft_isalpha(str[2]) == 1 &&
@@ -44,7 +44,7 @@ int determine_command_type(char *str, char *line, int end, int start)
 		return (OPTION);
 	else if ((str[0] == '\'' || str[0] == '\"') &&
 			 (str[ft_strlen(str) - 1] == '\'' || str[ft_strlen(str) - 1] == '\"'))
-		return (ARGUMENT);
+		return (ARGUMENT); // also if last command == echo
 	else if (ft_strlen(line) > end + 2)
 	{
 		if (line[end + 1] == '<' && line[end + 2] == ' ')
@@ -84,8 +84,8 @@ t_element *parsing(char *line)
 		{
 			current_cmd->content[j] = '\0';
 			current_cmd->type = determine_command_type(current_cmd->content, line, i, start);
-			printf("content = %s\n", current_cmd->content);
-			printf("type = %d\n", current_cmd->type);
+			// printf("content = %s\n", current_cmd->content);
+			// printf("type = %d\n", current_cmd->type);
 			current_cmd->next = lstnew(line, i);
 			current_cmd->next->prev = current_cmd; // TEST ICI
 			current_cmd = current_cmd->next;
@@ -98,10 +98,26 @@ t_element *parsing(char *line)
 	}
 	current_cmd->content[j] = '\0';
 	current_cmd->type = determine_command_type(current_cmd->content, line, i, start);
-	printf("content = %s\n", current_cmd->content);
-	printf("type = %d\n", current_cmd->type);
+	// printf("content = %s\n", current_cmd->content);
+	// printf("type = %d\n", current_cmd->type);
 	current_cmd->next = NULL;
 
 	// printlist_test(head); //pour printlist test
 	return (head);
+}
+/*Pour les commandes type echo qui sont suivies d'arguments qui ne sont pas
+forcements entre guillements et donc compris dans la fonction parsing comme 
+des commandes.*/
+t_element	*parsing_fix(t_element *current)
+{
+	t_element	*head;
+
+	head = current;
+	while(current->next != NULL)
+	{
+		if (strncmp(current->content, "echo", ft_strlen("echo")) == 0)
+			current->next->type = ARGUMENT;
+		current = current->next;
+	}
+	return(head);
 }
