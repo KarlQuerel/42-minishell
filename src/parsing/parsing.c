@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/02 15:12:17 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/02 16:06:45 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void printlist_test(t_element *head) // A EFFACER A LA FIN
 
 	while (head)
 	{
-		if (i != 0)
-			printf("prev cmd = %s\n", head->prev->content);
+		// if (i != 0)
+		// 	printf("prev cmd = %s\n", head->prev->content);
 		printf("content = %s\n", head->content);
 		printf("type = %d\n", head->type);
-		if (head->next != NULL)
-			printf("next cmd = %s\n", head->next->content);
+		// if (head->next != NULL)
+		// 	printf("next cmd = %s\n", head->next->content);
 		head = head->next;
 		i++;
 	}
@@ -32,34 +32,28 @@ void printlist_test(t_element *head) // A EFFACER A LA FIN
 
 int determine_command_type(char *str, char *line, int end, int start)
 {
-	// printf("str[0] = [%c]\n", str[0]);
-	//  printf("str[1] = %c\n", str[1]);
-	// printf("str[2] = %c\n", str[2]);
-	// printf("str[ft_strlen(str) - 1] = %c\n", str[ft_strlen(str) - 1]);
-	// printf("length str = %d\n", ft_strlen(str));
-
 	if ((str[0] == '-' && ft_isalpha(str[1]) == 1) ||
 		(str[ft_strlen(str)] >= 4 && str[0] == '-' && (str[1] == '\'' || str[1] == '\"') && ft_isalpha(str[2]) == 1 &&
 		 (str[ft_strlen(str) - 1] == '\'' || str[ft_strlen(str) - 1] == '\"')))
 		return (OPTION);
-	else if ((str[0] == '\'' || str[0] == '\"') &&
+	if ((str[0] == '\'' || str[0] == '\"') &&
 			 (str[ft_strlen(str) - 1] == '\'' || str[ft_strlen(str) - 1] == '\"'))
 		return (ARGUMENT);
-	else if (ft_strlen(line) > end + 2)
+	if (ft_strlen(line) > end + 2)
 	{
 		if (line[end + 1] == '<' && line[end + 2] == ' ')
 			return (INFILE);
 		else if (line[end + 1] == '<' && line[end + 2] == '<')
 			return (INFILE_DELIMITER);
 	}
-	else if (start > 1)
+	if (start > 1)
 	{
 		if (line[start - 2] == '>' && line[start - 3] == ' ')
 			return (OUTFILE);
 		else if (line[start - 2] == '>' && line[start - 3] == '>')
 			return (OUTFILE_APPEND);
 	}
-	else if (ft_strlen(str) == 1 && str[0] == '|') // ne marche pas qd pas au debut de la ligne
+	if (ft_strncmp(str, "|", 1) == 0)
 		return (PIPE);
 	return (COMMAND);
 }
@@ -104,4 +98,20 @@ t_element *parsing(char *line)
 
 	// printlist_test(head); //pour printlist test
 	return (head);
+}
+/*Pour les commandes type echo qui sont suivies d'arguments qui ne sont pas
+forcements entre guillements et donc compris dans la fonction parsing comme 
+des commandes.*/
+t_element	*parsing_fix(t_element *current)
+{
+	t_element	*head;
+
+	head = current;
+	while(current->next != NULL)
+	{
+		if (strncmp(current->content, "echo", ft_strlen("echo")) == 0)
+			current->next->type = ARGUMENT;
+		current = current->next;
+	}
+	return(head);
 }
