@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/09/30 14:14:47 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/02 14:27:04 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int main (int argc, char **argv, char **env)
 	{
 		add_history(line);
 		line = commands(line, env_list);
-		cmd_list = parsing(line);
+		cmd_list = parsing(line); //KARL : cmd_line est la liste doublement chainee avec toutes les commandes
 		free(line);
 		free_cmd_list(cmd_list);
 		line = readline("Karlinashell $ ");
