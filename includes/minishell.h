@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/09/30 17:12:35 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/02 16:53:46 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@
 
 /*Structures*/
 
+/* Double linked list */
 typedef struct s_element
 {
 	char	*content;
@@ -54,12 +55,23 @@ typedef struct s_element
 	struct s_element *next;
 }	t_element;
 
+/* Environment */
 typedef struct s_env
 {
 	char	*key;
 	char	*value;
 	struct s_env *next;
 }	t_env;
+
+/* To handles pipes */
+typedef struct s_pipe
+{
+	pid_t	pid_child1;
+	pid_t	pid_child2;
+	int		pipe_end[2]; // int array of both ends of a pipe
+	int		fd_infile;
+	int		ft_outfile;
+}	t_pipe;
 
 /*-------------------MAIN FOLDER-------------------*/
 
@@ -107,4 +119,6 @@ t_env		*lstnew_env(char *line, int i);
 void	final_free(char *line, t_env *env_list);
 void	free_cmd_list(t_element *cmd_list);
 
-/*-----------------EXECUTOR FOLDER------------------*/
+/*-----------------EXECUTABLE FOLDER------------------*/
+void	ft_redirect(t_element *cmd_list);
+void	ft_print_path(t_env *env_list);
