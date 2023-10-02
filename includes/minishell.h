@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/09/30 17:12:35 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/02 14:44:47 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int 	where_is_cmd_in_line(char *line, char *cmd);
 void	printlist_test(t_element   *head); //A EFFACER A LA FIN
 int		determine_command_type(char *str, char *line, int i, int start);
 t_element	*parsing(char *command);
+t_element	*parsing_fix(t_element *cmd_list);
 
 /*Env_list*/
 t_env   *put_env_in_list(char **env);
