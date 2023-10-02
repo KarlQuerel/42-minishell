@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/02 14:51:56 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/02 16:20:27 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,13 +105,13 @@ void	echo(char *line)
 	{
 		str = malloc(sizeof(char) * size_of_command(line, i, STR) + 1);
 		i++;
-		while(line[i] && (line[i + 1] != '\'' || line[i + 1] != '\"'))
+		while(line[i] && line[i] != '\'' && line[i] != '\"')
 			str[j++] = line[i++];
 	}
 	else
 	{
 		str = malloc(sizeof(char) * size_of_command(line, i, CMD) + 1);
-		while(line[i] && (line[i + 1] != ' '))
+		while(line[i] && line[i] != ' ')
 			str[j++] = line[i++];
 	}
 	str[j] = '\0';
