@@ -53,9 +53,10 @@ int main (int argc, char **argv, char **env)
 		add_history(line);
 		line = commands(line, env_list);
 		cmd_list = parsing(line); //KARL : cmd_line est la liste doublement chainee avec toutes les commandes
-		cmd_list = parsing_fix(cmd_list);
-    ft_redirect(cmd_list); // fonction test
-		ft_print_path(env_list); // fonction test
+    //ft_redirect(cmd_list); // fonction test
+		//ft_print_path(env_list); // fonction test
+    //ft_redirect(cmd_list); // fonction test
+		//ft_print_path(env_list); // fonction test
 		//printlist_test(cmd_list);
 		free(line);
 		free_cmd_list(cmd_list);

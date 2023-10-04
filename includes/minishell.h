@@ -92,6 +92,9 @@ void    pwd();
 void    cd();
 char	*dollar(char *line, t_env *env_list);
 
+/*Errors*/
+void    redirecters_error(char *line);
+
 /*------------------PARSING FOLDER------------------*/
 
 /*Commands*/
