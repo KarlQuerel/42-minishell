@@ -25,6 +25,8 @@ char	*commands(char *line, t_env *env_list)
 		cd();
 	else if (is_cmd_in_line(line, "echo") == true)
 		echo(line);
+	else if (is_cmd_in_line(line, ">") == true || is_cmd_in_line(line, "<") == true)
+		redirecters_error(line);
 	return (line);
 }
 
