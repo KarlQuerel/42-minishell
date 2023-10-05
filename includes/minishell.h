@@ -6,10 +6,10 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/05 15:08:36 by kquerel          ###   ########.fr       */
-/*   Updated: 2023/10/02 17:27:15 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:19:06 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 /*Libraries*/
 
@@ -28,7 +28,6 @@
 # include <fcntl.h>
 
 /*Macros*/
-
 # define COMMAND 0
 # define OPTION 1
 # define ARGUMENT 2 //argument (str or char inside single or double quotes)
@@ -46,11 +45,16 @@
 # define HISTORY 0
 # define FREE_HISTORY 1
 
+/* Colors */
 # define BYEL "\e[1;33m"
 # define BRED "\e[1;31m"
 # define BWHT "\e[1;37m"
 # define BCYN "\e[1;36m"
-#define WHT "\e[0;37m"
+# define WHT "\e[0;37m"
+# define BGRE "\033[1m\033[32m"
+
+#define PC "             ________________________________________________\n            /                                                \\\n           |    _________________________________________     |\n           |   |                                         |    |\n           |   |  Welcome                                |    |\n           |   |    to                                   |    |\n           |   |      Minishell                          |    |\n           |   |        by                               |    |\n           |   |          casomarr                       |    |\n           |   |            and                          |    |\n           |   |              kquerel                    |    |\n           |   |                                         |    |\n           |   |                                         |    |\n           |   |                                         |    |\n           |   |                                         |    |\n           |   |                                         |    |\n           |   |_________________________________________|    |\n           |                                                  |\n            \\_________________________________________________/\n                   \\___________________________________/\n                ___________________________________________\n             _-'    .-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.  --- `-_\n          _-'.-.-. .---.-.-.-.-.-.-.-.-.-.-.-.-.-.-.--.  .-.-.`-_\n       _-'.-.-.-. .---.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-`__`. .-.-.-.`-_\n    _-'.-.-.-.-. .-----.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-----. .-.-.-.-.`-_\n _-'.-.-.-.-.-. .---.-. .-------------------------. .-.---. .---.-.-.-.`-_\n:-------------------------------------------------------------------------:\n`---._.-------------------------------------------------------------._.---'"
+
 
 /*Structures*/
 
@@ -62,8 +66,8 @@
 typedef struct s_element
 {
 	char	*content;
-	char	**cmd_tab;
 	char	*cmd;
+	char	**cmd_tab;
 	int		type;
 	struct s_element *prev;
 	struct s_element *next;
@@ -72,7 +76,7 @@ typedef struct s_element
 /* Environment
 --> key is a substring to find in value
 --> value is the env as a whole
---> env is the env (for execve)
+--> env is the env (for execve) // apparemment il me faut l'env de bash et non l'env actuel
 */
 typedef struct s_env
 {
