@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/05 13:36:09 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/05 15:43:23 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@
 
 # define HISTORY 0
 # define FREE_HISTORY 1
+
+# define YELLOW	"\033[33m"
+# define GREEN	"\033[32m"
+# define RESET	"\033[0m"
 
 /*Structures*/
 
@@ -99,6 +103,9 @@ void	slash_error(char *line);
 void	pipe_error(char *line);
 void	and_error(char *line);
 void	str_error(char *line);
+
+/*Utils*/
+char	*ft_joinstr_minishell(char *line, int len, char *str, char type);
 
 /*------------------PARSING FOLDER------------------*/
 

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/05 14:11:37 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:03:44 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,9 @@ void	echo(char *line)
 	int		i;
 	int		j;
 	char	*str;
+	char	type;
 	
+	str = NULL;
 	i = where_is_cmd_in_line(line, "echo");
 	if (i == 0)
 		return ; //error
@@ -112,48 +114,76 @@ void	echo(char *line)
 	while(line[i] == ' ')
 		i++; //now i = beggining of the str
 	j = 0;
-	printf("apostrophe = [%c]\n", line[i]);
-	if (line[i] == '\'' || line[i] == '\"')
+	//verifier si il y en a deux des apostrophes
+	// str = malloc(sizeof(char) * size_of_command(line, i, STR) + 1);
+	// if (!str)
+	// 	return ;
+	//i++;
+	//faire des join
+	while(line[i] && line[i] != '|') //principale
 	{
-		str = malloc(sizeof(char) * size_of_command(line, i, STR) + 1);
-		if (!str)
-			return ;
+		if (line[i] == '\'')
+			type = '\'';
+		else if (line[i] == '\"')
+			type = '\'';
+		else
+			type = ' ';
+		// if (type == '\'' || type == '\"')
+		// 	str = malloc(sizeof(char) * size_of_command(line, i, STR) + 1);
+		// else
+		// 	str = malloc(sizeof(char) * size_of_command(line, i, CMD) + 1);
+		//printf("%sline[i] = [%c]%s\n", GREEN, line[i], RESET);
+		//printf("%stype = [%c]%s\n", GREEN, type, RESET);
 		i++;
-		while(line[i] && line[i] != '|')
+		printf("%sline = [%s]%s\n", GREEN, line, RESET);
+		printf("%sstr = [%s]%s\n", GREEN, str, RESET);
+		str = ft_joinstr_minishell(line, i, str, type);
+		if (str[0] == '\0') //premiere mot
 		{
-			if (line[i] == '\'') // && il y en a deux (des apostrophes)
-			{
-				while(line[i] != '\'')
-					str[j++] = line[i++];
-			}
-			else if (line[i] == '\"')
-			{
-				while(line[i] && line[i] != '\"')
-					str[j++] = line[i++];
-			}
-			while(line[i] == ' ' && line[i + 1] != '|')
+			j = 0;
+			printf("%spremier mot%s\n", YELLOW, RESET);
+		}
+		else //plus d'un mot
+		{
+			j = ft_strlen(str);
+			printf("%splus d'un mot%s\n", YELLOW, RESET);	
+		}
+		while(line[i] != type)
+		{
+			printf("%s[%c] = [%c]%s\n", GREEN, str[j], line[i], RESET);
+			str[j++] = line[i++];
+		}
+		str[j] = '\0';
+		printf("%sapres le premier mot%s\n", YELLOW, RESET);
+		i++;
+		if (line[i] == ' ')
+		{
+			str[j] = line[i];
+			i++;
+			j++;
+			while(line[i] == ' ' && line[i])
 				i++;
 		}
 	}
-	else
-	{
-		str = malloc(sizeof(char) * size_of_command(line, i, CMD) + 1);
-		if (!str)
-			return ;
-		while(line[i] && line[i] != '|')
-		{
-			if (line[i] != ' ')
-				str[j++] = line[i++];
-			else
-			{
-				str[j] = line[i];
-				j++;
-				i++;
-				while (line[i] == ' ')
-					i++;
-			}
-		}
-	}
+	// else
+	// {
+	// 	str = malloc(sizeof(char) * size_of_command(line, i, CMD) + 1);
+	// 	if (!str)
+	// 		return ;
+	// 	while(line[i] && line[i] != '|')
+	// 	{
+	// 		if (line[i] != ' ')
+	// 			str[j++] = line[i++];
+	// 		else
+	// 		{
+	// 			str[j] = line[i];
+	// 			j++;
+	// 			i++;
+	// 			while (line[i] == ' ')
+	// 				i++;
+	// 		}
+	// 	}
+	// }
 	str[j] = '\0';
 	printf("%s\n", str);
 	free(str);

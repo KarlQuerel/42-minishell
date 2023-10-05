@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
+#    By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/02 14:53:39 by kquerel          ###   ########.fr        #
+#    Updated: 2023/10/05 15:00:45 by casomarr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ SRC = src/main.c \
 	src/parsing/lstnew.c \
 	src/parsing/free.c \
 	src/parsing/errors.c \
+	src/parsing/utils.c \
 	src/executable/test.c \
 	
 SRC_OBJS = $(SRC:.c=.o)
