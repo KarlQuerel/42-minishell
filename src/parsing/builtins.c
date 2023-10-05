@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/05 17:29:20 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/05 18:33:54 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,12 +114,7 @@ void	echo(char *line)
 	while(line[i] == ' ')
 		i++; //now i = beggining of the str
 	j = 0;
-	//verifier si il y en a deux des apostrophes
-	// str = malloc(sizeof(char) * size_of_command(line, i, STR) + 1);
-	// if (!str)
-	// 	return ;
-	//i++;
-	//faire des join
+	//verifier s'il y a bien deux apostrophes minimum (dans le cas contraire il se passe quoi?)
 	while(line[i] && line[i] != '|') //principale
 	{
 		if (line[i] == '\'')
@@ -134,29 +129,19 @@ void	echo(char *line)
 		}
 		else
 			type = ' ';
-		// printf("%sline = [%s]%s\n", GREEN, line, RESET);
-		// printf("%sstr = [%s]%s\n", GREEN, str, RESET);
-		printf("%stype = [%c]%s\n", GREEN, type, RESET);
 		str = ft_joinstr_minishell(line, i, str, type);
 		if (str[0] == '\0') //premiere mot
-		{
 			j = 0;
-			printf("%spremier mot%s\n", YELLOW, RESET);
-		}
 		else //plus d'un mot
-		{
 			j = ft_strlen(str);
-			printf("%splus d'un mot%s\n", YELLOW, RESET);	
-		}
-		while(line[i] != type && line[i]) // va un caractere trop loin
+		while(line[i] != type && line[i])
 		{
-			str[j++] = line[i++];
-			printf("%si = %d%s\n", GREEN, i, RESET);
-			printf("%s[%c] = [%c]%s\n", GREEN, str[j], line[i], RESET);
+			if (type == ' ' && line[i] == '\\')
+				i++;
+			else
+				str[j++] = line[i++];
 		}
 		str[j] = '\0';
-		printf("%sfin de round%s\n", YELLOW, RESET);
-		printf("%sstr = [%s]%s\n", YELLOW, str, RESET);
 		if (type == '\'' || type == '\"')
 			i++;
 		if (line[i] == ' ')
@@ -170,6 +155,19 @@ void	echo(char *line)
 	printf("%s\n", str);
 	free(str);
 }
+/*CARACTERES QUI NECESSITENT UN \ POUR ETRE ECHO CORRECTEMENT
+#
+(
+)
+*
+;
+<
+>
+`
+~
+"
+\
+*/
 
 void	pwd()
 {
