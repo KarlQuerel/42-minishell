@@ -6,7 +6,7 @@
 #    By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/05 15:00:45 by casomarr         ###   ########.fr        #
+#    Updated: 2023/10/05 16:15:49 by casomarr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,9 +37,10 @@ SRC = src/main.c \
 	src/parsing/env_list.c \
 	src/parsing/lstnew.c \
 	src/parsing/free.c \
+	src/executable/exec.c \
 	src/parsing/errors.c \
 	src/parsing/utils.c \
-	src/executable/test.c \
+# src/executable/test.c \
 	
 SRC_OBJS = $(SRC:.c=.o)
 
@@ -109,3 +110,5 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+# valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=valgrind-out.txt ./minishell
