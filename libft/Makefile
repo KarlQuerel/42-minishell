@@ -60,6 +60,8 @@ FILES_BONUS = ft_lstadd_back.c 		\
 
 OBJS_BONUS = $(FILES_BONUS:.c=.o)
 
+CFLAGS = -Wall -Wextra -Werror 
+
 all: ${NAME}
 
 ${NAME} : ${OBJS}
@@ -77,6 +79,6 @@ bonus : $(OBJS_BONUS)
 	ar rc ${NAME} ${OBJS_BONUS}
 
 .o .c:
-	cc -Wall -Werror -Wextra ${OBJS}
+	cc ${CFLAGS} -c $< -o $(<:.c=.o) ${OBJS}
 
 .Phony : all, clean, fclean, re, bonus

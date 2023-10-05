@@ -3,10 +3,9 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/05 15:08:36 by kquerel          ###   ########.fr       */
+/*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */         ###   ########.fr       */
 /*   Updated: 2023/10/02 17:27:15 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -45,6 +44,10 @@
 
 # define HISTORY 0
 # define FREE_HISTORY 1
+
+# define YELLOW	"\033[33m"
+# define GREEN	"\033[32m"
+# define RESET	"\033[0m"
 
 # define BYEL "\e[1;33m"
 # define BRED "\e[1;31m"
@@ -105,7 +108,7 @@ typedef struct s_pipe
 /*-------------------MAIN FOLDER-------------------*/
 
 /*Main*/
-
+char	*erase_spaces_at_the_begining(char *line);
 /*History*/
 void		history(int option);
 
@@ -122,7 +125,15 @@ void    cd();
 char	*dollar(char *line, t_env *env_list);
 
 /*Errors*/
+void	first_character_error(char *line);
 void    redirecters_error(char *line);
+void	slash_error(char *line);
+void	pipe_error(char *line);
+void	and_error(char *line);
+void	str_error(char *line);
+
+/*Utils*/
+char	*ft_joinstr_minishell(char *line, int len, char *str, char type);
 
 /*------------------PARSING FOLDER------------------*/
 
@@ -135,7 +146,7 @@ int 	where_is_cmd_in_line(char *line, char *cmd);
 
 /*Parsing*/
 void	printlist_test(t_element   *head); //A EFFACER A LA FIN
-int		determine_command_type(char *str, char *line, int i, int start);
+int		determine_command_type(char *str, char *line, size_t i, size_t start);
 t_element	*parsing(char *command);
 t_element	*parsing_fix(t_element *cmd_list);
 
