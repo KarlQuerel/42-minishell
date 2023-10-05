@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/02 19:20:21 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/05 14:11:37 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ void	cd(char *line) //KARL faudra voir cette fonction avec toi pq je pense que c
 void	echo(char *line)
 {
 	//GERER AUSSI LE CAS echo "caro" "caro" --> doit ecrire les deux caro avec un espace entre les deux
+	// idem pour echo   caro    caro -> caro caro
+	//GERER AUSSI L'OPTION -n
 	int		i;
 	int		j;
 	char	*str;
@@ -106,24 +108,31 @@ void	echo(char *line)
 	i = where_is_cmd_in_line(line, "echo");
 	if (i == 0)
 		return ; //error
-	i ++; //now i = beggining of the str
+	i++;
+	while(line[i] == ' ')
+		i++; //now i = beggining of the str
 	j = 0;
+	printf("apostrophe = [%c]\n", line[i]);
 	if (line[i] == '\'' || line[i] == '\"')
 	{
 		str = malloc(sizeof(char) * size_of_command(line, i, STR) + 1);
 		if (!str)
 			return ;
-		if (line[i] == '\'')
+		i++;
+		while(line[i] && line[i] != '|')
 		{
-			i++;
-			while(line[i] && line[i] != '\'')
-			str[j++] = line[i++];
-		}
-		else if (line[i] == '\"')
-		{
-			i++;
-			while(line[i] && line[i] != '\"')
-			str[j++] = line[i++];
+			if (line[i] == '\'') // && il y en a deux (des apostrophes)
+			{
+				while(line[i] != '\'')
+					str[j++] = line[i++];
+			}
+			else if (line[i] == '\"')
+			{
+				while(line[i] && line[i] != '\"')
+					str[j++] = line[i++];
+			}
+			while(line[i] == ' ' && line[i + 1] != '|')
+				i++;
 		}
 	}
 	else
@@ -131,8 +140,19 @@ void	echo(char *line)
 		str = malloc(sizeof(char) * size_of_command(line, i, CMD) + 1);
 		if (!str)
 			return ;
-		while(line[i] && line[i] != ' ')
-			str[j++] = line[i++];
+		while(line[i] && line[i] != '|')
+		{
+			if (line[i] != ' ')
+				str[j++] = line[i++];
+			else
+			{
+				str[j] = line[i];
+				j++;
+				i++;
+				while (line[i] == ' ')
+					i++;
+			}
+		}
 	}
 	str[j] = '\0';
 	printf("%s\n", str);

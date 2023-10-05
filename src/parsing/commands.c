@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/02 17:08:59 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/05 13:14:15 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,19 @@ char	*commands(char *line, t_env *env_list)
 		cd();
 	else if (is_cmd_in_line(line, "echo") == true)
 		echo(line);
-	else if (is_cmd_in_line(line, ">") == true || is_cmd_in_line(line, "<") == true)
-		redirecters_error(line);
+	// else if (is_cmd_in_line(line, ">") == true || is_cmd_in_line(line, "<") == true)
+	// 	redirecters_error(line);
+	else if (line[0] == '<' || line[0] == '>' || \
+	line[0] == '/' || line[0] == '|' || line[0] == '&' || \
+	line[0] == '\'' || line[0] == '\"')
+		first_element_error(line);
 	return (line);
 }
 
 /*Checks if what is written in the command line corresponds to a command*/
 bool	is_this_command(char *buffer, char* command)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	if (!buffer)

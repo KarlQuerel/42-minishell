@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/02 16:06:45 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/05 11:35:24 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void printlist_test(t_element *head) // A EFFACER A LA FIN
 	}
 }
 
-int determine_command_type(char *str, char *line, int end, int start)
+int determine_command_type(char *str, char *line, size_t end, size_t start)
 {
 	if ((str[0] == '-' && ft_isalpha(str[1]) == 1) ||
 		(str[ft_strlen(str)] >= 4 && str[0] == '-' && (str[1] == '\'' || str[1] == '\"') && ft_isalpha(str[2]) == 1 &&
