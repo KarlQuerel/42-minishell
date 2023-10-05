@@ -6,7 +6,8 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/02 17:27:15 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/05 15:08:36 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/02 17:27:15 by casomarr         ###   ########.fr       *
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +22,10 @@
 #include <unistd.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include <signal.h>
-#include <sys/wait.h>
-#include <fcntl.h>
+# include <signal.h>
+# include <sys/wait.h>
+#include <sys/uio.h>
+# include <fcntl.h>
 
 /*Macros*/
 
@@ -44,33 +46,60 @@
 # define HISTORY 0
 # define FREE_HISTORY 1
 
+# define BYEL "\e[1;33m"
+# define BRED "\e[1;31m"
+# define BWHT "\e[1;37m"
+# define BCYN "\e[1;36m"
+#define WHT "\e[0;37m"
+
 /*Structures*/
 
-/* Double linked list */
+/* Command list
+--> content represents the command
+--> type is the command type
+--> cmd_tab is an array of all commands (type 0)
+*/
 typedef struct s_element
 {
 	char	*content;
+	char	**cmd_tab;
+	char	*cmd;
 	int		type;
 	struct s_element *prev;
 	struct s_element *next;
 }	t_element;
 
-/* Environment */
+/* Environment
+--> key is a substring to find in value
+--> value is the env as a whole
+--> env is the env (for execve)
+*/
 typedef struct s_env
 {
 	char	*key;
 	char	*value;
+	char	**env;
 	struct s_env *next;
 }	t_env;
 
-/* To handles pipes */
+/* To handles pipes
+--> pid is the id process
+--> pipe_end is an array of both ends of a pipe
+--> av_nb is the arg number
+--> 
+-->
+*/
 typedef struct s_pipe
 {
-	pid_t	pid_child1;
-	pid_t	pid_child2;
-	int		pipe_end[2]; // int array of both ends of a pipe
+	pid_t	pid;
+	
+	int		here_doc;
+	int		pipe_nb;
+	char	**cmd_path;
+	int		*pipe_end;
 	int		fd_infile;
-	int		ft_outfile;
+	int		fd_outfile;
+	int		av_nb;
 }	t_pipe;
 
 /*-------------------MAIN FOLDER-------------------*/
@@ -124,5 +153,13 @@ void	final_free(char *line, t_env *env_list);
 void	free_cmd_list(t_element *cmd_list);
 
 /*-----------------EXECUTABLE FOLDER------------------*/
+
+/* Exec*/
 void	ft_redirect(t_element *cmd_list);
-void	ft_print_path(t_env *env_list);
+void	ft_execute(t_element *cmd, t_env *env);
+char	**split_path(t_env *env_list);
+void	ft_welcome(void);
+void	ft_close_pipe(t_pipe *exec);
+void	ft_create_pipe(t_pipe *exec);
+
+char	*ft_get_command(char **path, char *argument);

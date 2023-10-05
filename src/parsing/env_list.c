@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:00:17 by casomarr          #+#    #+#             */
-/*   Updated: 2023/09/28 14:14:21 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/02 18:47:24 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include "../../libft/libft.h"
 
 /*Cuts each line of **env into key and value in a t_env list*/
-t_env   *put_env_in_list(char **env)
-{  
+t_env	*put_env_in_list(char **env)
+{
 	t_env   *head;
 	t_env   *current;
 	int line;

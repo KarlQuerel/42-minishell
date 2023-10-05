@@ -6,7 +6,7 @@
 #    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/02 14:53:39 by kquerel          ###   ########.fr        #
+#    Updated: 2023/10/04 17:49:10 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,8 +37,10 @@ SRC = src/main.c \
 	src/parsing/env_list.c \
 	src/parsing/lstnew.c \
 	src/parsing/free.c \
+	src/executable/exec.c \
 	src/parsing/errors.c \
 	src/executable/test.c \
+
 	
 SRC_OBJS = $(SRC:.c=.o)
 
@@ -108,3 +110,5 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+# valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=valgrind-out.txt ./minishell
