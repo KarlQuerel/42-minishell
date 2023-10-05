@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/05 16:15:54 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:12:49 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,7 @@
 
 void	ft_welcome(void)
 {
-	printf("\n%s--------------------------------------------------\n", BWHT);
-	printf("%s¦                   %sWelcome                      %s¦\n", BWHT, BYEL, BWHT);
-	printf("%s¦                      %sto                        %s¦\n", BWHT, BYEL, BWHT);
-	printf("%s¦                  %sMinis%sHELL                     %s¦\n", BWHT, BYEL, BRED, BWHT);
-	printf("%s--------------------------------------------------\n\n", BWHT);
+	printf("%s%s\n\n", BGRE, PC);
 	printf("%s", WHT);
 }
 
