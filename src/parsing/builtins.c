@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/02 16:20:27 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/02 19:20:21 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,13 @@ char	*dollar(char *line, t_env *env_list)
 
 	i = where_is_cmd_in_line(line, "$");
 	if (i == 0 || ft_isalpha(line[i + 1]) == 0 || line[i - 1] != ' ')
-		return ("\n");; //error
+		return ("\n"); //error
 	i ++; //now i = beggining of the key
 	j = 0;
 //trouver la key
 	key = malloc(sizeof(char) * size_of_command(line, i, KEY) + 1);
+	if (!key)
+		return (NULL);
 	while(line[i] && (line[i + 1] != ' '))
 		key[j++] = line[i++];
 	key[j] = '\0';
@@ -48,6 +50,8 @@ char	*dollar(char *line, t_env *env_list)
 	j = 0;
 	len = 0;
 	new_line = malloc(sizeof(char) * (ft_strlen(line) - size_of_command(line, i, CMD) + ft_strlen(node->value)) + 1);
+	if (!new_line)
+		return (NULL);
 	while(line[i + 1] != '$')
 		new_line[len++] = line[i++];
 	i++;
@@ -65,7 +69,7 @@ char	*dollar(char *line, t_env *env_list)
 }
 
 /* i = c (= the beggining of the command "cd")*/
-void	cd(char *line)
+void	cd(char *line) //KARL faudra voir cette fonction avec toi pq je pense que ca a avoir avec l'executable
 {
 	int		i;
 	int		j;
@@ -75,10 +79,12 @@ void	cd(char *line)
 	if (i == 0)
 		return ; //error : cd pas trouve
 	if (size_of_command(line, i, CMD) == 1) // 1 car je rends size + 1 donc si size = 1 c'est que il n'y a rien apres cd donc erreur		
-		return; // pas de path apres cd 
+		return ; // pas de path apres cd 
 	i ++; //now i = beggining of the path
 	j = 0;
 	path = malloc(sizeof(char) * size_of_command(line, i, CMD) + 1);
+	if (!path)
+		return ;
 	while(line[i] != ' ' && line[i] != '\0') // plus complique que ca : le path peut avoir des espaces TYPE : tronc \commun (je crois)
 		path[j++] = line[i++];
 	path[j] = '\0';
@@ -92,6 +98,7 @@ void	cd(char *line)
 
 void	echo(char *line)
 {
+	//GERER AUSSI LE CAS echo "caro" "caro" --> doit ecrire les deux caro avec un espace entre les deux
 	int		i;
 	int		j;
 	char	*str;
@@ -104,13 +111,26 @@ void	echo(char *line)
 	if (line[i] == '\'' || line[i] == '\"')
 	{
 		str = malloc(sizeof(char) * size_of_command(line, i, STR) + 1);
-		i++;
-		while(line[i] && line[i] != '\'' && line[i] != '\"')
+		if (!str)
+			return ;
+		if (line[i] == '\'')
+		{
+			i++;
+			while(line[i] && line[i] != '\'')
 			str[j++] = line[i++];
+		}
+		else if (line[i] == '\"')
+		{
+			i++;
+			while(line[i] && line[i] != '\"')
+			str[j++] = line[i++];
+		}
 	}
 	else
 	{
 		str = malloc(sizeof(char) * size_of_command(line, i, CMD) + 1);
+		if (!str)
+			return ;
 		while(line[i] && line[i] != ' ')
 			str[j++] = line[i++];
 	}

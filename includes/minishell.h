@@ -7,6 +7,7 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
 /*   Updated: 2023/10/05 15:08:36 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/02 17:27:15 by casomarr         ###   ########.fr       *
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +120,9 @@ void	echo(char *line);
 void    pwd();
 void    cd();
 char	*dollar(char *line, t_env *env_list);
+
+/*Errors*/
+void    redirecters_error(char *line);
 
 /*------------------PARSING FOLDER------------------*/
 

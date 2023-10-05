@@ -38,6 +38,9 @@ SRC = src/main.c \
 	src/parsing/lstnew.c \
 	src/parsing/free.c \
 	src/executable/exec.c \
+	src/parsing/errors.c \
+	src/executable/test.c \
+
 	
 SRC_OBJS = $(SRC:.c=.o)
 

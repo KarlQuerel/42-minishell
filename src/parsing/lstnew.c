@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
-/*   Updated: 2023/09/28 14:01:26 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/02 17:55:52 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_element	*lstnew(char *line, int i)
 	t_element	*new;
 
 	new = (t_element *)malloc(sizeof(*new));
-	if (new == NULL)
+	if (!new)
 		return (NULL);
 	new -> content = malloc(sizeof(char) * size_of_command(line, i, CMD) + 1);
 	new -> type = 0;
@@ -32,7 +32,7 @@ t_env	*lstnew_env(char *line, int i)
 	t_env	*new;
 
 	new = (t_env *)malloc(sizeof(*new));
-	if (new == NULL)
+	if (!new)
 		return (NULL);
 	new -> key = malloc(sizeof(char) * size_of_command(line, i, KEY) + 1);
 	new -> value = malloc(sizeof(char) * size_of_command(line, i, VALUE) + 1);
