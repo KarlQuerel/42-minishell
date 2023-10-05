@@ -6,14 +6,14 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:39:52 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/05 13:47:18 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:28:23 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-void	first_element_error(char *line)
+void	first_character_error(char *line)
 {
 	if (line[0] == '<' || line[0] == '>')
 		redirecters_error(line);

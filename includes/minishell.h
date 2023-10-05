@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/05 15:43:23 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:28:18 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void    cd();
 char	*dollar(char *line, t_env *env_list);
 
 /*Errors*/
-void	first_element_error(char *line);
+void	first_character_error(char *line);
 void    redirecters_error(char *line);
 void	slash_error(char *line);
 void	pipe_error(char *line);

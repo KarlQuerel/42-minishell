@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/05 13:14:15 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:27:58 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*commands(char *line, t_env *env_list)
 	else if (line[0] == '<' || line[0] == '>' || \
 	line[0] == '/' || line[0] == '|' || line[0] == '&' || \
 	line[0] == '\'' || line[0] == '\"')
-		first_element_error(line);
+		first_character_error(line);
 	return (line);
 }
 

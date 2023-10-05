@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/05 16:03:44 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:27:48 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,19 +148,19 @@ void	echo(char *line)
 			j = ft_strlen(str);
 			printf("%splus d'un mot%s\n", YELLOW, RESET);	
 		}
-		while(line[i] != type)
+		while(line[i] != type && line[i]) // va un caractere trop loin
 		{
+			printf("%si = [%d]%s\n", GREEN, i, RESET);
 			printf("%s[%c] = [%c]%s\n", GREEN, str[j], line[i], RESET);
 			str[j++] = line[i++];
 		}
 		str[j] = '\0';
 		printf("%sapres le premier mot%s\n", YELLOW, RESET);
+		printf("%sstr = [%s]%s\n", YELLOW, str, RESET);
 		i++;
 		if (line[i] == ' ')
 		{
-			str[j] = line[i];
-			i++;
-			j++;
+			str[j++] = line[i++];
 			while(line[i] == ' ' && line[i])
 				i++;
 		}
