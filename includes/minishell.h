@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/04 20:10:26 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/05 15:08:36 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,24 @@
 # define HISTORY 0
 # define FREE_HISTORY 1
 
+# define BYEL "\e[1;33m"
+# define BRED "\e[1;31m"
+# define BWHT "\e[1;37m"
+# define BCYN "\e[1;36m"
+#define WHT "\e[0;37m"
+
 /*Structures*/
 
 /* Command list
 --> content represents the command
 --> type is the command type
+--> cmd_tab is an array of all commands (type 0)
 */
 typedef struct s_element
 {
 	char	*content;
 	char	**cmd_tab;
+	char	*cmd;
 	int		type;
 	struct s_element *prev;
 	struct s_element *next;
@@ -146,3 +154,8 @@ void	free_cmd_list(t_element *cmd_list);
 void	ft_redirect(t_element *cmd_list);
 void	ft_execute(t_element *cmd, t_env *env);
 char	**split_path(t_env *env_list);
+void	ft_welcome(void);
+void	ft_close_pipe(t_pipe *exec);
+void	ft_create_pipe(t_pipe *exec);
+
+char	*ft_get_command(char **path, char *argument);
