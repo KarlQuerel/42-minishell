@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/02 19:20:21 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:15:05 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,45 +99,87 @@ void	cd(char *line) //KARL faudra voir cette fonction avec toi pq je pense que c
 void	echo(char *line)
 {
 	//GERER AUSSI LE CAS echo "caro" "caro" --> doit ecrire les deux caro avec un espace entre les deux
+	// idem pour echo   caro    caro -> caro caro
+	//GERER AUSSI L'OPTION -n
 	int		i;
 	int		j;
 	char	*str;
+	char	type;
 	
+	str = NULL;
 	i = where_is_cmd_in_line(line, "echo");
 	if (i == 0)
 		return ; //error
-	i ++; //now i = beggining of the str
-	j = 0;
-	if (line[i] == '\'' || line[i] == '\"')
+	i++;
+	while(line[i] == ' ')
+		i++;
+	while (ft_isalpha(line[i]) != 1) //le test "     '''""echo hola" ne devrait pas marcher!!
 	{
-		str = malloc(sizeof(char) * size_of_command(line, i, STR) + 1);
-		if (!str)
-			return ;
+		if ((line[i] == '\'' && line[i+1] == '\'') || \
+		(line[i] == '\"' && line[i+1] == '\"'))
+			i+=2;
+	} //now i = beggining of the str
+	j = 0;
+	//verifier s'il y a bien deux apostrophes minimum (dans le cas contraire il se passe quoi?)
+	while(line[i] && line[i] != '|') //principale
+	{
 		if (line[i] == '\'')
 		{
+			type = '\'';
 			i++;
-			while(line[i] && line[i] != '\'')
-			str[j++] = line[i++];
 		}
 		else if (line[i] == '\"')
 		{
+			type = '\"';
 			i++;
-			while(line[i] && line[i] != '\"')
-			str[j++] = line[i++];
 		}
-	}
-	else
-	{
-		str = malloc(sizeof(char) * size_of_command(line, i, CMD) + 1);
-		if (!str)
-			return ;
-		while(line[i] && line[i] != ' ')
-			str[j++] = line[i++];
+		else
+			type = ' ';
+		if (line[i + 1] == type)
+			i+=2;
+		else
+		{
+			str = ft_joinstr_minishell(line, i, str, type);
+			if (str[0] == '\0') //premiere mot
+				j = 0;
+			else //plus d'un mot
+				j = ft_strlen(str);
+			
+			while(line[i] != type && line[i])
+			{
+				if (type == ' ' && line[i] == '\\')
+					i++;
+				else
+					str[j++] = line[i++];
+			}
+			str[j] = '\0';
+			if (type == '\'' || type == '\"')
+				i++;
+			if (line[i] == ' ')
+			{
+				str[j++] = line[i++];
+				while(line[i] == ' ' && line[i])
+					i++;
+			}
+		}
 	}
 	str[j] = '\0';
 	printf("%s\n", str);
 	free(str);
 }
+/*CARACTERES QUI NECESSITENT UN \ POUR ETRE ECHO CORRECTEMENT
+#
+(
+)
+*
+;
+<
+>
+`
+~
+"
+\
+*/
 
 void	pwd()
 {

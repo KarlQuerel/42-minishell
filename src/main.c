@@ -14,6 +14,7 @@
 #include "../includes/minishell.h"
 #include "../libft/libft.h"
 
+//printf("%sHELLO%s\n", GREEN, RESET); //green et reset defined dans le .h
 
 
 void	ft_welcome(void)
@@ -23,6 +24,26 @@ void	ft_welcome(void)
 }
 
 //PROTEGER TOUS MES MALLOCS!!
+
+char	*erase_spaces_at_the_begining(char *line)
+{
+	char	*new_line;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	if (line[i] != ' ')	
+		return (line);
+	while (line[i] == ' ')
+		i++;
+	new_line = malloc(sizeof(char) * (ft_strlen(line) - i) + 1); //verifier
+	while(line[i])
+		new_line[j++] = line[i++];
+	new_line[j] = '\0';
+	free(line);
+	return (new_line);
+}
 
 int main (int argc, char **argv, char **env)
 {
@@ -60,6 +81,7 @@ int main (int argc, char **argv, char **env)
 			final_free(line, env_list);
 			return (EXIT_SUCCESS);
 		}
+		line = erase_spaces_at_the_begining(line);
 		add_history(line);
 		line = commands(line, env_list);
 		cmd_list = parsing(line); //KARL : cmd_line est la liste doublement chainee avec toutes les commandes
