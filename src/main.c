@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/05 14:02:46 by kquerel          ###   ########.fr       */
-/*   Updated: 2023/10/02 17:29:33 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:15:54 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../includes/minishell.h"
 #include "../libft/libft.h"
@@ -54,8 +54,7 @@ int main (int argc, char **argv, char **env)
 	env_list->env = env;
 	using_history(); // initialisation de l'historique
 	line = NULL;
-	check_commands_grammar(line);
-	line = readline("Karlinashell $ ");
+	line = readline("Minishell $ ");
 	//check_commands_grammar(line); //fonction pas encore terminee
 	while (is_this_command(line, "exit") == false)
 	{
@@ -73,6 +72,7 @@ int main (int argc, char **argv, char **env)
 		// printlist_test(cmd_list);
 		free(line);
 		free_cmd_list(cmd_list);
+		line = readline("Minishell $ ");
 	}
 	final_free(line, env_list);
 	return (EXIT_SUCCESS);
