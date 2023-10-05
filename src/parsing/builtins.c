@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/05 16:27:48 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/05 17:29:20 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,20 +123,20 @@ void	echo(char *line)
 	while(line[i] && line[i] != '|') //principale
 	{
 		if (line[i] == '\'')
+		{
 			type = '\'';
+			i++;
+		}
 		else if (line[i] == '\"')
-			type = '\'';
+		{
+			type = '\"';
+			i++;
+		}
 		else
 			type = ' ';
-		// if (type == '\'' || type == '\"')
-		// 	str = malloc(sizeof(char) * size_of_command(line, i, STR) + 1);
-		// else
-		// 	str = malloc(sizeof(char) * size_of_command(line, i, CMD) + 1);
-		//printf("%sline[i] = [%c]%s\n", GREEN, line[i], RESET);
-		//printf("%stype = [%c]%s\n", GREEN, type, RESET);
-		i++;
-		printf("%sline = [%s]%s\n", GREEN, line, RESET);
-		printf("%sstr = [%s]%s\n", GREEN, str, RESET);
+		// printf("%sline = [%s]%s\n", GREEN, line, RESET);
+		// printf("%sstr = [%s]%s\n", GREEN, str, RESET);
+		printf("%stype = [%c]%s\n", GREEN, type, RESET);
 		str = ft_joinstr_minishell(line, i, str, type);
 		if (str[0] == '\0') //premiere mot
 		{
@@ -150,14 +150,15 @@ void	echo(char *line)
 		}
 		while(line[i] != type && line[i]) // va un caractere trop loin
 		{
-			printf("%si = [%d]%s\n", GREEN, i, RESET);
-			printf("%s[%c] = [%c]%s\n", GREEN, str[j], line[i], RESET);
 			str[j++] = line[i++];
+			printf("%si = %d%s\n", GREEN, i, RESET);
+			printf("%s[%c] = [%c]%s\n", GREEN, str[j], line[i], RESET);
 		}
 		str[j] = '\0';
-		printf("%sapres le premier mot%s\n", YELLOW, RESET);
+		printf("%sfin de round%s\n", YELLOW, RESET);
 		printf("%sstr = [%s]%s\n", YELLOW, str, RESET);
-		i++;
+		if (type == '\'' || type == '\"')
+			i++;
 		if (line[i] == ' ')
 		{
 			str[j++] = line[i++];
@@ -165,25 +166,6 @@ void	echo(char *line)
 				i++;
 		}
 	}
-	// else
-	// {
-	// 	str = malloc(sizeof(char) * size_of_command(line, i, CMD) + 1);
-	// 	if (!str)
-	// 		return ;
-	// 	while(line[i] && line[i] != '|')
-	// 	{
-	// 		if (line[i] != ' ')
-	// 			str[j++] = line[i++];
-	// 		else
-	// 		{
-	// 			str[j] = line[i];
-	// 			j++;
-	// 			i++;
-	// 			while (line[i] == ' ')
-	// 				i++;
-	// 		}
-	// 	}
-	// }
 	str[j] = '\0';
 	printf("%s\n", str);
 	free(str);
