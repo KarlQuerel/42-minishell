@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/05 18:33:54 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:15:05 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,13 @@ void	echo(char *line)
 		return ; //error
 	i++;
 	while(line[i] == ' ')
-		i++; //now i = beggining of the str
+		i++;
+	while (ft_isalpha(line[i]) != 1) //le test "     '''""echo hola" ne devrait pas marcher!!
+	{
+		if ((line[i] == '\'' && line[i+1] == '\'') || \
+		(line[i] == '\"' && line[i+1] == '\"'))
+			i+=2;
+	} //now i = beggining of the str
 	j = 0;
 	//verifier s'il y a bien deux apostrophes minimum (dans le cas contraire il se passe quoi?)
 	while(line[i] && line[i] != '|') //principale
@@ -129,26 +135,32 @@ void	echo(char *line)
 		}
 		else
 			type = ' ';
-		str = ft_joinstr_minishell(line, i, str, type);
-		if (str[0] == '\0') //premiere mot
-			j = 0;
-		else //plus d'un mot
-			j = ft_strlen(str);
-		while(line[i] != type && line[i])
+		if (line[i + 1] == type)
+			i+=2;
+		else
 		{
-			if (type == ' ' && line[i] == '\\')
+			str = ft_joinstr_minishell(line, i, str, type);
+			if (str[0] == '\0') //premiere mot
+				j = 0;
+			else //plus d'un mot
+				j = ft_strlen(str);
+			
+			while(line[i] != type && line[i])
+			{
+				if (type == ' ' && line[i] == '\\')
+					i++;
+				else
+					str[j++] = line[i++];
+			}
+			str[j] = '\0';
+			if (type == '\'' || type == '\"')
 				i++;
-			else
+			if (line[i] == ' ')
+			{
 				str[j++] = line[i++];
-		}
-		str[j] = '\0';
-		if (type == '\'' || type == '\"')
-			i++;
-		if (line[i] == ' ')
-		{
-			str[j++] = line[i++];
-			while(line[i] == ' ' && line[i])
-				i++;
+				while(line[i] == ' ' && line[i])
+					i++;
+			}
 		}
 	}
 	str[j] = '\0';
