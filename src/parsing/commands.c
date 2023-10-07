@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/07 16:36:37 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/07 20:02:42 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ char	*commands(char *line, t_env *env_list)
 	if (is_cmd_in_line(line, "$") == true)
 		line = dollar(line, env_list);
 	else if (is_this_command(line, "history") == true)
-			history(HISTORY);
+		history(HISTORY);
 	else if (is_this_command(line, "pwd") == true)
-			pwd();
+		pwd();
 	else if (is_cmd_in_line(line, "cd") == true)
-		cd();
+		cd(line, env_list);
 	else if (is_cmd_in_line(line, "echo") == true)
 		echo(line);
 	// else if (is_cmd_in_line(line, ">") == true || is_cmd_in_line(line, "<") == true)
