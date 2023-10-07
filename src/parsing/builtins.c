@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/07 13:45:09 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/07 14:44:02 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,7 @@ void	cd(char *line) //KARL faudra voir cette fonction avec toi pq je pense que c
 
 void	echo(char *line)
 {
-	//GERER AUSSI LE CAS echo "caro" "caro" --> doit ecrire les deux caro avec un espace entre les deux
-	//GERER AUSSI L'OPTION -n
+	//GERER L'OPTION -n
 	int		i;
 	int		j;
 	char	*str;
@@ -117,15 +116,11 @@ void	echo(char *line)
 	i++;
 	while(line[i] == ' ')
 		i++;
-	while (ft_isalpha(line[i]) != 1) //le test "     '''""echo hola" ne devrait pas marcher!!
-	{
-		if ((line[i] == '\'' && line[i+1] == '\'') || \
-		(line[i] == '\"' && line[i+1] == '\"'))
-			i+=2;
-	} //now i = beggining of the str
+	while (ft_isalpha(line[i]) != 1 && line[i] != '\'' && line[i] != '\"')
+		i++;
+	// printf("debut des mots : [%c]\n", line[i]);
 	j = 0;
-	//verifier s'il y a bien deux apostrophes minimum (dans le cas contraire il se passe quoi?)
-	while(line[i] && line[i] != '|') //principale
+	while(line[i] && line[i] != '|')
 	{
 		if (line[i] == '\'')
 		{
@@ -139,35 +134,44 @@ void	echo(char *line)
 		}
 		else
 			type = ' ';
-		if (line[i + 1] == type)
+		if (line[i + 1] == type) //pour sauter les strings vides
 			i+=2;
 		else
 		{
+			//printf("type : [%c]\n", type);
+			// printf("premiere string commence par : [%c]\n", line[i]);
 			str = ft_joinstr_minishell(line, i, str, type);
 			if (str[0] == '\0') //premiere mot
+			{
 				j = 0;
+				// printf("premier mot\n");
+			}
 			else //plus d'un mot
+			{
 				j = ft_strlen(str);
-			
+				// printf("mot suivant\n");
+			}
 			while(line[i] != type && line[i])
 			{
-				if (type == ' ' && line[i] == '\\')
+				if (type == ' ' && line[i] == '\\') //pour le test echo hola\ncaro -> doit donner holancaro
 					i++;
 				else
 					str[j++] = line[i++];
 			}
 			str[j] = '\0';
+			//printf("mot : [%s]\n", str);
 			if (type == '\'' || type == '\"')
 				i++;
 			if (line[i] == ' ')
 			{
-				str[j++] = line[i++];
+				str[j++] = line[i++]; //ne devrais-je pas compter l'espace dans le malloc? donc strjoin encore ici?
 				while(line[i] == ' ' && line[i])
 					i++;
 			}
 		}
 	}
 	str[j] = '\0';
+	// printf("ligne en entier : [%s]/n", str);
 	printf("%s\n", str);
 	free(str);
 }
