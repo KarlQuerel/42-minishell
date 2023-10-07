@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/05 11:35:24 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/07 15:48:34 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,10 @@ t_element *parsing(char *line)
 	// printf("content = %s\n", current_cmd->content);
 	// printf("type = %d\n", current_cmd->type);
 	current_cmd->next = NULL;
+	head = parsing_fix(head);
 
-	// printlist_test(head); //pour printlist test
+	//printf("AVANT PARSING FIX\n")
+;	//printlist_test(head); //pour printlist test
 	return (head);
 }
 /*Pour les commandes type echo qui sont suivies d'arguments qui ne sont pas
@@ -110,8 +112,29 @@ t_element	*parsing_fix(t_element *current)
 	while(current->next != NULL)
 	{
 		if (strncmp(current->content, "echo", ft_strlen("echo")) == 0)
-			current->next->type = ARGUMENT;
-		current = current->next;
+		{
+			current = current->next;
+			while (current->type != PIPE && current->next != NULL)
+			{
+				if (current->type != OPTION)
+				{
+					// printf("Current->content = %s\n", current->content);
+					// printf("Before fix : type = %d\n", current->type);
+					current->type = ARGUMENT;
+					// printf("After fix : type = %d\n", current->type);
+				}
+				current = current->next;
+			}
+		}
+		if (current->next != NULL)
+			current = current->next;
+	}
+	if (current->type != OPTION && current->type != PIPE)
+	{
+		// printf("Current->content = %s\n", current->content);
+		// printf("Before fix : type = %d\n", current->type);
+		current->type = ARGUMENT;
+		// printf("After fix : type = %d\n", current->type);
 	}
 	return(head);
 }

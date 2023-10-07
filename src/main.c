@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/05 19:12:49 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/07 15:52:38 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../libft/libft.h"
 
 //printf("%sHELLO%s\n", GREEN, RESET); //green et reset defined dans le .h
-
+//faire perror("Error") plutot que des printf pour toutes les fonctions qui utilisent errno
 
 void	ft_welcome(void)
 {
@@ -23,7 +23,7 @@ void	ft_welcome(void)
 	printf("%s", WHT);
 }
 
-//PROTEGER TOUS MES MALLOCS!!
+//PROTEGER TOUS MES MALLOCS!! --> avec perror
 
 char	*erase_spaces_at_the_begining(char *line)
 {
@@ -38,6 +38,11 @@ char	*erase_spaces_at_the_begining(char *line)
 	while (line[i] == ' ')
 		i++;
 	new_line = malloc(sizeof(char) * (ft_strlen(line) - i) + 1); //verifier
+	if (!new_line)
+	{
+		perror("Error");
+		return (NULL); //il faut qd meme un return qd on utilise perror??
+	}
 	while(line[i])
 		new_line[j++] = line[i++];
 	new_line[j] = '\0';
@@ -87,7 +92,8 @@ int main (int argc, char **argv, char **env)
 		cmd_list = parsing(line); //KARL : cmd_line est la liste doublement chainee avec toutes les commandes
 		//split_path(env_list); // a laisser ici
 		//ft_execute(cmd_list, env_list); // KARL -> toujours en cours
-		// printlist_test(cmd_list);
+		//printf("APRES PARSING FIX\n");
+		//printlist_test(cmd_list);
 		free(line);
 		free_cmd_list(cmd_list);
 		line = readline("Minishell $ ");

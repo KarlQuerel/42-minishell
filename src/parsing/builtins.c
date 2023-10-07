@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/07 14:44:02 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/07 15:32:37 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,9 @@ void	cd(char *line) //KARL faudra voir cette fonction avec toi pq je pense que c
 
 void	echo(char *line)
 {
-	//GERER L'OPTION -n
+	/*GERER L'OPTION -n : 
+	if(line[i] == ' ' && line[i + 1] == '-' && line[i + 2] == 'n' && line[i + 3] == ' '
+		i+=3 //ou i+=4 ?*/
 	int		i;
 	int		j;
 	char	*str;
@@ -172,6 +174,7 @@ void	echo(char *line)
 	}
 	str[j] = '\0';
 	// printf("ligne en entier : [%s]/n", str);
+	//AVANT de le print il faut pouvoir appliquer l'option -n
 	printf("%s\n", str);
 	free(str);
 }
