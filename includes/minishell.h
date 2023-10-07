@@ -3,15 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
 /*   Updated: 2023/10/07 20:00:39 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/* ************************************************************************** */
-
 
 /*Libraries*/
 
@@ -73,7 +70,6 @@ typedef struct s_element
 {
 	char	*content;
 	char	*cmd;
-	char	**cmd_tab;
 	int		type;
 	struct s_element *prev;
 	struct s_element *next;
@@ -105,6 +101,7 @@ typedef struct s_pipe
 	
 	int		here_doc;
 	int		pipe_nb;
+	char	**cmd_tab;
 	char	**cmd_path;
 	int		*pipe_end;
 	int		fd_infile;
@@ -180,5 +177,7 @@ char	**split_path(t_env *env_list);
 void	ft_welcome(void);
 void	ft_close_pipe(t_pipe *exec);
 void	ft_create_pipe(t_pipe *exec);
+char	*ft_strcpy(char *dst, char *src);
+
 
 char	*ft_get_command(char **path, char *argument);

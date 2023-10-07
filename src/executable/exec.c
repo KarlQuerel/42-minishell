@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/05 15:33:33 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/07 20:11:06 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,72 +65,31 @@ char	**split_path(t_env *env_list)
 	return (res_split);
 }
 
-/* Gets commands number (type 0) */
-int	get_args_nb(t_element *cmd)
+/* Gets COMMANDS and OPTION number (type 0 and type 1) */
+int	get_args_nb(t_element *cmd, t_pipe *exec)
 {
 	int	nb_args;
 
-	nb_args = 0; // peutre commencer a 1 ?
-	cmd->cmd_tab = malloc(9999); // a fix
-	while (cmd) //while qui seg fault
+	nb_args = 0;
+	while (cmd )
 	{
-		if (cmd->type == COMMAND)
+		if (cmd->type == COMMAND || cmd->type == OPTION)
 		{
-			cmd->cmd_tab[nb_args] = cmd->content; //ca marche sur papier mais pas sur
+			exec->cmd_tab[nb_args] = malloc(9999);
+			ft_strcpy(exec->cmd_tab[nb_args], cmd->content);
+			// printf("cmd_tab[%d] = %s\n", nb_args, exec->cmd_tab[nb_args]);
 			nb_args++;
-			printf("-----> args = %d\n", nb_args);
 		}
 		cmd = cmd->next;
 	}
+	exec->cmd_tab[nb_args] = NULL;
 	return (nb_args);
 }
 
-/* Creates child process
---> will fork as long as i is < to av_nb
---> several cases occur, first child, middle child and last child
-*/
-void	ft_babyboom(t_element *cmd, t_env *env, t_pipe *exec, int i)
-{
-	exec->pid = fork(); // system call to create new process (child)
-	if (exec->pid == -1) // if it fails
-	{
-		perror("pipe");
-		exit(EXIT_FAILURE);
-	}
-	else if (exec->pid == 0) // meaning we are in the child process
-	{
-		if (i == 0) // its the first child in the pipeline
-		{
-			dup2(exec->fd_infile, 0); //fd_infile = result of the open function, fd 0 now reads from infile
-			dup2(exec->pipe_end[1], 1);
-		}
-		else if (i == exec->av_nb) // last child in the pipeline
-		{
-			dup2(exec->pipe_end[(i * 2) - 2], 0); // duplicates the reading pipe (fd[0]) of the last child to the writing of the previous child
-			dup2(exec->fd_outfile, 1); //fd_outfile = result of the open function
-		}
-		else // all the middle childs
-		{
-			dup2(exec->pipe_end[(i * 2) - 2], 0);
-			dup2(exec->pipe_end[(i * 2) + 1], 1); // we redirect the writing pipe (fd[1])
-		}
-		ft_close_pipe(exec);
-		cmd->cmd_tab = ft_split(cmd->cmd_tab[i], ' ');
-		cmd->cmd = ft_get_command(exec->cmd_path, cmd->cmd_tab[0]);
-		if (!cmd->cmd)
-		{
-			printf("Error\n");
-			// free
-			exit (EXIT_FAILURE);
-		}
-		execve(cmd->content, cmd->cmd_tab, env->env);
-	}
-}
 
 
 void	ft_execute(t_element *cmd, t_env *env)
 {
-	// find nb of commands if type == 0, count_cmd ++;
 	// nombre de pipe = (argv - 1) * 2;
 	//faire le malloc des pipe
 	//create pipes
@@ -144,26 +103,71 @@ void	ft_execute(t_element *cmd, t_env *env)
 		perror("exec");
 		exit(EXIT_FAILURE);
 	}
-	exec->av_nb = get_args_nb(cmd); //seg fault ici
-	exec->pipe_nb = (exec->av_nb) * 2;
+
+	exec->cmd_tab = malloc(999);
+	if (!exec->cmd_tab)
+		return ;
+	
+	exec->av_nb = get_args_nb(cmd, exec);
+	if (exec->av_nb == 0)
+	{
+		// printf("Je suis la\n");
+		exit(127);
+	}
+	// printf("av_nb = %d\n", exec->av_nb);
+	// exec->pipe_nb = (exec->av_nb) * 2;
+	// printf("pipen_nb = %d\n", exec->pipe_nb);
 	//peut etre malloc le nombre de pipe, pas sur, voir avec caro
 	exec->cmd_path = split_path(env);
 	if (!exec->cmd_path)
 	{
 		printf("Split_path failed\n");
 		//free les pipes dans le cas ou on les malloc
-		free (exec);
+		// free (exec);
 		// free en plus dans le code de caro ?
 	}
-	ft_create_pipe(exec); // cree le bon nombre de pipes
-	int i = 0;
-	while (i < exec->av_nb)
+
+	
+	/* POUR PRINT LE PATH
+	-> la ou toutes les commandes se trouvent (check avec whereis)
+	*/
+	// int	j = 0;
+	// while (exec->cmd_path[j])
+	// {
+	// 	printf("cmd_path[%d] = %s\n", j, exec->cmd_path[j]);
+	// 	j++;
+	// }
+
+
+	
+	// exec->cmd_tab = ft_split(exec->cmd_tab[0], ' ')
+	cmd->cmd = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
+	if (!cmd->cmd)
 	{
-		ft_babyboom(cmd, env, exec, i);
-		i++;
+		ft_putstr_fd("Command not found: ", 2);
+		if (!exec->cmd_tab[0])
+			ft_putstr_fd("\n", 2);
+		else
+		{
+			ft_putstr_fd(exec->cmd_tab[0], 2);
+			ft_putstr_fd("\n", 2);
+		}
 	}
-	ft_close_pipe(exec);
-	waitpid(-1, NULL, 0);
+	// printf("1st argument AKA cmd->cmd = %s\n", cmd->cmd);
+	// printf("2nd argument AKA cmd->cmd_tab = %s\n", exec->cmd_tab[0]);
+
+	execve(cmd->cmd, exec->cmd_tab, env->env);
+
+	
+	// ft_create_pipe(exec); // cree le bon nombre de pipes
+	// int i = 0;
+	// while (i < exec->av_nb)
+	// {
+	// 	ft_babyboom(cmd, env, exec, i);
+	// 	i++;
+	// }
+	// ft_close_pipe(exec);
+	// waitpid(-1, NULL, 0);
 }
 
 
@@ -220,4 +224,60 @@ void	ft_close_pipe(t_pipe *exec)
 		close(exec->pipe_end[i]);
 		i++;
 	}
+}
+
+/* Creates child process
+--> will fork as long as i is < to av_nb
+--> several cases occur, first child, middle child and last child
+*/
+void	ft_babyboom(t_element *cmd, t_env *env, t_pipe *exec, int i)
+{
+	exec->pid = fork(); // system call to create new process (child)
+	if (exec->pid == -1) // if it fails
+	{
+		perror("pipe");
+		exit(EXIT_FAILURE);
+	}
+	else if (exec->pid == 0) // meaning we are in the child process
+	{
+		if (i == 0) // its the first child in the pipeline
+		{
+			dup2(exec->fd_infile, 0); //fd_infile = result of the open function, fd 0 now reads from infile
+			dup2(exec->pipe_end[1], 1);
+		}
+		else if (i == exec->av_nb) // last child in the pipeline
+		{
+			dup2(exec->pipe_end[(i * 2) - 2], 0); // duplicates the reading pipe (fd[0]) of the last child to the writing of the previous child
+			dup2(exec->fd_outfile, 1); //fd_outfile = result of the open function
+		}
+		else // all the middle childs
+		{
+			dup2(exec->pipe_end[(i * 2) - 2], 0);
+			dup2(exec->pipe_end[(i * 2) + 1], 1); // we redirect the writing pipe (fd[1])
+		}
+		ft_close_pipe(exec);
+		exec->cmd_tab = ft_split(exec->cmd_tab[i], ' ');
+		cmd->cmd = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
+		if (!cmd->cmd)
+		{
+			printf("Error\n");
+			// free
+			exit (EXIT_FAILURE);
+		}
+		execve(cmd->content, exec->cmd_tab, env->env);
+	}
+}
+
+char	*ft_strcpy(char *dst, char *src)
+{
+	int	i;
+
+	i = 0;
+	while (src[i])
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (dst);
 }
