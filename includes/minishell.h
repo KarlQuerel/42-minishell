@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/07 19:51:14 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/07 20:00:39 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void		signal_handler(int signal);
 /*Builtins*/
 void	echo(char *line);
 void    pwd();
-void    cd();
+void    cd(char *line, t_env *env_list);
 char	*dollar(char *line, t_env *env_list);
 
 /*Errors*/
