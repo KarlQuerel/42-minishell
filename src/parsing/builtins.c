@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/07 15:32:37 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/07 16:17:20 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,17 +179,18 @@ void	echo(char *line)
 	free(str);
 }
 /*CARACTERES QUI NECESSITENT UN \ POUR ETRE ECHO CORRECTEMENT
-#
-(
-)
-*
-;
-<
->
-`
-~
-"
-\
+En mettant chaque signe au milieu de ab et en les faisant echo :
+# a#b
+( syntax error near unexpected token `('
+) syntax error near unexpected token `)'
+* a*b
+; a (\n) b: command not found
+< a puis attend
+> attend
+` (heredoc)
+~ a~b
+" (heredoc)
+\ ab
 */
 
 void	pwd()

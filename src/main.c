@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/07 15:52:38 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/07 16:43:51 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 //printf("%sHELLO%s\n", GREEN, RESET); //green et reset defined dans le .h
 //faire perror("Error") plutot que des printf pour toutes les fonctions qui utilisent errno
+//utiliser ft_putstr_fd au lieu de printf
 
 void	ft_welcome(void)
 {
