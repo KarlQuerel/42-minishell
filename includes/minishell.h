@@ -10,9 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/* ************************************************************************** */
-
-
 /*Libraries*/
 
 # define _XOPEN_SOURCE 700 //sans ça, erreur de signaux
@@ -46,6 +43,10 @@
 
 # define HISTORY 0
 # define FREE_HISTORY 1
+
+# define YELLOW	"\033[33m"
+# define GREEN	"\033[32m"
+# define RESET	"\033[0m"
 
 /* Colors */
 # define BYEL "\e[1;33m"

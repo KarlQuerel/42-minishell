@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/07 13:45:09 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/07 19:32:58 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,9 @@ void	cd(char *line) //KARL faudra voir cette fonction avec toi pq je pense que c
 
 void	echo(char *line)
 {
-	//GERER AUSSI LE CAS echo "caro" "caro" --> doit ecrire les deux caro avec un espace entre les deux
-	//GERER AUSSI L'OPTION -n
+	/*GERER L'OPTION -n : 
+	if(line[i] == ' ' && line[i + 1] == '-' && line[i + 2] == 'n' && line[i + 3] == ' '
+		i+=3 //ou i+=4 ?*/
 	int		i;
 	int		j;
 	char	*str;
@@ -111,21 +112,17 @@ void	echo(char *line)
 		return ; //error
 	if (quotes_can_close(line) == false)
 	{
-		printf("Error : quotes don't close\n"); //bash n'ecrit pas erreur mais je ne peux pas reproduire le > qui apparait
+		// printf("Error : quotes don't close\n"); //bash n'ecrit pas erreur mais je ne peux pas reproduire le > qui apparait
 		return ;
 	}
 	i++;
 	while(line[i] == ' ')
 		i++;
-	while (ft_isalpha(line[i]) != 1) //le test "     '''""echo hola" ne devrait pas marcher!!
-	{
-		if ((line[i] == '\'' && line[i+1] == '\'') || \
-		(line[i] == '\"' && line[i+1] == '\"'))
-			i+=2;
-	} //now i = beggining of the str
+	while (ft_isprint(line[i]) != 1 && line[i] != '\'' && line[i] != '\"')
+		i++;
+	// printf("debut des str : [%c]\n", line[i]);
 	j = 0;
-	//verifier s'il y a bien deux apostrophes minimum (dans le cas contraire il se passe quoi?)
-	while(line[i] && line[i] != '|') //principale
+	while(line[i] && line[i] != '|')
 	{
 		if (line[i] == '\'')
 		{
@@ -139,24 +136,33 @@ void	echo(char *line)
 		}
 		else
 			type = ' ';
-		if (line[i + 1] == type)
-			i+=2;
+		// printf("apres avoir passe la premiere apostrophe (si il y en a) : [%c]\n", line[i]);
+		if (line[i] == type) //pour sauter les strings vides
+			i+=1;
 		else
 		{
+			// printf("type : [%c]\n", type);
+			// printf("premiere string commence par : [%c]\n", line[i]);
 			str = ft_joinstr_minishell(line, i, str, type);
 			if (str[0] == '\0') //premiere mot
+			{
 				j = 0;
+				// printf("%spremier mot%s\n", YELLOW, RESET);
+			}
 			else //plus d'un mot
+			{
 				j = ft_strlen(str);
-			
+				// printf("%smot suivant%s\n", YELLOW, RESET);
+			}
 			while(line[i] != type && line[i])
 			{
-				if (type == ' ' && line[i] == '\\')
+				if (type == ' ' && line[i] == '\\') //pour le test echo hola\ncaro -> doit donner holancaro
 					i++;
 				else
 					str[j++] = line[i++];
 			}
 			str[j] = '\0';
+			// printf("%smot : [%s]%s\n", GREEN, str, RESET);
 			if (type == '\'' || type == '\"')
 				i++;
 			if (line[i] == ' ')
@@ -170,19 +176,22 @@ void	echo(char *line)
 	str[j] = '\0';
 	printf("%s\n", str);
 	free(str);
+	// printf("ligne en entier : [%s]/n", str);
+	//AVANT de le print il faut pouvoir appliquer l'option -n
 }
 /*CARACTERES QUI NECESSITENT UN \ POUR ETRE ECHO CORRECTEMENT
-#
-(
-)
-*
-;
-<
->
-`
-~
-"
-\
+En mettant chaque signe au milieu de ab et en les faisant echo :
+# a#b
+( syntax error near unexpected token `('
+) syntax error near unexpected token `)'
+* a*b
+; a (\n) b: command not found
+< a puis attend
+> attend
+` (heredoc)
+~ a~b
+" (heredoc)
+\ ab
 */
 
 void	pwd()

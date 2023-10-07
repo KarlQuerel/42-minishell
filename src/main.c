@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
 /*   Updated: 2023/10/07 18:48:41 by kquerel          ###   ########.fr       */
@@ -15,7 +15,8 @@
 #include "../libft/libft.h"
 
 //printf("%sHELLO%s\n", GREEN, RESET); //green et reset defined dans le .h
-
+//faire perror("Error") plutot que des printf pour toutes les fonctions qui utilisent errno
+//utiliser ft_putstr_fd au lieu de printf
 
 void	ft_welcome(void)
 {
@@ -23,7 +24,7 @@ void	ft_welcome(void)
 	printf("%s", WHT);
 }
 
-//PROTEGER TOUS MES MALLOCS!!
+//PROTEGER TOUS MES MALLOCS!! --> avec perror
 
 char	*erase_spaces_at_the_begining(char *line)
 {
@@ -38,6 +39,11 @@ char	*erase_spaces_at_the_begining(char *line)
 	while (line[i] == ' ')
 		i++;
 	new_line = malloc(sizeof(char) * (ft_strlen(line) - i) + 1); //verifier
+	if (!new_line)
+	{
+		perror("Error");
+		return (NULL); //il faut qd meme un return qd on utilise perror??
+	}
 	while(line[i])
 		new_line[j++] = line[i++];
 	new_line[j] = '\0';
