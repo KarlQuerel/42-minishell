@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/05 19:15:05 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/07 13:45:09 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ void	cd(char *line) //KARL faudra voir cette fonction avec toi pq je pense que c
 void	echo(char *line)
 {
 	//GERER AUSSI LE CAS echo "caro" "caro" --> doit ecrire les deux caro avec un espace entre les deux
-	// idem pour echo   caro    caro -> caro caro
 	//GERER AUSSI L'OPTION -n
 	int		i;
 	int		j;
@@ -110,6 +109,11 @@ void	echo(char *line)
 	i = where_is_cmd_in_line(line, "echo");
 	if (i == 0)
 		return ; //error
+	if (quotes_can_close(line) == false)
+	{
+		printf("Error : quotes don't close\n"); //bash n'ecrit pas erreur mais je ne peux pas reproduire le > qui apparait
+		return ;
+	}
 	i++;
 	while(line[i] == ' ')
 		i++;
