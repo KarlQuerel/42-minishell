@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/05 18:29:12 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/07 13:00:14 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,25 @@ char	*ft_joinstr_minishell(char *line, int len, char *str, char type)
     {
         if (str == NULL)
         {
-            new_str = ft_calloc(size_of_command(line, len, STR) + 1, sizeof(char));
+            new_str = ft_calloc(size_of_command(line, len, STR) \
+            + 1, sizeof(char));
             return (new_str);
         }
         else
-            new_str = ft_calloc((ft_strlen(str) + size_of_command(line, len, STR) + 1), sizeof(char));
+            new_str = ft_calloc((ft_strlen(str) + \
+            size_of_command(line, len, STR) + 1), sizeof(char));
     }
     else
     {
         if (str == NULL)
         {
-            new_str = ft_calloc(size_of_command(line, len, CMD) + 1, sizeof(char));
+            new_str = ft_calloc(size_of_command(line, len, CMD) \
+            + 1, sizeof(char));
             return (new_str);
         }
         else
-            new_str = ft_calloc((ft_strlen(str) + size_of_command(line, len, CMD) + 1), sizeof(char));
+            new_str = ft_calloc((ft_strlen(str) + \
+            size_of_command(line, len, CMD) + 1), sizeof(char));
     }
     if (!new_str)
 		return (NULL);

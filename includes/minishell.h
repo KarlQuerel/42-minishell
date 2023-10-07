@@ -6,10 +6,10 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/05 19:19:06 by kquerel          ###   ########.fr       */
-/*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/02 17:27:15 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/07 13:20:43 by casomarr         ###   ########.fr       */
 /*                                                                            */
+/* ************************************************************************** */
+
 /* ************************************************************************** */
 
 
@@ -117,6 +117,7 @@ void		history(int option);
 
 /*Checks*/
 bool		check_commands_grammar(char *commands);
+bool		quotes_can_close(char *line);
 
 /*Signal*/
 void		signal_handler(int signal);
