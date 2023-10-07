@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/02 18:49:12 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/07 17:13:36 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ char	*commands(char *line, t_env *env_list)
 		cd();
 	else if (is_cmd_in_line(line, "echo") == true)
 		echo(line);
-	// else if (is_cmd_in_line(line, ">") == true || is_cmd_in_line(line, "<") == true)
-	// 	redirecters_error(line);
+	else if (is_cmd_in_line(line, ">") == true || is_cmd_in_line(line, "<") == true)
+		redirecters_error(line);
 	else if (line[0] == '<' || line[0] == '>' || \
 	line[0] == '/' || line[0] == '|' || line[0] == '&' || \
 	line[0] == '\'' || line[0] == '\"')
