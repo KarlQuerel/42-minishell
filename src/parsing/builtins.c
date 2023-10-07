@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/07 16:17:20 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/07 19:32:58 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,15 +112,15 @@ void	echo(char *line)
 		return ; //error
 	if (quotes_can_close(line) == false)
 	{
-		printf("Error : quotes don't close\n"); //bash n'ecrit pas erreur mais je ne peux pas reproduire le > qui apparait
+		// printf("Error : quotes don't close\n"); //bash n'ecrit pas erreur mais je ne peux pas reproduire le > qui apparait
 		return ;
 	}
 	i++;
 	while(line[i] == ' ')
 		i++;
-	while (ft_isalpha(line[i]) != 1 && line[i] != '\'' && line[i] != '\"')
+	while (ft_isprint(line[i]) != 1 && line[i] != '\'' && line[i] != '\"')
 		i++;
-	// printf("debut des mots : [%c]\n", line[i]);
+	// printf("debut des str : [%c]\n", line[i]);
 	j = 0;
 	while(line[i] && line[i] != '|')
 	{
@@ -136,22 +136,23 @@ void	echo(char *line)
 		}
 		else
 			type = ' ';
-		if (line[i + 1] == type) //pour sauter les strings vides
-			i+=2;
+		// printf("apres avoir passe la premiere apostrophe (si il y en a) : [%c]\n", line[i]);
+		if (line[i] == type) //pour sauter les strings vides
+			i+=1;
 		else
 		{
-			//printf("type : [%c]\n", type);
+			// printf("type : [%c]\n", type);
 			// printf("premiere string commence par : [%c]\n", line[i]);
 			str = ft_joinstr_minishell(line, i, str, type);
 			if (str[0] == '\0') //premiere mot
 			{
 				j = 0;
-				// printf("premier mot\n");
+				// printf("%spremier mot%s\n", YELLOW, RESET);
 			}
 			else //plus d'un mot
 			{
 				j = ft_strlen(str);
-				// printf("mot suivant\n");
+				// printf("%smot suivant%s\n", YELLOW, RESET);
 			}
 			while(line[i] != type && line[i])
 			{
@@ -161,22 +162,22 @@ void	echo(char *line)
 					str[j++] = line[i++];
 			}
 			str[j] = '\0';
-			//printf("mot : [%s]\n", str);
+			// printf("%smot : [%s]%s\n", GREEN, str, RESET);
 			if (type == '\'' || type == '\"')
 				i++;
 			if (line[i] == ' ')
 			{
-				str[j++] = line[i++]; //ne devrais-je pas compter l'espace dans le malloc? donc strjoin encore ici?
+				str[j++] = line[i++];
 				while(line[i] == ' ' && line[i])
 					i++;
 			}
 		}
 	}
 	str[j] = '\0';
-	// printf("ligne en entier : [%s]/n", str);
-	//AVANT de le print il faut pouvoir appliquer l'option -n
 	printf("%s\n", str);
 	free(str);
+	// printf("ligne en entier : [%s]/n", str);
+	//AVANT de le print il faut pouvoir appliquer l'option -n
 }
 /*CARACTERES QUI NECESSITENT UN \ POUR ETRE ECHO CORRECTEMENT
 En mettant chaque signe au milieu de ab et en les faisant echo :

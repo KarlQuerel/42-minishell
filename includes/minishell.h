@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/07 13:20:43 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/07 19:26:44 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@
 
 # define HISTORY 0
 # define FREE_HISTORY 1
+
+# define YELLOW	"\033[33m"
+# define GREEN	"\033[32m"
+# define RESET	"\033[0m"
 
 /* Colors */
 # define BYEL "\e[1;33m"

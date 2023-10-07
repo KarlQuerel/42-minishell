@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/07 15:43:07 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/07 19:31:11 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ char	*ft_joinstr_minishell(char *line, int len, char *str, char type)
             return (new_str);
         }
         else
-            new_str = ft_calloc((ft_strlen(str) + \
-            size_of_command(line, len, CMD) + 2), sizeof(char));
+            new_str = ft_calloc((ft_strlen(str) \
+            + size_of_command(line, len, CMD) + 2), sizeof(char));
     }
     if (!new_str)
 		return (NULL);
@@ -58,6 +58,8 @@ char	*ft_joinstr_minishell(char *line, int len, char *str, char type)
     {
         new_str[j++] = str[i++];
     }
-	free(str);
+    new_str[j] = '\0';
+    if (str != NULL)
+	    free(str);
 	return (new_str);
 }
