@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/07 15:48:34 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/09 17:17:33 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -95,7 +95,7 @@ t_element *parsing(char *line)
 	// printf("content = %s\n", current_cmd->content);
 	// printf("type = %d\n", current_cmd->type);
 	current_cmd->next = NULL;
-	head = parsing_fix(head);
+	// head = parsing_fix(head);
 
 	//printf("AVANT PARSING FIX\n")
 ;	//printlist_test(head); //pour printlist test

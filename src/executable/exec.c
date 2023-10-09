@@ -1,20 +1,61 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/07 20:11:06 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/09 19:39:21 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
+/*
+TO DO:
+
+- traiter les pipes - FINIR ft_babyboom
+- les redirections
+- cas pablo (demander a caro la photo)
+- gerer open et HEREDOC
+
+Structure pour les pipes:
+- pipe(pipe_end), returns -1 upon failure
+- assigns fork return value to pid_t pid_child1;
+	-> fork returns -1 upon failure
+- in first child
+	-> open assigned to fd_infile (av[1], )
+	-> dup2 (fd_infile)
+	-> dup2 (pipe_end[1])
+- waitpid(pid_child1, NULL, 0)
+- waitpid(pid_child2, NULL, 0)
+*/
+
+
+/* A FAIRE
+-rediriger dans le cas ou la commande est un built in a coder nous meme
+	- echo
+	- cd
+	- pwd
+	- export
+	- unset
+	- env
+	- exit
+- peut etre creer un 8eme type dans le .h avec BUILTIN ? voir avec caro
+*/
 void	ft_redirect(t_element *s)
 {
+	/* par exemple
+	while (s)
+	{
+		if (s->type == 8)
+			on skip ft_execute pour eviter le doublon des commandes
+		s = s->next;
+	}
+	
+	*/
 	while (s)
 	{
 		printf("%s\n", s->content);
@@ -38,23 +79,6 @@ void	ft_redirect(t_element *s)
 	}
 }
 
-/*
-- pipe(pipe_end), returns -1 upon failure
-- assigns fork return value to pid_t pid_child1;
-	-> fork returns -1 upon failure
-- in first child
-	-> open assigned to fd_infile (av[1], )
-	-> dup2 (fd_infile)
-	-> dup2 (pipe_end[1])
-
-	
-	
-
-- waitpid(pid_child1, NULL, 0)
-- waitpid(pid_child2, NULL, 0)
-
-*/
-
 /* Splits the path*/
 char	**split_path(t_env *env_list)
 {
@@ -71,11 +95,11 @@ int	get_args_nb(t_element *cmd, t_pipe *exec)
 	int	nb_args;
 
 	nb_args = 0;
-	while (cmd )
+	while (cmd)
 	{
-		if (cmd->type == COMMAND || cmd->type == OPTION)
+		if (cmd->type == 0 || cmd->type == 1)
 		{
-			exec->cmd_tab[nb_args] = malloc(9999);
+			exec->cmd_tab[nb_args] = malloc(sizeof(char *) * ft_strlen(cmd->content) + 1);
 			ft_strcpy(exec->cmd_tab[nb_args], cmd->content);
 			// printf("cmd_tab[%d] = %s\n", nb_args, exec->cmd_tab[nb_args]);
 			nb_args++;
@@ -86,8 +110,7 @@ int	get_args_nb(t_element *cmd, t_pipe *exec)
 	return (nb_args);
 }
 
-
-
+/* Handles execution */
 void	ft_execute(t_element *cmd, t_env *env)
 {
 	// nombre de pipe = (argv - 1) * 2;
@@ -96,24 +119,21 @@ void	ft_execute(t_element *cmd, t_env *env)
 	// A FAIRE
 	// gerer le open et le here_doc !
 	t_pipe *exec;
-
 	exec = malloc(sizeof(t_pipe));
 	if (!exec)
 	{
 		perror("exec");
 		exit(EXIT_FAILURE);
 	}
-
-	exec->cmd_tab = malloc(999);
+	exec->cmd_tab = malloc(sizeof(char **) + 1); // +1 car le tableau de strings doit finir par NULL
 	if (!exec->cmd_tab)
 		return ;
-	
 	exec->av_nb = get_args_nb(cmd, exec);
-	if (exec->av_nb == 0)
-	{
-		// printf("Je suis la\n");
-		exit(127);
-	}
+	// if (exec->av_nb == 0)
+	// {
+	// 	printf("Je suis la\n"); // c'est pour ca que ce connard de minishell exit
+	// 	exit(127);
+	// }
 	// printf("av_nb = %d\n", exec->av_nb);
 	// exec->pipe_nb = (exec->av_nb) * 2;
 	// printf("pipen_nb = %d\n", exec->pipe_nb);
@@ -126,8 +146,6 @@ void	ft_execute(t_element *cmd, t_env *env)
 		// free (exec);
 		// free en plus dans le code de caro ?
 	}
-
-	
 	/* POUR PRINT LE PATH
 	-> la ou toutes les commandes se trouvent (check avec whereis)
 	*/
@@ -137,28 +155,24 @@ void	ft_execute(t_element *cmd, t_env *env)
 	// 	printf("cmd_path[%d] = %s\n", j, exec->cmd_path[j]);
 	// 	j++;
 	// }
-
-
-	
 	// exec->cmd_tab = ft_split(exec->cmd_tab[0], ' ')
 	cmd->cmd = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
 	if (!cmd->cmd)
 	{
-		ft_putstr_fd("Command not found: ", 2);
 		if (!exec->cmd_tab[0])
 			ft_putstr_fd("\n", 2);
 		else
 		{
 			ft_putstr_fd(exec->cmd_tab[0], 2);
-			ft_putstr_fd("\n", 2);
+			ft_putstr_fd(": command not found\n", 2);
 		}
 	}
 	// printf("1st argument AKA cmd->cmd = %s\n", cmd->cmd);
-	// printf("2nd argument AKA cmd->cmd_tab = %s\n", exec->cmd_tab[0]);
-
+	// printf("2nd argument AKA cmd->cmd_tab[0] = %s\n", exec->cmd_tab[0]);
+	// printf("2nd argument AKA cmd->cmd_tab[1] = %s\n", exec->cmd_tab[1]);
+	waitpid(-1, NULL, 0);
 	execve(cmd->cmd, exec->cmd_tab, env->env);
-
-	
+	printf("--> S'affiche uniquement si execve fail <--\n");
 	// ft_create_pipe(exec); // cree le bon nombre de pipes
 	// int i = 0;
 	// while (i < exec->av_nb)
@@ -167,12 +181,12 @@ void	ft_execute(t_element *cmd, t_env *env)
 	// 	i++;
 	// }
 	// ft_close_pipe(exec);
-	// waitpid(-1, NULL, 0);
 }
 
 
 
-/* Extracts command from argv and verify if they are valid */
+/* Extracts command from char *argument and verify if they are valid
+using access*/
 char	*ft_get_command(char **path, char *argument)
 {
 	char	*to_free;
@@ -268,6 +282,7 @@ void	ft_babyboom(t_element *cmd, t_env *env, t_pipe *exec, int i)
 	}
 }
 
+/* strcpy */
 char	*ft_strcpy(char *dst, char *src)
 {
 	int	i;
