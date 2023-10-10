@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/10 16:03:52 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/10 16:30:12 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void printlist_test(t_element *head) // A EFFACER A LA FIN
 		// 	printf("prev cmd = %s\n", head->prev->content);
 		printf("content = %s\n", head->content);
 		printf("type = %d\n", head->type);
+		printf("builtin = %d\n", head->builtin);
 		// if (head->next != NULL)
 		// 	printf("next cmd = %s\n", head->next->content);
 		head = head->next;
@@ -96,6 +97,7 @@ t_element *parsing(char *line)
 	//printlist_test(head); //pour printlist test
 
 	head = parsing_fix(head);
+	head = builtin_fix(head);
 	return (head);
 }
 /*Pour les commandes type echo qui sont suivies d'arguments qui ne sont pas
@@ -125,5 +127,30 @@ t_element	*parsing_fix(t_element *current)
 	}
 	if (current->type != OPTION && current->type != PIPE)
 		current->type = ARGUMENT;
+	return (head);
+}
+
+t_element	*builtin_fix(t_element *cmd_list)
+{
+	t_element	*head;
+
+	head = cmd_list;
+	if (cmd_list->next == NULL || cmd_list->next->type == PIPE) //??
+		return (head);
+	while(cmd_list->next != NULL)
+	{
+		if (is_builtin(cmd_list->content) == true)
+		{
+			while (cmd_list->type != PIPE && cmd_list->next != NULL)
+			{
+				cmd_list->builtin = true;
+				cmd_list = cmd_list->next;
+			}
+		}
+		else
+			cmd_list = cmd_list->next;
+	}
+	if (cmd_list->type != PIPE)
+		cmd_list->builtin = true;
 	return (head);
 }

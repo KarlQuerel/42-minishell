@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/10 16:02:00 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/10 16:28:52 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ void		history(int option);
 /*Checks*/
 bool		check_commands_grammar(char *commands);
 bool		quotes_can_close(char *line);
+bool		is_builtin(char *cmd_content);
 
 /*Signal*/
 void		signal_handler(int signal);
@@ -163,6 +164,7 @@ void	printlist_test(t_element   *head); //A EFFACER A LA FIN
 int		determine_command_type(char *str, char *line, size_t i, size_t start);
 t_element	*parsing(char *command);
 t_element	*parsing_fix(t_element *cmd_list);
+t_element	*builtin_fix(t_element *cmd_list);
 
 /*Env_list*/
 t_env   *put_env_in_list(char **env);
