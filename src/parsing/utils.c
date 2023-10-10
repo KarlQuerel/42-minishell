@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/10 16:09:11 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/10 16:41:51 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,31 @@ char	*ft_joinstr_minishell(char *line, int len, char *str, char type)
 	new_str[j] = '\0';
 	if (str != NULL)
 		free(str);
+	return (new_str);
+}
+
+
+char	*ft_join_pour_cd(char *line_begining, char *path)
+{
+	int		i;
+	int		j;
+	char	*new_str;
+	
+	new_str = ft_calloc((ft_strlen(line_begining) + ft_strlen(path) + 2), sizeof(char));
+	if (!new_str)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while(line_begining[i])
+	{
+		new_str[j++] = line_begining[i++];
+	}
+	while(path[i])
+	{
+		new_str[j++] = path[i++];
+	}
+	new_str[j] = '\0';
+	free(line_begining);
 	return (new_str);
 }
 

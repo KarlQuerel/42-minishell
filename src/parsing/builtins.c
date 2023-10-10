@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/10 15:25:07 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/10 16:54:02 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*cd(char *line, t_env *env_list, char *home_path)
 	i = where_is_cmd_in_line(line, "cd");
 	if (i == 0)
 		return (line); //error : cd pas trouve
-	if (size_of_command(line, i, CMD) == 1 || line[i + 1] == '|') // 1 car je rends size + 1 donc si size = 1 c'est que il n'y a rien apres cd donc erreur		
+	if (size_of_command(line, i, CMD) == 1 || line[i + 1] == '|' /* || ft_isalnum(line[i + 1]) != 1 */ /*|| size_of_command(line, i, CMD) == 2 || line[i] == '\0' */) // 1 car je rends size + 1 donc si size = 1 c'est que il n'y a rien apres cd / 2 pour le cas "cd | ..."" Plus d'un espace serait efface donc pas plus de 2
 	{
 		line = cd_home_path(line, home_path); // pas de path apres cd : on met le pwd initial derriere.
 		return (line);
@@ -112,7 +112,6 @@ char	*cd_home_path(char *line, char *home_path)
 	size_t		i;
 	size_t		j;
 	
-	printf("IN CD HOME PATH\n");
 	i = where_is_cmd_in_line(line, "cd");
 	j = 0;
 	new_line = malloc(sizeof(char) * (ft_strlen(line)/*  - size_of_command(line, i, CMD) */ + ft_strlen(home_path)) + 1);
@@ -124,17 +123,18 @@ char	*cd_home_path(char *line, char *home_path)
 	i++; //increase ici ou avant le malloc? il faut rajouter un espace entre cd et le path
 	while (j <= i)
 	{
-		printf("new_line[j] = %c\n", new_line[j]);
+		// printf("new_line[j] = %c\n", new_line[j]);
 		new_line[j] = line[j];
 		j++;
 	}
 	new_line[j] = ' ';
-	printf("new_line[j] = %c\n", new_line[j]);
-	new_line = ft_joinstr_minishell(new_line, 0, home_path, CMD);
+	// printf("new_line[j] = %c\n", new_line[j]);
+	new_line = ft_join_pour_cd(new_line, home_path);
+	j = ft_strlen(new_line);
 	while (i <= ft_strlen(line))
 		new_line[j++] = line[i++];
 	new_line[j] = '\0';
-	printf("TEST : %s\n", new_line);
+	//printf("new_line = [%s]\n", new_line);
 	//free(line);
 	return (new_line);
 }

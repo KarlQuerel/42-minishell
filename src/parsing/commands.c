@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/10 12:55:52 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/10 16:53:50 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,20 @@
 
 char	*commands(char *line, t_env *env_list, char *home_path)
 {
+	/*a la base j avais fait " cd " etc donc avec espace apres le 
+	nom du builtin pour eviter les erreur du type "holacdhey" et 
+	que ca compte comme cd mais pb : cd tout seul sans espace avant
+	car premiere cmd de la ligne et sans espace apres car c est a 
+	moi de remplacer par le home_path alors ca ne marche pas*/
 	if (is_cmd_in_line(line, "$") == true)
 		line = dollar(line, env_list);
-	else if (is_this_command(line, "history ") == true)
+	else if (is_this_command(line, "history") == true)
 		history(HISTORY);
-	else if (is_this_command(line, "pwd ") == true)
+	else if (is_this_command(line, "pwd") == true)
 		pwd();
-	else if (is_cmd_in_line(line, "cd ") == true)
+	else if (is_cmd_in_line(line, "cd") == true)
 		line = cd(line, env_list, home_path);
-	else if (is_cmd_in_line(line, "echo ") == true)
+	else if (is_cmd_in_line(line, "echo") == true)
 		echo(line);
 	else if (is_cmd_in_line(line, ">") == true || is_cmd_in_line(line, "<") == true)
 		redirecters_error(line);
