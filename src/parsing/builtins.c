@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/07 19:32:58 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/07 20:12:09 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,12 @@ char	*dollar(char *line, t_env *env_list)
 }
 
 /* i = c (= the beggining of the command "cd")*/
-void	cd(char *line) //KARL faudra voir cette fonction avec toi pq je pense que ca a avoir avec l'executable
+void	cd(char *line, t_env *env_list)
 {
 	int		i;
 	int		j;
 	char	*path;
+	t_env	*current;
 	
 	i = where_is_cmd_in_line(line, "cd");
 	if (i == 0)
@@ -81,13 +82,18 @@ void	cd(char *line) //KARL faudra voir cette fonction avec toi pq je pense que c
 	if (size_of_command(line, i, CMD) == 1) // 1 car je rends size + 1 donc si size = 1 c'est que il n'y a rien apres cd donc erreur		
 		return ; // pas de path apres cd 
 	i ++; //now i = beggining of the path
-	j = 0;
-	path = malloc(sizeof(char) * size_of_command(line, i, CMD) + 1);
+	current = find_value_with_key_env(env_list, "PWD");
+	path = malloc(sizeof(char) * (size_of_command(line, i, CMD) + ft_strlen(current->value)) + 2);
 	if (!path)
 		return ;
+	ft_strlcpy(path, current->value, ft_strlen(current->value));
+	j = ft_strlen(path);
+	path[j] = '/';
+	j+=1;
 	while(line[i] != ' ' && line[i] != '\0') // plus complique que ca : le path peut avoir des espaces TYPE : tronc \commun (je crois)
 		path[j++] = line[i++];
 	path[j] = '\0';
+	//printf("path = %s\n", path);
 	if (chdir(path) != 0) // pour verifier que ca marche il faut avoir plusieurs dossiers
 	{
 		//printf errno

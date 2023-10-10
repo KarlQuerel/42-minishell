@@ -126,7 +126,7 @@ void		signal_handler(int signal);
 /*Builtins*/
 void	echo(char *line);
 void    pwd();
-void    cd();
+void    cd(char *line, t_env *env_list);
 char	*dollar(char *line, t_env *env_list);
 
 /*Errors*/
