@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/07 20:00:39 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/10 16:02:00 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@
 # define HISTORY 0
 # define FREE_HISTORY 1
 
+# define BEGINING 0
+# define END 1
+# define MIDDLE 2
+
 # define YELLOW	"\033[33m"
 # define GREEN	"\033[32m"
 # define RESET	"\033[0m"
@@ -71,6 +75,7 @@ typedef struct s_element
 	char	*content;
 	char	*cmd;
 	int		type;
+	bool	builtin;
 	struct s_element *prev;
 	struct s_element *next;
 }	t_element;
@@ -112,7 +117,7 @@ typedef struct s_pipe
 /*-------------------MAIN FOLDER-------------------*/
 
 /*Main*/
-char	*erase_spaces_at_the_begining(char *line);
+
 /*History*/
 void		history(int option);
 
@@ -126,7 +131,8 @@ void		signal_handler(int signal);
 /*Builtins*/
 void	echo(char *line);
 void    pwd();
-void    cd(char *line, t_env *env_list);
+char	*cd(char *line, t_env *env_list, char *home_path);
+char	*cd_home_path(char *line, char *home_path);
 char	*dollar(char *line, t_env *env_list);
 
 /*Errors*/
@@ -139,11 +145,14 @@ void	str_error(char *line);
 
 /*Utils*/
 char	*ft_joinstr_minishell(char *line, int len, char *str, char type);
+bool	only_spaces_after_cmd(char *line, size_t i);
+char	*erase_spaces(char *line);
+//char	*erase_spaces(char *line, int option, int start);
 
 /*------------------PARSING FOLDER------------------*/
 
 /*Commands*/
-char	*commands(char *line, t_env *env_list);
+char	*commands(char *line, t_env *env_list, char *home_path);
 bool	is_this_command(char *buffer, char* command);
 int		size_of_command(char *command, int len, int type);
 bool    is_cmd_in_line(char *line, char *cmd);

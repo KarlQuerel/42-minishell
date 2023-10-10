@@ -6,24 +6,24 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/07 20:02:42 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/10 12:55:52 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-char	*commands(char *line, t_env *env_list)
+char	*commands(char *line, t_env *env_list, char *home_path)
 {
 	if (is_cmd_in_line(line, "$") == true)
 		line = dollar(line, env_list);
-	else if (is_this_command(line, "history") == true)
+	else if (is_this_command(line, "history ") == true)
 		history(HISTORY);
-	else if (is_this_command(line, "pwd") == true)
+	else if (is_this_command(line, "pwd ") == true)
 		pwd();
-	else if (is_cmd_in_line(line, "cd") == true)
-		cd(line, env_list);
-	else if (is_cmd_in_line(line, "echo") == true)
+	else if (is_cmd_in_line(line, "cd ") == true)
+		line = cd(line, env_list, home_path);
+	else if (is_cmd_in_line(line, "echo ") == true)
 		echo(line);
 	else if (is_cmd_in_line(line, ">") == true || is_cmd_in_line(line, "<") == true)
 		redirecters_error(line);

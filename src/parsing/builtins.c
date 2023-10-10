@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/07 20:12:09 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/10 15:25:07 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*dollar(char *line, t_env *env_list)
 }
 
 /* i = c (= the beggining of the command "cd")*/
-void	cd(char *line, t_env *env_list)
+char	*cd(char *line, t_env *env_list, char *home_path)
 {
 	int		i;
 	int		j;
@@ -78,14 +78,17 @@ void	cd(char *line, t_env *env_list)
 	
 	i = where_is_cmd_in_line(line, "cd");
 	if (i == 0)
-		return ; //error : cd pas trouve
-	if (size_of_command(line, i, CMD) == 1) // 1 car je rends size + 1 donc si size = 1 c'est que il n'y a rien apres cd donc erreur		
-		return ; // pas de path apres cd 
+		return (line); //error : cd pas trouve
+	if (size_of_command(line, i, CMD) == 1 || line[i + 1] == '|') // 1 car je rends size + 1 donc si size = 1 c'est que il n'y a rien apres cd donc erreur		
+	{
+		line = cd_home_path(line, home_path); // pas de path apres cd : on met le pwd initial derriere.
+		return (line);
+	}
 	i ++; //now i = beggining of the path
 	current = find_value_with_key_env(env_list, "PWD");
 	path = malloc(sizeof(char) * (size_of_command(line, i, CMD) + ft_strlen(current->value)) + 2);
 	if (!path)
-		return ;
+		return (line); //?
 	ft_strlcpy(path, current->value, ft_strlen(current->value));
 	j = ft_strlen(path);
 	path[j] = '/';
@@ -94,12 +97,46 @@ void	cd(char *line, t_env *env_list)
 		path[j++] = line[i++];
 	path[j] = '\0';
 	//printf("path = %s\n", path);
-	if (chdir(path) != 0) // pour verifier que ca marche il faut avoir plusieurs dossiers
-	{
-		//printf errno
-		return ;
-	}
+	// if (chdir(path) != 0) // pour verifier que ca marche il faut avoir plusieurs dossiers
+	// {
+	// 	//printf errno
+	// 	return ; //??
+	// }
 	free(path);
+	return (line);
+}
+
+char	*cd_home_path(char *line, char *home_path)
+{
+	char	*new_line;
+	size_t		i;
+	size_t		j;
+	
+	printf("IN CD HOME PATH\n");
+	i = where_is_cmd_in_line(line, "cd");
+	j = 0;
+	new_line = malloc(sizeof(char) * (ft_strlen(line)/*  - size_of_command(line, i, CMD) */ + ft_strlen(home_path)) + 1);
+	if (!new_line)
+	{
+		free (line); //car si pas de pb de malloc line serait free dans le joinstr
+		return (NULL);
+	}
+	i++; //increase ici ou avant le malloc? il faut rajouter un espace entre cd et le path
+	while (j <= i)
+	{
+		printf("new_line[j] = %c\n", new_line[j]);
+		new_line[j] = line[j];
+		j++;
+	}
+	new_line[j] = ' ';
+	printf("new_line[j] = %c\n", new_line[j]);
+	new_line = ft_joinstr_minishell(new_line, 0, home_path, CMD);
+	while (i <= ft_strlen(line))
+		new_line[j++] = line[i++];
+	new_line[j] = '\0';
+	printf("TEST : %s\n", new_line);
+	//free(line);
+	return (new_line);
 }
 
 void	echo(char *line)
