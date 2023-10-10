@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/09 19:26:33 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/10 16:31:58 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -26,37 +26,14 @@ void	ft_welcome(void)
 
 //PROTEGER TOUS MES MALLOCS!! --> avec perror
 
-char	*erase_spaces_at_the_begining(char *line)
-{
-	char	*new_line;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	if (line[i] != ' ')	
-		return (line);
-	while (line[i] == ' ')
-		i++;
-	new_line = malloc(sizeof(char) * (ft_strlen(line) - i) + 1); //verifier
-	if (!new_line)
-	{
-		perror("Error");
-		return (NULL); //il faut qd meme un return qd on utilise perror??
-	}
-	while(line[i])
-		new_line[j++] = line[i++];
-	new_line[j] = '\0';
-	free(line);
-	return (new_line);
-}
-
 int main (int argc, char **argv, char **env)
 {
 	char                *line;
+	char                *home_path;
 	struct sigaction    signal;
 	t_env				*env_list;
 	t_element			*cmd_list;
+	t_env				*path;
 
 	sigemptyset(&signal.sa_mask);
 	// signal.sa_flags = SA_SIGINFO;
@@ -75,6 +52,9 @@ int main (int argc, char **argv, char **env)
 	ft_welcome();
 	env_list = put_env_in_list(env);
 	env_list->env = env;
+	path = find_value_with_key_env(env_list, "PWD");
+	//home_path = malloc(sizeof(char) * ft(strlen(path->value)));
+	home_path = path->value;
 	using_history(); // initialisation de l'historique
 	line = NULL;
 	line = readline("Minishell $ ");
@@ -87,12 +67,15 @@ int main (int argc, char **argv, char **env)
 			final_free(line, env_list);
 			return (EXIT_SUCCESS);
 		}
-		line = erase_spaces_at_the_begining(line);
+		//printf("line before : %s\n", line);
+		line = erase_spaces(line);
+		//printf("line after : %s\n", line);
 		add_history(line);
-		line = commands(line, env_list);
+		line = commands(line, env_list, home_path);
 		cmd_list = parsing(line);
-		ft_execute(cmd_list, env_list);
-		// printlist_test(cmd_list); // J'aime cette fonction <3
+		ft_execute(cmd_list, env_list); // KARL -> toujours en cours
+		//printf("APRES PARSING FIX\n");
+		//printlist_test(cmd_list);
 		free(line);
 		free_cmd_list(cmd_list);
 		line = readline("Minishell $ ");

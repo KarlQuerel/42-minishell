@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/07 20:12:09 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:03:39 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*dollar(char *line, t_env *env_list)
 }
 
 /* i = c (= the beggining of the command "cd")*/
-void	cd(char *line, t_env *env_list)
+char	*cd(char *line, t_env *env_list, char *home_path)
 {
 	int		i;
 	int		j;
@@ -78,14 +78,17 @@ void	cd(char *line, t_env *env_list)
 	
 	i = where_is_cmd_in_line(line, "cd");
 	if (i == 0)
-		return ; //error : cd pas trouve
-	if (size_of_command(line, i, CMD) == 1) // 1 car je rends size + 1 donc si size = 1 c'est que il n'y a rien apres cd donc erreur		
-		return ; // pas de path apres cd 
+		return (line); //error : cd pas trouve
+	if (size_of_command(line, i, CMD) == 1 || line[i + 1] == '|' /* || ft_isalnum(line[i + 1]) != 1 */ /*|| size_of_command(line, i, CMD) == 2 || line[i] == '\0' */) // 1 car je rends size + 1 donc si size = 1 c'est que il n'y a rien apres cd / 2 pour le cas "cd | ..."" Plus d'un espace serait efface donc pas plus de 2
+	{
+		line = cd_home_path(line, home_path); // pas de path apres cd : on met le pwd initial derriere.
+		return (line);
+	}
 	i ++; //now i = beggining of the path
 	current = find_value_with_key_env(env_list, "PWD");
 	path = malloc(sizeof(char) * (size_of_command(line, i, CMD) + ft_strlen(current->value)) + 2);
 	if (!path)
-		return ;
+		return (line); //?
 	ft_strlcpy(path, current->value, ft_strlen(current->value));
 	j = ft_strlen(path);
 	path[j] = '/';
@@ -94,12 +97,46 @@ void	cd(char *line, t_env *env_list)
 		path[j++] = line[i++];
 	path[j] = '\0';
 	//printf("path = %s\n", path);
+/*Le bout suivant de fonction sera appelee par Karl, faudra la mettre dans une 
+autre fonction car le reste de cette fonction sert juste a modifier la variable
+line pour l'envoyer a l'executable*/
 	if (chdir(path) != 0) // pour verifier que ca marche il faut avoir plusieurs dossiers
 	{
 		//printf errno
-		return ;
+		return (NULL); //??
 	}
 	free(path);
+	return (line);
+}
+
+char	*cd_home_path(char *line, char *home_path)
+{
+	char	*new_line;
+	size_t		i;
+	size_t		j;
+	
+	i = where_is_cmd_in_line(line, "cd");
+	new_line = malloc(sizeof(char) * (i + 2)); // +2 car espace
+	if (!new_line)
+	{
+		free (line); //car si pas de pb de malloc line serait free dans le joinstr
+		return (NULL);
+	}
+	j = 0;
+	while (j < i)
+	{
+		new_line[j] = line[j];
+		j++;
+	}
+	new_line[j] = ' ';
+	new_line[j + 1] = '\0';
+	new_line = ft_join_pour_cd(new_line, home_path); //line est free la dedans
+	j = ft_strlen(new_line);
+	while (i <= ft_strlen(line))
+		new_line[j++] = line[i++];
+	new_line[j] = '\0';
+	//printf("new_line = [%s]\n", new_line);
+	return (new_line);
 }
 
 void	echo(char *line)
