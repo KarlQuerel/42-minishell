@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/07 18:48:41 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/09 19:26:33 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 
 #include "../includes/minishell.h"
@@ -90,9 +90,9 @@ int main (int argc, char **argv, char **env)
 		line = erase_spaces_at_the_begining(line);
 		add_history(line);
 		line = commands(line, env_list);
-		cmd_list = parsing(line); //KARL : cmd_line est la liste doublement chainee avec toutes les commandes
-		ft_execute(cmd_list, env_list); // KARL -> toujours en cours
-		// printlist_test(cmd_list);
+		cmd_list = parsing(line);
+		ft_execute(cmd_list, env_list);
+		// printlist_test(cmd_list); // J'aime cette fonction <3
 		free(line);
 		free_cmd_list(cmd_list);
 		line = readline("Minishell $ ");
