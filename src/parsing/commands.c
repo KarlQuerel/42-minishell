@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/10 16:53:50 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:02:26 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,15 @@ int	size_of_command(char *command, int len, int type)
 	size = 0;
 	if (type == CMD)
 	{
-		while (command[len + 1] != ' ' && command[len + 1] != '\0')
+		if (command[len] != '\0') /*j'ai rajoute ca l'autre jour qui a regler 
+		mon pb de valgrind qd j'ecrivais juste "cd" mais j'ai tjrs une erreur 
+		a cette ligne qd j essayes de faire "cd src"*/
 		{
-			size++;
-			len++;
+			while (command[len + 1] != ' ' && command[len + 1] != '\0')
+			{
+				size++;
+				len++;
+			}
 		}
 	}
 	else if (type == KEY)

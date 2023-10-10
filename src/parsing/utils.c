@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/10 16:41:51 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/10 17:34:46 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ char	*erase_spaces(char *line)
 			spaces++;
 		i++;
 	}
-	new_line = malloc(sizeof(char) * (ft_strlen(line) - spaces) + 1);
+	new_line = malloc(sizeof(char) * (ft_strlen(line) - spaces) + 1); // +2 au lieu de +1 a regle des pb de valgrind
 	if (!new_line)
 	{
 		perror("Error");

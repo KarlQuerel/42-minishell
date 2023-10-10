@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/10 16:54:02 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:03:39 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,11 +97,14 @@ char	*cd(char *line, t_env *env_list, char *home_path)
 		path[j++] = line[i++];
 	path[j] = '\0';
 	//printf("path = %s\n", path);
-	// if (chdir(path) != 0) // pour verifier que ca marche il faut avoir plusieurs dossiers
-	// {
-	// 	//printf errno
-	// 	return ; //??
-	// }
+/*Le bout suivant de fonction sera appelee par Karl, faudra la mettre dans une 
+autre fonction car le reste de cette fonction sert juste a modifier la variable
+line pour l'envoyer a l'executable*/
+	if (chdir(path) != 0) // pour verifier que ca marche il faut avoir plusieurs dossiers
+	{
+		//printf errno
+		return (NULL); //??
+	}
 	free(path);
 	return (line);
 }
@@ -113,29 +116,26 @@ char	*cd_home_path(char *line, char *home_path)
 	size_t		j;
 	
 	i = where_is_cmd_in_line(line, "cd");
-	j = 0;
-	new_line = malloc(sizeof(char) * (ft_strlen(line)/*  - size_of_command(line, i, CMD) */ + ft_strlen(home_path)) + 1);
+	new_line = malloc(sizeof(char) * (i + 2)); // +2 car espace
 	if (!new_line)
 	{
 		free (line); //car si pas de pb de malloc line serait free dans le joinstr
 		return (NULL);
 	}
-	i++; //increase ici ou avant le malloc? il faut rajouter un espace entre cd et le path
-	while (j <= i)
+	j = 0;
+	while (j < i)
 	{
-		// printf("new_line[j] = %c\n", new_line[j]);
 		new_line[j] = line[j];
 		j++;
 	}
 	new_line[j] = ' ';
-	// printf("new_line[j] = %c\n", new_line[j]);
-	new_line = ft_join_pour_cd(new_line, home_path);
+	new_line[j + 1] = '\0';
+	new_line = ft_join_pour_cd(new_line, home_path); //line est free la dedans
 	j = ft_strlen(new_line);
 	while (i <= ft_strlen(line))
 		new_line[j++] = line[i++];
 	new_line[j] = '\0';
 	//printf("new_line = [%s]\n", new_line);
-	//free(line);
 	return (new_line);
 }
 
