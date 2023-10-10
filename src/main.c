@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
 /*   Updated: 2023/10/10 16:31:58 by casomarr         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 
 #include "../includes/minishell.h"
@@ -72,8 +72,8 @@ int main (int argc, char **argv, char **env)
 		//printf("line after : %s\n", line);
 		add_history(line);
 		line = commands(line, env_list, home_path);
-		cmd_list = parsing(line); //KARL : cmd_line est la liste doublement chainee avec toutes les commandes
-		//ft_execute(cmd_list, env_list); // KARL -> toujours en cours
+		cmd_list = parsing(line);
+		ft_execute(cmd_list, env_list); // KARL -> toujours en cours
 		//printf("APRES PARSING FIX\n");
 		//printlist_test(cmd_list);
 		free(line);
