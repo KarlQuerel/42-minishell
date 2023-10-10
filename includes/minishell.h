@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/09 19:06:30 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/10 17:39:04 by kquerel          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 /*Libraries*/
 
@@ -172,12 +172,15 @@ void	free_cmd_list(t_element *cmd_list);
 
 /* Exec*/
 void	ft_redirect(t_element *cmd_list);
-void	ft_execute(t_element *cmd, t_env *env);
+void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec);
 char	**split_path(t_env *env_list);
 void	ft_welcome(void);
 void	ft_close_pipe(t_pipe *exec);
 void	ft_create_pipe(t_pipe *exec);
 char	*ft_strcpy(char *dst, char *src);
+int		get_pipe_nb(t_element *cmd, t_pipe *exec);
+void	single_command(t_element *cmd, t_env *env, t_pipe *exec);
+void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, int i);
 
 
 char	*ft_get_command(char **path, char *argument);

@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/09 19:26:33 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/10 13:05:07 by kquerel          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
@@ -57,7 +57,14 @@ int main (int argc, char **argv, char **env)
 	struct sigaction    signal;
 	t_env				*env_list;
 	t_element			*cmd_list;
+	t_pipe				*exec;
 
+	exec = malloc(sizeof(t_pipe));
+	if (!exec)
+	{
+		perror("exec");
+		exit(EXIT_FAILURE);
+	}
 	sigemptyset(&signal.sa_mask);
 	// signal.sa_flags = SA_SIGINFO;
 	signal.sa_flags = SA_RESTART;
@@ -91,7 +98,7 @@ int main (int argc, char **argv, char **env)
 		add_history(line);
 		line = commands(line, env_list);
 		cmd_list = parsing(line);
-		ft_execute(cmd_list, env_list);
+		ft_execute(cmd_list, env_list, exec);
 		// printlist_test(cmd_list); // J'aime cette fonction <3
 		free(line);
 		free_cmd_list(cmd_list);
