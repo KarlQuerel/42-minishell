@@ -6,7 +6,7 @@
 #    By: karl <karl@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/09 13:49:17 by karl             ###   ########.fr        #
+#    Updated: 2023/10/11 21:10:38 by karl             ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -38,6 +38,7 @@ SRC = src/main.c \
 	src/parsing/lstnew.c \
 	src/parsing/free.c \
 	src/executable/exec.c \
+	src/executable/redirect.c \
 	src/parsing/errors.c \
 	src/parsing/utils.c \
 # src/executable/test.c \

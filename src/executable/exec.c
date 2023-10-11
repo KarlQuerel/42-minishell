@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/10 17:41:43 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/11 21:21:48 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -56,28 +56,24 @@ void	ft_redirect(t_element *s)
 	}
 	
 	*/
-	while (s)
+	t_element *tmp;
+	tmp = s;
+	while (tmp)
 	{
 		// printf("%s\n", s->content);
-		if (s->type == 0)
-			printf(" -> pipe\n");
-		else if (s->type == 1)
-			printf(" -> pipe - option\n");
-		else if (s->type == 2)
-			printf(" -> arg\n");
-		else if (s->type == 3)
-			printf(" -> fd_infile\n");
-		else if (s->type == 4)
-			printf(" -> fd_outfile\n");
-		else if (s->type == 5)
-			printf(" -> fd_infile HEREDOC\n");
-		else if (s->type == 6)
-			printf(" -> fd_outfile HEREDOC\n");
-		else if (s->type == 7)
-			printf(" -> pipec_bonus\n");
-		// else if (s->type == 8)
-		s = s->next;
+		if (tmp->type == INFILE)
+			printf("Fonction infile 1\n");
+			// gerer le infile
+		else if (tmp->type == OUTFILE || tmp->type == OUTFILE_APPEND)
+			printf("Fonction outfile\n");
+			// gerer le outfile
+		else if (tmp->type == INFILE_DELIMITER)
+			printf("Fonction infile 2\n");
+			//gerer le infile here_doc
+		// else if (tmp->type == 8)
+		tmp = tmp->next;
 	}
+	tmp = s;
 }
 
 /* Splits the path*/
@@ -161,6 +157,94 @@ void	single_command(t_element *cmd, t_env *env, t_pipe *exec)
 	waitpid(pid, NULL, 0);
 }
 
+/* Extracts command from char *argument and verify if they are valid
+using access*/
+char	*ft_get_command(char **path, char *argument)
+{
+	char	*to_free;
+	char	*to_return;
+	int		i;
+
+	i = 0;
+	if (argument && path)
+	{
+		while (path[i])
+		{
+			to_free = ft_strjoin(path[i], "/");
+			to_return = ft_strjoin(to_free, argument);
+			free(to_free);
+			if (access(to_return, 0) == 0)
+				return (to_return);
+			free(to_return);
+			i++;
+		}
+	}
+	return (NULL);
+}
+
+/* Initiate pipe and create all pipe ends according to commands number */
+void	ft_create_pipe(t_pipe *exec)
+{
+	int	i;
+
+	i = 0;
+	while (i < exec->pipe_nb)
+	{
+		printf("avant - pipe_end = %ls\n", exec->pipe_end);
+		if (pipe(exec->pipe_end + 2 * i) < 0) // ne marche pas
+		{
+			printf("pipe_end = %ls\n", exec->pipe_end);
+			//gerer les close and free
+			perror("pipe_end");
+			exit(EXIT_FAILURE);
+		}
+		i++;
+	}
+}
+/* Close all pipe ends */
+void	ft_close_pipe(t_pipe *exec)
+{
+	int	i;
+
+	i = 0;
+	while (i < exec->pipe_nb)
+	{
+		close(exec->pipe_end[i]);
+		i++;
+	}
+}
+
+/* Use waitpid function to wait for every child process */
+int	ft_waitpid(int *pid, int n)
+{
+	int	i;
+	int	status;
+
+	i= 0;
+	while (i < n)
+	{
+		waitpid(pid[i], &status, 0);
+		i++;
+	}
+	waitpid(pid[i], &status, 0);
+	return(EXIT_SUCCESS);
+}
+
+
+/* strcpy */
+char	*ft_strcpy(char *dst, char *src)
+{
+	int	i;
+
+	i = 0;
+	while (src[i])
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (dst);
+}
 /* Creates child process
 --> will fork as long as i is < to av_nb
 --> several cases occur, first child, middle child and last child
@@ -231,9 +315,7 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 	// gerer le open et le here_doc !
 	
 	int	i;
-
-	
-	exec->cmd_tab = malloc(sizeof(char **) + 1); // +1 car le tableau de strings doit finir par NULL
+	exec->cmd_tab = malloc(sizeof(char **)); // utiliser la fonction de caro
 	if (!exec->cmd_tab)
 		return ;
 	exec->av_nb = get_args_nb(cmd, exec);
@@ -242,10 +324,12 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 
 	if (exec->pipe_nb == 0) // pas de pipe donc single command
 		single_command(cmd, env, exec);
-	else
+
+		
+	else // on split les process car pipe presents
 	{
 		i = 0;
-		ft_create_pipe(exec);
+		// ft_create_pipe(exec); // ne marche ->bad adress
 		while (i < exec->av_nb)
 		{
 			mult_commands(cmd, env, exec, i);
@@ -358,74 +442,3 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 	// waitpid(exec->pid, NULL, 0);
 
 
-
-/* Extracts command from char *argument and verify if they are valid
-using access*/
-char	*ft_get_command(char **path, char *argument)
-{
-	char	*to_free;
-	char	*to_return;
-	int		i;
-
-	i = 0;
-	if (argument && path)
-	{
-		while (path[i])
-		{
-			to_free = ft_strjoin(path[i], "/");
-			to_return = ft_strjoin(to_free, argument);
-			free(to_free);
-			if (access(to_return, 0) == 0)
-				return (to_return);
-			free(to_return);
-			i++;
-		}
-	}
-	return (NULL);
-}
-
-/* Initiate pipe and create all pipe ends according to commands number */
-void	ft_create_pipe(t_pipe *exec)
-{
-	int	i;
-
-	i = 0;
-	while (i < exec->pipe_nb)
-	{
-		if (pipe(exec->pipe_end + 2 * i) == -1)
-		{
-			//gerer les close and free
-			perror("pipe_end");
-			exit(EXIT_FAILURE);
-		}
-		i++;
-	}
-}
-/* Close all pipe ends */
-void	ft_close_pipe(t_pipe *exec)
-{
-	int	i;
-
-	i = 0;
-	while (i < exec->pipe_nb)
-	{
-		close(exec->pipe_end[i]);
-		i++;
-	}
-}
-
-
-/* strcpy */
-char	*ft_strcpy(char *dst, char *src)
-{
-	int	i;
-
-	i = 0;
-	while (src[i])
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (dst);
-}
