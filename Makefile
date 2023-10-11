@@ -1,14 +1,14 @@
-#******************************************************************************#
+# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: karl <karl@student.42.fr>                  +#+  +:+       +#+         #
+#    By: carolina <carolina@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/09 13:49:17 by karl             ###   ########.fr        #
+#    Updated: 2023/10/11 16:47:32 by carolina         ###   ########.fr        #
 #                                                                              #
-#******************************************************************************#
+# **************************************************************************** #
 
 #modifier le makefile de la libft maintenant que je sais en faire des mieux?
 #ça ne crée pas le directory binaries
@@ -59,7 +59,8 @@ CC = cc
 
 RM = rm -f
 
-CFLAGS = #-Wall -Wextra -Werror -g3
+CFLAGS = -g3
+#CFLAGS = -Wall -Wextra -Werror -g3
 #PENSER À ENLEVER -G3 (juste pour gdb)
 MAKEFLAGS   += --no-print-directory
 

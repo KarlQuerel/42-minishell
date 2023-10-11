@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lstnew.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carolina <carolina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/10 16:26:18 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:16:53 by carolina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,13 @@ t_element	*lstnew(char *line, int i)
 {
 	t_element	*new;
 
+	// printf("%sLSTNEW\n%s", GREEN, RESET);
 	new = (t_element *)malloc(sizeof(*new));
 	if (!new)
 		return (NULL);
-	new -> content = malloc(sizeof(char) * size_of_command(line, i, CMD) + 1);
+	// printf("%ssize_of_command dans lstnew = %d\n%s", YELLOW, size_of_command(line, i, CMD), RESET);
+	// new -> content = malloc(sizeof(char) * size_of_command(line, i, CMD));
+	new -> content = calloc(size_of_command(line, i, CMD), sizeof(char));
 	new -> type = 0;
 	new -> builtin = false;
 	new -> next = NULL;
@@ -35,8 +38,8 @@ t_env	*lstnew_env(char *line, int i)
 	new = (t_env *)malloc(sizeof(*new));
 	if (!new)
 		return (NULL);
-	new -> key = malloc(sizeof(char) * size_of_command(line, i, KEY) + 1);
-	new -> value = malloc(sizeof(char) * size_of_command(line, i, VALUE) + 1);
+	new -> key = malloc(sizeof(char) * size_of_command(line, i, KEY));
+	new -> value = malloc(sizeof(char) * size_of_command(line, i, VALUE));
 	new -> next = NULL;
 	return (new);
 }

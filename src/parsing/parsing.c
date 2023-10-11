@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: carolina <carolina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/10 17:10:04 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:17:10 by carolina         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -71,15 +71,16 @@ t_element *parsing(char *line)
 	start = i;
 	j = 0;
 	current_cmd = NULL;
-	current_cmd = lstnew(line, i);
+	// printf("%sPARSING\n%s", GREEN, RESET);
+	current_cmd = lstnew(line, start);
 	head = current_cmd;
 	while (line[i])
 	{
 		if (line[i] == ' ' && i != 0)
 		{
-			current_cmd->content[j] = '\0';
+			// current_cmd->content[j] = '\0';
 			current_cmd->type = determine_command_type(current_cmd->content, line, i, start);
-			current_cmd->next = lstnew(line, i);
+			current_cmd->next = lstnew(line, i + 1);
 			current_cmd->next->prev = current_cmd; // TEST ICI
 			current_cmd = current_cmd->next;
 			j = 0;

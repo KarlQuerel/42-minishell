@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: carolina <carolina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/10 16:31:58 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:01:58 by carolina         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
@@ -67,13 +67,13 @@ int main (int argc, char **argv, char **env)
 			final_free(line, env_list);
 			return (EXIT_SUCCESS);
 		}
-		//printf("line before : %s\n", line);
+		// printf("line before : %s\n", line);
 		line = erase_spaces(line);
-		//printf("line after : %s\n", line);
+		// printf("line after : %s\n", line);
 		add_history(line);
 		line = commands(line, env_list, home_path);
 		cmd_list = parsing(line);
-		ft_execute(cmd_list, env_list); // KARL -> toujours en cours
+		//ft_execute(cmd_list, env_list); // KARL -> toujours en cours
 		//printf("APRES PARSING FIX\n");
 		//printlist_test(cmd_list);
 		free(line);
