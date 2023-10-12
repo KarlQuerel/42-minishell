@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/12 17:04:12 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:18:54 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@ char	*ft_joinstr_minishell(char *line, int len, char *str, char type)
 	int		j;
 	char	*new_str;
 
-	// printf("%sDANS JOINSTR%s\n", YELLOW, RESET);
-	// printf("%stype = [%c]%s\n", GREEN, type, RESET);
-	
 	if (type == '\'' || type == '\"')
 	{
 		if (str == NULL)
@@ -52,12 +49,15 @@ char	*ft_joinstr_minishell(char *line, int len, char *str, char type)
 	}
 	if (!new_str)
 		return (NULL);
+
+	
+	//new_str = joinstr_minishell_malloc(line, len, str, type);
+
+	
 	i = 0;
 	j = 0;
 	while(str[i])
-	{
 		new_str[j++] = str[i++];
-	}
 	new_str[j] = '\0';
 	if (str != NULL)
 		free(str);
@@ -90,52 +90,15 @@ char	*ft_join_pour_cd(char *line_begining, char *path)
 	return (new_str);
 }
 
-bool	only_spaces_after_cmd(char *line, size_t i)
-{
-	while(line[i])
-	{
-		if(line[i] != ' ')
-			return (false);
-		i++;
-	}
-	return (true);
-}
-
 char	*erase_spaces(char *line)
 {
-	
 	char	*new_line;
 	int		i;
 	int		j;
-	int		spaces;
 
 	i = 0;
 	j = 0;
-	spaces = 0;
-
-	while (line[i])
-	{
-		if (line[i] == '\'' && quotes_can_close(line) == true) //pour ne pas compter les espaces entre quotes (ex: dans les str de echo)
-		{
-			while(line[i] != '\'')
-				i++;
-		}
-		if (line[i] == '\"' && quotes_can_close(line) == true)
-		{
-			while(line[i] != '\"')
-				i++;
-		}
-		if(line[i] == ' ' && (line[i + 1] == ' ' || line[i + 1] == '\0'))
-			spaces++;
-		i++;
-	}
-	new_line = malloc(sizeof(char) * (ft_strlen(line) - spaces) + 1); // +2 au lieu de +1 a regle des pb de valgrind
-	if (!new_line)
-	{
-		perror("Error");
-		return (NULL); //il faut qd meme un return qd on utilise perror??
-	}
-	i = 0;
+	new_line = erase_spaces_malloc(line);
 	while (line[i])
 	{
 		if (line[i] == '\'' && quotes_can_close(line) == true) //pour ne pas compter les espaces entre quotes (ex: dans les str de echo)

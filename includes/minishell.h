@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/12 17:04:27 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:10:21 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,11 @@ void	str_error(char *line);
 /*Utils*/
 char	*ft_joinstr_minishell(char *line, int len, char *str, char type);
 char	*ft_join_pour_cd(char *line_begining, char *path);
-bool	only_spaces_after_cmd(char *line, size_t i);
 char	*erase_spaces(char *line);
+
+/*Malloc*/
+char	*erase_spaces_malloc(char *line);
+char	*joinstr_minishell_malloc(char *line, int len, char *str, char type);
 
 /*------------------PARSING FOLDER------------------*/
 
