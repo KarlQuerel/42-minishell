@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/12 18:10:21 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:31:44 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void		signal_handler(int signal);
 /*Builtins*/
 void	echo(char *line);
 void    pwd();
-char	*cd(char *line, t_env *env_list, char *home_path);
+char	*cd(char *line, char *home_path);
 char	*cd_home_path(char *line, char *home_path);
 char	*dollar(char *line, t_env *env_list);
 

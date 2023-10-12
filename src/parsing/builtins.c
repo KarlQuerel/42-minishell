@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/12 17:19:55 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:31:21 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*dollar(char *line, t_env *env_list)
 }
 
 /* i = c (= the beggining of the command "cd")*/
-char	*cd(char *line, t_env *env_list, char *home_path)
+char	*cd(char *line, char *home_path)
 {
 	int		i;
 	int		j;
