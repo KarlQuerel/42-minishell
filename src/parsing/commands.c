@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/12 16:44:30 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:32:03 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*commands(char *line, t_env *env_list, char *home_path)
 	else if (is_this_command(line, "pwd") == true)
 		pwd();
 	else if (is_cmd_in_line(line, "cd") == true)
-		line = cd(line, env_list, home_path);
+		line = cd(line, home_path);
 	else if (is_cmd_in_line(line, "echo") == true)
 		echo(line);
 	else if (is_cmd_in_line(line, ">") == true || is_cmd_in_line(line, "<") == true)
