@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
+#    By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/12 16:25:29 by kquerel          ###   ########.fr        #
+#    Updated: 2023/10/12 17:14:04 by casomarr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ SRC = src/main.c \
 	src/executable/pipes.c \
 	src/parsing/errors.c \
 	src/parsing/utils.c \
+	src/parsing/malloc.c \
 	
 SRC_OBJS = $(SRC:.c=.o)
 

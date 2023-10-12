@@ -1,9 +1,0 @@
-{
-   ignore_libreadline_leaks
-   Memcheck:Leak
-   ...
-   obj:*/libreadline.so.*
-}
-
-# commande valgrind a utiliser pour verifier leaks en ignorant les leaks de readline :
-# valgrind --leak-check=full --show-leak-kinds=all --suppressions=./readline.supp --track-fds=yes ./minishell

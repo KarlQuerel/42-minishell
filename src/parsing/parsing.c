@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/10 17:10:04 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/12 14:32:25 by casomarr         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -71,15 +71,18 @@ t_element *parsing(char *line)
 	start = i;
 	j = 0;
 	current_cmd = NULL;
-	current_cmd = lstnew(line, i);
+	//printf("%sPARSING\n%s", GREEN, RESET);
+	//printf("PARSING\n");
+	current_cmd = lstnew(line, start);
 	head = current_cmd;
 	while (line[i])
 	{
 		if (line[i] == ' ' && i != 0)
 		{
-			current_cmd->content[j] = '\0';
+			current_cmd->content[j] = '\0'; //pour finir le copier/coller de a cmd
+			// printf("%scmd written in parsing : [%s]\n%s", BRED, current_cmd->content, RESET);
 			current_cmd->type = determine_command_type(current_cmd->content, line, i, start);
-			current_cmd->next = lstnew(line, i);
+			current_cmd->next = lstnew(line, i + 1);
 			current_cmd->next->prev = current_cmd; // TEST ICI
 			current_cmd = current_cmd->next;
 			j = 0;
@@ -87,11 +90,12 @@ t_element *parsing(char *line)
 				i++;
 			start = i;
 		}
+		// printf("%sprinting\n%s", BRED, RESET);
 		current_cmd->content[j++] = line[i++];
 	}
 	current_cmd->content[j] = '\0';
 	current_cmd->type = determine_command_type(current_cmd->content, line, i, start);
-	current_cmd->next = NULL;
+	current_cmd->next = NULL; //pas necessaire je pense vu que next est deja deja set a null dans lstnew
 
 	//printf("AVANT PARSING FIX\n");
 	//printlist_test(head); //pour printlist test
