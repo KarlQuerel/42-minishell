@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/12 18:32:03 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/12 19:17:32 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,57 +64,14 @@ int	size_of_command(char *command, int len, int type)
 {
 	int	size;
 
-	//printf("%sSIZEOFCOMMAND\n%s", BCYN, RESET);
 	size = 0;
 	if (type == CMD)
-	{
-		// if (command[len] != '\0') /*j'ai rajoute ca l'autre jour qui a regler 
-		// mon pb de valgrind qd j'ecrivais juste "cd" mais j'ai tjrs une erreur 
-		// a cette ligne qd j essayes de faire "cd src"*/
-		// {
-		// printf("%slen = %d, command[len] = %c\n%s", YELLOW, len, command[len], RESET);
-		while (command[len] != ' ' && command[len] != '\0')
-		{
-			//printf("%scommand[len] = %c\n%s", YELLOW, command[len], RESET);
-			//printf("%ssize = %d, command[len] = %c\n%s", YELLOW, size, command[len], RESET);
-			size++;
-			len++;
-		}
-		// printf("%ssize_of_command dans sizeofcmd = %d\n%s", YELLOW, size + 1, RESET);
-		//printf("%sTOTAL LEN IS %d\n%s", GREEN, size, RESET);
-		// }
-		//size = size - 1; // (si je vois que erreur de valgrind qd type est KEY, VALUE et STR aussi alors peut etre qu'il faut enlever le + 1 dans la rturn final et c'est tout)
-	}
-	else if (type == KEY)
-	{
-		while (command[len] != '=')
-		{
-			size++;
-			len++;
-		}
-	}
-	else if (type == VALUE)
-	{
-		while (command[len] != '=')
-			len++;
-		len++;
-		while (command[len])
-		{
-			size++;
-			len++;
-		}
-	}
+		size = cmd_type(command, len);
+	else if (type == KEY || type == VALUE)
+		size = key_and_value_type(command, len, type);
 	else if (type == STR)
-	{
-		while(command[len])
-		{
-			if (command[len + 1] == '\0' && (command[len + 1] != '\'' || command[len + 1] != '\"'))
-				break;
-			size++;
-			len++;
-		}
-	}
-	return(size + 1);
+		size = str_type(command, len);
+	return(size + 1); //car pour mallocs besoin d'un +1 pour \0
 }
 
 /*Checks if a given commands is in the command line*/
