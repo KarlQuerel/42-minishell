@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/12 18:22:50 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:54:21 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,45 +22,16 @@ char	*ft_joinstr_minishell(char *line, int len, char *str, char type)
 	int		i;
 	int		j;
 	char	*new_str;
-
-	if (type == '\'' || type == '\"')
-	{
-		if (str == NULL)
-		{
-			new_str = ft_calloc(size_of_command(line, len, STR) \
-			+ 1, sizeof(char));
-			return (new_str);
-		}
-		else
-			new_str = ft_calloc((ft_strlen(str) + \
-			size_of_command(line, len, STR) + 1), sizeof(char));
-	}
-	else
-	{
-		if (str == NULL)
-		{
-			new_str = ft_calloc(size_of_command(line, len, CMD) \
-			+ 1, sizeof(char));
-			return (new_str);
-		}
-		else
-			new_str = ft_calloc((ft_strlen(str) \
-			+ size_of_command(line, len, CMD) + 1), sizeof(char));
-	}
-	if (!new_str)
-		return (NULL);
-
 	
-	//new_str = joinstr_minishell_malloc(line, len, str, type);
-
-	
+	new_str = joinstr_minishell_malloc(line, len, str, type);
+	if (str == NULL)
+		return (new_str);
 	i = 0;
 	j = 0;
 	while(str[i])
 		new_str[j++] = str[i++];
 	new_str[j] = '\0';
-	if (str != NULL)
-		free(str);
+	free(str);
 	return (new_str);
 }
 
