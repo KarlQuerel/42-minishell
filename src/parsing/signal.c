@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/09/20 19:38:14 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/10 17:04:48 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	signal_handler(int signal/*, char *line*/)
 		*/
 		ft_putchar_fd('\n', STDERR_FILENO);
 		ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
-
     }
 }
 

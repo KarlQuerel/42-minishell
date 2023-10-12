@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/09 17:17:33 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/10 17:10:04 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -23,6 +23,7 @@ void printlist_test(t_element *head) // A EFFACER A LA FIN
 		// 	printf("prev cmd = %s\n", head->prev->content);
 		printf("content = %s\n", head->content);
 		printf("type = %d\n", head->type);
+		printf("builtin = %d\n", head->builtin);
 		// if (head->next != NULL)
 		// 	printf("next cmd = %s\n", head->next->content);
 		head = head->next;
@@ -64,22 +65,20 @@ t_element *parsing(char *line)
 	int start;
 	int j;
 	t_element *current_cmd;
-	t_element *head; // pour printlist test
+	t_element *head;
 
 	i = 0;
 	start = i;
 	j = 0;
 	current_cmd = NULL;
 	current_cmd = lstnew(line, i);
-	head = current_cmd; // pour printlist test
+	head = current_cmd;
 	while (line[i])
 	{
 		if (line[i] == ' ' && i != 0)
 		{
 			current_cmd->content[j] = '\0';
 			current_cmd->type = determine_command_type(current_cmd->content, line, i, start);
-			// printf("content = %s\n", current_cmd->content);
-			// printf("type = %d\n", current_cmd->type);
 			current_cmd->next = lstnew(line, i);
 			current_cmd->next->prev = current_cmd; // TEST ICI
 			current_cmd = current_cmd->next;
@@ -92,13 +91,13 @@ t_element *parsing(char *line)
 	}
 	current_cmd->content[j] = '\0';
 	current_cmd->type = determine_command_type(current_cmd->content, line, i, start);
-	// printf("content = %s\n", current_cmd->content);
-	// printf("type = %d\n", current_cmd->type);
 	current_cmd->next = NULL;
-	// head = parsing_fix(head);
 
-	//printf("AVANT PARSING FIX\n")
-;	//printlist_test(head); //pour printlist test
+	//printf("AVANT PARSING FIX\n");
+	//printlist_test(head); //pour printlist test
+
+	head = parsing_fix(head);
+	head = builtin_fix(head);
 	return (head);
 }
 /*Pour les commandes type echo qui sont suivies d'arguments qui ne sont pas
@@ -109,20 +108,17 @@ t_element	*parsing_fix(t_element *current)
 	t_element	*head;
 
 	head = current;
+	if (current->next == NULL || current->next->type == PIPE)
+		return (head);
 	while(current->next != NULL)
 	{
-		if (strncmp(current->content, "echo", ft_strlen("echo")) == 0)
+		if (strncmp(current->content, "echo", ft_strlen("echo")) == 0 || strncmp(current->content, "cd", ft_strlen("cd")) == 0)
 		{
 			current = current->next;
 			while (current->type != PIPE && current->next != NULL)
 			{
 				if (current->type != OPTION)
-				{
-					// printf("Current->content = %s\n", current->content);
-					// printf("Before fix : type = %d\n", current->type);
 					current->type = ARGUMENT;
-					// printf("After fix : type = %d\n", current->type);
-				}
 				current = current->next;
 			}
 		}
@@ -130,11 +126,31 @@ t_element	*parsing_fix(t_element *current)
 			current = current->next;
 	}
 	if (current->type != OPTION && current->type != PIPE)
-	{
-		// printf("Current->content = %s\n", current->content);
-		// printf("Before fix : type = %d\n", current->type);
 		current->type = ARGUMENT;
-		// printf("After fix : type = %d\n", current->type);
+	return (head);
+}
+
+t_element	*builtin_fix(t_element *cmd_list)
+{
+	t_element	*head;
+
+	head = cmd_list;
+	if (cmd_list->next == NULL || cmd_list->next->type == PIPE) //??
+		return (head);
+	while(cmd_list->next != NULL)
+	{
+		if (is_builtin(cmd_list->content) == true)
+		{
+			while (cmd_list->type != PIPE && cmd_list->next != NULL)
+			{
+				cmd_list->builtin = true;
+				cmd_list = cmd_list->next;
+			}
+		}
+		else
+			cmd_list = cmd_list->next;
 	}
-	return(head);
+	if (cmd_list->type != PIPE)
+		cmd_list->builtin = true;
+	return (head);
 }

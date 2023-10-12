@@ -6,15 +6,20 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/07 20:02:42 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:02:26 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-char	*commands(char *line, t_env *env_list)
+char	*commands(char *line, t_env *env_list, char *home_path)
 {
+	/*a la base j avais fait " cd " etc donc avec espace apres le 
+	nom du builtin pour eviter les erreur du type "holacdhey" et 
+	que ca compte comme cd mais pb : cd tout seul sans espace avant
+	car premiere cmd de la ligne et sans espace apres car c est a 
+	moi de remplacer par le home_path alors ca ne marche pas*/
 	if (is_cmd_in_line(line, "$") == true)
 		line = dollar(line, env_list);
 	else if (is_this_command(line, "history") == true)
@@ -22,7 +27,7 @@ char	*commands(char *line, t_env *env_list)
 	else if (is_this_command(line, "pwd") == true)
 		pwd();
 	else if (is_cmd_in_line(line, "cd") == true)
-		cd(line, env_list);
+		line = cd(line, env_list, home_path);
 	else if (is_cmd_in_line(line, "echo") == true)
 		echo(line);
 	else if (is_cmd_in_line(line, ">") == true || is_cmd_in_line(line, "<") == true)
@@ -62,10 +67,15 @@ int	size_of_command(char *command, int len, int type)
 	size = 0;
 	if (type == CMD)
 	{
-		while (command[len + 1] != ' ' && command[len + 1] != '\0')
+		if (command[len] != '\0') /*j'ai rajoute ca l'autre jour qui a regler 
+		mon pb de valgrind qd j'ecrivais juste "cd" mais j'ai tjrs une erreur 
+		a cette ligne qd j essayes de faire "cd src"*/
 		{
-			size++;
-			len++;
+			while (command[len + 1] != ' ' && command[len + 1] != '\0')
+			{
+				size++;
+				len++;
+			}
 		}
 	}
 	else if (type == KEY)

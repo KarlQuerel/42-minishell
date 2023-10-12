@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/02 17:55:52 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/10 16:26:18 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_element	*lstnew(char *line, int i)
 		return (NULL);
 	new -> content = malloc(sizeof(char) * size_of_command(line, i, CMD) + 1);
 	new -> type = 0;
+	new -> builtin = false;
 	new -> next = NULL;
 	//new -> prev = NULL; //
 	return (new);
