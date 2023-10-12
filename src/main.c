@@ -33,8 +33,15 @@ int main (int argc, char **argv, char **env)
 	struct sigaction    signal;
 	t_env				*env_list;
 	t_element			*cmd_list;
+	t_pipe				*exec;
 	t_env				*path;
 
+	exec = malloc(sizeof(t_pipe));
+	if (!exec)
+	{
+		perror("exec");
+		exit(EXIT_FAILURE);
+	}
 	sigemptyset(&signal.sa_mask);
 	// signal.sa_flags = SA_SIGINFO;
 	signal.sa_flags = SA_RESTART;
@@ -72,7 +79,8 @@ int main (int argc, char **argv, char **env)
 		add_history(line);
 		line = commands(line, env_list, home_path);
 		cmd_list = parsing(line);
-		//ft_execute(cmd_list, env_list); // KARL -> toujours en cours
+		ft_redirect(cmd_list); // a finir
+		ft_execute(cmd_list, env_list, exec);
 		//printf("APRES PARSING FIX\n");
 		//printlist_test(cmd_list);
 		free(line);

@@ -1,21 +1,20 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/09 19:39:21 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/12 17:10:43 by kquerel          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
 /*
 TO DO:
-
 - traiter les pipes - FINIR ft_babyboom
 - les redirections
 - cas pablo (demander a caro la photo)
@@ -33,157 +32,40 @@ Structure pour les pipes:
 - waitpid(pid_child2, NULL, 0)
 */
 
-
-/* A FAIRE
--rediriger dans le cas ou la commande est un built in a coder nous meme
-	- echo
-	- cd
-	- pwd
-	- export
-	- unset
-	- env
-	- exit
-- peut etre creer un 8eme type dans le .h avec BUILTIN ? voir avec caro
-*/
-void	ft_redirect(t_element *s)
+/* Handles a single command */
+void	single_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
-	/* par exemple
-	while (s)
+	int	pid;
+	pid = fork();
+	if (pid < 0)
 	{
-		if (s->type == 8)
-			on skip ft_execute pour eviter le doublon des commandes
-		s = s->next;
-	}
-	
-	*/
-	while (s)
-	{
-		printf("%s\n", s->content);
-		if (s->type == 0)
-			printf(" -> pipe\n");
-		else if (s->type == 1)
-			printf(" -> pipe - option\n");
-		else if (s->type == 2)
-			printf(" -> arg\n");
-		else if (s->type == 3)
-			printf(" -> fd_infile\n");
-		else if (s->type == 4)
-			printf(" -> fd_outfile\n");
-		else if (s->type == 5)
-			printf(" -> fd_infile HEREDOC\n");
-		else if (s->type == 6)
-			printf(" -> fd_outfile HEREDOC\n");
-		else if (s->type == 7)
-			printf(" -> pipec_bonus\n");
-		s = s->next;
-	}
-}
-
-/* Splits the path*/
-char	**split_path(t_env *env_list)
-{
-	char **res_split;
-	
-	env_list = find_value_with_key_env(env_list, "PATH");
-	res_split = ft_split(env_list->value, ':');
-	return (res_split);
-}
-
-/* Gets COMMANDS and OPTION number (type 0 and type 1) */
-int	get_args_nb(t_element *cmd, t_pipe *exec)
-{
-	int	nb_args;
-
-	nb_args = 0;
-	while (cmd)
-	{
-		if (cmd->type == 0 || cmd->type == 1)
-		{
-			exec->cmd_tab[nb_args] = malloc(sizeof(char *) * ft_strlen(cmd->content) + 1);
-			ft_strcpy(exec->cmd_tab[nb_args], cmd->content);
-			// printf("cmd_tab[%d] = %s\n", nb_args, exec->cmd_tab[nb_args]);
-			nb_args++;
-		}
-		cmd = cmd->next;
-	}
-	exec->cmd_tab[nb_args] = NULL;
-	return (nb_args);
-}
-
-/* Handles execution */
-void	ft_execute(t_element *cmd, t_env *env)
-{
-	// nombre de pipe = (argv - 1) * 2;
-	//faire le malloc des pipe
-	//create pipes
-	// A FAIRE
-	// gerer le open et le here_doc !
-	t_pipe *exec;
-	exec = malloc(sizeof(t_pipe));
-	if (!exec)
-	{
-		perror("exec");
+		perror("fork:");
+		//free
 		exit(EXIT_FAILURE);
 	}
-	exec->cmd_tab = malloc(sizeof(char **) + 1); // +1 car le tableau de strings doit finir par NULL
-	if (!exec->cmd_tab)
-		return ;
-	exec->av_nb = get_args_nb(cmd, exec);
-	// if (exec->av_nb == 0)
-	// {
-	// 	printf("Je suis la\n"); // c'est pour ca que ce connard de minishell exit
-	// 	exit(127);
-	// }
-	// printf("av_nb = %d\n", exec->av_nb);
-	// exec->pipe_nb = (exec->av_nb) * 2;
-	// printf("pipen_nb = %d\n", exec->pipe_nb);
-	//peut etre malloc le nombre de pipe, pas sur, voir avec caro
-	exec->cmd_path = split_path(env);
-	if (!exec->cmd_path)
+	if (pid == 0)
 	{
-		printf("Split_path failed\n");
-		//free les pipes dans le cas ou on les malloc
-		// free (exec);
-		// free en plus dans le code de caro ?
-	}
-	/* POUR PRINT LE PATH
-	-> la ou toutes les commandes se trouvent (check avec whereis)
-	*/
-	// int	j = 0;
-	// while (exec->cmd_path[j])
-	// {
-	// 	printf("cmd_path[%d] = %s\n", j, exec->cmd_path[j]);
-	// 	j++;
-	// }
-	// exec->cmd_tab = ft_split(exec->cmd_tab[0], ' ')
-	cmd->cmd = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
-	if (!cmd->cmd)
-	{
-		if (!exec->cmd_tab[0])
-			ft_putstr_fd("\n", 2);
-		else
+		exec->cmd_path = split_path(env);
+		if (!exec->cmd_path)
 		{
-			ft_putstr_fd(exec->cmd_tab[0], 2);
-			ft_putstr_fd(": command not found\n", 2);
+			printf("Split_path failed\n");
+			// free
 		}
+		cmd->cmd = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
+		if (!cmd->cmd)
+		{
+			if (!exec->cmd_tab[0])
+				ft_putstr_fd("\n", 2);
+			else
+			{
+				ft_putstr_fd(exec->cmd_tab[0], 2);
+				ft_putstr_fd(": command not found\n", 2);
+			}
+		}
+		execve(cmd->cmd, exec->cmd_tab, env->env);
 	}
-	// printf("1st argument AKA cmd->cmd = %s\n", cmd->cmd);
-	// printf("2nd argument AKA cmd->cmd_tab[0] = %s\n", exec->cmd_tab[0]);
-	// printf("2nd argument AKA cmd->cmd_tab[1] = %s\n", exec->cmd_tab[1]);
-	waitpid(-1, NULL, 0);
-	execve(cmd->cmd, exec->cmd_tab, env->env);
-	printf("--> S'affiche uniquement si execve fail <--\n");
-	// ft_create_pipe(exec); // cree le bon nombre de pipes
-	// int i = 0;
-	// while (i < exec->av_nb)
-	// {
-	// 	ft_babyboom(cmd, env, exec, i);
-	// 	i++;
-	// }
-	// ft_close_pipe(exec);
+	waitpid(pid, NULL, 0);
 }
-
-
 
 /* Extracts command from char *argument and verify if they are valid
 using access*/
@@ -210,59 +92,31 @@ char	*ft_get_command(char **path, char *argument)
 	return (NULL);
 }
 
-/* Initiate pipe and create all pipe ends according to commands number */
-void	ft_create_pipe(t_pipe *exec)
-{
-	int	i;
-
-	i = 0;
-	while (i < exec->av_nb)
-	{
-		if (pipe(exec->pipe_end + 2 * i) == -1)
-		{
-			//gerer les close and free
-			perror("pipe_end");
-			exit(EXIT_FAILURE);
-		}
-		i++;
-	}
-}
-/* Close all pipe ends */
-void	ft_close_pipe(t_pipe *exec)
-{
-	int	i;
-
-	i = 0;
-	while (i < exec->pipe_nb)
-	{
-		close(exec->pipe_end[i]);
-		i++;
-	}
-}
-
 /* Creates child process
 --> will fork as long as i is < to av_nb
 --> several cases occur, first child, middle child and last child
 */
-void	ft_babyboom(t_element *cmd, t_env *env, t_pipe *exec, int i)
+void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, int i)
 {
-	exec->pid = fork(); // system call to create new process (child)
-	if (exec->pid == -1) // if it fails
+	pid_t	pid;
+	
+	pid = fork(); // system call to create new process (child)
+	if (pid == -1) // if it fails
 	{
 		perror("pipe");
 		exit(EXIT_FAILURE);
 	}
-	else if (exec->pid == 0) // meaning we are in the child process
+	else if (pid == 0) // meaning we are in the child process
 	{
 		if (i == 0) // its the first child in the pipeline
 		{
-			dup2(exec->fd_infile, 0); //fd_infile = result of the open function, fd 0 now reads from infile
+			//dup2(0, 0); // inutile
 			dup2(exec->pipe_end[1], 1);
 		}
 		else if (i == exec->av_nb) // last child in the pipeline
 		{
 			dup2(exec->pipe_end[(i * 2) - 2], 0); // duplicates the reading pipe (fd[0]) of the last child to the writing of the previous child
-			dup2(exec->fd_outfile, 1); //fd_outfile = result of the open function
+			dup2(1, 1); //fd_outfile = result of the open function
 		}
 		else // all the middle childs
 		{
@@ -271,28 +125,223 @@ void	ft_babyboom(t_element *cmd, t_env *env, t_pipe *exec, int i)
 		}
 		ft_close_pipe(exec);
 		exec->cmd_tab = ft_split(exec->cmd_tab[i], ' ');
-		cmd->cmd = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
+
+
+		
+		// int	j = 0;
+		// while (exec->cmd_tab[j])
+		// {
+		// 	printf("cmd_tab[%d] = %s\n", j, exec->cmd_tab[j]);
+		// 	j++;
+		// }
+
+
+		
+		cmd->cmd = ft_get_command(exec->cmd_path, exec->cmd_tab[i]);
+
+		printf("---%s----\n", cmd->cmd);
+		
 		if (!cmd->cmd)
 		{
-			printf("Error\n");
-			// free
-			exit (EXIT_FAILURE);
+			if (!exec->cmd_tab[i])
+				ft_putstr_fd("\n", 2);
+			else
+			{
+				ft_putstr_fd(exec->cmd_tab[i], 2);
+				ft_putstr_fd(": command not found\n", 2);
+			}
 		}
-		execve(cmd->content, exec->cmd_tab, env->env);
+		execve(cmd->cmd, exec->cmd_tab, env->env);
 	}
 }
 
-/* strcpy */
-char	*ft_strcpy(char *dst, char *src)
+/* Handles execution */
+void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 {
-	int	i;
+	//faire le malloc des pipe
+	//create pipes
+	// A FAIRE
+	// gerer le open et le here_doc !
+	exec->cmd_tab = malloc(sizeof(char **)); // utiliser la fonction de caro
+	if (!exec->cmd_tab)
+		return ;
+	exec->av_nb = get_args_nb(cmd, exec);
+	get_pipe_nb(cmd, exec);
+	// printf("pipe_nb = %d\n", exec->pipe_nb);
 
-	i = 0;
-	while (src[i])
+	if (exec->pipe_nb == 0) // pas de pipe donc single command
+		single_command(cmd, env, exec);
+
+
+	else
 	{
-		dst[i] = src[i];
-		i++;
+		exec->pid = ft_calloc(sizeof(int), exec->pipe_nb + 2);
+		if (!exec->pid)
+			return (msg_error(0));
+		ft_execuTOR(cmd, exec);
 	}
-	dst[i] = '\0';
-	return (dst);
 }
+	
+/* fonction test */
+int	ft_execuTOR(t_element *cmd, t_pipe *exec)
+{
+	int		pipe_end[2];
+	int		fd;
+	int	i;
+	
+	i = 0;
+	fd = STDIN_FILENO;
+	while (cmd && cmd->next)
+	{
+		// exec->simple_cmds = call_expander(exec, exec->simple_cmds);
+		if (cmd->next)
+			pipe(pipe_end);
+		// send_heredoc(exec, exec->simple_cmds);
+		ft_fork(cmd, exec, pipe_end, fd, i);
+		close(pipe_end[1]);
+		if (cmd->prev)
+			close(fd);
+		// fd_in = check_fd_heredoc(exec, end, exec->simple_cmds);
+		if (cmd->next)
+			cmd = cmd->next;
+		i++;
+		// else
+		// 	break ;
+	}
+	ft_waitpid(exec->pid, exec->pipe_nb);
+	return (0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+	// else // on split les process car pipe presents
+	// {
+	// 	i = 0;
+	// 	// ft_create_pipe(exec); // ne marche ->bad adress
+	// 	while (i < exec->av_nb)
+	// 	{
+	// 		mult_commands(cmd, env, exec, i);
+	// 		i++;
+	// 	}
+	// }
+
+
+	//--------------------- pipe
+
+	// printf("pipe_end[%d] = %d\n", 0, exec->pipe_end[0]);
+	// printf("pipe_end[%d] = %d\n", 1, exec->pipe_end[1]);
+	// printf("pipe_end[%d] = %d\n", 2, exec->pipe_end[2]);
+
+	// if (pipe(exec->pipe_end) < 0)
+	// {
+	// 	perror("pipe:");
+	// 	//free
+	// 	exit(EXIT_FAILURE);
+	// }
+
+
+	//------------------------- fork
+
+	// exec->pid = fork();
+	// if(exec->pid == -1)
+	// {
+	// 	perror("fork:");
+	// 	//free
+	// 	exit(EXIT_FAILURE);
+	// }
+	// else if (exec->pid == 0)
+	// {
+	// 	if (dup2(exec->pipe_end[1], 1) < 0)
+	// 	{
+	// 		perror("dup2:");
+	// 		//free
+	// 		exit(EXIT_FAILURE);
+	// 	}
+	// 	close(exec->pipe_end[0]);
+	// 	close(exec->pipe_end[1]);
+	// }
+
+	
+	
+	// if (exec->av_nb == 0)
+	// {
+	// 	printf("Je suis la\n"); // c'est pour ca que ce connard de minishell exit
+	// 	exit(127);
+	// }
+
+	// TEST TEST TEST
+	// exec->cmd_path = split_path(env);
+	// if (!exec->cmd_path)
+	// {
+	// 	printf("Split_path failed\n");
+	// 	//free les pipes dans le cas ou on les malloc
+	// 	// free (exec);
+	// 	// free en plus dans le code de caro ?
+	// }
+	
+
+
+	
+	/* POUR PRINT LE PATH
+	-> la ou toutes les commandes se trouvent (check avec whereis)
+	*/
+	// int	j = 0;
+	// while (exec->cmd_path[j])
+	// {
+	// 	printf("cmd_path[%d] = %s\n", j, exec->cmd_path[j]);
+	// 	j++;
+	// }
+	// exec->cmd_tab = ft_split(exec->cmd_tab[0], ' ')
+
+	// TEST TEST TEST
+	// cmd->cmd = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
+	// if (!cmd->cmd)
+	// {
+	// 	if (!exec->cmd_tab[0])
+	// 		ft_putstr_fd("\n", 2);
+	// 	else
+	// 	{
+	// 		ft_putstr_fd(exec->cmd_tab[0], 2);
+	// 		ft_putstr_fd(": command not found\n", 2);
+	// 	}
+	// }
+
+	
+	// printf("1st argument AKA cmd->cmd = %s\n", cmd->cmd);
+	// printf("2nd argument AKA cmd->cmd_tab[0] = %s\n", exec->cmd_tab[0]);
+	// printf("2nd argument AKA cmd->cmd_tab[1] = %s\n", exec->cmd_tab[1]);
+	
+	
+	// TEST TEST TEST
+	// execve(cmd->cmd, exec->cmd_tab, env->env);
+	// printf("--> S'affiche uniquement si execve fail <--\n");
+
+	
+	// ft_create_pipe(exec); // cree le bon nombre de pipes
+	// int i = 0;
+	// while (i < exec->av_nb)
+	// {
+	// 	ft_babyboom(cmd, env, exec, i);
+	// 	i++;
+	// }
+	// ft_close_pipe(exec);
+	// waitpid(exec->pid, NULL, 0);
+
+
