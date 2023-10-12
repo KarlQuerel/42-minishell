@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/12 13:43:12 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/12 17:04:12 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,103 +100,6 @@ bool	only_spaces_after_cmd(char *line, size_t i)
 	}
 	return (true);
 }
-/*
-char	*erase_spaces(char *line, int option, int start)
-{
-	
-	char	*new_line;
-	int		j;
-	int		start_copy;
-	int		spaces;
-
-	j = 0;
-	start_copy = start;
-	spaces = 0;
-	if (option == BEGINING) // start = 0
-	{
-		start = 0;
-		if (line[start] != ' ')	
-			return (line);
-		while (line[start] == ' ')
-			start++;
-		new_line = malloc(sizeof(char) * (ft_strlen(line) - start) + 1); //verifier
-		if (!new_line)
-		{
-			perror("Error");
-			return (NULL); //il faut qd meme un return qd on utilise perror??
-		}
-		while(line[start])
-			new_line[j++] = line[start++];
-		new_line[j] = '\0';	
-	}
-	else if (option == MIDDLE) // start = fin de cmd (sur l'espace)
-	{
-		start = start + 1; //debut de la cmd suivante
-		if (line[start] == '|')
-			return (line);
-		while(line[start_copy] != '|')
-		{
-			if (line[start_copy] == ' ')
-				spaces++;
-			start_copy++;
-		}
-		new_line = malloc(sizeof(char) * (ft_strlen(line) - spaces) + 1);
-		if (!new_line)
-		{
-			perror("Error");
-			return (NULL); //il faut qd meme un return qd on utilise perror??
-		}
-		while(j <= start)
-		{
-			new_line[j] = line[j];
-			j++;
-		}
-		while(line[start] != '|')
-		{
-			if (line[start] == ' ')
-				start++;
-			else
-				new_line[j++] = line[start++]; // pas sure
-		}
-		while(line[start])
-			new_line[j++] = line[start++];
-		new_line[j] = '\0';
-	}
-	else //if (option == END) //start = espace apres la fin de la cmd
-	{
-		if (line[start] == '\0')
-			return (line);
-		while(line[start_copy] != '\0')
-		{
-			if (line[start_copy] == ' ')
-				spaces++;
-			start_copy++;
-		}
-		new_line = malloc(sizeof(char) * (ft_strlen(line) - spaces) + 1);
-		if (!new_line)
-		{
-			perror("Error");
-			return (NULL); //il faut qd meme un return qd on utilise perror??
-		}
-		while(j <= start)
-		{
-			new_line[j] = line[j];
-			j++;
-		}
-		while(line[start])
-		{
-			if (line[start] == ' ')
-				start++;
-			else
-				new_line[j++] = line[start++];
-		}
-		new_line[j] = '\0';
-	}
-	free(line);
-	return (new_line);
-}
-*/
-
 
 char	*erase_spaces(char *line)
 {
@@ -212,12 +115,12 @@ char	*erase_spaces(char *line)
 
 	while (line[i])
 	{
-		if (line[i] == '\'') //pour ne pas compter les espaces entre quotes (ex: dans les str de echo)
+		if (line[i] == '\'' && quotes_can_close(line) == true) //pour ne pas compter les espaces entre quotes (ex: dans les str de echo)
 		{
 			while(line[i] != '\'')
 				i++;
 		}
-		if (line[i] == '\"')
+		if (line[i] == '\"' && quotes_can_close(line) == true)
 		{
 			while(line[i] != '\"')
 				i++;
@@ -235,21 +138,20 @@ char	*erase_spaces(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '\'') //pour ne pas compter les espaces entre quotes (ex: dans les str de echo)
+		if (line[i] == '\'' && quotes_can_close(line) == true) //pour ne pas compter les espaces entre quotes (ex: dans les str de echo)
 		{
-			while(line[i] != '\'')
+			i++;
+			while(line[i] != '\'' && line[i])
 				new_line[j++] = line[i++];
 		}
-		else if (line[i] == '\"')
+		else if (line[i] == '\"' && quotes_can_close(line) == true)
 		{
-			while(line[i] != '\"')
+			i++;
+			while(line[i] != '\"' && line[i])
 				new_line[j++] = line[i++];
 		}
 		else if(line[i] == ' ' && (line[i + 1] == ' ' || line[i + 1] == '\0'))
-		{
-			spaces++;
 			i++;
-		}
 		else
 			new_line[j++] = line[i++];
 	}

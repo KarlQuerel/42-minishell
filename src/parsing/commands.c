@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/12 14:33:44 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/12 16:44:30 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,13 @@ int	size_of_command(char *command, int len, int type)
 		// printf("%slen = %d, command[len] = %c\n%s", YELLOW, len, command[len], RESET);
 		while (command[len] != ' ' && command[len] != '\0')
 		{
-			// printf("%scommand[len] = %c\n%s", YELLOW, command[len], RESET);
+			//printf("%scommand[len] = %c\n%s", YELLOW, command[len], RESET);
 			//printf("%ssize = %d, command[len] = %c\n%s", YELLOW, size, command[len], RESET);
 			size++;
 			len++;
 		}
 		// printf("%ssize_of_command dans sizeofcmd = %d\n%s", YELLOW, size + 1, RESET);
-		//printf("%sTOTAL LEN IS %d\n%s", BRED, size, RESET);
+		//printf("%sTOTAL LEN IS %d\n%s", GREEN, size, RESET);
 		// }
 		//size = size - 1; // (si je vois que erreur de valgrind qd type est KEY, VALUE et STR aussi alors peut etre qu'il faut enlever le + 1 dans la rturn final et c'est tout)
 	}

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/12 15:12:24 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/12 17:03:57 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,14 @@ char	*cd(char *line, t_env *env_list, char *home_path)
 	int		i;
 	int		j;
 	char	*path;
-	t_env	*current;
+	bool	free_needed;
 	
+	free_needed = false;
 	i = where_is_cmd_in_line(line, "cd");
 	if (i == 0)
 		return (line); //error : cd pas trouve
-	//if (size_of_command(line, i, CMD) == 1 ||line[i] == '|' || ft_isalnum(line[i + 1]) != 1 || size_of_command(line, i, CMD) == 2 || line[i] == '\0') // 1 car je rends size + 1 donc si size = 1 c'est que il n'y a rien apres cd / 2 pour le cas "cd | ..."" Plus d'un espace serait efface donc pas plus de 2
-	if (size_of_command(line, i, CMD) == 1 ||line[i] == '|') // 1 car je rends size + 1 donc si size = 1 c'est que il n'y a rien apres cd / 2 pour le cas "cd | ..."" Plus d'un espace serait efface donc pas plus de 2
+	//if (size_of_command(line, i, CMD) == 1 ||line[i] == '|' || ft_isalnum(line[i + 1]) != 1 || size_of_command(line, i, CMD) == 2 || line[i] == '\0') // 1 car je rends size + 1 donc si size = 1 c'est que il n'y a rien apres cd / 2 pour le cas "cd | ..."" Plus d'un espace serait efface donc pas plus de 
+	if (size_of_command(line, 0, CMD) == 1 || line[i + 1] == '|' || line[i] == '\0') // 1 car je rends size + 1 donc si size = 1 c'est que il n'y a rien apres cd / 2 pour le cas "cd | ..."" Plus d'un espace serait efface donc pas plus de 2
 		path = home_path;
 	else
 	{
@@ -94,8 +95,9 @@ char	*cd(char *line, t_env *env_list, char *home_path)
 			path[j++] = line[i++];
 		path[j] = '\"';
 		path[j + 1] = '\0';
+		free_needed = true;
 	}
-	//printf("%spath = %s\n%s", YELLOW, path, RESET);
+	//printf("%spath = [%s]\n%s", YELLOW, path, RESET);
 
 	//DEMANDER A ANTOINE : CHDIR(PATH) NE MARCHE PAS MAIS CHDIR("SRC") SI!
 /* 	chdir(path);
@@ -107,14 +109,16 @@ char	*cd(char *line, t_env *env_list, char *home_path)
 
 	//Chdir comprend aussi chdir("..") donc pas besoin de gerer le cas "cd .."!
 
-	if (chdir(path) != 0) // pour verifier que ca marche il faut avoir plusieurs dossiers
+/* 	if (chdir(path) != 0) // pour verifier que ca marche il faut avoir plusieurs dossiers
 	{
 		printf("CD NE MARCHE PAS\n");
+		//si le nom du fichier n'existe pas ou s'il a une erreur (comme un seul guillement au debut mais non a la fin du nom) print erreur
 		free(path);
 		//printf errno
 		return (line); //??
-	}
-	free(path);
+	} */
+	if (free_needed == true)
+		free(path);
 	return (line);
 }
 

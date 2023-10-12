@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carolina <carolina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/11 15:58:03 by carolina         ###   ########.fr       */
+/*   Updated: 2023/10/12 17:04:27 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,11 @@
 typedef struct s_element
 {
 	char	*content;
-	char	*cmd;
 	int		type;
 	bool	builtin;
 	struct s_element *prev;
 	struct s_element *next;
+	char	*cmd; //karl
 }	t_element;
 
 /* Environment
@@ -89,8 +89,8 @@ typedef struct s_env
 {
 	char	*key;
 	char	*value;
-	char	**env;
 	struct s_env *next;
+	char	**env; //karl
 }	t_env;
 
 /* To handles pipes
@@ -149,7 +149,6 @@ char	*ft_joinstr_minishell(char *line, int len, char *str, char type);
 char	*ft_join_pour_cd(char *line_begining, char *path);
 bool	only_spaces_after_cmd(char *line, size_t i);
 char	*erase_spaces(char *line);
-//char	*erase_spaces(char *line, int option, int start);
 
 /*------------------PARSING FOLDER------------------*/
 
