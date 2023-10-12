@@ -1,14 +1,14 @@
-#******************************************************************************#
+# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: karl <karl@student.42.fr>                  +#+  +:+       +#+         #
+#    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/11 21:10:38 by karl             ###   ########.fr        #
+#    Updated: 2023/10/12 16:25:29 by kquerel          ###   ########.fr        #
 #                                                                              #
-#******************************************************************************#
+# **************************************************************************** #
 
 #modifier le makefile de la libft maintenant que je sais en faire des mieux?
 #ça ne crée pas le directory binaries
@@ -38,10 +38,12 @@ SRC = src/main.c \
 	src/parsing/lstnew.c \
 	src/parsing/free.c \
 	src/executable/exec.c \
+	src/executable/exec_utils.c \
+	src/executable/exec_errors.c \
 	src/executable/redirect.c \
+	src/executable/pipes.c \
 	src/parsing/errors.c \
 	src/parsing/utils.c \
-# src/executable/test.c \
 	
 SRC_OBJS = $(SRC:.c=.o)
 
@@ -60,7 +62,7 @@ CC = cc
 
 RM = rm -f
 
-CFLAGS = #-Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror -g3
 #PENSER À ENLEVER -G3 (juste pour gdb)
 MAKEFLAGS   += --no-print-directory
 

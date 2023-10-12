@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/11 21:10:21 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/12 17:06:30 by kquerel          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 /*Libraries*/
 
@@ -73,6 +73,7 @@ typedef struct s_element
 	int		type;
 	struct s_element *prev;
 	struct s_element *next;
+	struct s_pipe *exe;
 }	t_element;
 
 /* Environment
@@ -97,10 +98,9 @@ typedef struct s_env
 */
 typedef struct s_pipe
 {
-	pid_t	pid;
-	
 	int		here_doc;
 	int		pipe_nb;
+	int		*pid;
 	char	**cmd_tab;
 	char	**cmd_path;
 	int		*pipe_end;
@@ -113,6 +113,8 @@ typedef struct s_pipe
 
 /*Main*/
 char	*erase_spaces_at_the_begining(char *line);
+void	ft_welcome(void);
+
 /*History*/
 void		history(int option);
 
@@ -171,18 +173,33 @@ void	free_cmd_list(t_element *cmd_list);
 /*-----------------EXECUTABLE FOLDER------------------*/
 
 /* Exec*/
-void	ft_redirect(t_element *cmd_list);
 void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec);
-char	**split_path(t_env *env_list);
-void	ft_welcome(void);
-void	ft_close_pipe(t_pipe *exec);
-void	ft_create_pipe(t_pipe *exec);
-char	*ft_strcpy(char *dst, char *src);
-int		get_pipe_nb(t_element *cmd, t_pipe *exec);
 void	single_command(t_element *cmd, t_env *env, t_pipe *exec);
 void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, int i);
-
-
 char	*ft_get_command(char **path, char *argument);
-int		ft_infile(char *file);
 
+/* Exec utils */
+char	**split_path(t_env *env_list);
+int		get_args_nb(t_element *cmd, t_pipe *exec);
+int		get_pipe_nb(t_element *cmd, t_pipe *exec);
+char	*ft_strcpy(char *dst, char *src);
+
+/* Pipes */
+void	ft_close_pipe(t_pipe *exec);
+void	ft_create_pipe(t_pipe *exec);
+int	ft_waitpid(int *pid, int n);
+
+
+/* Redirect */
+int		ft_redirect(t_element *s);
+int		ft_infile(char *file);
+int		ft_outfile(t_element *cmd);
+
+
+
+
+
+int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, int i);
+void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
+void	msg_error(int err);
+int		ft_execuTOR(t_element *cmd, t_pipe *exec);

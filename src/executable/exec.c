@@ -1,21 +1,20 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/11 21:21:48 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/12 17:10:43 by kquerel          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
 /*
 TO DO:
-
 - traiter les pipes - FINIR ft_babyboom
 - les redirections
 - cas pablo (demander a caro la photo)
@@ -32,95 +31,6 @@ Structure pour les pipes:
 - waitpid(pid_child1, NULL, 0)
 - waitpid(pid_child2, NULL, 0)
 */
-
-
-/* A FAIRE
--rediriger dans le cas ou la commande est un built in a coder nous meme
-	- echo -n
-	- cd
-	- pwd
-	- export
-	- unset
-	- env
-	- exit
-- peut etre creer un 8eme type dans le .h avec BUILTIN ? voir avec caro
-*/
-void	ft_redirect(t_element *s)
-{
-	/* par exemple
-	while (s)
-	{
-		if (s->type == 8)
-			on skip ft_execute pour eviter le doublon des commandes
-		s = s->next;
-	}
-	
-	*/
-	t_element *tmp;
-	tmp = s;
-	while (tmp)
-	{
-		// printf("%s\n", s->content);
-		if (tmp->type == INFILE)
-			printf("Fonction infile 1\n");
-			// gerer le infile
-		else if (tmp->type == OUTFILE || tmp->type == OUTFILE_APPEND)
-			printf("Fonction outfile\n");
-			// gerer le outfile
-		else if (tmp->type == INFILE_DELIMITER)
-			printf("Fonction infile 2\n");
-			//gerer le infile here_doc
-		// else if (tmp->type == 8)
-		tmp = tmp->next;
-	}
-	tmp = s;
-}
-
-/* Splits the path*/
-char	**split_path(t_env *env_list)
-{
-	char **res_split;
-	
-	env_list = find_value_with_key_env(env_list, "PATH");
-	res_split = ft_split(env_list->value, ':');
-	return (res_split);
-}
-
-/* Gets COMMANDS and OPTION number (type 0 and type 1) */
-int	get_args_nb(t_element *cmd, t_pipe *exec)
-{
-	int	nb_args;
-
-	nb_args = 0;
-	while (cmd)
-	{
-		if (cmd->type == COMMAND || cmd->type == OPTION)
-		{
-			exec->cmd_tab[nb_args] = malloc(sizeof(char *) * ft_strlen(cmd->content) + 1);
-			ft_strcpy(exec->cmd_tab[nb_args], cmd->content);
-			// printf("cmd_tab[%d] = %s\n", nb_args, exec->cmd_tab[nb_args]);
-			nb_args++;
-		}
-		cmd = cmd->next;
-	}
-	exec->cmd_tab[nb_args] = NULL;
-	return (nb_args);
-}
-
-
-/* Gets the number of pipes depending on input */
-int	get_pipe_nb(t_element *cmd, t_pipe *exec)
-{
-	exec->pipe_nb = 0;
-	while (cmd)
-	{
-		if (cmd->type == PIPE)
-			exec->pipe_nb++;
-		cmd = cmd->next;
-	}
-	return (exec->pipe_nb);
-}
-
 
 /* Handles a single command */
 void	single_command(t_element *cmd, t_env *env, t_pipe *exec)
@@ -182,82 +92,21 @@ char	*ft_get_command(char **path, char *argument)
 	return (NULL);
 }
 
-/* Initiate pipe and create all pipe ends according to commands number */
-void	ft_create_pipe(t_pipe *exec)
-{
-	int	i;
-
-	i = 0;
-	while (i < exec->pipe_nb)
-	{
-		printf("avant - pipe_end = %ls\n", exec->pipe_end);
-		if (pipe(exec->pipe_end + 2 * i) < 0) // ne marche pas
-		{
-			printf("pipe_end = %ls\n", exec->pipe_end);
-			//gerer les close and free
-			perror("pipe_end");
-			exit(EXIT_FAILURE);
-		}
-		i++;
-	}
-}
-/* Close all pipe ends */
-void	ft_close_pipe(t_pipe *exec)
-{
-	int	i;
-
-	i = 0;
-	while (i < exec->pipe_nb)
-	{
-		close(exec->pipe_end[i]);
-		i++;
-	}
-}
-
-/* Use waitpid function to wait for every child process */
-int	ft_waitpid(int *pid, int n)
-{
-	int	i;
-	int	status;
-
-	i= 0;
-	while (i < n)
-	{
-		waitpid(pid[i], &status, 0);
-		i++;
-	}
-	waitpid(pid[i], &status, 0);
-	return(EXIT_SUCCESS);
-}
-
-
-/* strcpy */
-char	*ft_strcpy(char *dst, char *src)
-{
-	int	i;
-
-	i = 0;
-	while (src[i])
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (dst);
-}
 /* Creates child process
 --> will fork as long as i is < to av_nb
 --> several cases occur, first child, middle child and last child
 */
 void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, int i)
 {
-	exec->pid = fork(); // system call to create new process (child)
-	if (exec->pid == -1) // if it fails
+	pid_t	pid;
+	
+	pid = fork(); // system call to create new process (child)
+	if (pid == -1) // if it fails
 	{
 		perror("pipe");
 		exit(EXIT_FAILURE);
 	}
-	else if (exec->pid == 0) // meaning we are in the child process
+	else if (pid == 0) // meaning we are in the child process
 	{
 		if (i == 0) // its the first child in the pipeline
 		{
@@ -313,8 +162,6 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 	//create pipes
 	// A FAIRE
 	// gerer le open et le here_doc !
-	
-	int	i;
 	exec->cmd_tab = malloc(sizeof(char **)); // utiliser la fonction de caro
 	if (!exec->cmd_tab)
 		return ;
@@ -325,19 +172,75 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 	if (exec->pipe_nb == 0) // pas de pipe donc single command
 		single_command(cmd, env, exec);
 
-		
-	else // on split les process car pipe presents
+
+	else
 	{
-		i = 0;
-		// ft_create_pipe(exec); // ne marche ->bad adress
-		while (i < exec->av_nb)
-		{
-			mult_commands(cmd, env, exec, i);
-			i++;
-		}
+		exec->pid = ft_calloc(sizeof(int), exec->pipe_nb + 2);
+		if (!exec->pid)
+			return (msg_error(0));
+		ft_execuTOR(cmd, exec);
 	}
 }
+	
+/* fonction test */
+int	ft_execuTOR(t_element *cmd, t_pipe *exec)
+{
+	int		pipe_end[2];
+	int		fd;
+	int	i;
+	
+	i = 0;
+	fd = STDIN_FILENO;
+	while (cmd && cmd->next)
+	{
+		// exec->simple_cmds = call_expander(exec, exec->simple_cmds);
+		if (cmd->next)
+			pipe(pipe_end);
+		// send_heredoc(exec, exec->simple_cmds);
+		ft_fork(cmd, exec, pipe_end, fd, i);
+		close(pipe_end[1]);
+		if (cmd->prev)
+			close(fd);
+		// fd_in = check_fd_heredoc(exec, end, exec->simple_cmds);
+		if (cmd->next)
+			cmd = cmd->next;
+		i++;
+		// else
+		// 	break ;
+	}
+	ft_waitpid(exec->pid, exec->pipe_nb);
+	return (0);
+}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+	// else // on split les process car pipe presents
+	// {
+	// 	i = 0;
+	// 	// ft_create_pipe(exec); // ne marche ->bad adress
+	// 	while (i < exec->av_nb)
+	// 	{
+	// 		mult_commands(cmd, env, exec, i);
+	// 		i++;
+	// 	}
+	// }
 
 
 	//--------------------- pipe

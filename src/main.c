@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/11 21:23:11 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/12 14:52:40 by kquerel          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
@@ -98,9 +98,9 @@ int main (int argc, char **argv, char **env)
 		add_history(line);
 		line = commands(line, env_list);
 		cmd_list = parsing(line);
-		ft_redirect(cmd_list);
+		ft_redirect(cmd_list); // a finir
 		ft_execute(cmd_list, env_list, exec);
-		// printlist_test(cmd_list); // J'aime cette fonction <3
+		// printlist_test(cmd_list);
 		free(line);
 		free_cmd_list(cmd_list);
 		line = readline("Minishell $ ");
