@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carolina <carolina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/11 17:17:43 by carolina         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:25:58 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-void	final_free(char *line, t_env *env_list)
+void	final_free(char *line, t_env *env_list, t_env *path, char *new_path)
 {
 	free(line);
 	history(FREE_HISTORY);
@@ -24,6 +24,8 @@ void	final_free(char *line, t_env *env_list)
 		env_list = env_list->next;
 	}
 	free(env_list);
+	free(path);
+	free(new_path);
 }
 
 void	free_cmd_list(t_element *cmd_list)

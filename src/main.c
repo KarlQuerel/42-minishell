@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/13 13:50:51 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:51:59 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,48 @@ void	ft_welcome(void)
 	printf("%s", WHT);
 }
 
+/*Deleted the /mnt/nfs/homes/casomarr/ part*/
+char	*home_path_simplified(char *absolute_path, t_env *env_list)
+{
+	char	*path_from_home;
+	char	*temp;
+	t_env	*user;
+	int		i;
+	int		j;
+	int		start;
+
+	i = 0;
+	start = 1;
+	path_from_home = NULL;
+	user = find_value_with_key_env(env_list, "USER");
+	//je compares chaque element entre slashes au nom du user
+	while(absolute_path[i])
+	{
+		if(absolute_path[i + 1] == '/')
+		{
+			temp = NULL;
+			temp = strlcpy_middle(temp, absolute_path, start, i); // je copies absolute path jusqu a i dans temp
+			start = i + 2; //begining of next word for next round
+			if (ft_strncmp(temp, user->value, ft_strlen(user->value)) == 0 && ft_strlen(user->value) == ft_strlen(temp)) //je compares temp a user
+			{
+				//si sont les memes alors je mets dans path from home toutle reste de absolute path
+				j = 0;
+				i+=2;
+				path_from_home = malloc(sizeof(char) * (ft_strlen(absolute_path) - i + 2));
+				while (absolute_path[i])
+					path_from_home[j++] = absolute_path[i++];
+				path_from_home[j] = '\0';
+				//printf("path = [%s]\n", path_from_home);
+				free(temp);
+				return (path_from_home);
+			}
+			free(temp);
+		}
+		i++;
+	}
+	return (NULL);
+}
+
 //PROTEGER TOUS MES MALLOCS!! --> avec perror
 
 int main (int argc, char **argv, char **env)
@@ -35,6 +77,7 @@ int main (int argc, char **argv, char **env)
 	t_element			*cmd_list;
 	t_pipe				*exec;
 	t_env				*path;
+	char				*new_path;
 
 	exec = malloc(sizeof(t_pipe));
 	if (!exec)
@@ -60,17 +103,24 @@ int main (int argc, char **argv, char **env)
 	env_list = put_env_in_list(env);
 	env_list->env = env;
 	path = find_value_with_key_env(env_list, "PWD");
-	home_path = path->value;
+	home_path = home_path_simplified(path->value, env_list);
+	if (home_path == NULL)
+	{
+		printf("ERREUR HOME PATH");
+		exit(1);
+	}
+	new_path = home_path;
 	using_history(); // initialisation de l'historique
 	line = NULL;
-	line = readline("Minishell $ ");
+	printf("%s", home_path);
+	line = readline("$ ");
 	check_commands_grammar(line); //fonction pas encore terminee
 	while (is_this_command(line, "exit") == false)
 	{
 		if (feof(stdin)) // pour ctrl + D?? // ne le comprend pas
 		{
 			printf("CTRL + D detected\n");
-			final_free(line, env_list);
+			final_free(line, env_list, path, new_path);
 			return (EXIT_SUCCESS);
 		}
 		//printf("line before : [%s]\n", line);
@@ -85,8 +135,13 @@ int main (int argc, char **argv, char **env)
 		//printlist_test(cmd_list);
 		free(line);
 		free_cmd_list(cmd_list);
-		line = readline("Minishell $ ");
+		free(new_path);
+		new_path = pwd(NO_PRINT);
+		new_path = home_path_simplified(new_path, env_list);
+		//printf("%sAPRES HOMEPATHSIMPLIFIED home_path = [%s]\n%s", YELLOW, home_path, RESET);
+		printf("%s", new_path);
+		line = readline("$ ");
 	}
-	final_free(line, env_list);
+	final_free(line, env_list, path, new_path);
 	return (EXIT_SUCCESS);
 }
