@@ -6,7 +6,7 @@
 #    By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/12 17:14:04 by casomarr         ###   ########.fr        #
+#    Updated: 2023/10/12 18:57:56 by casomarr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,7 @@ SRC = src/main.c \
 	src/parsing/errors.c \
 	src/parsing/utils.c \
 	src/parsing/malloc.c \
+	src/parsing/cmd_types.c \
 	
 SRC_OBJS = $(SRC:.c=.o)
 

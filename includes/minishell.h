@@ -160,6 +160,12 @@ char	*erase_spaces(char *line);
 char	*erase_spaces_malloc(char *line);
 char	*joinstr_minishell_malloc(char *line, int len, char *str, char type);
 
+
+/*Cmd_types*/
+int	cmd_type(char *command, int len);
+int	key_and_value_type(char *command, int len, int type);
+int	str_type(char *command, int len);
+
 /*------------------PARSING FOLDER------------------*/
 
 /*Commands*/
