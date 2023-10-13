@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/12 19:18:15 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:30:35 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int main (int argc, char **argv, char **env)
 		free(line);
 		free_cmd_list(cmd_list);
 		line = readline("Minishell $ ");
+		// printf("%sJE SUIS LA APRES%s\n", BGRE, WHT);
 	}
 	final_free(line, env_list);
 	return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/12 17:10:43 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/13 15:50:49 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 /*
 TO DO:
-- traiter les pipes - FINIR ft_babyboom
-- les redirections
 - cas pablo (demander a caro la photo)
 - gerer open et HEREDOC
 
@@ -33,7 +31,7 @@ Structure pour les pipes:
 */
 
 /* Handles a single command */
-void	single_command(t_element *cmd, t_env *env, t_pipe *exec)
+void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
 	int	pid;
 	pid = fork();
@@ -51,8 +49,8 @@ void	single_command(t_element *cmd, t_env *env, t_pipe *exec)
 			printf("Split_path failed\n");
 			// free
 		}
-		cmd->cmd = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
-		if (!cmd->cmd)
+		cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
+		if (!cmd->content)
 		{
 			if (!exec->cmd_tab[0])
 				ft_putstr_fd("\n", 2);
@@ -62,7 +60,7 @@ void	single_command(t_element *cmd, t_env *env, t_pipe *exec)
 				ft_putstr_fd(": command not found\n", 2);
 			}
 		}
-		execve(cmd->cmd, exec->cmd_tab, env->env);
+		execve(cmd->content, exec->cmd_tab, env->env);
 	}
 	waitpid(pid, NULL, 0);
 }
@@ -137,11 +135,11 @@ void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, int i)
 
 
 		
-		cmd->cmd = ft_get_command(exec->cmd_path, exec->cmd_tab[i]);
+		cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[i]);
 
-		printf("---%s----\n", cmd->cmd);
+		printf("---%s----\n", cmd->content);
 		
-		if (!cmd->cmd)
+		if (!cmd->content)
 		{
 			if (!exec->cmd_tab[i])
 				ft_putstr_fd("\n", 2);
@@ -151,7 +149,7 @@ void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, int i)
 				ft_putstr_fd(": command not found\n", 2);
 			}
 		}
-		execve(cmd->cmd, exec->cmd_tab, env->env);
+		execve(cmd->content, exec->cmd_tab, env->env);
 	}
 }
 
@@ -162,7 +160,7 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 	//create pipes
 	// A FAIRE
 	// gerer le open et le here_doc !
-	exec->cmd_tab = malloc(sizeof(char **)); // utiliser la fonction de caro
+	exec->cmd_tab = malloc(sizeof(char **) * exec->av_nb); // utiliser la fonction de caro
 	if (!exec->cmd_tab)
 		return ;
 	exec->av_nb = get_args_nb(cmd, exec);
@@ -170,7 +168,7 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 	// printf("pipe_nb = %d\n", exec->pipe_nb);
 
 	if (exec->pipe_nb == 0) // pas de pipe donc single command
-		single_command(cmd, env, exec);
+		execute_command(cmd, env, exec);
 
 
 	else
@@ -179,6 +177,7 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 		if (!exec->pid)
 			return (msg_error(0));
 		ft_execuTOR(cmd, exec);
+	
 	}
 }
 	
@@ -187,30 +186,48 @@ int	ft_execuTOR(t_element *cmd, t_pipe *exec)
 {
 	int		pipe_end[2];
 	int		fd;
-	int	i;
-	
-	i = 0;
+
 	fd = STDIN_FILENO;
 	while (cmd && cmd->next)
 	{
+		// printf("%scommand = %s\n%s", BGRE, cmd->content, WHT);
+		// printf("%scommand->next = %s\n%s", BGRE, cmd->next->content, WHT);
+
+		// while(cmd->content)
+		// {
+		if (cmd->type != COMMAND && cmd->type != OPTION) // pour sauter les pipes
+			cmd = cmd->next;
+		printf("cmd = %s\n", cmd->content);
+		// }
 		// exec->simple_cmds = call_expander(exec, exec->simple_cmds);
-		if (cmd->next)
-			pipe(pipe_end);
+		if (cmd)
+		{
+			if (pipe(pipe_end) < 0)
+			{
+				printf("hello\n");
+				exit(EXIT_FAILURE);
+			}
+			// ft_create_pipe(exec, i, pipe_end);
+		}
 		// send_heredoc(exec, exec->simple_cmds);
-		ft_fork(cmd, exec, pipe_end, fd, i);
+		ft_fork(cmd, exec, pipe_end, fd);
 		close(pipe_end[1]);
 		if (cmd->prev)
 			close(fd);
 		// fd_in = check_fd_heredoc(exec, end, exec->simple_cmds);
 		if (cmd->next)
 			cmd = cmd->next;
-		i++;
 		// else
 		// 	break ;
+
 	}
 	ft_waitpid(exec->pid, exec->pipe_nb);
 	return (0);
 }
+
+// int	execute_cmd(t_element *cmd, t_pipe *exec)
+// {
+// }
 
 
 
@@ -311,8 +328,8 @@ int	ft_execuTOR(t_element *cmd, t_pipe *exec)
 	// exec->cmd_tab = ft_split(exec->cmd_tab[0], ' ')
 
 	// TEST TEST TEST
-	// cmd->cmd = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
-	// if (!cmd->cmd)
+	// cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
+	// if (!cmd->content)
 	// {
 	// 	if (!exec->cmd_tab[0])
 	// 		ft_putstr_fd("\n", 2);
@@ -324,13 +341,13 @@ int	ft_execuTOR(t_element *cmd, t_pipe *exec)
 	// }
 
 	
-	// printf("1st argument AKA cmd->cmd = %s\n", cmd->cmd);
-	// printf("2nd argument AKA cmd->cmd_tab[0] = %s\n", exec->cmd_tab[0]);
-	// printf("2nd argument AKA cmd->cmd_tab[1] = %s\n", exec->cmd_tab[1]);
+	// printf("1st argument AKA cmd->content = %s\n", cmd->content);
+	// printf("2nd argument AKA cmd->content_tab[0] = %s\n", exec->cmd_tab[0]);
+	// printf("2nd argument AKA cmd->content_tab[1] = %s\n", exec->cmd_tab[1]);
 	
 	
 	// TEST TEST TEST
-	// execve(cmd->cmd, exec->cmd_tab, env->env);
+	// execve(cmd->content, exec->cmd_tab, env->env);
 	// printf("--> S'affiche uniquement si execve fail <--\n");
 
 	

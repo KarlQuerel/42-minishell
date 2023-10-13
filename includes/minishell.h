@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/12 19:07:12 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:51:00 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*Libraries*/
+
+
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 # define _XOPEN_SOURCE 700 //sans ça, erreur de signaux
 
@@ -25,6 +29,7 @@
 # include <sys/wait.h>
 #include <sys/uio.h>
 # include <fcntl.h>
+# include <errno.h>
 
 /*Macros*/
 # define COMMAND 0
@@ -77,8 +82,7 @@ typedef struct s_element
 	bool	builtin;
 	struct s_element *prev;
 	struct s_element *next;
-	char	*cmd; //karl
-	struct s_pipe *exe;
+	struct s_pipe *exec;
 }	t_element;
 
 /* Environment
@@ -98,7 +102,7 @@ typedef struct s_env
 --> pid is the id process
 --> pipe_end is an array of both ends of a pipe
 --> av_nb is the arg number
--->
+--> here_doc // handles here_doc creation a faire
 -->
 */
 typedef struct s_pipe
@@ -112,6 +116,8 @@ typedef struct s_pipe
 	int		fd_infile;
 	int		fd_outfile;
 	int		av_nb;
+	struct s_element *cmd;
+	struct s_env *env;
 }	t_pipe;
 
 /*-------------------MAIN FOLDER-------------------*/
@@ -193,7 +199,7 @@ void	free_cmd_list(t_element *cmd_list);
 
 /* Exec*/
 void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec);
-void	single_command(t_element *cmd, t_env *env, t_pipe *exec);
+void	execute_command(t_element *cmd, t_env *env, t_pipe *exec);
 void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, int i);
 char	*ft_get_command(char **path, char *argument);
 
@@ -205,7 +211,7 @@ char	*ft_strcpy(char *dst, char *src);
 
 /* Pipes */
 void	ft_close_pipe(t_pipe *exec);
-void	ft_create_pipe(t_pipe *exec);
+void	ft_create_pipe(t_pipe *exec, int i, int *pipe_end);
 int	ft_waitpid(int *pid, int n);
 
 
@@ -218,7 +224,9 @@ int		ft_outfile(t_element *cmd);
 
 
 
-int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, int i);
+int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
 void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
 void	msg_error(int err);
 int		ft_execuTOR(t_element *cmd, t_pipe *exec);
+
+#endif

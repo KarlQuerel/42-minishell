@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/12 16:38:53 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/13 15:53:44 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,22 @@ int	get_pipe_nb(t_element *cmd, t_pipe *exec)
 
 
 /* Forks every child processes */
-int	ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, int i)
+int	ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd)
 {
+	static int	i;
+
+	i = 0;
+	
 	exec->pid[i] = fork();
 	if (exec->pid[i] < 0)
 	{
 		perror("pipe");
 		return (EXIT_FAILURE);
 	}
+	// printf("%sJE SUIS LA%s\n", BGRE, WHT);
 	if (exec->pid[i] == 0)
 		ft_dup(cmd, exec, pipe_e, fd);
+	i++;
 	return (EXIT_SUCCESS);
 }
 
@@ -90,11 +96,10 @@ void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd)
 	close(pipe_e[1]);
 	if (cmd->prev)
 		close(fd);
+	execute_command(cmd, exec->env, exec);
+	// printf("%sJE SUIS LA%s\n", BGRE, WHT);
 	
 }
-
-
-
 
 /* strcpy */
 char	*ft_strcpy(char *dst, char *src)
