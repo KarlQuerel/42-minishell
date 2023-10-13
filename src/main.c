@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/13 16:51:59 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:26:18 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,9 @@ int main (int argc, char **argv, char **env)
 		printf("ERREUR HOME PATH");
 		exit(1);
 	}
-	new_path = home_path;
+	new_path = malloc(sizeof(char) * ft_strlen(home_path) + 1);
+	ft_strlcpy(new_path, home_path, ft_strlen(home_path));
+	//new_path = home_path;
 	using_history(); // initialisation de l'historique
 	line = NULL;
 	printf("%s", home_path);
@@ -129,8 +131,8 @@ int main (int argc, char **argv, char **env)
 		add_history(line);
 		line = commands(line, env_list, home_path);
 		cmd_list = parsing(line);
-		//ft_redirect(cmd_list); // a finir
-		//ft_execute(cmd_list, env_list, exec);
+		ft_redirect(cmd_list); // a finir
+		ft_execute(cmd_list, env_list, exec);
 		//printf("APRES PARSING FIX\n");
 		//printlist_test(cmd_list);
 		free(line);
