@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
 /*   Updated: 2023/10/13 16:51:59 by casomarr         ###   ########.fr       */

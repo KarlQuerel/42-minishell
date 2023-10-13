@@ -6,25 +6,30 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 15:02:53 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/12 15:43:06 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/13 15:46:56 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-/* Initiate pipe and create all pipe ends according to commands number */
-void	ft_create_pipe(t_pipe *exec)
-{
-	int	i;
 
-	i = 0;
+// int	*pipe_end[2];
+// pipe_end[0];
+// pipe_end[1];
+
+
+// pipe(pipe_end);
+
+
+
+/* Initiate pipe and create all pipe ends according to commands number */
+void	ft_create_pipe(t_pipe *exec, int i, int *pipe_end)
+{
 	while (i < exec->pipe_nb)
 	{
-		printf("avant - pipe_end = %ls\n", exec->pipe_end);
-		if (pipe(exec->pipe_end + 2 * i) < 0) // ne marche pas
+		if (pipe(pipe_end) < 0) // ne marche pas
 		{
-			printf("pipe_end = %ls\n", exec->pipe_end);
 			//gerer les close and free
 			perror("pipe_end");
 			exit(EXIT_FAILURE);
@@ -52,9 +57,12 @@ int	ft_waitpid(int *pid, int n)
 	int	i;
 	int	status;
 
-	i= 0;
+	i = 1;
+	// printf("%sn = %d\n%s\n", BGRE, n, WHT);
 	while (i < n)
 	{
+		// printf("%spid[%d] = %d\n%s\n", BGRE, i, pid[i], WHT);
+		// printf("%si = %d\n%s\n", BGRE, i, WHT);
 		waitpid(pid[i], &status, 0);
 		i++;
 	}
