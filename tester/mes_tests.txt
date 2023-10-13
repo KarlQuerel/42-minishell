@@ -1,2 +1,11 @@
 /Documents
 /./hola
+
+
+cd dossier_non_existant
+cd dossier_avec_espaces (donc avec slashes)
+cd dossier
+cd fichier
+
+
+Faire tests avec et sans espaces pour la fonction erase_spaces

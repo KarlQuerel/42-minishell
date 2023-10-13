@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/12 18:54:21 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:07:06 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,17 @@ char	*erase_spaces(char *line)
 	{
 		if (line[i] == '\'' && quotes_can_close(line) == true) //pour ne pas compter les espaces entre quotes (ex: dans les str de echo)
 		{
-			i++;
+			new_line[j++] = line[i++];
 			while(line[i] != '\'' && line[i])
 				new_line[j++] = line[i++];
+			new_line[j++] = line[i++];
 		}
 		else if (line[i] == '\"' && quotes_can_close(line) == true)
 		{
-			i++;
+			new_line[j++] = line[i++];
 			while(line[i] != '\"' && line[i])
 				new_line[j++] = line[i++];
+			new_line[j++] = line[i++];
 		}
 		else if(line[i] == ' ' && (line[i + 1] == ' ' || line[i + 1] == '\0'))
 			i++;
@@ -92,4 +94,16 @@ char	*erase_spaces(char *line)
 	new_line[j] = '\0';
 	free(line);
 	return (new_line);
+}
+
+char *strlcpy_middle(char *dst, const char *src, size_t start, size_t end)
+{	
+	int	i;
+	
+	i = 0;
+	dst = malloc(sizeof(char) * (end - start + 2));
+	while (src[start] && start <= end)
+		dst[i++] = src[start++];
+	dst[i] = '\0';
+	return (dst);
 }

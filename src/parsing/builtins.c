@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/12 18:31:21 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:45:13 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,50 +73,68 @@ char	*cd(char *line, char *home_path)
 {
 	int		i;
 	int		j;
+	int		lenpath;
+	int		lenhomepath;
 	char	*path;
 	bool	free_needed;
 	
 	free_needed = false;
+	lenpath = 0;
+	lenhomepath = 0;
 	i = where_is_cmd_in_line(line, "cd");
 	if (i == 0)
 		return (line); //error : cd pas trouve
 	//if (size_of_command(line, i, CMD) == 1 ||line[i] == '|' || ft_isalnum(line[i + 1]) != 1 || size_of_command(line, i, CMD) == 2 || line[i] == '\0') // 1 car je rends size + 1 donc si size = 1 c'est que il n'y a rien apres cd / 2 pour le cas "cd | ..."" Plus d'un espace serait efface donc pas plus de 
 	if (size_of_command(line, 0, CMD) == 1 || line[i + 1] == '|' || line[i] == '\0') // 1 car je rends size + 1 donc si size = 1 c'est que il n'y a rien apres cd / 2 pour le cas "cd | ..."" Plus d'un espace serait efface donc pas plus de 2
-		path = home_path;
+	{
+		path = pwd(NO_PRINT);
+		printf("%spath = [%s]%s, %shome_path = [%s]\n%s", GREEN, path, RESET, YELLOW , home_path, RESET);
+		if(ft_strncmp(path, home_path, ft_strlen(home_path)) != 0 && ft_strlen(home_path) != ft_strlen(path))
+		{
+			//path = la diff entre le path (pwd) et le home_path
+			while (path[lenhomepath] == home_path[lenhomepath])
+				lenhomepath++;
+			while (home_path[lenhomepath])
+				path[lenpath++] = home_path[lenhomepath++];
+			path[lenpath++] = '\0';
+			printf("%spath = [%s]%s, %shome_path = [%s]\n%s", GREEN, path, RESET, YELLOW , home_path, RESET);
+		}
+		else
+			return (line);
+	}	
 	else
 	{
 		i++; //now i = beggining of the path
-		path = malloc(sizeof(char) * size_of_command(line, i, CMD) + 2); //+2 car guillemets
+		path = malloc(sizeof(char) * size_of_command(line, i, CMD));
 		if (!path)
 			return (line); //?
-		path[0] = '\"';
-		j = 1;
-		while(line[i] != ' ' && line[i] != '\0') // plus complique que ca : le path peut avoir des espaces TYPE : tronc \commun (je crois)
-			path[j++] = line[i++];
-		path[j] = '\"';
-		path[j + 1] = '\0';
+		j = 0;
+		while(line[i] != ' ' && line[i] != '\0')
+		{
+			if (line[i] == '\\' && line[i + 1] == ' ')
+			{
+				while(line[i] != '/' && (line[i + 1] != ' ' || line[i + 1] != '\0'))
+				{
+					if (line[i] == '\\')
+						i++;
+					path[j++] = line[i++];
+				}
+				i++; //pour sauter le / de fin
+			}
+			if (line[i] != '\0')
+				path[j++] = line[i++];
+		}	
+		path[j] = '\0';
 		free_needed = true;
 	}
-	//printf("%spath = [%s]\n%s", YELLOW, path, RESET);
-
-	//DEMANDER A ANTOINE : CHDIR(PATH) NE MARCHE PAS MAIS CHDIR("SRC") SI!
-/* 	chdir(path);
-	pwd();
-	chdir("src");
-	pwd();
-	free(path);
-	return (line); */
-
-	//Chdir comprend aussi chdir("..") donc pas besoin de gerer le cas "cd .."!
-
-/* 	if (chdir(path) != 0) // pour verifier que ca marche il faut avoir plusieurs dossiers
+	if (chdir(path) != 0) // pour verifier que ca marche il faut avoir plusieurs dossiers
 	{
-		printf("CD NE MARCHE PAS\n");
-		//si le nom du fichier n'existe pas ou s'il a une erreur (comme un seul guillement au debut mais non a la fin du nom) print erreur
+		printf("bash : cd : %s: No such file or directory\n", path);
 		free(path);
 		//printf errno
 		return (line); //??
-	} */
+	}
+	//printf("%spath = [%s]\n%s", YELLOW, path, RESET);
 	if (free_needed == true)
 		free(path);
 	return (line);
@@ -219,14 +237,15 @@ En mettant chaque signe au milieu de ab et en les faisant echo :
 \ ab
 */
 
-void	pwd()
+char	*pwd(int option)
 {
 	char *path;
 
 	path = getcwd(NULL, 0);
-	if (path != NULL)
+	if (path != NULL && option == PRINT)
 		printf("%s\n", path);
 	//else
 		//printf errno
-	free(path);
+	//free(path);
+	return (path);
 }

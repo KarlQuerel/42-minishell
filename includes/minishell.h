@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/13 15:51:00 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/13 16:42:31 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@
 
 # define HISTORY 0
 # define FREE_HISTORY 1
+
+# define PRINT 0
+# define NO_PRINT 1
 
 /* # define BEGINING 0
 # define END 1
@@ -124,47 +127,7 @@ typedef struct s_pipe
 
 /*Main*/
 void	ft_welcome(void);
-
-/*History*/
-void		history(int option);
-
-/*Checks*/
-bool		check_commands_grammar(char *commands);
-bool		quotes_can_close(char *line);
-bool		is_builtin(char *cmd_content);
-
-/*Signal*/
-void		signal_handler(int signal);
-
-/*Builtins*/
-void	echo(char *line);
-void    pwd();
-char	*cd(char *line, char *home_path);
-char	*cd_home_path(char *line, char *home_path);
-char	*dollar(char *line, t_env *env_list);
-
-/*Errors*/
-void	first_character_error(char *line);
-void    redirecters_error(char *line);
-void	slash_error(char *line);
-void	pipe_error(char *line);
-void	and_error(char *line);
-void	str_error(char *line);
-
-/*Utils*/
-char	*ft_joinstr_minishell(char *line, int len, char *str, char type);
-char	*ft_join_pour_cd(char *line_begining, char *path);
-char	*erase_spaces(char *line);
-
-/*Malloc*/
-char	*erase_spaces_malloc(char *line);
-char	*joinstr_minishell_malloc(char *line, int len, char *str, char type);
-
-
-/*Cmd_types*/
-int	cmd_type(char *command, int len);
-int	key_and_value_type(char *command, int len, int type);
-int	str_type(char *command, int len);
+char	*home_path_simplified(char *absolute_path, t_env *env_list);
 
 /*------------------PARSING FOLDER------------------*/
 
@@ -192,8 +155,50 @@ t_element	*lstnew(char *line, int i);
 t_env		*lstnew_env(char *line, int i);
 
 /*Free*/
-void	final_free(char *line, t_env *env_list);
+void	final_free(char *line, t_env *env_list, t_env *path, char *new_path);
 void	free_cmd_list(t_element *cmd_list);
+
+/*History*/
+void		history(int option);
+
+/*Checks*/
+bool		check_commands_grammar(char *commands);
+bool		quotes_can_close(char *line);
+bool		is_builtin(char *cmd_content);
+
+/*Signal*/
+void		signal_handler(int signal);
+
+/*Builtins*/
+void	echo(char *line);
+char    *pwd(int option);
+char	*cd(char *line, char *home_path);
+char	*dollar(char *line, t_env *env_list);
+
+/*Errors*/
+void	first_character_error(char *line);
+void    redirecters_error(char *line);
+void	slash_error(char *line);
+void	pipe_error(char *line);
+void	and_error(char *line);
+void	str_error(char *line);
+
+/*Utils*/
+char	*ft_joinstr_minishell(char *line, int len, char *str, char type);
+char	*ft_join_pour_cd(char *line_begining, char *path);
+char	*erase_spaces(char *line);
+char 	*strlcpy_middle(char *dst, const char *src, size_t start, size_t end);
+
+/*Malloc*/
+char	*erase_spaces_malloc(char *line);
+char	*joinstr_minishell_malloc(char *line, int len, char *str, char type);
+
+
+/*Cmd_types*/
+int		cmd_type(char *command, int len);
+int		key_and_value_type(char *command, int len, int type);
+int		str_type(char *command, int len);
+
 
 /*-----------------EXECUTABLE FOLDER------------------*/
 
