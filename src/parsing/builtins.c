@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/13 16:45:13 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:07:16 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,4 +248,33 @@ char	*pwd(int option)
 		//printf errno
 	//free(path);
 	return (path);
+}
+
+/* Reproduces the export command */
+int	ft_export(t_env *env)
+{
+	int	i = 0;
+
+	while (env->env[i])
+	{
+		
+		
+		
+		printf("env[%d] = %s\n", i, env->env[i]);
+		i++;
+	}
+	return 0;
+}
+
+/* Reproduces the env command */
+void	ft_env(t_env *env)
+{
+	int	i;
+
+	i = 0;
+	while (env->env[i])
+	{
+		printf("%s\n", env->env[i]);
+		i++;
+	}
 }
