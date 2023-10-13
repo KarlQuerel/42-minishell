@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/12 18:31:21 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/13 13:46:42 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,37 +86,36 @@ char	*cd(char *line, char *home_path)
 	else
 	{
 		i++; //now i = beggining of the path
-		path = malloc(sizeof(char) * size_of_command(line, i, CMD) + 2); //+2 car guillemets
+		path = malloc(sizeof(char) * size_of_command(line, i, CMD));
 		if (!path)
 			return (line); //?
-		path[0] = '\"';
-		j = 1;
-		while(line[i] != ' ' && line[i] != '\0') // plus complique que ca : le path peut avoir des espaces TYPE : tronc \commun (je crois)
-			path[j++] = line[i++];
-		path[j] = '\"';
-		path[j + 1] = '\0';
+		j = 0;
+		while(line[i] != ' ' && line[i] != '\0')
+		{
+			if (line[i] == '\\' && line[i + 1] == ' ')
+			{
+				while(line[i] != '/' && (line[i + 1] != ' ' || line[i + 1] != '\0'))
+				{
+					if (line[i] == '\\')
+						i++;
+					path[j++] = line[i++];
+				}
+				i++; //pour sauter le / de fin
+			}
+			if (line[i] != '\0')
+				path[j++] = line[i++];
+		}	
+		path[j] = '\0';
 		free_needed = true;
 	}
 	//printf("%spath = [%s]\n%s", YELLOW, path, RESET);
-
-	//DEMANDER A ANTOINE : CHDIR(PATH) NE MARCHE PAS MAIS CHDIR("SRC") SI!
-/* 	chdir(path);
-	pwd();
-	chdir("src");
-	pwd();
-	free(path);
-	return (line); */
-
-	//Chdir comprend aussi chdir("..") donc pas besoin de gerer le cas "cd .."!
-
-/* 	if (chdir(path) != 0) // pour verifier que ca marche il faut avoir plusieurs dossiers
+	if (chdir(path) != 0) // pour verifier que ca marche il faut avoir plusieurs dossiers
 	{
-		printf("CD NE MARCHE PAS\n");
-		//si le nom du fichier n'existe pas ou s'il a une erreur (comme un seul guillement au debut mais non a la fin du nom) print erreur
+		printf("bash : cd : %s: No such file or directory\n", path);
 		free(path);
 		//printf errno
 		return (line); //??
-	} */
+	}
 	if (free_needed == true)
 		free(path);
 	return (line);
