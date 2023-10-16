@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/10 17:04:48 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/16 15:04:10 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	signal_handler(int signal/*, char *line*/)
 {
 	if (signal == SIGINT) //ctrl + C
 	{
+		/*qd je fais ctrl + C le prompt devient juste un dollar, je pense que 
+		c'est ici qu'il faut lui envoye rle path à imprimer (voir printf dans le main)*/
 		ft_putchar_fd('\n', STDOUT_FILENO);
 		rl_on_new_line();
 		rl_replace_line("", 0);

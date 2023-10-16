@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/13 18:26:18 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/16 15:01:19 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list)
 int main (int argc, char **argv, char **env)
 {
 	char                *line;
+	char                *new_line;
 	char                *home_path;
 	struct sigaction    signal;
 	t_env				*env_list;
@@ -125,17 +126,22 @@ int main (int argc, char **argv, char **env)
 			final_free(line, env_list, path, new_path);
 			return (EXIT_SUCCESS);
 		}
-		//printf("line before : [%s]\n", line);
-		line = erase_spaces(line);
-		//printf("line after : [%s]\n", line);
 		add_history(line);
-		line = line_errors_and_fix(line, env_list);
-		cmd_list = parsing(line);
+	/*J'envoie new_line au lieu de line aux fonctions qui suivent
+	car sur bash qd on fait flèche du haut on retrouve la commande
+	telle qu'elle avait été écrite alors qu'ici on la modifiait*/
+		new_line = erase_spaces(line);
+		new_line = line_errors_and_fix(new_line, env_list);
+		//printf("line before : [%s]\n", line);
+		//printf("line after : [%s]\n", new_line);
+		cmd_list = parsing(new_line);
 		//ft_redirect(cmd_list); // a finir
 		//ft_execute(cmd_list, env_list, exec);
-		//printf("APRES PARSING FIX\n");
 		//printlist_test(cmd_list);
-		free(line);
+
+		commands(new_line, env_list, home_path); // À effacer : c'est juste pour test mes builtins tant que ton exec est en commentaire
+
+		free(new_line);
 		free_cmd_list(cmd_list);
 		free(new_path);
 		new_path = pwd(NO_PRINT);

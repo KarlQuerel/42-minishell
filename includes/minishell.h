@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/13 17:08:35 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:53:44 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@
 
 # define PRINT 0
 # define NO_PRINT 1
+
+# define SPACES 0
+# define QUOTES 1
 
 /* # define BEGINING 0
 # define END 1
@@ -170,11 +173,22 @@ bool		is_builtin(char *cmd_content);
 /*Signal*/
 void		signal_handler(int signal);
 
-/*Builtins*/
-void	echo(char *line);
+/*Pwd*/
 char    *pwd(int option);
-void	cd(char *line, char *home_path, t_env *env_list);
+
+/*Dollar*/
 char	*dollar(char *line, t_env *env_list);
+
+/*Echo*/
+int 	skip(char *line, int i, int option);
+char	type_of_str(char *line, int i);
+void	echo(char *line);
+
+/*Cd*/
+void	cd_home(char *home_path, t_env *env_list);
+char    *cd_path(char *line, int i, char *path);
+void	cd_directory(char *line, int i);
+void	cd(char *line, char *home_path, t_env *env_list);
 
 /*Errors*/
 void	first_character_error(char *line);
