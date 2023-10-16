@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/13 18:07:16 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/17 01:01:07 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -250,21 +250,6 @@ char	*pwd(int option)
 	return (path);
 }
 
-/* Reproduces the export command */
-int	ft_export(t_env *env)
-{
-	int	i = 0;
-
-	while (env->env[i])
-	{
-		
-		
-		
-		printf("env[%d] = %s\n", i, env->env[i]);
-		i++;
-	}
-	return 0;
-}
 
 /* Reproduces the env command */
 void	ft_env(t_env *env)
@@ -274,7 +259,91 @@ void	ft_env(t_env *env)
 	i = 0;
 	while (env->env[i])
 	{
-		printf("%s\n", env->env[i]);
+		ft_putendl_fd(env->env[i], STDOUT_FILENO);
 		i++;
 	}
 }
+/* Reproduces the export command */
+int	ft_export(t_element *cmd_list, char **av)
+{
+	int	ret;
+	char	**new_var;
+	
+	ret = 1;
+	if (!cmd_list->next->content) // CAS A REGARDER A 42, si on ecrit export sans rien
+		ft_env(cmd_list->env);
+	while (cmd_list && cmd_list->next)
+	{
+		if (!ft_is_valid(cmd_list->next->content)) // si on envoie un mauvais argument a export
+		{
+			ft_putendl_fd("export: %s: not a valid identifier", STDOUT_FILENO);
+			return (0);
+		}
+		else if (ft_strchr(cmd_list->next->content, '=')) // si on trouve un = dans la string
+		{
+			new_var = new_env_var(cmd->nex->content);
+			put_new_var(cmd_list, nev_var[0], new_var[1]);
+		}
+		printf("content = %s\n",  cmd_list->content);
+		cmd_list = cmd_list->next;
+	}
+	return (1);
+}
+
+/* Checks if the argument is a valid name for a variable*/
+int	ft_is_valid(char *s)
+{
+	int	i = 0;
+	if (!ft_isalpha(s[i]) && s[i] != '_')
+		return (0);
+	while (s[i] && s[i] != '=')
+	{
+		if (ft_isalnum(s[i]) && s[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+/* Returns an array of strings with the new variable */
+char **new_env_var(char *s)
+{
+	char **ret;
+	char *position_equal;
+	
+	position_equal = ft_strchr(s, '='); // on prend la position du egal
+	ret[0] = ft_substr(s, 0, position_equal - s);
+	ret[1] = ft_substr(position_equal, 1, ft_strlen(position_equal));
+	ret[3] = NULL;
+	return (ret);
+}
+
+int	put_new_var(t_element *cmd_list, char *key, char *content)
+{
+	int		i;
+	char	*to_free;
+	t_env	*env;
+
+	env = malloc(sizeof(t_env)); // a free apres
+	if (content == NULL)
+		content = ""; // pour quand meme ecrire le new env (exemple:"Hello=")
+	t_env = find_value_with_key_env(env, key);
+	if (env == NULL)
+	{
+		free(env);
+		//peut etre un return, a tester a 42
+	}
+	to_free = ft_strjoin("=", content);
+	if (!to_free)
+	{
+		free(env);
+		return (0);
+	}
+	
+	return (1);
+}
+
+/*
+
+int	env_len(t_env * env)
+alloc_new_env mais utilise une global variable

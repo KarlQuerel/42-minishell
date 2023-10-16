@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/13 19:21:10 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/16 19:47:58 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -124,7 +124,7 @@ char	*ft_get_command(char **path, char *argument)
 /* Handles execution */
 void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 {
-	t_pid	pid;
+	//pid_t	pid;
 	//faire le malloc des pipe
 	//create pipes
 	// A FAIRE

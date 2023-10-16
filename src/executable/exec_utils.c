@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/13 18:39:58 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/16 19:50:04 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -35,7 +35,7 @@ int	get_args_nb(t_element *cmd, t_pipe *exec)
 		{
 			exec->cmd_tab[nb_args] = malloc(sizeof(char *) * ft_strlen(cmd->content) + 1);
 			ft_strcpy(exec->cmd_tab[nb_args], cmd->content);
-			printf("cmd_tab[%d] = %s\n", nb_args, exec->cmd_tab[nb_args]);
+			// printf("cmd_tab[%d] = %s\n", nb_args, exec->cmd_tab[nb_args]);
 			nb_args++;
 		}
 		cmd = cmd->next;

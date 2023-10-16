@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/13 18:07:23 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/16 21:07:25 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 /*Libraries*/
 
@@ -86,6 +86,7 @@ typedef struct s_element
 	struct s_element *prev;
 	struct s_element *next;
 	struct s_pipe *exec;
+	struct s_env *env;
 }	t_element;
 
 /* Environment
@@ -174,8 +175,14 @@ void	echo(char *line);
 char	*pwd(int option);
 char	*cd(char *line, char *home_path);
 char	*dollar(char *line, t_env *env_list);
-int		ft_export(t_env *env);
 void	ft_env(t_env *env);
+
+/*Export*/
+int		ft_export(t_element *cmd_list, char **av);
+int		ft_is_valid(char *s);
+char 	**new_env_var(char *s);
+
+
 // unset
 
 /*Errors*/
