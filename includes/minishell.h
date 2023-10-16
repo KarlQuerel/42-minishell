@@ -132,11 +132,12 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list);
 /*------------------PARSING FOLDER------------------*/
 
 /*Commands*/
-char	*commands(char *line, t_env *env_list, char *home_path);
+void	commands(char *line, t_env *env_list, char *home_path);
 bool	is_this_command(char *buffer, char* command);
 int		size_of_command(char *command, int len, int type);
 bool    is_cmd_in_line(char *line, char *cmd);
 int 	where_is_cmd_in_line(char *line, char *cmd);
+char	*line_errors_and_fix(char *line, t_env *env_list);
 
 /*Parsing*/
 void	printlist_test(t_element   *head); //A EFFACER A LA FIN
@@ -172,7 +173,7 @@ void		signal_handler(int signal);
 /*Builtins*/
 void	echo(char *line);
 char    *pwd(int option);
-char	*cd(char *line, char *home_path, t_env *env_list);
+void	cd(char *line, char *home_path, t_env *env_list);
 char	*dollar(char *line, t_env *env_list);
 
 /*Errors*/

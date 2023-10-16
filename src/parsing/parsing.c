@@ -13,6 +13,8 @@
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
+
+
 void printlist_test(t_element *head) // A EFFACER A LA FIN
 {
 	int i = 0;
