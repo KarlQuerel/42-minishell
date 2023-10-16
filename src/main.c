@@ -129,10 +129,10 @@ int main (int argc, char **argv, char **env)
 		line = erase_spaces(line);
 		//printf("line after : [%s]\n", line);
 		add_history(line);
-		line = commands(line, env_list, home_path);
+		line = line_errors_and_fix(line, env_list);
 		cmd_list = parsing(line);
-		ft_redirect(cmd_list); // a finir
-		ft_execute(cmd_list, env_list, exec);
+		//ft_redirect(cmd_list); // a finir
+		//ft_execute(cmd_list, env_list, exec);
 		//printf("APRES PARSING FIX\n");
 		//printlist_test(cmd_list);
 		free(line);

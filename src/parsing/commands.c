@@ -13,30 +13,39 @@
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-char	*commands(char *line, t_env *env_list, char *home_path)
+/*The first two functions check if there are errors in the grammar of the command
+line and print the associated error. The last function replaces the $ by its
+associated value so that the executable receives directly the line completed.*/
+char	*line_errors_and_fix(char *line, t_env *env_list)
 {
-	/*a la base j avais fait " cd " etc donc avec espace apres le 
-	nom du builtin pour eviter les erreur du type "holacdhey" et 
-	que ca compte comme cd mais pb : cd tout seul sans espace avant
-	car premiere cmd de la ligne et sans espace apres car c est a 
-	moi de remplacer par le home_path alors ca ne marche pas*/
-	if (is_cmd_in_line(line, "$") == true)
-		line = dollar(line, env_list);
-	else if (is_this_command(line, "history") == true)
-		history(HISTORY);
-	else if (is_this_command(line, "pwd") == true)
-		pwd(PRINT);
-	else if (is_cmd_in_line(line, "cd") == true)
-		line = cd(line, home_path, env_list);
-	else if (is_cmd_in_line(line, "echo") == true)
-		echo(line);
-	else if (is_cmd_in_line(line, ">") == true || is_cmd_in_line(line, "<") == true)
+	if (is_cmd_in_line(line, ">") == true || is_cmd_in_line(line, "<") == true)
 		redirecters_error(line);
 	else if (line[0] == '<' || line[0] == '>' || \
 	line[0] == '/' || line[0] == '|' || line[0] == '&' || \
 	line[0] == '\'' || line[0] == '\"')
 		first_character_error(line);
+	else if (is_cmd_in_line(line, "$") == true)
+		line = dollar(line, env_list);
 	return (line);
+}
+
+void	commands(char *line, t_env *env_list, char *home_path)
+{
+	/*a la base j avais fait " cd " etc donc avec espace apres le 
+	nom du builtin pour eviter les erreur du type "holacdhey" et 
+	que ca compte comme cd mais pb : cd tout seul sans espace avant
+	car premiere cmd de la ligne et sans espace apres car c est a 
+	moi de remplacer par le home_path alors ca ne marche pas. Même
+	pb pour le $ dans la fonction line_errors_and_fix car on peut
+	avoir $ suivi de '?'.*/
+	if (is_this_command(line, "history") == true)
+		history(HISTORY);
+	else if (is_this_command(line, "pwd") == true)
+		pwd(PRINT);
+	else if (is_cmd_in_line(line, "cd") == true)
+		cd(line, home_path, env_list);
+	else if (is_cmd_in_line(line, "echo") == true)
+		echo(line);
 }
 
 /*Checks if what is written in the command line corresponds to a command*/

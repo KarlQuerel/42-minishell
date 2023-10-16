@@ -21,6 +21,7 @@
 */
 char	*dollar(char *line, t_env *env_list)
 {
+	/*Il manque à gérer l'option $?*/
 	int		i;
 	int		j;
 	int		len;
@@ -69,25 +70,25 @@ char	*dollar(char *line, t_env *env_list)
 }
 
 /* i = c (= the beggining of the command "cd")*/
-char	*cd(char *line, char *home_path, t_env *env_list)
+void	cd(char *line, char *home_path, t_env *env_list)
 {
 	int		i;
 	int		j;
-	int		lenpath;
+/* 	int		lenpath;
 	int		lennew;
+	char	*new_path; */
 	char	*path;
-	char	*new_path;
 	char	*bigger;
 	bool	free_needed;
 	t_env	*user;
 	
 	free_needed = false;
-	lenpath = 0;
+/* 	lenpath = 0;
 	lennew = 0;
-	new_path = NULL;
+	new_path = NULL; */
 	i = where_is_cmd_in_line(line, "cd");
 	if (i == 0)
-		return (line); //error : cd pas trouve
+		return ; //error : cd pas trouve
 	//if (size_of_command(line, i, CMD) == 1 ||line[i] == '|' || ft_isalnum(line[i + 1]) != 1 || size_of_command(line, i, CMD) == 2 || line[i] == '\0') // 1 car je rends size + 1 donc si size = 1 c'est que il n'y a rien apres cd / 2 pour le cas "cd | ..."" Plus d'un espace serait efface donc pas plus de 
 	if (size_of_command(line, 0, CMD) == 1 || line[i + 1] == '|' || line[i] == '\0') // 1 car je rends size + 1 donc si size = 1 c'est que il n'y a rien apres cd / 2 pour le cas "cd | ..."" Plus d'un espace serait efface donc pas plus de 2
 	{
@@ -124,16 +125,16 @@ char	*cd(char *line, char *home_path, t_env *env_list)
 			// path = new_path;
 		}
 		else
-			return (line);
+			return ;
 	}	
 	else
 	{
 		i++; //now i = beggining of the path
 		path = malloc(sizeof(char) * size_of_command(line, i, CMD));
 		if (!path)
-			return (line); //?
+			return ;
 		j = 0;
-		while(line[i] != ' ' && line[i] != '\0')
+		while(line[i] != ' ' && line[i] != '\0') //traite les cas où le nom du dossier contient des espaces
 		{
 			if (line[i] == '\\' && line[i + 1] == ' ')
 			{
@@ -156,13 +157,12 @@ char	*cd(char *line, char *home_path, t_env *env_list)
 		printf("bash : cd : %s: No such file or directory\n", path);
 		free(path);
 		//printf errno
-		return (line); //??
+		return ;
 	}
 	//printf("%spath = [%s]\n%s", YELLOW, path, RESET);
 	if (free_needed == true)
 		free(path);
 	//faudra free (new_path) aussi
-	return (line);
 }
 
 void	echo(char *line)
