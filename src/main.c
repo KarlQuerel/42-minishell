@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/17 16:35:52 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/17 18:12:12 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,19 @@ int main (int argc, char **argv, char **env)
 	t_env				*path;
 	char				*new_path;
 
-	exec = malloc(sizeof(t_pipe));
+
+
+	
+	exec = ft_calloc(1, sizeof(t_pipe));
 	if (!exec)
 	{
 		perror("exec");
 		exit(EXIT_FAILURE);
 	}
+
+	//utiliser ft_calloc a la place de malloc
+	
+
 	sigemptyset(&signal.sa_mask);
 	// signal.sa_flags = SA_SIGINFO;
 	signal.sa_flags = SA_RESTART;
@@ -111,13 +118,12 @@ int main (int argc, char **argv, char **env)
 	}
 	new_path = malloc(sizeof(char) * ft_strlen(home_path) + 1);
 	ft_strlcpy(new_path, home_path, ft_strlen(home_path));
-	//new_path = home_path;
-	using_history(); // initialisation de l'historique
+	using_history();
 	line = NULL;
 	printf("%s", home_path);
 	line = readline("$ ");
-	check_commands_grammar(line); //fonction pas encore terminee
-	while (is_this_command(line, "exit") == false)
+	while (is_this_command(line, "exit") == false) // while (1) et mettre line = readline("$ ") tout en haut de la while
+	//et mettre en commentaire le line = readline("$ ") du bas de la while
 	{
 		if (feof(stdin)) // pour ctrl + D?? // ne le comprend pas
 		{
@@ -135,20 +141,17 @@ int main (int argc, char **argv, char **env)
 		//ft_env(env_list, 0);
 		//ft_export(cmd_list, env_list);
 
-
 		
 		//ft_redirect(cmd_list); // a finir
 		ft_execute(cmd_list, env_list, exec);
-		// printf("%sJE SUIS LAAAAAAA\n%s", YELLOW, RESET);	
 		//printf("APRES PARSING FIX\n");
 		//printlist_test(cmd_list);
-		//free(line);
-		//free_cmd_list(cmd_list);
-		//free(new_path);
-		// new_path = pwd(NO_PRINT);
-		// new_path = home_path_simplified(new_path, env_list);
-		//printf("%sAPRES HOMEPATHSIMPLIFIED home_path = [%s]\n%s", YELLOW, home_path, RESET);
-		// printf("%s", new_path);
+		free(line);
+		free_cmd_list(cmd_list);
+		free(new_path);
+		new_path = pwd(NO_PRINT);
+		new_path = home_path_simplified(new_path, env_list);
+		printf("%s", new_path);
 		line = readline("$ ");
 	}
 	final_free(line, env_list, path, new_path);

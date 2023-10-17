@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/17 16:42:12 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/17 17:12:34 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,14 +86,13 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 				ft_putstr_fd(": command not found\n", 2);
 			}
 		}
-		execve(cmd->content, exec->cmd_tab, env->env);
-		// printf("%sJE SUIS LAAAAAAA\n%s", YELLOW, RESET);	
-		
-		// ft_putstr_fd("execve failed\n");
+		if (execve(cmd->content, exec->cmd_tab, env->env) == -1)
+			ft_putstr_fd("execve failed\n", STDOUT_FILENO);
 		/* wlaw
 			access(cmd_tab[0], F OK, regarder sur internet) */
 		
 	}
+	waitpid(pid, NULL, 0);
 }
 
 /* Extracts command from char *argument and verify if they are valid
@@ -197,24 +196,6 @@ int	childrens(t_element *cmd, t_pipe *exec)
 // {
 // }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
 		
 	// else // on split les process car pipe presents
 	// {
@@ -281,8 +262,6 @@ int	childrens(t_element *cmd, t_pipe *exec)
 	// 	// free en plus dans le code de caro ?
 	// }
 	
-
-
 	
 	/* POUR PRINT LE PATH
 	-> la ou toutes les commandes se trouvent (check avec whereis)
@@ -307,8 +286,6 @@ int	childrens(t_element *cmd, t_pipe *exec)
 	// 		ft_putstr_fd(": command not found\n", 2);
 	// 	}
 	// }
-
-	
 	// printf("1st argument AKA cmd->content = %s\n", cmd->content);
 	// printf("2nd argument AKA cmd->content_tab[0] = %s\n", exec->cmd_tab[0]);
 	// printf("2nd argument AKA cmd->content_tab[1] = %s\n", exec->cmd_tab[1]);
