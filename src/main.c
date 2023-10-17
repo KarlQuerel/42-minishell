@@ -131,8 +131,9 @@ int main (int argc, char **argv, char **env)
 		new_line = line_errors_and_fix(new_line, env_list);
 	/*SI line_errors_and_fix TROUVE DES ERREURS IL NE FAUDRAIT PAS ENTRER DANS PARSING*/
 		cmd_list = parsing(new_line);
-		//ft_redirect(cmd_list); // a finir
-		//ft_execute(cmd_list, env_list, exec);
+		// ft_export(env_list);
+		ft_redirect(cmd_list); // a finir
+		ft_execute(cmd_list, env_list, exec);
 		//printlist_test(cmd_list);
 
 		//commands(new_line, env_list, home_path); // À effacer : c'est juste pour test mes builtins tant que ton exec est en commentaire

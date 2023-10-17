@@ -1,14 +1,18 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/10/17 16:57:21 by casomarr         ###   ########.fr       */
+=======
+/*   Updated: 2023/10/16 21:07:25 by karl             ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 /*Libraries*/
 
@@ -89,6 +93,7 @@ typedef struct s_element
 	struct s_element *prev;
 	struct s_element *next;
 	struct s_pipe *exec;
+	struct s_env *env;
 }	t_element;
 
 /* Environment
@@ -177,6 +182,15 @@ char    *pwd(int option);
 
 /*Dollar*/
 char	*dollar(char *line, t_env *env_list);
+void	ft_env(t_env *env);
+
+/*Export*/
+int		ft_export(t_element *cmd_list, char **av);
+int		ft_is_valid(char *s);
+char 	**new_env_var(char *s);
+
+
+// unset
 
 /*Echo*/
 int 	skip(char *line, int i, int option);
