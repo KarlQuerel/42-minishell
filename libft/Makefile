@@ -6,7 +6,7 @@
 #    By: karl <karl@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/30 14:55:13 by casomarr          #+#    #+#              #
-#    Updated: 2023/10/09 13:49:16 by karl             ###   ########.fr        #
+#    Updated: 2023/10/16 19:48:21 by karl             ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -60,7 +60,7 @@ FILES_BONUS = ft_lstadd_back.c 		\
 
 OBJS_BONUS = $(FILES_BONUS:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror 
+CFLAGS = #-Wall -Wextra -Werror 
 
 all: ${NAME}
 

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:07:47 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/13 14:06:51 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/13 18:21:11 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,12 @@ bool	quotes_can_close(char *line)
 
 bool		is_builtin(char *cmd_content)
 {
-	if (strncmp(cmd_content, "echo", ft_strlen("echo")) == 0 || \
-	strncmp(cmd_content, "cd", ft_strlen("cd")) == 0 || \
-	strncmp(cmd_content, "pwd", ft_strlen("pwd")) == 0 || \
-	strncmp(cmd_content, "export", ft_strlen("export")) == 0 || \
-	strncmp(cmd_content, "unset", ft_strlen("unset")) == 0 || \
-	strncmp(cmd_content, "env", ft_strlen("env")) == 0) //j'ai pas mis exit, ce qui se pase qd on ecrit exit apres une pipe sur bash n est pas clair
+	if (ft_strncmp(cmd_content, "echo", ft_strlen("echo")) == 0 || \
+	ft_strncmp(cmd_content, "cd", ft_strlen("cd")) == 0 || \
+	ft_strncmp(cmd_content, "pwd", ft_strlen("pwd")) == 0 || \
+	ft_strncmp(cmd_content, "export", ft_strlen("export")) == 0 || \
+	ft_strncmp(cmd_content, "unset", ft_strlen("unset")) == 0 || \
+	ft_strncmp(cmd_content, "env", ft_strlen("env")) == 0) //j'ai pas mis exit, ce qui se pase qd on ecrit exit apres une pipe sur bash n est pas clair
 		return (true);
 	else
 		return (false);

@@ -6,13 +6,14 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:24:57 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/12 16:32:25 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/13 17:22:02 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
+/*  */
 void	msg_error(int err)
 {
 	ft_putstr_fd("bash: ", STDERR_FILENO);

@@ -1,20 +1,26 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/13 15:50:49 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/16 19:47:58 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
 /*
 TO DO:
+
+- UNSET
+- EXPORT
+
+
+
 - cas pablo (demander a caro la photo)
 - gerer open et HEREDOC
 
@@ -49,6 +55,28 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 			printf("Split_path failed\n");
 			// free
 		}
+		// if (cmd->builtin == true)
+		// {
+		// 	if (ft_strncmp(cmd->content, "echo", ft_strlen("echo")))
+		// 	{
+		// 		if (cmd->next->content /*&& cmd->next->type == ARGUMENT*/)
+		// 			echo(cmd->next->content);
+		// 		else
+		// 			ft_putstr_fd("\n", 1);
+		// 	}
+		// 	// if (ft_strncmp(cmd->content, "cd", ft_strlen("cd")))
+		// 	// 	cd();
+		// 	if (ft_strncmp(cmd->content, "pwd", ft_strlen("pwd")))
+		// 		pwd(PRINT);
+		// 	if (ft_strncmp(cmd->content, "export", ft_strlen("export")))
+		// 		ft_export(env);
+		// 	// if (ft_strncmp(cmd->content, "unset", ft_strlen("unset")))
+		// 	// 	ft_unset();
+		// 	if (ft_strncmp(cmd->content, "env", ft_strlen("env")))
+		// 		ft_env(env);
+		// }
+
+
 		cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
 		if (!cmd->content)
 		{
@@ -61,8 +89,11 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 			}
 		}
 		execve(cmd->content, exec->cmd_tab, env->env);
+		// ft_putstr_fd("execve failed\n");
+		/* wlaw
+			access(cmd_tab[0], F OK, regarder sur internet) */
+		
 	}
-	waitpid(pid, NULL, 0);
 }
 
 /* Extracts command from char *argument and verify if they are valid
@@ -90,72 +121,10 @@ char	*ft_get_command(char **path, char *argument)
 	return (NULL);
 }
 
-/* Creates child process
---> will fork as long as i is < to av_nb
---> several cases occur, first child, middle child and last child
-*/
-void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, int i)
-{
-	pid_t	pid;
-	
-	pid = fork(); // system call to create new process (child)
-	if (pid == -1) // if it fails
-	{
-		perror("pipe");
-		exit(EXIT_FAILURE);
-	}
-	else if (pid == 0) // meaning we are in the child process
-	{
-		if (i == 0) // its the first child in the pipeline
-		{
-			//dup2(0, 0); // inutile
-			dup2(exec->pipe_end[1], 1);
-		}
-		else if (i == exec->av_nb) // last child in the pipeline
-		{
-			dup2(exec->pipe_end[(i * 2) - 2], 0); // duplicates the reading pipe (fd[0]) of the last child to the writing of the previous child
-			dup2(1, 1); //fd_outfile = result of the open function
-		}
-		else // all the middle childs
-		{
-			dup2(exec->pipe_end[(i * 2) - 2], 0);
-			dup2(exec->pipe_end[(i * 2) + 1], 1); // we redirect the writing pipe (fd[1])
-		}
-		ft_close_pipe(exec);
-		exec->cmd_tab = ft_split(exec->cmd_tab[i], ' ');
-
-
-		
-		// int	j = 0;
-		// while (exec->cmd_tab[j])
-		// {
-		// 	printf("cmd_tab[%d] = %s\n", j, exec->cmd_tab[j]);
-		// 	j++;
-		// }
-
-
-		
-		cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[i]);
-
-		printf("---%s----\n", cmd->content);
-		
-		if (!cmd->content)
-		{
-			if (!exec->cmd_tab[i])
-				ft_putstr_fd("\n", 2);
-			else
-			{
-				ft_putstr_fd(exec->cmd_tab[i], 2);
-				ft_putstr_fd(": command not found\n", 2);
-			}
-		}
-		execve(cmd->content, exec->cmd_tab, env->env);
-	}
-}
-
 /* Handles execution */
 void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 {
+	//pid_t	pid;
 	//faire le malloc des pipe
 	//create pipes
 	// A FAIRE
@@ -164,8 +133,15 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 	if (!exec->cmd_tab)
 		return ;
 	exec->av_nb = get_args_nb(cmd, exec);
+
+	// if (cmd->builtin == true)
+	// {
+	// 	// cd();
+	// 	//commands()
+	// 	exit(127);
+	// }
+	
 	get_pipe_nb(cmd, exec);
-	// printf("pipe_nb = %d\n", exec->pipe_nb);
 
 	if (exec->pipe_nb == 0) // pas de pipe donc single command
 		execute_command(cmd, env, exec);
