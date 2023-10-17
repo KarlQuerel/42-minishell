@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/17 16:25:09 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/17 19:07:06 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,11 @@ t_element	*builtin_fix(t_element *cmd_list)
 
 	head = cmd_list;
 	if (cmd_list->next == NULL || cmd_list->next->type == PIPE) //??
+	{
+		if (is_builtin(cmd_list->content) == true)
+			cmd_list->builtin = true;
 		return (head);
+	}
 	while(cmd_list->next != NULL)
 	{
 		if (is_builtin(cmd_list->content) == true)
