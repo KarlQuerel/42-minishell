@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/17 18:43:32 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/17 19:29:09 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ typedef struct s_env
 typedef struct s_pipe
 {
 	int		here_doc;
-	int		pipe_nb;
+	int		cmd_nb;
 	int		*pid;
 	char	**cmd_tab;
 	char	**cmd_path;
@@ -184,7 +184,7 @@ void	ft_env(t_env *env, int option);
 int		ft_export(t_element *cmd_list, t_env *env);
 int		ft_is_valid(char *s);
 char 	**new_env_var(char *s);
-int	put_new_var(t_env *env, char *key, char *content);
+int		put_new_var(t_env *env, char *key, char *content);
 
 
 // unset
@@ -237,13 +237,13 @@ char	*ft_get_command(char **path, char *argument);
 char	**split_path(t_env *env_list);
 int		get_args_nb(t_element *cmd);
 void	fill_cmd_tab(t_element *cmd, t_pipe *exec);
-int		get_pipe_nb(t_element *cmd, t_pipe *exec);
+int		get_cmds_nb(t_element *cmd, t_pipe *exec);
 char	*ft_strcpy(char *dst, char *src);
 
 /* Pipes */
 void	ft_close_pipe(t_pipe *exec);
 void	ft_create_pipe(t_pipe *exec, int i, int *pipe_end);
-int	ft_waitpid(int *pid, int n);
+int		ft_waitpid(int *pid, int n);
 
 
 /* Redirect */

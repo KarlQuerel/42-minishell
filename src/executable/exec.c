@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/17 18:45:50 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/17 19:33:31 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,10 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, char *line, char 
 			printf("Split_path failed\n");
 			// free des trucs
 		}
-		printf("----------------->line = %s\n", line);
-		printf("cmd_builtin = %d\n", cmd->builtin);
-		printf("cmd->content = %s\n", cmd->content);
+		
 
-
+		// printf("cmd_builtin = %d\n", cmd->builtin);
+		// printf("cmd->content = %s\n", cmd->content);
 		if (cmd->builtin == true)
 		{
 			
@@ -133,7 +132,7 @@ char	*ft_get_command(char **path, char *argument)
 void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, char *line, char *home_path)
 {
 	exec->av_nb = get_args_nb(cmd);
-	exec->cmd_tab = malloc(sizeof(char *) * exec->av_nb + 1); // utiliser la fonction de caro
+	exec->cmd_tab = malloc(sizeof(char *) * (exec->av_nb + 1)); // utiliser la fonction de caro
 	if (!exec->cmd_tab)
 		return ;
 	fill_cmd_tab(cmd, exec);
@@ -145,12 +144,12 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, char *line, char *home
 	// 	exit(127);
 	// }
 	
-	get_pipe_nb(cmd, exec);
-	if (exec->pipe_nb == 0) // pas de pipe donc single command
+	get_cmds_nb(cmd, exec); // utiliser le nombre de commands while (i < nb_commands)
+	if (exec->cmd_nb == 1) // dans le cas d'une single command
 		execute_command(cmd, env, exec, line, home_path);
-	else // plusieurs enfants
+	else // plusieurs commandes
 	{
-		exec->pid = ft_calloc(sizeof(int), exec->pipe_nb + 2);
+		exec->pid = ft_calloc(sizeof(int), exec->cmd_nb + 2);
 		if (!exec->pid)
 			return (msg_error(0));
 		childrens(cmd, exec, line, home_path);
@@ -197,7 +196,7 @@ int	childrens(t_element *cmd, t_pipe *exec, char *line, char *home_path)
 		// 	break ;
 
 	}
-	ft_waitpid(exec->pid, exec->pipe_nb);
+	ft_waitpid(exec->pid, exec->cmd_nb);
 	return (0);
 }
 

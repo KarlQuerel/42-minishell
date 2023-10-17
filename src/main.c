@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/17 18:42:58 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/17 19:10:15 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ int main (int argc, char **argv, char **env)
 		exit(EXIT_FAILURE);
 	}
 
-	//utiliser ft_calloc a la place de malloc
+
+	//utiliser ft_calloc a la place de malloc, dans les cas ou malloc ft_init pour tout mettre a zero
 	
 
 	sigemptyset(&signal.sa_mask);

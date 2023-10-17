@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/17 18:45:05 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/17 19:28:58 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,17 @@ int	get_args_nb(t_element *cmd)
 }
 
 
-/* Gets the number of pipes depending on input */
-int	get_pipe_nb(t_element *cmd, t_pipe *exec)
+/* Gets COMMAND cmd type number */
+int	get_cmds_nb(t_element *cmd, t_pipe *exec)
 {
-	exec->pipe_nb = 0;
+	exec->cmd_nb = 0;
 	while (cmd)
 	{
-		if (cmd->type == PIPE)
-			exec->pipe_nb++;
+		if (cmd->type == COMMAND)
+			exec->cmd_nb++;
 		cmd = cmd->next;
 	}
-	return (exec->pipe_nb);
+	return (exec->cmd_nb);
 }
 
 
