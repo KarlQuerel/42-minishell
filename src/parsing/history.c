@@ -15,6 +15,10 @@
 
 void	history(int option)
 {
+	/*History : quand on fait cd et qu'on est deja tout en haut
+	on ne doit pas remettre cd dans history. Pareil qd on fait deux fois
+	de suite ls par exemple. Par contre quand on écrit une commande qui 
+	n'existe pas ça s'affiche dans history.*/
 	int i;
 
 	i = 0;

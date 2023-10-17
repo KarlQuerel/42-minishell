@@ -21,6 +21,7 @@
 */
 char	*dollar(char *line, t_env *env_list)
 {
+	/*Il manque à gérer l'option $?*/
 	int		i;
 	int		j;
 	int		len;
@@ -69,47 +70,71 @@ char	*dollar(char *line, t_env *env_list)
 }
 
 /* i = c (= the beggining of the command "cd")*/
-char	*cd(char *line, char *home_path)
+void	cd(char *line, char *home_path, t_env *env_list)
 {
 	int		i;
 	int		j;
-	int		lenpath;
-	int		lenhomepath;
+/* 	int		lenpath;
+	int		lennew;
+	char	*new_path; */
 	char	*path;
+	char	*bigger;
 	bool	free_needed;
+	t_env	*user;
 	
 	free_needed = false;
-	lenpath = 0;
-	lenhomepath = 0;
+/* 	lenpath = 0;
+	lennew = 0;
+	new_path = NULL; */
 	i = where_is_cmd_in_line(line, "cd");
 	if (i == 0)
-		return (line); //error : cd pas trouve
+		return ; //error : cd pas trouve
 	//if (size_of_command(line, i, CMD) == 1 ||line[i] == '|' || ft_isalnum(line[i + 1]) != 1 || size_of_command(line, i, CMD) == 2 || line[i] == '\0') // 1 car je rends size + 1 donc si size = 1 c'est que il n'y a rien apres cd / 2 pour le cas "cd | ..."" Plus d'un espace serait efface donc pas plus de 
 	if (size_of_command(line, 0, CMD) == 1 || line[i + 1] == '|' || line[i] == '\0') // 1 car je rends size + 1 donc si size = 1 c'est que il n'y a rien apres cd / 2 pour le cas "cd | ..."" Plus d'un espace serait efface donc pas plus de 2
 	{
 		path = pwd(NO_PRINT);
+		user = find_value_with_key_env(env_list, "USER");
+		path = home_path_simplified(path, user);
 		printf("%spath = [%s]%s, %shome_path = [%s]\n%s", GREEN, path, RESET, YELLOW , home_path, RESET);
-		if(ft_strncmp(path, home_path, ft_strlen(home_path)) != 0 && ft_strlen(home_path) != ft_strlen(path))
+		if(ft_strncmp(path, home_path, ft_strlen(path)) != 0 && ft_strlen(home_path) != ft_strlen(path))
 		{
-			//path = la diff entre le path (pwd) et le home_path
-			while (path[lenhomepath] == home_path[lenhomepath])
-				lenhomepath++;
-			while (home_path[lenhomepath])
-				path[lenpath++] = home_path[lenhomepath++];
-			path[lenpath++] = '\0';
-			printf("%spath = [%s]%s, %shome_path = [%s]\n%s", GREEN, path, RESET, YELLOW , home_path, RESET);
+			//if du dessus ne va pas : dans strncmp mettre le ft_strlen du path le plus long
+			//new_path = la diff entre le path (pwd) et le home_path
+/* 			while (path[lenpath] == home_path[lenpath])
+				lenpath++;
+			new_path = malloc(sizeof(char) * (ft_strlen(home_path) - lenpath + 2));
+			lenpath+=1;
+			while (home_path[lenpath])
+				new_path[lennew++] = home_path[lenpath++];
+			new_path[lennew] = '\0';
+			printf("%snew_path = [%s]\n%s", BRED, new_path, RESET); */
+ 			
+			bigger = NULL;
+			if (ft_strlen(path) > ft_strlen(home_path))
+				bigger = path;
+			else
+				bigger = home_path;
+			while (ft_strncmp(path, home_path, ft_strlen(bigger)) != 0 && ft_strlen(home_path) != ft_strlen(path))
+			{
+				chdir("..");
+				path = pwd(NO_PRINT);
+			}
+			
+			
+			// free(path);
+			// path = new_path;
 		}
 		else
-			return (line);
+			return ;
 	}	
 	else
 	{
 		i++; //now i = beggining of the path
 		path = malloc(sizeof(char) * size_of_command(line, i, CMD));
 		if (!path)
-			return (line); //?
+			return ;
 		j = 0;
-		while(line[i] != ' ' && line[i] != '\0')
+		while(line[i] != ' ' && line[i] != '\0') //traite les cas où le nom du dossier contient des espaces
 		{
 			if (line[i] == '\\' && line[i + 1] == ' ')
 			{
@@ -132,12 +157,12 @@ char	*cd(char *line, char *home_path)
 		printf("bash : cd : %s: No such file or directory\n", path);
 		free(path);
 		//printf errno
-		return (line); //??
+		return ;
 	}
 	//printf("%spath = [%s]\n%s", YELLOW, path, RESET);
 	if (free_needed == true)
 		free(path);
-	return (line);
+	//faudra free (new_path) aussi
 }
 
 void	echo(char *line)
