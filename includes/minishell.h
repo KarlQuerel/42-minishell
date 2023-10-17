@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/16 13:53:44 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/17 14:59:21 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ char	*line_errors_and_fix(char *line, t_env *env_list);
 
 /*Parsing*/
 void	printlist_test(t_element   *head); //A EFFACER A LA FIN
-int		determine_command_type(char *str, char *line, size_t i, size_t start);
+int		determine_command_type(char *line, size_t i, size_t start);
 t_element	*parsing(char *command);
 t_element	*parsing_fix(t_element *cmd_list);
 t_element	*builtin_fix(t_element *cmd_list);
@@ -155,7 +155,7 @@ t_env   *find_value_with_key_env(t_env *env_list, char *key);
 bool	is_key_in_env(t_env *env_list, char *key);
 
 /*Lstnew*/
-t_element	*lstnew(char *line, int i);
+t_element	*lstnew(char *line, int i, int type);
 t_env		*lstnew_env(char *line, int i);
 
 /*Free*/

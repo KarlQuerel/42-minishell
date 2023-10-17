@@ -6,14 +6,14 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/12 14:32:33 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/17 13:22:30 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-t_element	*lstnew(char *line, int i)
+t_element	*lstnew(char *line, int i, int type)
 {
 	t_element	*new;
 
@@ -23,7 +23,7 @@ t_element	*lstnew(char *line, int i)
 		return (NULL);
 	// printf("%ssize_of_command dans lstnew = %d\n%s", YELLOW, size_of_command(line, i, CMD), RESET);
 	// new -> content = malloc(sizeof(char) * size_of_command(line, i, CMD));
-	new -> content = calloc(size_of_command(line, i, CMD), sizeof(char));
+	new -> content = calloc(size_of_command(line, i, type), sizeof(char));
 	new -> type = 0;
 	new -> builtin = false;
 	new -> next = NULL;

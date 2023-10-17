@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/17 11:38:15 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:02:40 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "../includes/minishell.h"
 #include "../libft/libft.h"
 
-//printf("%sHELLO%s\n", GREEN, RESET); //green et reset defined dans le .h
 //faire perror("Error") plutot que des printf pour toutes les fonctions qui utilisent errno
 //utiliser ft_putstr_fd au lieu de printf
 

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/17 11:55:17 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:03:20 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void printlist_test(t_element *head) // A EFFACER A LA FIN
 	}
 }
 
-int determine_command_type(char *str, char *line, size_t end, size_t start)
+/* int determine_command_type(char *str, char *line, size_t end, size_t start)
 {
 	if ((str[0] == '-' && ft_isalpha(str[1]) == 1) ||
 		(str[ft_strlen(str)] >= 4 && str[0] == '-' && (str[1] == '\'' || str[1] == '\"') && ft_isalpha(str[2]) == 1 &&
@@ -59,6 +59,34 @@ int determine_command_type(char *str, char *line, size_t end, size_t start)
 	if (ft_strncmp(str, "|", 1) == 0)
 		return (PIPE);
 	return (COMMAND);
+} */
+
+int determine_command_type(char *line, size_t end, size_t start)
+{
+	if ((line[start] == '-' && ft_isalpha(line[start + 1]) == 1) ||
+		(line[end] >= 4 && line[start] == '-' && (line[start + 1] == '\'' || line[start + 1] == '\"') && ft_isalpha(line[start + 2]) == 1 &&
+		 (line[end - 1] == '\'' || line[end - 1] == '\"')))
+		return (OPTION);
+	if ((line[start] == '\'' || line[start] == '\"') &&
+			 (line[end - 1] == '\'' || line[end - 1] == '\"'))
+		return (ARGUMENT);
+	if (end - start > end + 2)
+	{
+		if (line[end + 1] == '<' && line[end + 2] == ' ')
+			return (INFILE);
+		else if (line[end + 1] == '<' && line[end + 2] == '<')
+			return (INFILE_DELIMITER);
+	}
+	if (start > 1)
+	{
+		if (line[start - 2] == '>' && line[start - 3] == ' ')
+			return (OUTFILE);
+		else if (line[start - 2] == '>' && line[start - 3] == '>')
+			return (OUTFILE_APPEND);
+	}
+	if (ft_strncmp(&line[start], "|", 1) == 0)
+		return (PIPE);
+	return (COMMAND);
 }
 
 t_element *parsing(char *line)
@@ -69,42 +97,47 @@ t_element *parsing(char *line)
 	t_element *current_cmd;
 	t_element *head;
 	bool	inside_quotes;
+	int	type;
 
 	i = 0;
 	start = i;
-	j = 0;
 	current_cmd = NULL;
 	inside_quotes = false;
-	//printf("%sPARSING\n%s", GREEN, RESET);
-	//printf("PARSING\n");
-	current_cmd = lstnew(line, start);
+	current_cmd = lstnew(line, start, CMD); //je pars du principe que tjrs cmd d abord
 	head = current_cmd;
 	while (line[i])
 	{
-		//if ((line[i] == '\'' || line[i] == '\"') && quotes_can_close(line) == true)
-		if (line[i] == ' ' /* && inside_quotes == false */ && i != 0)
+		j = 0;
+		if ((line[start] == '\'' || line[start] == '\"') && quotes_can_close(line) == true)
 		{
-			current_cmd->content[j] = '\0'; //pour finir le copier/coller de a cmd
-			// printf("%scmd written in parsing : [%s]\n%s", BRED, current_cmd->content, RESET);
-			current_cmd->type = determine_command_type(current_cmd->content, line, i, start);
-			current_cmd->next = lstnew(line, i + 1);
-			current_cmd->next->prev = current_cmd; // TEST ICI
-			current_cmd = current_cmd->next;
-			j = 0;
-			while (line[i] == ' ' || line[i] == '<' || line[i] == '>')
-				i++;
-			start = i;
+			type = STR;
+			while (line[i] && (line[i] != '\'' || line[i] != '\"')) //verifier sans le quotes_can_close pq je pense que j ai deja cette protection ailleurs
+				current_cmd->content[j++] = line[i++];
+			current_cmd->content[j] = '\0';
 		}
-		// printf("%sprinting\n%s", BRED, RESET);
-		current_cmd->content[j++] = line[i++];
+		else
+		{
+			type = CMD;
+			while (line[i] && line[i] != ' ')
+				current_cmd->content[j++] = line[i++];
+			current_cmd->content[j] = '\0';
+		}
+		current_cmd->type = determine_command_type(line, i, start);
+		while ((line[i] == ' ' || line[i] == '<' || line[i] == '>') && line[i])
+			i++;
+		if (line[i] == ' ')
+			start = i + 1;
+		else
+			start = i;
+		if (line[i] == '\0')
+			current_cmd->next = NULL;
+		else
+		{
+			current_cmd->next = lstnew(line, i, type);
+			current_cmd->next->prev = current_cmd;
+			current_cmd = current_cmd->next;
+		}
 	}
-	current_cmd->content[j] = '\0';
-	current_cmd->type = determine_command_type(current_cmd->content, line, i, start);
-	current_cmd->next = NULL; //pas necessaire je pense vu que next est deja deja set a null dans lstnew
-
-	//printf("AVANT PARSING FIX\n");
-	//printlist_test(head); //pour printlist test
-
 	head = parsing_fix(head);
 	head = builtin_fix(head);
 	return (head);

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:58:39 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/12 19:17:19 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/17 13:56:32 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,20 @@ int	str_type(char *command, int len)
     int	size;
 
 	size = 0;
+    len-=1;
+    //printf("start = %c\n", command[len]);
     while(command[len])
     {
-        if (command[len + 1] == '\0' && (command[len + 1] != '\'' || command[len + 1] != '\"'))
+        //if (command[len + 1] == '\0' && (command[len + 1] != '\'' || command[len + 1] != '\"'))
+        if (command[len + 1] == '\'' || command[len + 1] == '\"')
+        {
+            size+=1; //car on veut num reel, en dehors de []
             break;
+        }
         size++;
         len++;
     }
+/*     printf("str size = %d\n", size);
+    printf("end = %c\n", command[len]); */
     return (size);
 }
