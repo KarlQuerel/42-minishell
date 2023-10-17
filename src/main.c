@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/17 19:03:43 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/17 19:13:35 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,9 +145,9 @@ int main (int argc, char **argv, char **env)
 		//ft_export(cmd_list, env_list);
 		//ft_redirect(cmd_list); // a finir
 		//ft_execute(cmd_list, env_list, exec);
-		printlist_test(cmd_list);
+		//printlist_test(cmd_list);
 
-		//commands(new_line, env_list, home_path); // À effacer : c'est juste pour test mes builtins tant que ton exec est en commentaire
+		commands(new_line, env_list, home_path); // À effacer : c'est juste pour test mes builtins tant que ton exec est en commentaire
 
 		free(new_line);
 		free_cmd_list(cmd_list);

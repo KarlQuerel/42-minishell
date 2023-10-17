@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/17 16:49:02 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/17 19:21:03 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*dollar(char *line, t_env *env_list) // n'as plus l'air de marcher...
 	i = where_is_cmd_in_line(line, "$");
 	j = 0;
 	len = 0;
-	new_line = malloc(sizeof(char) * (ft_strlen(line) - size_of_command(line, i, CMD) + ft_strlen(node->value)));
+	new_line = malloc(sizeof(char) * (ft_strlen(line) - size_of_command(line, i, CMD) + ft_strlen(node->value) + 1));
 	if (!new_line)
 		return (NULL);
 	//i = 0; //modifié now
