@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/12 14:32:25 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/17 11:55:17 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,21 @@ t_element *parsing(char *line)
 	int j;
 	t_element *current_cmd;
 	t_element *head;
+	bool	inside_quotes;
 
 	i = 0;
 	start = i;
 	j = 0;
 	current_cmd = NULL;
+	inside_quotes = false;
 	//printf("%sPARSING\n%s", GREEN, RESET);
 	//printf("PARSING\n");
 	current_cmd = lstnew(line, start);
 	head = current_cmd;
 	while (line[i])
 	{
-		if (line[i] == ' ' && i != 0)
+		//if ((line[i] == '\'' || line[i] == '\"') && quotes_can_close(line) == true)
+		if (line[i] == ' ' /* && inside_quotes == false */ && i != 0)
 		{
 			current_cmd->content[j] = '\0'; //pour finir le copier/coller de a cmd
 			// printf("%scmd written in parsing : [%s]\n%s", BRED, current_cmd->content, RESET);
@@ -156,7 +159,7 @@ t_element	*builtin_fix(t_element *cmd_list)
 		else
 			cmd_list = cmd_list->next;
 	}
-	if (cmd_list->type != PIPE)
+	if (cmd_list->prev->builtin == true && cmd_list->type != PIPE)
 		cmd_list->builtin = true;
 	return (head);
 }
