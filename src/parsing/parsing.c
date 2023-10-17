@@ -6,14 +6,12 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/17 15:03:20 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/17 16:25:09 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
-
-
 
 void printlist_test(t_element *head) // A EFFACER A LA FIN
 {
@@ -33,34 +31,7 @@ void printlist_test(t_element *head) // A EFFACER A LA FIN
 	}
 }
 
-/* int determine_command_type(char *str, char *line, size_t end, size_t start)
-{
-	if ((str[0] == '-' && ft_isalpha(str[1]) == 1) ||
-		(str[ft_strlen(str)] >= 4 && str[0] == '-' && (str[1] == '\'' || str[1] == '\"') && ft_isalpha(str[2]) == 1 &&
-		 (str[ft_strlen(str) - 1] == '\'' || str[ft_strlen(str) - 1] == '\"')))
-		return (OPTION);
-	if ((str[0] == '\'' || str[0] == '\"') &&
-			 (str[ft_strlen(str) - 1] == '\'' || str[ft_strlen(str) - 1] == '\"'))
-		return (ARGUMENT);
-	if (ft_strlen(line) > end + 2)
-	{
-		if (line[end + 1] == '<' && line[end + 2] == ' ')
-			return (INFILE);
-		else if (line[end + 1] == '<' && line[end + 2] == '<')
-			return (INFILE_DELIMITER);
-	}
-	if (start > 1)
-	{
-		if (line[start - 2] == '>' && line[start - 3] == ' ')
-			return (OUTFILE);
-		else if (line[start - 2] == '>' && line[start - 3] == '>')
-			return (OUTFILE_APPEND);
-	}
-	if (ft_strncmp(str, "|", 1) == 0)
-		return (PIPE);
-	return (COMMAND);
-} */
-
+/*Determines the type of a given cmd for the parsing function.*/
 int determine_command_type(char *line, size_t end, size_t start)
 {
 	if ((line[start] == '-' && ft_isalpha(line[start + 1]) == 1) ||
@@ -89,6 +60,9 @@ int determine_command_type(char *line, size_t end, size_t start)
 	return (COMMAND);
 }
 
+/*Separates each argument in the command line in a t_element list.
+Only the redirectors and spaces that separate each command are not
+kept in the list. This list is then sent to the executor.*/
 t_element *parsing(char *line)
 {
 	int i;
@@ -108,6 +82,8 @@ t_element *parsing(char *line)
 	while (line[i])
 	{
 		j = 0;
+		/*JE POURRAIS UTILISER LA FONCTION type_of_str POUR
+		RENDRE CETTE FONCTION PLUS COURTE*/
 		if ((line[start] == '\'' || line[start] == '\"') && quotes_can_close(line) == true)
 		{
 			type = STR;
@@ -142,9 +118,10 @@ t_element *parsing(char *line)
 	head = builtin_fix(head);
 	return (head);
 }
-/*Pour les commandes type echo qui sont suivies d'arguments qui ne sont pas
-forcements entre guillements et donc compris dans la fonction parsing comme 
-des commandes.*/
+/* To fix the type of the arguments that are not in between quotes and are
+therefore considered as a COMMAND instead of an ARGUMENT in the parsing function.
+This functions sets all arguments that are not of type OPTION after a cmd
+"echo" or "cd" to ARGUMENT until a type PIPE is found.*/
 t_element	*parsing_fix(t_element *current)
 {
 	t_element	*head;
@@ -172,6 +149,8 @@ t_element	*parsing_fix(t_element *current)
 	return (head);
 }
 
+/*Sets all arguments encountered between a cmd that is a builtin and
+a pipe to "builtin = true" so that the executor skips them.*/
 t_element	*builtin_fix(t_element *cmd_list)
 {
 	t_element	*head;

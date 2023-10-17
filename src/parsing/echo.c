@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:35 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/16 14:06:29 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/17 16:45:48 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
+/*Returns the delimiter to look for depending
+on the type of string.*/
 char	type_of_str(char *line, int i)
 {
     char	type;
@@ -26,6 +28,7 @@ char	type_of_str(char *line, int i)
     return (type);
 }
 
+/*Skips quotes and spaces in the command line.*/
 int skip(char *line, int i, int option)
 {
     if (option == SPACES)
@@ -41,6 +44,8 @@ int skip(char *line, int i, int option)
     return (i);
 }
 
+/*Prints the arguments that follow the echo command until
+a pipe or the end of the command line are encountered.*/
 void	echo(char *line)
 {
 	/*GERER L'OPTION -n : 
@@ -53,7 +58,6 @@ void	echo(char *line)
 	
 	str = NULL;
 	i = where_is_cmd_in_line(line, "echo"); //on est sur l'espace
-//ERROR MANAGEMENT
 	if (i == 0)
 		return ; //error
 	if (quotes_can_close(line) == false)
@@ -61,6 +65,11 @@ void	echo(char *line)
 		printf("Error : quotes don't close\n"); //bash n'ecrit pas erreur mais je ne peux pas reproduire le > qui apparait
 		return ;
 	}
+    if (line[i] == '\0')
+    {
+        printf("\n");
+        return;
+    }
 	j = 0;
 	while(line[i] && line[i] != '|')
 	{

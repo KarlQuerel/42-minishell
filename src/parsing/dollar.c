@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/16 12:43:06 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/17 16:49:02 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*dollar(char *line, t_env *env_list) // n'as plus l'air de marcher...
 	t_env	*node;
 
 	i = where_is_cmd_in_line(line, "$");
-	if (i == 0 || /* ft_isalpha(line[i + 1]) == 0 || */ line[i - 2] != ' ')
+	if (i == 0 /*|| ft_isalpha(line[i + 1]) == 0 || */ /* line[i - 2] != ' ' */)
 	{
 		printf("ERROR 1\n");
 		return ("\n"); //error

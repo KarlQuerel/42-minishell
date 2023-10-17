@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/17 14:59:21 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/17 16:57:21 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,6 @@ void	free_cmd_list(t_element *cmd_list);
 void		history(int option);
 
 /*Checks*/
-bool		check_commands_grammar(char *commands);
 bool		quotes_can_close(char *line);
 bool		is_builtin(char *cmd_content);
 

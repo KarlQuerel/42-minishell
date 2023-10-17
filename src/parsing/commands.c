@@ -6,14 +6,14 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/17 13:55:38 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/17 16:59:56 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-/*The first two functions check if there are errors in the grammar of the command
+/*The first two "if" check if there are errors in the grammar of the command
 line and print the associated error. The last function replaces the $ by its
 associated value so that the executable receives directly the line completed.*/
 char	*line_errors_and_fix(char *line, t_env *env_list)
@@ -48,9 +48,16 @@ void	commands(char *line, t_env *env_list, char *home_path)
 		echo(line);
 }
 
-/*Checks if what is written in the command line corresponds to a command*/
+/*Checks if what is written in the command line corresponds to a command.*/
 bool	is_this_command(char *buffer, char* command)
 {
+	/*Je devrais gerer ici le citer dans la fonction du dessus cas pour 
+	eviter que "heycdhola" return true car "cd" trouve.
+	SOIT
+	Gerer dans where_is_cmd_in_line ceci. En fonction de ou est ce que je le gere
+	je pourrai enlever la securite (if i == 0) suite a l'appel de 
+	where_is_cmd_in_line dans bcp de fonctions, ce qui me permettra de gagner 2 lignes
+	(ex : dans echo). */
 	size_t	i;
 
 	i = 0;
@@ -68,7 +75,7 @@ bool	is_this_command(char *buffer, char* command)
 		return (false);
 }
 
-/*returns the size of a cmd, key, value or str*/
+/*Returns the size of a cmd, key, value or str.*/
 int	size_of_command(char *command, int len, int type)
 {
 	int	size;
@@ -83,7 +90,7 @@ int	size_of_command(char *command, int len, int type)
 	return(size + 1); //car pour mallocs besoin d'un +1 pour \0
 }
 
-/*Checks if a given commands is in the command line*/
+/*Checks if a given commands is in the command line.*/
 bool	is_cmd_in_line(char *line, char *cmd)
 {
 	size_t	i;
@@ -109,7 +116,7 @@ bool	is_cmd_in_line(char *line, char *cmd)
 
 /*Returns the position of the end of the cmd found in the cmd line
 Returns 0 in case of error since the end of a cmd can't be at the
-beggining of the cmd line*/
+beggining of the cmd line.*/
 int	where_is_cmd_in_line(char *line, char *cmd)
 {
 	size_t	i;
