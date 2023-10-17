@@ -6,7 +6,7 @@
 #    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/17 13:43:56 by kquerel          ###   ########.fr        #
+#    Updated: 2023/10/17 18:23:05 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRC = src/main.c \
 	src/executable/exec_errors.c \
 	src/executable/redirect.c \
 	src/executable/pipes.c \
+	src/executable/builtins.c \
 	src/parsing/errors.c \
 	src/parsing/utils.c \
 	src/parsing/malloc.c \

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/17 17:12:34 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/17 18:45:50 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ Structure pour les pipes:
 */
 
 /* Executes the command */
-void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
+void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, char *line, char *home_path)
 {
 	int	pid;
 	pid = fork();
@@ -55,26 +55,35 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 			printf("Split_path failed\n");
 			// free des trucs
 		}
-		// if (cmd->builtin == true)
-		// {
-		// 	if (ft_strncmp(cmd->content, "echo", ft_strlen("echo")))
-		// 	{
-		// 		if (cmd->next->content /*&& cmd->next->type == ARGUMENT*/)
-		// 			echo(cmd->next->content);
-		// 		else
-		// 			ft_putstr_fd("\n", 1);
-		// 	}
-		// 	// if (ft_strncmp(cmd->content, "cd", ft_strlen("cd")))
-		// 	// 	cd();
-		// 	if (ft_strncmp(cmd->content, "pwd", ft_strlen("pwd")))
-		// 		pwd(PRINT);
-		// 	if (ft_strncmp(cmd->content, "export", ft_strlen("export")))
-		// 		ft_export(env);
-		// 	// if (ft_strncmp(cmd->content, "unset", ft_strlen("unset")))
-		// 	// 	ft_unset();
-		// 	if (ft_strncmp(cmd->content, "env", ft_strlen("env")))
-		// 		ft_env(env);
-		// }
+		printf("----------------->line = %s\n", line);
+		printf("cmd_builtin = %d\n", cmd->builtin);
+		printf("cmd->content = %s\n", cmd->content);
+
+
+		if (cmd->builtin == true)
+		{
+			
+			commands(line, env, home_path);
+			return ;
+			// if (ft_strncmp(cmd->content, "echo", ft_strlen("echo")))
+			// {
+			// 	// if (cmd->next->content /*&& cmd->next->type == ARGUMENT*/)
+			// 	printf("----------------->line = %s\n", line);
+			// 		echo(line);
+			// 	// else
+			// 	// 	ft_putstr_fd("\n", 1);
+			// }
+			// // else if (ft_strncmp(cmd->content, "cd", ft_strlen("cd")))
+			// // 	cd(line);
+			// else if (ft_strncmp(cmd->content, "pwd", ft_strlen("pwd")))
+			// 	pwd(PRINT);
+			// else if (ft_strncmp(cmd->content, "export", ft_strlen("export")))
+			// 	ft_export(cmd, env);
+			// // if (ft_strncmp(cmd->content, "unset", ft_strlen("unset")))
+			// // 	ft_unset();
+			// else if (ft_strncmp(cmd->content, "env", ft_strlen("env")))
+			// 	ft_env(env, 0);
+		}
 		cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
 		if (!cmd->content)
 		{
@@ -121,7 +130,7 @@ char	*ft_get_command(char **path, char *argument)
 }
 
 /* Handles execution */
-void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
+void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, char *line, char *home_path)
 {
 	exec->av_nb = get_args_nb(cmd);
 	exec->cmd_tab = malloc(sizeof(char *) * exec->av_nb + 1); // utiliser la fonction de caro
@@ -138,18 +147,18 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 	
 	get_pipe_nb(cmd, exec);
 	if (exec->pipe_nb == 0) // pas de pipe donc single command
-		execute_command(cmd, env, exec);
+		execute_command(cmd, env, exec, line, home_path);
 	else // plusieurs enfants
 	{
 		exec->pid = ft_calloc(sizeof(int), exec->pipe_nb + 2);
 		if (!exec->pid)
 			return (msg_error(0));
-		childrens(cmd, exec);
+		childrens(cmd, exec, line, home_path);
 	}
 }
 	
 /* fonction test */
-int	childrens(t_element *cmd, t_pipe *exec)
+int	childrens(t_element *cmd, t_pipe *exec, char *line, char *home_path)
 {
 	int		pipe_end[2];
 	int		fd;
@@ -177,7 +186,7 @@ int	childrens(t_element *cmd, t_pipe *exec)
 			// ft_create_pipe(exec, i, pipe_end);
 		}
 		// send_heredoc(exec, exec->simple_cmds);
-		ft_fork(cmd, exec, pipe_end, fd);
+		ft_fork(cmd, exec, pipe_end, fd, line, home_path);
 		close(pipe_end[1]);
 		if (cmd->prev)
 			close(fd);

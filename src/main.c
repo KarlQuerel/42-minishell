@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/17 18:12:12 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/17 18:42:58 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,9 +142,9 @@ int main (int argc, char **argv, char **env)
 	/*SI line_errors_and_fix TROUVE DES ERREURS IL NE FAUDRAIT PAS ENTRER DANS PARSING*/
 		cmd_list = parsing(new_line);
 		//ft_env(env_list, 0);
-		//ft_export(cmd_list, env_list);
+		// ft_export(cmd_list, env_list);
 		//ft_redirect(cmd_list); // a finir
-		ft_execute(cmd_list, env_list, exec);
+		ft_execute(cmd_list, env_list, exec, new_line, home_path);
 		//printlist_test(cmd_list);
 
 		//commands(new_line, env_list, home_path); // À effacer : c'est juste pour test mes builtins tant que ton exec est en commentaire
@@ -154,7 +154,7 @@ int main (int argc, char **argv, char **env)
 		free(new_path);
 		new_path = pwd(NO_PRINT);
 		new_path = home_path_simplified(new_path, env_list);
-		printf("%s", new_path);
+		ft_putstr_fd(new_path, STDOUT_FILENO);
 		line = readline("$ ");
 	}
 	final_free(line, env_list, path, new_path);

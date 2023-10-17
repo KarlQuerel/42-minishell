@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/17 16:57:21 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/17 18:43:32 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,8 +228,8 @@ int		str_type(char *command, int len);
 /*-----------------EXECUTABLE FOLDER------------------*/
 
 /* Exec*/
-void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec);
-void	execute_command(t_element *cmd, t_env *env, t_pipe *exec);
+void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, char *line, char *home_path);
+void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, char *line, char *home_path);
 void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, int i);
 char	*ft_get_command(char **path, char *argument);
 
@@ -255,9 +255,9 @@ int		ft_outfile(t_element *cmd);
 
 
 
-int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
-void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
+int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, char *line, char *home_path);
+void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, char *line, char *home_path);
 void	msg_error(int err);
-int		childrens(t_element *cmd, t_pipe *exec);
+int		childrens(t_element *cmd, t_pipe *exec, char *line, char *home_path);
 
 #endif
