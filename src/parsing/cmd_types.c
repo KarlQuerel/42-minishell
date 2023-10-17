@@ -6,13 +6,16 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:58:39 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/12 19:17:19 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:47:54 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
+/*Returns the size of a cmd.
+Command = command line
+len = where is the begining of the cmd in the command line*/
 int	cmd_type(char *command, int len)
 {
     int	size;
@@ -31,6 +34,8 @@ int	cmd_type(char *command, int len)
     return (size);
 }
 
+/*Returns the size of the environment key or its value,
+depending on the trigger.*/
 int	key_and_value_type(char *command, int len, int type)
 {
     int	size;
@@ -52,6 +57,10 @@ int	key_and_value_type(char *command, int len, int type)
     return (size); //if type == VALUE
 }
 
+/*Returns the size of a str (= argument in between two quotes).
+Command = command line
+len = where is the begining of the string in the command line
+(command[len] is the first letter of the string, not the first quote)*/
 int	str_type(char *command, int len)
 {
     int	size;
@@ -59,10 +68,14 @@ int	str_type(char *command, int len)
 	size = 0;
     while(command[len])
     {
-        if (command[len + 1] == '\0' && (command[len + 1] != '\'' || command[len + 1] != '\"'))
+        if (command[len + 1] == '\'' || command[len + 1] == '\"')
+        {
+            size+=1; //car on veut num reel, en dehors de []
             break;
+        }
         size++;
         len++;
     }
+    //printf("str size = %d\n", size);
     return (size);
 }

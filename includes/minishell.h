@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/17 15:50:43 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/17 16:57:21 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@
 
 # define PRINT 0
 # define NO_PRINT 1
+
+# define SPACES 0
+# define QUOTES 1
 
 /* # define BEGINING 0
 # define END 1
@@ -142,7 +145,7 @@ char	*line_errors_and_fix(char *line, t_env *env_list);
 
 /*Parsing*/
 void	printlist_test(t_element   *head); //A EFFACER A LA FIN
-int		determine_command_type(char *str, char *line, size_t i, size_t start);
+int		determine_command_type(char *line, size_t i, size_t start);
 t_element	*parsing(char *command);
 t_element	*parsing_fix(t_element *cmd_list);
 t_element	*builtin_fix(t_element *cmd_list);
@@ -153,7 +156,7 @@ t_env   *find_value_with_key_env(t_env *env_list, char *key);
 bool	is_key_in_env(t_env *env_list, char *key);
 
 /*Lstnew*/
-t_element	*lstnew(char *line, int i);
+t_element	*lstnew(char *line, int i, int type);
 t_env		*lstnew_env(char *line, int i);
 
 /*Free*/
@@ -164,17 +167,16 @@ void	free_cmd_list(t_element *cmd_list);
 void		history(int option);
 
 /*Checks*/
-bool		check_commands_grammar(char *commands);
 bool		quotes_can_close(char *line);
 bool		is_builtin(char *cmd_content);
 
 /*Signal*/
 void		signal_handler(int signal);
 
-/*Builtins*/
-void	echo(char *line);
+/*Pwd*/
 char    *pwd(int option);
-void	cd(char *line, char *home_path, t_env *env_list);
+
+/*Dollar*/
 char	*dollar(char *line, t_env *env_list);
 void	ft_env(t_env *env, int option);
 
@@ -186,6 +188,17 @@ int	put_new_var(t_env *env, char *key, char *content);
 
 
 // unset
+
+/*Echo*/
+int 	skip(char *line, int i, int option);
+char	type_of_str(char *line, int i);
+void	echo(char *line);
+
+/*Cd*/
+void	cd_home(char *home_path, t_env *env_list);
+char    *cd_path(char *line, int i, char *path);
+void	cd_directory(char *line, int i);
+void	cd(char *line, char *home_path, t_env *env_list);
 
 /*Errors*/
 void	first_character_error(char *line);

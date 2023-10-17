@@ -3,28 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:07:47 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/13 18:21:11 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/17 16:57:10 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-bool	check_commands_grammar(char *commands)
-{
-	// if (commands == NULL)
-	// 	return (true);
-	if (commands[0] == '|') // rajouter des conditions
-	{
-		printf("Error\n");
-		return (false);
-	}
-	return (true);
-}
-
+/*When a quote is found in the command line, this function
+checks if there is another quote of the same type further in
+the command line. If yes, it returns true.*/
 bool	quotes_can_close(char *line)
 {
 	size_t		i;
@@ -55,6 +46,7 @@ bool	quotes_can_close(char *line)
 	return (true);
 }
 
+/*Checks if the cmd sent to this function is a builtin.*/
 bool		is_builtin(char *cmd_content)
 {
 	if (ft_strncmp(cmd_content, "echo", ft_strlen("echo")) == 0 || \

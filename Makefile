@@ -33,7 +33,6 @@ SRC = src/main.c \
 	src/parsing/parsing.c \
 	src/parsing/checks.c \
 	src/parsing/signal.c \
-	src/parsing/builtins.c \
 	src/parsing/env_list.c \
 	src/parsing/lstnew.c \
 	src/parsing/free.c \
@@ -46,6 +45,10 @@ SRC = src/main.c \
 	src/parsing/utils.c \
 	src/parsing/malloc.c \
 	src/parsing/cmd_types.c \
+	src/parsing/cd.c \
+	src/parsing/pwd.c \
+	src/parsing/dollar.c \
+	src/parsing/echo.c \
 	
 SRC_OBJS = $(SRC:.c=.o)
 
@@ -65,6 +68,9 @@ CC = cc
 RM = rm -f
 
 CFLAGS = -Wall -Wextra -Werror -g3
+
+#CFLAGS = -gdwarf-4 #-Wall -Wextra -Werror -g3
+
 #PENSER À ENLEVER -G3 (juste pour gdb)
 MAKEFLAGS   += --no-print-directory
 

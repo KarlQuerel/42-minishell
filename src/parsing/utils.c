@@ -6,17 +6,23 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/13 15:07:06 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/17 16:38:13 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-/*J'ai fait +2 dans les mallocs de toute cette fonction car en plus du \0
+//EFFACER LE COMMENTAIRE CI DESSOUS
+/*COMMENTAIRE QUI JE CROIS N'EST PLUS D'ACTUALITE MAIS JE GARDES AU CAS OU CA 
+M AIDERAIT A REGLER DES ERREURS DE VALGRIND :
+J'ai fait +2 dans les mallocs de toute cette fonction car en plus du \0
 il y a potentiellement un espace de plus (dans le cas ou il y a plusieurs
 strings a echo et que comme c'est calloc et non malloc on s'en fout que
 ce ne soit pas le bon nombre exact je pense car au pire tout est deja des \0)*/
+
+/*Function used in the echo function to join all the arguments encountered
+between the "echo" cmd and a pipe or the end of the command line.*/
 char	*ft_joinstr_minishell(char *line, int len, char *str, char type)
 {
 	int		i;
@@ -35,7 +41,9 @@ char	*ft_joinstr_minishell(char *line, int len, char *str, char type)
 	return (new_str);
 }
 
-
+/*Function used in the cd function to join all the arguments encountered
+between the "cd" cmd and a pipe or the end of the command line : it is 
+needed in the case where a folder's name has spaces.*/
 char	*ft_join_pour_cd(char *line_begining, char *path)
 {
 	int		i;
@@ -61,6 +69,8 @@ char	*ft_join_pour_cd(char *line_begining, char *path)
 	return (new_str);
 }
 
+/*Returns a new_line that is the same as the original command line
+except all the superfulous spaces have been erased.*/
 char	*erase_spaces(char *line)
 {
 	char	*new_line;
@@ -72,6 +82,10 @@ char	*erase_spaces(char *line)
 	new_line = erase_spaces_malloc(line);
 	while (line[i])
 	{
+		/*utiliser ici la fonction type_of_str pour gagner bcp de lignes : 
+		le premier if/else pourrait etre merge en un seul if.
+		Voir aussi si je ne peux pas utiliser la fx skip pour skip 
+		les espaces et quotes.*/
 		if (line[i] == '\'' && quotes_can_close(line) == true) //pour ne pas compter les espaces entre quotes (ex: dans les str de echo)
 		{
 			new_line[j++] = line[i++];
@@ -96,6 +110,8 @@ char	*erase_spaces(char *line)
 	return (new_line);
 }
 
+/*Same as the strlcpy function except it takes a start parameter in addition
+to an end parameter.*/
 char *strlcpy_middle(char *dst, const char *src, size_t start, size_t end)
 {	
 	int	i;

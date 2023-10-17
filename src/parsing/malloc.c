@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   malloc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:08:27 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/13 15:56:50 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/17 16:16:39 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
+/*Malloc for the new command line that replaces the original
+command line after all the extra spaces are deleted.*/
 char	*erase_spaces_malloc(char *line)
 {
 	char	*new_line;
@@ -46,6 +48,7 @@ char	*erase_spaces_malloc(char *line)
 	return (new_line);
 }
 
+/*Malloc for the joinstr found in the ft_joinstr_minishell function.*/
 char	*joinstr_minishell_malloc(char *line, int len, char *str, char type)
 {
 	char	*new_str;

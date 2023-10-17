@@ -14,7 +14,6 @@
 #include "../includes/minishell.h"
 #include "../libft/libft.h"
 
-//printf("%sHELLO%s\n", GREEN, RESET); //green et reset defined dans le .h
 //faire perror("Error") plutot que des printf pour toutes les fonctions qui utilisent errno
 //utiliser ft_putstr_fd au lieu de printf
 
@@ -71,6 +70,7 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list)
 int main (int argc, char **argv, char **env)
 {
 	char                *line;
+	char                *new_line;
 	char                *home_path;
 	struct sigaction    signal;
 	t_env				*env_list;
@@ -131,22 +131,25 @@ int main (int argc, char **argv, char **env)
 			final_free(line, env_list, path, new_path);
 			return (EXIT_SUCCESS);
 		}
-		//printf("line before : [%s]\n", line);
-		line = erase_spaces(line);
-		//printf("line after : [%s]\n", line);
 		add_history(line);
-		line = line_errors_and_fix(line, env_list);
-		cmd_list = parsing(line);
-		
+
+
+	/*J'envoie new_line au lieu de line aux fonctions qui suivent
+	car sur bash qd on fait flèche du haut on retrouve la commande
+	telle qu'elle avait été écrite alors qu'ici on la modifiait*/
+		new_line = erase_spaces(line);
+		new_line = line_errors_and_fix(new_line, env_list);
+	/*SI line_errors_and_fix TROUVE DES ERREURS IL NE FAUDRAIT PAS ENTRER DANS PARSING*/
+		cmd_list = parsing(new_line);
 		//ft_env(env_list, 0);
 		//ft_export(cmd_list, env_list);
-
-		
 		//ft_redirect(cmd_list); // a finir
 		ft_execute(cmd_list, env_list, exec);
-		//printf("APRES PARSING FIX\n");
 		//printlist_test(cmd_list);
-		free(line);
+
+		//commands(new_line, env_list, home_path); // À effacer : c'est juste pour test mes builtins tant que ton exec est en commentaire
+
+		free(new_line);
 		free_cmd_list(cmd_list);
 		free(new_path);
 		new_path = pwd(NO_PRINT);
