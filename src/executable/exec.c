@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/16 19:47:58 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/17 16:42:12 by kquerel          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -36,7 +36,7 @@ Structure pour les pipes:
 - waitpid(pid_child2, NULL, 0)
 */
 
-/* Handles a single command */
+/* Executes the command */
 void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
 	int	pid;
@@ -53,7 +53,7 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 		if (!exec->cmd_path)
 		{
 			printf("Split_path failed\n");
-			// free
+			// free des trucs
 		}
 		// if (cmd->builtin == true)
 		// {
@@ -75,8 +75,6 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 		// 	if (ft_strncmp(cmd->content, "env", ft_strlen("env")))
 		// 		ft_env(env);
 		// }
-
-
 		cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
 		if (!cmd->content)
 		{
@@ -89,6 +87,8 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 			}
 		}
 		execve(cmd->content, exec->cmd_tab, env->env);
+		// printf("%sJE SUIS LAAAAAAA\n%s", YELLOW, RESET);	
+		
 		// ft_putstr_fd("execve failed\n");
 		/* wlaw
 			access(cmd_tab[0], F OK, regarder sur internet) */
@@ -112,7 +112,7 @@ char	*ft_get_command(char **path, char *argument)
 			to_free = ft_strjoin(path[i], "/");
 			to_return = ft_strjoin(to_free, argument);
 			free(to_free);
-			if (access(to_return, 0) == 0)
+			if (access(to_return, F_OK) == 0)
 				return (to_return);
 			free(to_return);
 			i++;
@@ -124,15 +124,11 @@ char	*ft_get_command(char **path, char *argument)
 /* Handles execution */
 void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 {
-	//pid_t	pid;
-	//faire le malloc des pipe
-	//create pipes
-	// A FAIRE
-	// gerer le open et le here_doc !
-	exec->cmd_tab = malloc(sizeof(char **) * exec->av_nb); // utiliser la fonction de caro
+	exec->av_nb = get_args_nb(cmd);
+	exec->cmd_tab = malloc(sizeof(char *) * exec->av_nb + 1); // utiliser la fonction de caro
 	if (!exec->cmd_tab)
 		return ;
-	exec->av_nb = get_args_nb(cmd, exec);
+	fill_cmd_tab(cmd, exec);
 
 	// if (cmd->builtin == true)
 	// {
@@ -142,23 +138,19 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 	// }
 	
 	get_pipe_nb(cmd, exec);
-
 	if (exec->pipe_nb == 0) // pas de pipe donc single command
 		execute_command(cmd, env, exec);
-
-
-	else
+	else // plusieurs enfants
 	{
 		exec->pid = ft_calloc(sizeof(int), exec->pipe_nb + 2);
 		if (!exec->pid)
 			return (msg_error(0));
-		ft_execuTOR(cmd, exec);
-	
+		childrens(cmd, exec);
 	}
 }
 	
 /* fonction test */
-int	ft_execuTOR(t_element *cmd, t_pipe *exec)
+int	childrens(t_element *cmd, t_pipe *exec)
 {
 	int		pipe_end[2];
 	int		fd;

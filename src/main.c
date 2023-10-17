@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/13 18:25:26 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/17 16:35:52 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,18 +131,24 @@ int main (int argc, char **argv, char **env)
 		add_history(line);
 		line = line_errors_and_fix(line, env_list);
 		cmd_list = parsing(line);
-		// ft_export(env_list);
-		ft_redirect(cmd_list); // a finir
+		
+		//ft_env(env_list, 0);
+		//ft_export(cmd_list, env_list);
+
+
+		
+		//ft_redirect(cmd_list); // a finir
 		ft_execute(cmd_list, env_list, exec);
+		// printf("%sJE SUIS LAAAAAAA\n%s", YELLOW, RESET);	
 		//printf("APRES PARSING FIX\n");
 		//printlist_test(cmd_list);
-		free(line);
-		free_cmd_list(cmd_list);
-		free(new_path);
-		new_path = pwd(NO_PRINT);
-		new_path = home_path_simplified(new_path, env_list);
+		//free(line);
+		//free_cmd_list(cmd_list);
+		//free(new_path);
+		// new_path = pwd(NO_PRINT);
+		// new_path = home_path_simplified(new_path, env_list);
 		//printf("%sAPRES HOMEPATHSIMPLIFIED home_path = [%s]\n%s", YELLOW, home_path, RESET);
-		printf("%s", new_path);
+		// printf("%s", new_path);
 		line = readline("$ ");
 	}
 	final_free(line, env_list, path, new_path);

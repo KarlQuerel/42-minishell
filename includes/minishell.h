@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/16 21:07:25 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/17 15:50:43 by kquerel          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 /*Libraries*/
 
@@ -176,12 +176,13 @@ void	echo(char *line);
 char    *pwd(int option);
 void	cd(char *line, char *home_path, t_env *env_list);
 char	*dollar(char *line, t_env *env_list);
-void	ft_env(t_env *env);
+void	ft_env(t_env *env, int option);
 
 /*Export*/
-int		ft_export(t_element *cmd_list, char **av);
+int		ft_export(t_element *cmd_list, t_env *env);
 int		ft_is_valid(char *s);
 char 	**new_env_var(char *s);
+int	put_new_var(t_env *env, char *key, char *content);
 
 
 // unset
@@ -221,7 +222,8 @@ char	*ft_get_command(char **path, char *argument);
 
 /* Exec utils */
 char	**split_path(t_env *env_list);
-int		get_args_nb(t_element *cmd, t_pipe *exec);
+int		get_args_nb(t_element *cmd);
+void	fill_cmd_tab(t_element *cmd, t_pipe *exec);
 int		get_pipe_nb(t_element *cmd, t_pipe *exec);
 char	*ft_strcpy(char *dst, char *src);
 
@@ -243,6 +245,6 @@ int		ft_outfile(t_element *cmd);
 int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
 void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
 void	msg_error(int err);
-int		ft_execuTOR(t_element *cmd, t_pipe *exec);
+int		childrens(t_element *cmd, t_pipe *exec);
 
 #endif

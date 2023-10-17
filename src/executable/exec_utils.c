@@ -1,19 +1,23 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/16 19:50:04 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/17 16:41:29 by kquerel          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-/* Splits the path*/
+/*
+Splits the path
+Get the PATH variable from env list and split it by ':'
+Returns an array of strings
+*/
 char	**split_path(t_env *env_list)
 {
 	char **res_split;
@@ -23,8 +27,29 @@ char	**split_path(t_env *env_list)
 	return (res_split);
 }
 
-/* Gets COMMANDS and OPTION number (type 0 and type 1) */
-int	get_args_nb(t_element *cmd, t_pipe *exec)
+/*
+Fills every command or option type in cmd_tab
+*/
+void	fill_cmd_tab(t_element *cmd, t_pipe *exec)
+{
+	int	i;
+
+	i = 0;
+	while (cmd)
+	{
+		if (cmd->type == COMMAND || cmd->type == OPTION)
+		{
+			exec->cmd_tab[i] = malloc(sizeof(char ) * ft_strlen(cmd->content) + 1);
+			ft_strcpy(exec->cmd_tab[i], cmd->content);
+			// printf("cmd_tab[%d] = %s\n", i, exec->cmd_tab[i]);
+			i++;
+		}
+		cmd = cmd->next;
+	}
+	exec->cmd_tab[i] = NULL;
+}
+/* Gets COMMAND and OPTION cmd type number */
+int	get_args_nb(t_element *cmd)
 {
 	int	nb_args;
 
@@ -32,17 +57,12 @@ int	get_args_nb(t_element *cmd, t_pipe *exec)
 	while (cmd)
 	{
 		if (cmd->type == COMMAND || cmd->type == OPTION)
-		{
-			exec->cmd_tab[nb_args] = malloc(sizeof(char *) * ft_strlen(cmd->content) + 1);
-			ft_strcpy(exec->cmd_tab[nb_args], cmd->content);
-			// printf("cmd_tab[%d] = %s\n", nb_args, exec->cmd_tab[nb_args]);
 			nb_args++;
-		}
 		cmd = cmd->next;
 	}
-	exec->cmd_tab[nb_args] = NULL;
 	return (nb_args);
 }
+
 
 /* Gets the number of pipes depending on input */
 int	get_pipe_nb(t_element *cmd, t_pipe *exec)
