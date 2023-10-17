@@ -1,21 +1,14 @@
-#******************************************************************************#
+# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-<<<<<<< HEAD
-#    By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+         #
+#    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/16 12:43:58 by octonaute        ###   ########.fr        #
-=======
-#    By: karl <karl@student.42.fr>                  +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/16 19:48:13 by karl             ###   ########.fr        #
->>>>>>> main
+#    Updated: 2023/10/17 13:43:56 by kquerel          ###   ########.fr        #
 #                                                                              #
-#******************************************************************************#
+# **************************************************************************** #
 
 #modifier le makefile de la libft maintenant que je sais en faire des mieux?
 #ça ne crée pas le directory binaries
@@ -74,11 +67,10 @@ CC = cc
 
 RM = rm -f
 
-<<<<<<< HEAD
-CFLAGS = -gdwarf-4 #-Wall -Wextra -Werror -g3
-=======
-CFLAGS = #-Wall -Wextra -Werror -g3
->>>>>>> main
+CFLAGS = -Wall -Wextra -Werror -g3
+
+#CFLAGS = -gdwarf-4 #-Wall -Wextra -Werror -g3
+
 #PENSER À ENLEVER -G3 (juste pour gdb)
 MAKEFLAGS   += --no-print-directory
 
