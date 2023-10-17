@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/17 16:59:56 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/17 18:46:28 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	commands(char *line, t_env *env_list, char *home_path)
 		cd(line, home_path, env_list);
 	else if (is_cmd_in_line(line, "echo") == true)
 		echo(line);
+	// else if (is_cmd_in_line(line, "export") == true)
+	// 	ft_export(line);
 }
 
 /*Checks if what is written in the command line corresponds to a command.*/
