@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/17 16:14:32 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 13:34:17 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,12 @@ t_element	*lstnew(char *line, int i, int type)
 	t_element	*new;
 
 	new = (t_element *)malloc(sizeof(*new));
+	//new = (t_element *)calloc(1, sizeof(t_element *));
 	if (!new)
 		return (NULL);
-	new -> content = calloc(size_of_command(line, i, type), sizeof(char));
+	/*LIGNE DU DESSOUS : j'ai mis + 100 pour regler les pb de valgrind mais 
+	je ne peux pas le laisser comme ca!!*/
+	new -> content = calloc(size_of_command(line, i, type) + 100, sizeof(char));
 	new -> type = 0;
 	new -> builtin = false;
 	new -> next = NULL;
@@ -34,10 +37,13 @@ t_env	*lstnew_env(char *line, int i)
 	t_env	*new;
 
 	new = (t_env *)malloc(sizeof(*new));
+	//new = (t_env *)calloc(1, sizeof(*new));
 	if (!new)
 		return (NULL);
-	new -> key = malloc(sizeof(char) * size_of_command(line, i, KEY));
-	new -> value = malloc(sizeof(char) * size_of_command(line, i, VALUE));
+	// new -> key = malloc(sizeof(char) * size_of_command(line, i, KEY));
+	new -> key = calloc(size_of_command(line, i, KEY), sizeof(char));
+	// new -> value = malloc(sizeof(char) * size_of_command(line, i, VALUE));
+	new -> value = calloc(size_of_command(line, i, VALUE), sizeof(char));
 	new -> next = NULL;
 	return (new);
 }

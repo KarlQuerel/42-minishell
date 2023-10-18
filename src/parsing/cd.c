@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:34:22 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/17 19:22:05 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 13:16:48 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ void	cd_directory(char *line, int i)
 	char	*path;
 
 	i++; //now i = beggining of the path
-	path = malloc(sizeof(char) * size_of_command(line, i, CMD));
+	// path = malloc(sizeof(char) * size_of_command(line, i, CMD));
+	path = calloc(size_of_command(line, i, CMD), sizeof(char));
 	if (!path)
 		return ;
     path = cd_path(line, i, path);
