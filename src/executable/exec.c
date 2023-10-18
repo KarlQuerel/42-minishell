@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/17 19:33:31 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/18 13:46:41 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, char *line, char 
 		// printf("cmd->content = %s\n", cmd->content);
 		if (cmd->builtin == true)
 		{
-			
 			commands(line, env, home_path);
 			return ;
 			// if (ft_strncmp(cmd->content, "echo", ft_strlen("echo")))

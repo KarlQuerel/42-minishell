@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/17 19:29:09 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/18 14:22:22 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,7 +252,8 @@ int		ft_infile(char *file);
 int		ft_outfile(t_element *cmd);
 
 
-
+void	ft_delete_node(t_env **env, t_element *to_delete);
+void	ft_remove_var(t_element *cmd_list, t_env *env, char *to_remove);
 
 
 int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, char *line, char *home_path);
