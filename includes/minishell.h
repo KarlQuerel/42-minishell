@@ -115,7 +115,7 @@ typedef struct s_env
 typedef struct s_pipe
 {
 	int		here_doc;
-	int		pipe_nb;
+	int		cmd_nb;
 	int		*pid;
 	char	**cmd_tab;
 	char	**cmd_path;
@@ -233,8 +233,8 @@ int		str_type(char *command, int len);
 /*-----------------EXECUTABLE FOLDER------------------*/
 
 /* Exec*/
-void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec);
-void	execute_command(t_element *cmd, t_env *env, t_pipe *exec);
+void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, char *line, char *home_path);
+void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, char *line, char *home_path);
 void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, int i);
 char	*ft_get_command(char **path, char *argument);
 
@@ -242,13 +242,13 @@ char	*ft_get_command(char **path, char *argument);
 char	**split_path(t_env *env_list);
 int		get_args_nb(t_element *cmd);
 void	fill_cmd_tab(t_element *cmd, t_pipe *exec);
-int		get_pipe_nb(t_element *cmd, t_pipe *exec);
+int		get_cmds_nb(t_element *cmd, t_pipe *exec);
 char	*ft_strcpy(char *dst, char *src);
 
 /* Pipes */
 void	ft_close_pipe(t_pipe *exec);
 void	ft_create_pipe(t_pipe *exec, int i, int *pipe_end);
-int	ft_waitpid(int *pid, int n);
+int		ft_waitpid(int *pid, int n);
 
 
 /* Redirect */
@@ -260,9 +260,9 @@ int		ft_outfile(t_element *cmd);
 
 
 
-int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
-void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
+int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, char *line, char *home_path);
+void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, char *line, char *home_path);
 void	msg_error(int err);
-int		childrens(t_element *cmd, t_pipe *exec);
+int		childrens(t_element *cmd, t_pipe *exec, char *line, char *home_path);
 
 #endif

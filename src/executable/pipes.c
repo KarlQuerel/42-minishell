@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 15:02:53 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/13 15:46:56 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/17 19:29:39 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 /* Initiate pipe and create all pipe ends according to commands number */
 void	ft_create_pipe(t_pipe *exec, int i, int *pipe_end)
 {
-	while (i < exec->pipe_nb)
+	while (i < exec->cmd_nb)
 	{
 		if (pipe(pipe_end) < 0) // ne marche pas
 		{
@@ -44,7 +44,7 @@ void	ft_close_pipe(t_pipe *exec)
 	int	i;
 
 	i = 0;
-	while (i < exec->pipe_nb)
+	while (i < exec->cmd_nb)
 	{
 		close(exec->pipe_end[i]);
 		i++;
