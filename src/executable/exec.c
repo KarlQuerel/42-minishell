@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/18 13:46:41 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/18 18:39:25 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,32 +55,10 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, char *line, char 
 			printf("Split_path failed\n");
 			// free des trucs
 		}
-		
-
-		// printf("cmd_builtin = %d\n", cmd->builtin);
-		// printf("cmd->content = %s\n", cmd->content);
 		if (cmd->builtin == true)
 		{
 			commands(line, env, home_path);
 			return ;
-			// if (ft_strncmp(cmd->content, "echo", ft_strlen("echo")))
-			// {
-			// 	// if (cmd->next->content /*&& cmd->next->type == ARGUMENT*/)
-			// 	printf("----------------->line = %s\n", line);
-			// 		echo(line);
-			// 	// else
-			// 	// 	ft_putstr_fd("\n", 1);
-			// }
-			// // else if (ft_strncmp(cmd->content, "cd", ft_strlen("cd")))
-			// // 	cd(line);
-			// else if (ft_strncmp(cmd->content, "pwd", ft_strlen("pwd")))
-			// 	pwd(PRINT);
-			// else if (ft_strncmp(cmd->content, "export", ft_strlen("export")))
-			// 	ft_export(cmd, env);
-			// // if (ft_strncmp(cmd->content, "unset", ft_strlen("unset")))
-			// // 	ft_unset();
-			// else if (ft_strncmp(cmd->content, "env", ft_strlen("env")))
-			// 	ft_env(env, 0);
 		}
 		cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
 		if (!cmd->content)
@@ -131,30 +109,75 @@ char	*ft_get_command(char **path, char *argument)
 void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, char *line, char *home_path)
 {
 	exec->av_nb = get_args_nb(cmd);
-	exec->cmd_tab = malloc(sizeof(char *) * (exec->av_nb + 1)); // utiliser la fonction de caro
+	exec->cmd_tab = malloc(sizeof(char *) * (exec->av_nb + 1));
 	if (!exec->cmd_tab)
 		return ;
 	fill_cmd_tab(cmd, exec);
-
-	// if (cmd->builtin == true)
-	// {
-	// 	// cd();
-	// 	//commands()
-	// 	exit(127);
-	// }
-	
 	get_cmds_nb(cmd, exec); // utiliser le nombre de commands while (i < nb_commands)
 	if (exec->cmd_nb == 1) // dans le cas d'une single command
 		execute_command(cmd, env, exec, line, home_path);
 	else // plusieurs commandes
 	{
-		exec->pid = ft_calloc(sizeof(int), exec->cmd_nb + 2);
-		if (!exec->pid)
-			return (msg_error(0));
-		childrens(cmd, exec, line, home_path);
+		redir(cmd, exec, env, line, home_path);
+	}
+
+
+	// {
+		
+	// 	int	i = 0;
+	// 	while (i < exec->cmd_nb)
+	// 	{
+	// 		ft_children(cmd, exec, i, line, home_path);
+	// 		i++;
+	// 	}
+	// }
+	
+	// {
+	// 	exec->pid = ft_calloc(sizeof(int), exec->cmd_nb + 2);
+	// 	if (!exec->pid)
+	// 		return (msg_error(0));
+	// 	childrens(cmd, exec, line, home_path);
+	// }
+}
+
+// void ft_children(t_element *cmd, t_pipe *exec, int i, char *line, char *home_path)
+// {
+	
+// }
+
+void	redir(t_element *cmd, t_pipe *exec, t_env *env, char *line, char *home_path)
+{
+	pid_t	pid;
+	int	pipefd[2];
+
+	if (pipe(pipefd) < 0)
+	{
+		perror("pipe");
+		return ;
+	}
+	pid = fork();
+	if (pid)
+	{
+		close(pipefd[1]);
+		dup2(pipefd[0], STDIN_FILENO);
+		waitpid(pid, NULL, 0);
+	}
+	else
+	{
+		close(pipefd[0]);
+		dup2(pipefd[1], STDOUT_FILENO);
+		execute_command(cmd, env, exec, line, home_path);
 	}
 }
-	
+
+
+
+
+
+
+
+
+
 /* fonction test */
 int	childrens(t_element *cmd, t_pipe *exec, char *line, char *home_path)
 {
@@ -162,37 +185,29 @@ int	childrens(t_element *cmd, t_pipe *exec, char *line, char *home_path)
 	int		fd;
 
 	fd = STDIN_FILENO;
+	// printf("JE SUIS LA\n");
 	while (cmd && cmd->next)
 	{
-		// printf("%scommand = %s\n%s", BGRE, cmd->content, WHT);
-		// printf("%scommand->next = %s\n%s", BGRE, cmd->next->content, WHT);
-
-		// while(cmd->content)
-		// {
 		if (cmd->type != COMMAND && cmd->type != OPTION) // pour sauter les pipes
 			cmd = cmd->next;
 		printf("cmd = %s\n", cmd->content);
-		// }
-		// exec->simple_cmds = call_expander(exec, exec->simple_cmds);
-		if (cmd)
+		if (cmd->next)
 		{
 			if (pipe(pipe_end) < 0)
 			{
 				printf("hello\n");
 				exit(EXIT_FAILURE);
 			}
-			// ft_create_pipe(exec, i, pipe_end);
+			ft_create_pipe(exec, pipe_end);
 		}
-		// send_heredoc(exec, exec->simple_cmds);
 		ft_fork(cmd, exec, pipe_end, fd, line, home_path);
 		close(pipe_end[1]);
 		if (cmd->prev)
 			close(fd);
-		// fd_in = check_fd_heredoc(exec, end, exec->simple_cmds);
 		if (cmd->next)
 			cmd = cmd->next;
-		// else
-		// 	break ;
+		else
+			break ;
 
 	}
 	ft_waitpid(exec->pid, exec->cmd_nb);

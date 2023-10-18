@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lstnew.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/18 13:34:17 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 14:35:52 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ t_element	*lstnew(char *line, int i, int type)
 {
 	t_element	*new;
 
-	new = (t_element *)malloc(sizeof(*new));
-	//new = (t_element *)calloc(1, sizeof(t_element *));
+	// new = (t_element *)malloc(sizeof(*new));
+	new = (t_element *)calloc(1, sizeof(t_element));
 	if (!new)
 		return (NULL);
 	/*LIGNE DU DESSOUS : j'ai mis + 100 pour regler les pb de valgrind mais 
@@ -36,8 +36,8 @@ t_env	*lstnew_env(char *line, int i)
 {
 	t_env	*new;
 
-	new = (t_env *)malloc(sizeof(*new));
-	//new = (t_env *)calloc(1, sizeof(*new));
+	// new = (t_env *)malloc(sizeof(*new));
+	new = (t_env *)calloc(1, sizeof(t_env));
 	if (!new)
 		return (NULL);
 	// new -> key = malloc(sizeof(char) * size_of_command(line, i, KEY));

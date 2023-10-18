@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/18 13:26:37 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 14:44:36 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,12 @@ t_element *parsing(char *line)
 	inside_quotes = false;
 	current_cmd = lstnew(line, start, CMD); //je pars du principe que tjrs cmd d abord
 	head = current_cmd;
+	
+	// KARL -> j'ai ajoute ca pour regler une seg fault
+	if (!line)
+		return (NULL);
+	// fin
+
 	while (line[i])
 	{
 		j = 0;
