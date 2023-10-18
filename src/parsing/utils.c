@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/17 16:38:13 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 13:21:25 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,8 @@ char *strlcpy_middle(char *dst, const char *src, size_t start, size_t end)
 	int	i;
 	
 	i = 0;
-	dst = malloc(sizeof(char) * (end - start + 2));
+	// dst = malloc(sizeof(char) * (end - start + 2));
+	dst = calloc(end - start + 2, sizeof(char));
 	while (src[start] && start <= end)
 		dst[i++] = src[start++];
 	dst[i] = '\0';
