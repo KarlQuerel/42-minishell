@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/17 14:49:32 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/18 13:16:13 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ char	*dollar(char *line, t_env *env_list)
 	i ++; //now i = beggining of the key
 	j = 0;
 //trouver la key
-	key = malloc(sizeof(char) * size_of_command(line, i, KEY));
+	// key = malloc(sizeof(char) * size_of_command(line, i, KEY));
+	key = calloc(size_of_command(line, i, KEY), sizeof(char));
 	if (!key)
 		return (NULL);
 	while(line[i] && (line[i + 1] != ' '))
@@ -50,7 +51,8 @@ char	*dollar(char *line, t_env *env_list)
 	i = where_is_cmd_in_line(line, "$");
 	j = 0;
 	len = 0;
-	new_line = malloc(sizeof(char) * (ft_strlen(line) - size_of_command(line, i, CMD) + ft_strlen(node->value)));
+	// new_line = malloc(sizeof(char) * (ft_strlen(line) - size_of_command(line, i, CMD) + ft_strlen(node->value)));
+	new_line = calloc(ft_strlen(line) - size_of_command(line, i, CMD) + ft_strlen(node->value), sizeof(char));
 	if (!new_line)
 		return (NULL);
 	while(line[i + 1] != '$')
@@ -130,7 +132,8 @@ void	cd(char *line, char *home_path, t_env *env_list)
 	else
 	{
 		i++; //now i = beggining of the path
-		path = malloc(sizeof(char) * size_of_command(line, i, CMD));
+		// path = malloc(sizeof(char) * size_of_command(line, i, CMD));
+		path = calloc(size_of_command(line, i, CMD), sizeof(char));
 		if (!path)
 			return ;
 		j = 0;
