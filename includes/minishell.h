@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/17 16:57:21 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 14:05:56 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list);
 /*------------------PARSING FOLDER------------------*/
 
 /*Commands*/
-void	commands(char *line, t_env *env_list, char *home_path);
+//void	commands(t_element *current_cmd, t_env *env_list, char *home_path);
 bool	is_this_command(char *buffer, char* command);
 int		size_of_command(char *command, int len, int type);
 bool    is_cmd_in_line(char *line, char *cmd);
@@ -192,7 +192,10 @@ int	put_new_var(t_env *env, char *key, char *content);
 /*Echo*/
 int 	skip(char *line, int i, int option);
 char	type_of_str(char *line, int i);
-void	echo(char *line);
+int	type_of_str_2(char *cmd);
+void   print_skiping_quotes(char *str);
+//void	echo(char *line);
+void	echo(t_element *current);
 
 /*Cd*/
 void	cd_home(char *home_path, t_env *env_list);

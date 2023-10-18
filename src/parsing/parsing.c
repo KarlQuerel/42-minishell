@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/18 13:26:37 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 14:49:05 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,14 @@ t_element *parsing(char *line)
 	int j;
 	t_element *current_cmd;
 	t_element *head;
-	bool	inside_quotes;
+	//bool	inside_quotes;
 	int	type;
+	char quote_type;
 
 	i = 0;
 	start = i;
 	current_cmd = NULL;
-	inside_quotes = false;
+	//inside_quotes = false;
 	current_cmd = lstnew(line, start, CMD); //je pars du principe que tjrs cmd d abord
 	head = current_cmd;
 	while (line[i])
@@ -84,10 +85,11 @@ t_element *parsing(char *line)
 		j = 0;
 		/*JE POURRAIS UTILISER LA FONCTION type_of_str POUR
 		RENDRE CETTE FONCTION PLUS COURTE*/
-		if ((line[start] == '\'' || line[start] == '\"') && quotes_can_close(line) == true)
+/* 		if ((line[start] == '\'' || line[start] == '\"') && quotes_can_close(line) == true)
 		{
+			quote_type = type_of_str(line, start);
 			type = STR;
-			while (line[i] && (line[i] != '\'' || line[i] != '\"')) //verifier sans le quotes_can_close pq je pense que j ai deja cette protection ailleurs
+			while (line[i] && line[i] != quote_type) //verifier sans le quotes_can_close pq je pense que j ai deja cette protection ailleurs
 				current_cmd->content[j++] = line[i++];
 			current_cmd->content[j] = '\0';
 		}
@@ -97,7 +99,24 @@ t_element *parsing(char *line)
 			while (line[i] && line[i] != ' ')
 				current_cmd->content[j++] = line[i++];
 			current_cmd->content[j] = '\0';
+		} */
+		if ((line[start] == '\'' || line[start] == '\"') && quotes_can_close(line) == true)
+		{
+			type = STR;
+			i++;
 		}
+		else
+			type = CMD;
+		quote_type = type_of_str(line, start);
+		while (line[i] && line[i] != quote_type)
+		{
+			if (line[i] == '\\') //pour le test echo hola\ncaro -> doit donner holancaro
+    		    i++;
+			current_cmd->content[j++] = line[i++];
+		}
+		current_cmd->content[j] = '\0';
+		if (quote_type != ' ')
+			i++;
 		current_cmd->type = determine_command_type(line, i, start);
 		while ((line[i] == ' ' || line[i] == '<' || line[i] == '>') && line[i])
 			i++;

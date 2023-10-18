@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/17 16:59:56 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 13:58:32 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,15 @@ char	*line_errors_and_fix(char *line, t_env *env_list)
 	return (line);
 }
 
-void	commands(char *line, t_env *env_list, char *home_path)
+/* void	commands(t_element *current_cmd, t_env *env_list, char *home_path)
 {
-	/*a la base j avais fait " cd " etc donc avec espace apres le 
-	nom du builtin pour eviter les erreur du type "holacdhey" et 
-	que ca compte comme cd mais pb : cd tout seul sans espace avant
-	car premiere cmd de la ligne et sans espace apres car c est a 
-	moi de remplacer par le home_path alors ca ne marche pas. Même
-	pb pour le $ dans la fonction line_errors_and_fix car on peut
-	avoir $ suivi de '?'.*/
+	// a la base j avais fait " cd " etc donc avec espace apres le 
+	// nom du builtin pour eviter les erreur du type "holacdhey" et 
+	// que ca compte comme cd mais pb : cd tout seul sans espace avant
+	// car premiere cmd de la ligne et sans espace apres car c est a 
+	// moi de remplacer par le home_path alors ca ne marche pas. Même
+	// pb pour le $ dans la fonction line_errors_and_fix car on peut
+	// avoir $ suivi de '?'.
 	if (is_this_command(line, "history") == true)
 		history(HISTORY);
 	else if (is_this_command(line, "pwd") == true)
@@ -45,8 +45,9 @@ void	commands(char *line, t_env *env_list, char *home_path)
 	else if (is_cmd_in_line(line, "cd") == true)
 		cd(line, home_path, env_list);
 	else if (is_cmd_in_line(line, "echo") == true)
-		echo(line);
-}
+		
+	echo(current_cmd);
+} */
 
 /*Checks if what is written in the command line corresponds to a command.*/
 bool	is_this_command(char *buffer, char* command)
