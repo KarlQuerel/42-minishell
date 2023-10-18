@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/18 14:05:56 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 17:58:35 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ t_element	*lstnew(char *line, int i, int type);
 t_env		*lstnew_env(char *line, int i);
 
 /*Free*/
-void	final_free(char *line, t_env *env_list, t_env *path, char *new_path);
+void	final_free(char *line, t_env *env_list, char *path);
 void	free_cmd_list(t_element *cmd_list);
 
 /*History*/
@@ -184,24 +184,26 @@ void	ft_env(t_env *env, int option);
 int		ft_export(t_element *cmd_list, t_env *env);
 int		ft_is_valid(char *s);
 char 	**new_env_var(char *s);
-int	put_new_var(t_env *env, char *key, char *content);
+int		put_new_var(t_env *env, char *key, char *content);
 
 
 // unset
 
 /*Echo*/
-int 	skip(char *line, int i, int option);
-char	type_of_str(char *line, int i);
-int	type_of_str_2(char *cmd);
+//int 	skip(char *line, int i, int option);
+char	type_of_separator(char *line, int i);
+int		type_of_str(char *cmd);
 void   print_skiping_quotes(char *str);
 //void	echo(char *line);
 void	echo(t_element *current);
 
 /*Cd*/
-void	cd_home(char *home_path, t_env *env_list);
-char    *cd_path(char *line, int i, char *path);
-void	cd_directory(char *line, int i);
-void	cd(char *line, char *home_path, t_env *env_list);
+char	*split_at_user(char *big_path, char *user);
+void	cd_home(t_env *env_list);
+char    *fix_path_if_spaces(char *path);
+void	cd_directory(char *path, t_env *env_list);
+// void	cd(char *line, char *home_path, t_env *env_list);
+void	cd(t_element *current, t_env *env_list);
 
 /*Errors*/
 void	first_character_error(char *line);

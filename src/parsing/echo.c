@@ -6,53 +6,12 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:35 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/18 15:04:08 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 15:25:14 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
-
-/*Returns the delimiter to look for depending
-on the type of string.*/
-char	type_of_str(char *line, int i)
-{
-    char	type;
-    
-    if (line[i] == '\'')
-        type = '\'';
-    else if (line[i] == '\"')
-        type = '\"';
-    else
-        type = ' ';
-    return (type);
-}
-
-int	type_of_str_2(char *cmd)
-{
-    if (cmd[0] == '\'' && cmd[ft_strlen(cmd) - 1] == '\'')
-        return (STR);
-    else if (cmd[0] == '\"' && cmd[ft_strlen(cmd) - 1] == '\"')
-        return (STR);
-    else
-        return (CMD);
-}
-
-/*Skips quotes and spaces in the command line.*/
-int skip(char *line, int i, int option)
-{
-    if (option == SPACES)
-    {
-        while(line[i] == ' ' && line[i])
-            i++;
-    }
-    if (option == QUOTES)
-    {
-        if (line[i] == '\'' || line[i] == '\"')
-            i++;
-    }
-    return (i);
-}
 
 void   print_skiping_quotes(char *str)
 {
@@ -61,6 +20,16 @@ void   print_skiping_quotes(char *str)
     i = 1;
     while (i < ft_strlen(str) - 1)
         printf("%c", str[i++]);
+}
+
+int	type_of_str(char *cmd)
+{
+    if (cmd[0] == '\'' && cmd[ft_strlen(cmd) - 1] == '\'')
+        return (STR);
+    else if (cmd[0] == '\"' && cmd[ft_strlen(cmd) - 1] == '\"')
+        return (STR);
+    else
+        return (CMD);
 }
 
 /*CARACTERES QUI NECESSITENT UN \ POUR ETRE ECHO CORRECTEMENT
@@ -95,7 +64,7 @@ void	echo(t_element *current)
     current = current->next; 
  	while(current != NULL && current->type != PIPE)
 	{
-        type = type_of_str_2(current->content);
+        type = type_of_str(current->content);
         if (type == STR)
             print_skiping_quotes(current->content);
         else

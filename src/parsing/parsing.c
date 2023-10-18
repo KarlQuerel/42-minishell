@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/18 14:49:05 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 15:08:00 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,21 @@ void printlist_test(t_element *head) // A EFFACER A LA FIN
 		head = head->next;
 		i++;
 	}
+}
+
+/*Returns the delimiter to look for depending
+on the type of string.*/
+char	type_of_separator(char *line, int i)
+{
+    char	type;
+    
+    if (line[i] == '\'')
+        type = '\'';
+    else if (line[i] == '\"')
+        type = '\"';
+    else
+        type = ' ';
+    return (type);
 }
 
 /*Determines the type of a given cmd for the parsing function.*/
@@ -70,36 +85,17 @@ t_element *parsing(char *line)
 	int j;
 	t_element *current_cmd;
 	t_element *head;
-	//bool	inside_quotes;
 	int	type;
 	char quote_type;
 
 	i = 0;
 	start = i;
 	current_cmd = NULL;
-	//inside_quotes = false;
 	current_cmd = lstnew(line, start, CMD); //je pars du principe que tjrs cmd d abord
 	head = current_cmd;
 	while (line[i])
 	{
 		j = 0;
-		/*JE POURRAIS UTILISER LA FONCTION type_of_str POUR
-		RENDRE CETTE FONCTION PLUS COURTE*/
-/* 		if ((line[start] == '\'' || line[start] == '\"') && quotes_can_close(line) == true)
-		{
-			quote_type = type_of_str(line, start);
-			type = STR;
-			while (line[i] && line[i] != quote_type) //verifier sans le quotes_can_close pq je pense que j ai deja cette protection ailleurs
-				current_cmd->content[j++] = line[i++];
-			current_cmd->content[j] = '\0';
-		}
-		else
-		{
-			type = CMD;
-			while (line[i] && line[i] != ' ')
-				current_cmd->content[j++] = line[i++];
-			current_cmd->content[j] = '\0';
-		} */
 		if ((line[start] == '\'' || line[start] == '\"') && quotes_can_close(line) == true)
 		{
 			type = STR;
@@ -107,7 +103,7 @@ t_element *parsing(char *line)
 		}
 		else
 			type = CMD;
-		quote_type = type_of_str(line, start);
+		quote_type = type_of_separator(line, start);
 		while (line[i] && line[i] != quote_type)
 		{
 			if (line[i] == '\\') //pour le test echo hola\ncaro -> doit donner holancaro
@@ -137,6 +133,7 @@ t_element *parsing(char *line)
 	head = builtin_fix(head);
 	return (head);
 }
+
 /* To fix the type of the arguments that are not in between quotes and are
 therefore considered as a COMMAND instead of an ARGUMENT in the parsing function.
 This functions sets all arguments that are not of type OPTION after a cmd
