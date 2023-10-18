@@ -6,14 +6,14 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/13 15:25:58 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 17:20:20 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-void	final_free(char *line, t_env *env_list, t_env *path, char *new_path)
+void	final_free(char *line, t_env *env_list, char *path)
 {
 	free(line);
 	history(FREE_HISTORY);
@@ -25,7 +25,6 @@ void	final_free(char *line, t_env *env_list, t_env *path, char *new_path)
 	}
 	free(env_list);
 	free(path);
-	free(new_path);
 }
 
 void	free_cmd_list(t_element *cmd_list)

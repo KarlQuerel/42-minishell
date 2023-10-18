@@ -6,46 +6,84 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:34:22 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/18 13:16:48 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 18:01:21 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
+char	*split_at_user(char *big_path, char *user)
+{
+	char	*str; //a la fois les mots entre slash et a la fin le path simplifie
+	int	end;
+	int start;
+
+	end = 0;
+	start = 1;
+	str = NULL;
+	while(big_path[end])
+	{
+		if (big_path[end + 1] == '/')
+		{
+			str = strlcpy_middle(str, big_path, start, end);
+			// printf("%sstr = [%s]\n%s", GREEN, str, RESET);
+			// printf("%suser = [%s]\n%s", GREEN, user, RESET);
+			// printf("%sbig_path = [%s]\n%s", YELLOW, big_path, RESET);
+			if (ft_strncmp(str, user, ft_strlen(user)) == 0)
+			{
+				free(str);
+				str = NULL;
+				str = strlcpy_middle(str, big_path, 0, end);
+				//printf("%sstr = [%s]\n%s", GREEN, str, RESET);
+				return (str);
+			}
+			else
+			{
+ 				free(str);
+				str = NULL;
+				start = end + 2;
+				end+=1;
+			}
+		}
+		end++;
+	}
+	return (NULL); //ne devrait jamais arriver la
+}
+
 /*Handles the case where cd has no specified path afterwards by 
 making "cd .." until it arrives to the home folder.*/
-void	cd_home(char *home_path, t_env *env_list)
+void	cd_home(t_env *env_list)
 {
-	char	*path;
-	char	*bigger;
-	t_env	*user;
+	//t_env	*path;
+	// t_env	*user;
+	t_env	*home;
+	//char *home_path;
+	char *current_path;
 
-	path = pwd(NO_PRINT);
-	user = find_value_with_key_env(env_list, "USER");
-	path = home_path_simplified(path, user);
-	bigger = NULL;
-	if (ft_strlen(path) > ft_strlen(home_path))
-		bigger = path;
-	else
-		bigger = home_path;
-	if(ft_strncmp(path, home_path, ft_strlen(bigger)) != 0 && \
-	ft_strlen(home_path) != ft_strlen(path)) //tant que home_path est différent de path
+	current_path = pwd(NO_PRINT);
+	// user = find_value_with_key_env(env_list, "USER");
+	// path = find_value_with_key_env(env_list, "PATH");
+	home = find_value_with_key_env(env_list, "HOME");
+	//home_path = split_at_user(path->value, user->value);
+	//printf("path simplified = %s\n", home_path);
+	if(ft_strncmp(current_path, home->value, ft_strlen(current_path)) != 0 && \
+	ft_strlen(home->value) != ft_strlen(current_path))
 	{
-		while (ft_strncmp(path, home_path, ft_strlen(bigger)) != 0 && \
-		ft_strlen(home_path) != ft_strlen(path))
+		while (ft_strncmp(current_path, home->value, ft_strlen(current_path)) != 0 && \
+	ft_strlen(home->value) != ft_strlen(current_path))
 		{
 			if (chdir("..") != 0)
 			{
-				free(path);
+				free(current_path);
 				//printf errno
 				return ;
 			}
-			path = pwd(NO_PRINT);
-			user = find_value_with_key_env(env_list, "USER");
-			path = home_path_simplified(path, user);
+			current_path = pwd(NO_PRINT);
+			//user = find_value_with_key_env(env_list, "USER");
+			//path = home_path_simplified(path, user);
 		}
-		free(path);
+		free(current_path);
 	}
 	else
 		return ;
@@ -53,62 +91,83 @@ void	cd_home(char *home_path, t_env *env_list)
 
 /*Returns the specified path and handles the case where a directory
 contains spaces in its name.*/
-char    *cd_path(char *line, int i, char *path)
+char    *fix_path_if_spaces(char *path)
 {
     int		j;
+	int		i;
+	char	*new_path;
 
     j = 0;
-    while(line[i] != ' ' && line[i] != '\0') //traite les cas où le nom du dossier contient des espaces
+	i = 0;
+	new_path = calloc(ft_strlen(path) + 1, sizeof(char)); //new_path fera max la len de path (en cas de non espaces)
+    while(path[i]) //traite les cas où le nom du dossier contient des espaces
 	{
-		if (line[i] == '\\' && line[i + 1] == ' ')
+		if (path[i] == '\\' && path[i + 1] == ' ')
 		{
-			while(line[i] != '/' && (line[i + 1] != ' ' || line[i + 1] != '\0'))
+			while(path[i] != '/' && (path[i + 1] != ' ' || path[i + 1] != '\0'))
 			{
-				if (line[i] == '\\')
+				if (path[i] == '\\')
 					i++;
-				path[j++] = line[i++];
+				new_path[j++] = path[i++];
 			}
 			i++; //pour sauter le / de fin
 		}
-		if (line[i] != '\0')
-			path[j++] = line[i++];
+		if (path[i] != '\0')
+			new_path[j++] = path[i++];
 	}	
-	path[j] = '\0';
-    return (path);
+	new_path[j] = '\0';
+    return (new_path);
 }
 
 /*Moves to the specified directory.*/
-void	cd_directory(char *line, int i)
+void	cd_directory(char *path, t_env *env_list)
 {
-	char	*path;
+	char	*new_path;
+	t_env *home;
+	int i;
 
-	i++; //now i = beggining of the path
-	// path = malloc(sizeof(char) * size_of_command(line, i, CMD));
-	path = calloc(size_of_command(line, i, CMD), sizeof(char));
-	if (!path)
-		return ;
-    path = cd_path(line, i, path);
-	if (chdir(path) != 0)
+////////////////////////////////
+	//POUR EVITER QUE QD ON FAIT CD PUIS CD .. CA ECRIVE (NULL)$ SUR LE PROMPT
+	// POUR L'INSTANT NE MARCHE PAS
+	home = find_value_with_key_env(env_list, "HOME");
+	i = ft_strlen(pwd(NO_PRINT)) - 2; //pour sauter le dernier slash
+    new_path = fix_path_if_spaces(path);
+	if (ft_strncmp(new_path, "..", ft_strlen(new_path)) == 0)
+	{
+		while(i > 0)
+		{
+			if (pwd(NO_PRINT)[i - 1] == '/')
+				break;
+			i--;
+		}
+		if (ft_strncmp(pwd(NO_PRINT), home->value, ft_strlen(pwd(NO_PRINT - i + 1)) == 0))
+		{
+			printf("BIEN COMPRIS\n");
+			//ne rien faire :
+			free(new_path);
+			return ;
+		}
+	}
+///////////////////////////
+	if (chdir(new_path) != 0)
 	{
 		printf("bash : cd : %s: No such file or directory\n", path);
-		free(path);
+		free(new_path);
 		//printf errno
 		return ;
 	}
-	free(path);
+	free(new_path);
 }
 
 /*If cd has no specified directory afterwards, calls the function cd_home.
 Otherwise, calls the function cd_directory.*/
-void	cd(char *line, char *home_path, t_env *env_list)
+void	cd(t_element *current, t_env *env_list)
 {
 	int		i;
 	
-	i = where_is_cmd_in_line(line, "cd");
-	if (i == 0)
-		return ; //error : cd pas trouve
-	if (size_of_command(line, 0, CMD) == 1 || line[i + 1] == '|' || line[i] == '\0')
-		cd_home(home_path, env_list);
+	i = 0;
+	if (current->next == NULL || current->next->type == PIPE)
+		cd_home(env_list);
 	else
-		cd_directory(line, i);
+		cd_directory(current->next->content, env_list);
 }

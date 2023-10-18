@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/17 19:29:09 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/18 17:58:35 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list);
 /*------------------PARSING FOLDER------------------*/
 
 /*Commands*/
-void	commands(char *line, t_env *env_list, char *home_path);
+//void	commands(t_element *current_cmd, t_env *env_list, char *home_path);
 bool	is_this_command(char *buffer, char* command);
 int		size_of_command(char *command, int len, int type);
 bool    is_cmd_in_line(char *line, char *cmd);
@@ -160,7 +160,7 @@ t_element	*lstnew(char *line, int i, int type);
 t_env		*lstnew_env(char *line, int i);
 
 /*Free*/
-void	final_free(char *line, t_env *env_list, t_env *path, char *new_path);
+void	final_free(char *line, t_env *env_list, char *path);
 void	free_cmd_list(t_element *cmd_list);
 
 /*History*/
@@ -190,15 +190,20 @@ int		put_new_var(t_env *env, char *key, char *content);
 // unset
 
 /*Echo*/
-int 	skip(char *line, int i, int option);
-char	type_of_str(char *line, int i);
-void	echo(char *line);
+//int 	skip(char *line, int i, int option);
+char	type_of_separator(char *line, int i);
+int		type_of_str(char *cmd);
+void   print_skiping_quotes(char *str);
+//void	echo(char *line);
+void	echo(t_element *current);
 
 /*Cd*/
-void	cd_home(char *home_path, t_env *env_list);
-char    *cd_path(char *line, int i, char *path);
-void	cd_directory(char *line, int i);
-void	cd(char *line, char *home_path, t_env *env_list);
+char	*split_at_user(char *big_path, char *user);
+void	cd_home(t_env *env_list);
+char    *fix_path_if_spaces(char *path);
+void	cd_directory(char *path, t_env *env_list);
+// void	cd(char *line, char *home_path, t_env *env_list);
+void	cd(t_element *current, t_env *env_list);
 
 /*Errors*/
 void	first_character_error(char *line);
