@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/17 18:21:46 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/19 14:07:41 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void	ft_env(t_env *env, int option)
 /* Reproduces the export command */
 int	ft_export(t_element *cmd_list, t_env *env)
 {
-	int	ret;
+	//int	ret;
 	char	**new_var;
 	
-	ret = 1;
+	//ret = 1;
 	if (cmd_list->next == NULL) // "export sans rien"
 		ft_env(env, 1);
 	while (cmd_list && cmd_list->next)

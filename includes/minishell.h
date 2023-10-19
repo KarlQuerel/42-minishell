@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/18 17:58:35 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:48:19 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,8 @@ char	*line_errors_and_fix(char *line, t_env *env_list);
 /*Parsing*/
 void	printlist_test(t_element   *head); //A EFFACER A LA FIN
 int		determine_command_type(char *line, size_t i, size_t start);
-t_element	*parsing(char *command);
-t_element	*parsing_fix(t_element *cmd_list);
+t_element	*parsing(char *command, t_env *env_list);
+t_element	*parsing_fix(t_element *cmd_list, t_env *env_list);
 t_element	*builtin_fix(t_element *cmd_list);
 
 /*Env_list*/
@@ -160,7 +160,7 @@ t_element	*lstnew(char *line, int i, int type);
 t_env		*lstnew_env(char *line, int i);
 
 /*Free*/
-void	final_free(char *line, t_env *env_list, char *path);
+void	final_free(char *line, t_env *env_list);
 void	free_cmd_list(t_element *cmd_list);
 
 /*History*/
@@ -177,7 +177,7 @@ void		signal_handler(int signal);
 char    *pwd(int option);
 
 /*Dollar*/
-char	*dollar(char *line, t_env *env_list);
+char	*dollar(char *content, t_env *env_list);
 void	ft_env(t_env *env, int option);
 
 /*Export*/
@@ -229,12 +229,15 @@ int		cmd_type(char *command, int len);
 int		key_and_value_type(char *command, int len, int type);
 int		str_type(char *command, int len);
 
+/*Prompt*/
+void	prompt(t_env *env_list);
+
 
 /*-----------------EXECUTABLE FOLDER------------------*/
 
 /* Exec*/
-void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, char *line, char *home_path);
-void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, char *line, char *home_path);
+void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec);
+void	execute_command(t_element *cmd, t_env *env, t_pipe *exec);
 void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, int i);
 char	*ft_get_command(char **path, char *argument);
 
@@ -260,9 +263,9 @@ int		ft_outfile(t_element *cmd);
 
 
 
-int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, char *line, char *home_path);
-void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, char *line, char *home_path);
+int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
+void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
 void	msg_error(int err);
-int		childrens(t_element *cmd, t_pipe *exec, char *line, char *home_path);
+int		childrens(t_element *cmd, t_pipe *exec);
 
 #endif

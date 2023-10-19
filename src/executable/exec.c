@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/17 19:33:31 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/19 14:06:28 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ Structure pour les pipes:
 */
 
 /* Executes the command */
-void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, char *line, char *home_path)
+void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
 	int	pid;
 	pid = fork();
@@ -62,7 +62,7 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, char *line, char 
 		if (cmd->builtin == true)
 		{
 			
-			commands(line, env, home_path);
+			//commands(line, env, home_path); //CARO ---> la commande n'existe plus, il fallait la changer pour que ça colle avec les nouveaux builtins
 			return ;
 			// if (ft_strncmp(cmd->content, "echo", ft_strlen("echo")))
 			// {
@@ -129,7 +129,7 @@ char	*ft_get_command(char **path, char *argument)
 }
 
 /* Handles execution */
-void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, char *line, char *home_path)
+void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 {
 	exec->av_nb = get_args_nb(cmd);
 	exec->cmd_tab = malloc(sizeof(char *) * (exec->av_nb + 1)); // utiliser la fonction de caro
@@ -146,18 +146,18 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, char *line, char *home
 	
 	get_cmds_nb(cmd, exec); // utiliser le nombre de commands while (i < nb_commands)
 	if (exec->cmd_nb == 1) // dans le cas d'une single command
-		execute_command(cmd, env, exec, line, home_path);
+		execute_command(cmd, env, exec);
 	else // plusieurs commandes
 	{
 		exec->pid = ft_calloc(sizeof(int), exec->cmd_nb + 2);
 		if (!exec->pid)
 			return (msg_error(0));
-		childrens(cmd, exec, line, home_path);
+		childrens(cmd, exec);
 	}
 }
 	
 /* fonction test */
-int	childrens(t_element *cmd, t_pipe *exec, char *line, char *home_path)
+int	childrens(t_element *cmd, t_pipe *exec)
 {
 	int		pipe_end[2];
 	int		fd;
@@ -185,7 +185,7 @@ int	childrens(t_element *cmd, t_pipe *exec, char *line, char *home_path)
 			// ft_create_pipe(exec, i, pipe_end);
 		}
 		// send_heredoc(exec, exec->simple_cmds);
-		ft_fork(cmd, exec, pipe_end, fd, line, home_path);
+		ft_fork(cmd, exec, pipe_end, fd);
 		close(pipe_end[1]);
 		if (cmd->prev)
 			close(fd);
