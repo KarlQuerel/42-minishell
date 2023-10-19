@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/19 17:00:47 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/19 18:48:19 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ t_element	*lstnew(char *line, int i, int type);
 t_env		*lstnew_env(char *line, int i);
 
 /*Free*/
-void	final_free(char *line, t_env *env_list, char *path);
+void	final_free(char *line, t_env *env_list);
 void	free_cmd_list(t_element *cmd_list);
 
 /*History*/
@@ -228,6 +228,9 @@ char	*joinstr_minishell_malloc(char *line, int len, char *str, char type);
 int		cmd_type(char *command, int len);
 int		key_and_value_type(char *command, int len, int type);
 int		str_type(char *command, int len);
+
+/*Prompt*/
+void	prompt(t_env *env_list);
 
 
 /*-----------------EXECUTABLE FOLDER------------------*/

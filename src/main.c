@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/19 17:30:42 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/19 18:48:47 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,12 @@ int main (int argc, char **argv, char **env)
 {
 	char                *line;
 	char                *new_line;
-	//char                *home_path;
 	struct sigaction    signal;
 	t_env				*env_list;
 	t_element			*cmd_list;
 	t_pipe				*exec;
-	char				*path;
-	//t_env	*Gpath;
-	t_env	*user;
-	char * word;
+	
+	
 	
 	exec = ft_calloc(1, sizeof(t_pipe));
 	if (!exec)
@@ -111,13 +108,12 @@ int main (int argc, char **argv, char **env)
 	env_list->env = env;
 	using_history();
 	line = NULL;
-	path = NULL;
 
 	// printf("pwd : %s\n", pwd(NO_PRINT));
 	// printf("simplified : %s\n", home_path_simplified(pwd(NO_PRINT), env_list));
 	
 ///////////////////////
-	//Gpath = find_value_with_key_env(env_list, "PATH");
+/* 	//Gpath = find_value_with_key_env(env_list, "PATH");
 	user = find_value_with_key_env(env_list, "USER");
 	word = NULL;
 	int i = ft_strlen(pwd(NO_PRINT)) - 2; //pour sauter le dernier slash
@@ -135,8 +131,14 @@ int main (int argc, char **argv, char **env)
 		path = home_path_simplified(pwd(NO_PRINT), env_list);
 		printf("%s", path);
 	}
-	line = readline("$ ");
+	line = readline("$ "); */
 ////////////////////
+
+
+//--------------------------------
+	prompt(env_list);
+	line = readline("$ ");
+//--------------------------------
 
 	while (is_this_command(line, "exit") == false) // while (1) et mettre line = readline("$ ") tout en haut de la while
 	//et mettre en commentaire le line = readline("$ ") du bas de la while
@@ -144,7 +146,7 @@ int main (int argc, char **argv, char **env)
 		if (feof(stdin)) // pour ctrl + D?? // ne le comprend pas
 		{
 			printf("CTRL + D detected\n");
-			final_free(line, env_list, path);
+			final_free(line, env_list);
 			return (EXIT_SUCCESS);
 		}
 		add_history(line);
@@ -164,18 +166,17 @@ int main (int argc, char **argv, char **env)
 		//printlist_test(cmd_list);
 
 		//commands(cmd_list, env_list, home_path); // À effacer : c'est juste pour test mes builtins tant que ton exec est en commentaire
-		echo(cmd_list);
-		//cd(cmd_list, env_list);
+		//echo(cmd_list);
+		cd(cmd_list, env_list);
 
 		//free(new_line); //en commentaire pour tests avec dollar
 		free_cmd_list(cmd_list);
-		//free(path);
 /* 		path = home_path_simplified(pwd(NO_PRINT), env_list);
 		printf("%s", path);
 		line = readline("$ "); */
 
 ///////////////////////
-		//Gpath = find_value_with_key_env(env_list, "PATH");
+/* 		//Gpath = find_value_with_key_env(env_list, "PATH");
 		user = find_value_with_key_env(env_list, "USER");
 		word = NULL;
 		int i = ft_strlen(pwd(NO_PRINT)) - 2; //pour sauter le dernier slash
@@ -193,10 +194,14 @@ int main (int argc, char **argv, char **env)
 			path = home_path_simplified(pwd(NO_PRINT), env_list);
 			printf("%s", path);
 		}
-		line = readline("$ ");
+		line = readline("$ "); */
 ////////////////////
+//--------------------------------
+		prompt(env_list);
+		line = readline("$ ");
+//--------------------------------
 
 	}
-	final_free(line, env_list, path);
+	final_free(line, env_list);
 	return (EXIT_SUCCESS);
 }

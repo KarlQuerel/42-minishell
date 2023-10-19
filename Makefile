@@ -6,7 +6,7 @@
 #    By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/19 15:42:44 by octonaute        ###   ########.fr        #
+#    Updated: 2023/10/19 18:40:06 by octonaute        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,7 @@ SRC = src/main.c \
 	src/parsing/pwd.c \
 	src/parsing/dollar.c \
 	src/parsing/echo.c \
+	src/parsing/prompt.c \
 	
 SRC_OBJS = $(SRC:.c=.o)
 

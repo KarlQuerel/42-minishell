@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:34:22 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/19 15:07:18 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/19 18:55:16 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,25 +135,30 @@ void	cd_directory(char *path, t_env *env_list)
 	home = find_value_with_key_env(env_list, "HOME");
 	i = ft_strlen(pwd(NO_PRINT)) - 2; //pour sauter le dernier slash
     new_path = fix_path_if_spaces(path);
-	if (ft_strncmp(new_path, "..", ft_strlen(new_path)) == 0)
-	{
-		while(i > 0)
-		{
-			if (pwd(NO_PRINT)[i - 1] == '/')
-				break;
-			i--;
-		}
-/* 		printf("home : [%s]\n", home->value);
-		test = strlcpy_middle(test, pwd(NO_PRINT), 0, ft_strlen(pwd(NO_PRINT - i + 1)));
-		printf("path : [%s]\n", test);
-		printf("compare = [%d]\n", ft_strncmp(pwd(NO_PRINT), home->value, ft_strlen(pwd(NO_PRINT - i + 1)))); */
-		if (ft_strncmp(pwd(NO_PRINT), home->value, ft_strlen(pwd(NO_PRINT)) - i + 1) == 0)
-		{
-			//ne rien faire :
-			free(new_path);
-			return ;
-		}
-	}
+	
+//----------------------------------- Le fait de le mettre ce qu'il y a ci-dessous en commentaire remet le pb du prompt mais ne devrait pas être géré ici pour permettre de monter aussi haut qu'on veut
+// 	if (ft_strncmp(new_path, "..", ft_strlen(new_path)) == 0)
+// 	{
+// 		while(i > 0)
+// 		{
+// 			if (pwd(NO_PRINT)[i - 1] == '/')
+// 				break;
+// 			i--;
+// 		}
+// /* 		printf("home : [%s]\n", home->value);
+// 		test = strlcpy_middle(test, pwd(NO_PRINT), 0, ft_strlen(pwd(NO_PRINT - i + 1)));
+// 		printf("path : [%s]\n", test);
+// 		printf("compare = [%d]\n", ft_strncmp(pwd(NO_PRINT), home->value, ft_strlen(pwd(NO_PRINT - i + 1)))); */
+// 		if (ft_strncmp(pwd(NO_PRINT), home->value, ft_strlen(pwd(NO_PRINT)) - i + 1) == 0)
+// 		{
+// 			//ne rien faire :
+// 			free(new_path);
+// 			return ;
+// 		}
+// 	}
+//-----------------------------------
+
+
 ///////////////////////////
 	if (chdir(new_path) != 0)
 	{
