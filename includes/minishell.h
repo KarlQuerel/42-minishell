@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/18 17:58:35 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/19 14:03:47 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,8 +233,8 @@ int		str_type(char *command, int len);
 /*-----------------EXECUTABLE FOLDER------------------*/
 
 /* Exec*/
-void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, char *line, char *home_path);
-void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, char *line, char *home_path);
+void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec);
+void	execute_command(t_element *cmd, t_env *env, t_pipe *exec);
 void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, int i);
 char	*ft_get_command(char **path, char *argument);
 
@@ -260,9 +260,9 @@ int		ft_outfile(t_element *cmd);
 
 
 
-int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, char *line, char *home_path);
-void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, char *line, char *home_path);
+int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
+void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
 void	msg_error(int err);
-int		childrens(t_element *cmd, t_pipe *exec, char *line, char *home_path);
+int		childrens(t_element *cmd, t_pipe *exec);
 
 #endif

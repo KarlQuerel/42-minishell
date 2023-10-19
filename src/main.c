@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/18 18:03:00 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/19 15:03:18 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int main (int argc, char **argv, char **env)
 	env_list->env = env;
 	using_history();
 	line = NULL;
+	path = NULL;
 
 	// printf("pwd : %s\n", pwd(NO_PRINT));
 	// printf("simplified : %s\n", home_path_simplified(pwd(NO_PRINT), env_list));
@@ -131,7 +132,6 @@ int main (int argc, char **argv, char **env)
 	// printf("user = %s\n", user->value);
 	if (ft_strncmp(word, user->value, ft_strlen(user->value)) != 0)
 	{
-		//printf("DANS LE HOME\n");
 		path = home_path_simplified(pwd(NO_PRINT), env_list);
 		printf("%s", path);
 	}
@@ -160,12 +160,12 @@ int main (int argc, char **argv, char **env)
 		//ft_env(env_list, 0);
 		// ft_export(cmd_list, env_list);
 		//ft_redirect(cmd_list); // a finir
-		ft_execute(cmd_list, env_list, exec, new_line, home_path);
+		//ft_execute(cmd_list, env_list, exec);
 		//printlist_test(cmd_list);
 
 		//commands(cmd_list, env_list, home_path); // À effacer : c'est juste pour test mes builtins tant que ton exec est en commentaire
 		//echo(cmd_list);
-		//cd(cmd_list, env_list);
+		cd(cmd_list, env_list);
 
 		free(new_line);
 		free_cmd_list(cmd_list);
@@ -190,7 +190,6 @@ int main (int argc, char **argv, char **env)
 		// printf("user = %s\n", user->value);
 		if (ft_strncmp(word, user->value, ft_strlen(user->value)) != 0)
 		{
-			//printf("DANS LE HOME\n");
 			path = home_path_simplified(pwd(NO_PRINT), env_list);
 			printf("%s", path);
 		}
