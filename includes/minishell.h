@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/19 14:03:47 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/19 17:00:47 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,8 @@ char	*line_errors_and_fix(char *line, t_env *env_list);
 /*Parsing*/
 void	printlist_test(t_element   *head); //A EFFACER A LA FIN
 int		determine_command_type(char *line, size_t i, size_t start);
-t_element	*parsing(char *command);
-t_element	*parsing_fix(t_element *cmd_list);
+t_element	*parsing(char *command, t_env *env_list);
+t_element	*parsing_fix(t_element *cmd_list, t_env *env_list);
 t_element	*builtin_fix(t_element *cmd_list);
 
 /*Env_list*/
@@ -177,7 +177,7 @@ void		signal_handler(int signal);
 char    *pwd(int option);
 
 /*Dollar*/
-char	*dollar(char *line, t_env *env_list);
+char	*dollar(char *content, t_env *env_list);
 void	ft_env(t_env *env, int option);
 
 /*Export*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/18 13:17:30 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:34:01 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,73 +14,31 @@
 #include "../../libft/libft.h"
 
 /*
-1. Checks if the $ is followed by alphanumeric and preceded by a space
-2. Puts what follows the $ into the variable key.
-3. Cheks that the key exists in env_list (and node "takes its rank").
-4. Replaces the key ($...) by its value in the line (returns new_line).
+1. Checks if the $ is followed by alphanumeric
+2. Puts what follows the $ into the variable key_to_find.
+3. Cheks that the key exists in env_list (and key_in_env "takes its rank" if true).
+4. Replaces the content by the key value.
 */
-char	*dollar(char *line, t_env *env_list) // n'as plus l'air de marcher...
+char	*dollar(char *content, t_env *env_list)
 {
 	/*Il manque à gérer l'option $?*/
-	int		i;
-	int		j;
-	int		len;
-	char	*key;
-	char	*new_line;
-	t_env	*node;
+	char	*key_to_find;
+	t_env	*key_in_env;
 
-	i = where_is_cmd_in_line(line, "$");
-	if (i == 0 /*|| ft_isalpha(line[i + 1]) == 0 || */ /* line[i - 2] != ' ' */)
+	key_to_find = calloc(ft_strlen(content) - 1, sizeof(char));
+	key_to_find = strlcpy_middle(key_to_find, content, 1, ft_strlen(content));
+ 	if (is_key_in_env(env_list, key_to_find) == false)
 	{
-		printf("ERROR 1\n");
-		return ("\n"); //error
+		free(content);
+		content = ""; //et non \n car deja un \n a la fin de la fonction echo
 	}
-	i++; //now i = beggining of the key
-	j = 0;
-//trouver la key
-	// key = malloc(sizeof(char) * size_of_command(line, i, KEY));
-	key = calloc(size_of_command(line, i, KEY), sizeof(char));
-	if (!key)
-		return (NULL);
-	while(line[i] && (line[i + 1] != ' '))
-		key[j++] = line[i++];
-	key[j] = '\0';
-//check si la key existe dans env
-	if (is_key_in_env(env_list, key) == false)
+	else
 	{
-		printf("ERROR 1\n");
-		return ("\n"); // meme si autres commandes dans la ligne, ca n imprime rien, juste une ligne vide!!
+		key_in_env = find_value_with_key_env(env_list, key_to_find);
+		free(content);
+		content = calloc(ft_strlen(key_in_env->value), sizeof(char));
+		content = strlcpy_middle(content, key_in_env->value, 0, ft_strlen(key_in_env->value));
 	}
-//chercher la key dans env
-	node = find_value_with_key_env(env_list, key);
-// remplacer key par sa value a l'interieur de la ligne (pour rendre new_line)
-	i = where_is_cmd_in_line(line, "$");
-	j = 0;
-	len = 0;
-	// new_line = malloc(sizeof(char) * (ft_strlen(line) - size_of_command(line, i, CMD) + ft_strlen(node->value) + 1));
-	new_line = calloc(ft_strlen(line) - size_of_command(line, i, CMD) + ft_strlen(node->value) + 1, sizeof(char));
-	if (!new_line)
-		return (NULL);
-	//i = 0; //modifié now
-	while(line[i + 1] != '$')
-		new_line[len++] = line[i++];
-
-/* 	new_line[len] = '\0';
-	printf("newline = [%s]\n", new_line); */
-
-
-
-	i++;
-	while(line[i] != ' ') // pret pour la suite de la ligne
-		i++;
-	i++;
-	while(node->value[j])
-		new_line[len++] = node->value[j++];
-	while(line[i])
-		new_line[len++] = line[i++];
-	new_line[len] = '\0';
-	//printf("newline = [%s]\n", new_line);
-	free(key);
-	return(new_line);
-	//free (new_line)
+	free(key_to_find);
+	return (content);
 }

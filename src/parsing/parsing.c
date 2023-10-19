@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/18 15:08:00 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:34:11 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int determine_command_type(char *line, size_t end, size_t start)
 /*Separates each argument in the command line in a t_element list.
 Only the redirectors and spaces that separate each command are not
 kept in the list. This list is then sent to the executor.*/
-t_element *parsing(char *line)
+t_element *parsing(char *line, t_env *env_list)
 {
 	int i;
 	int start;
@@ -129,7 +129,7 @@ t_element *parsing(char *line)
 			current_cmd = current_cmd->next;
 		}
 	}
-	head = parsing_fix(head);
+	head = parsing_fix(head, env_list);
 	head = builtin_fix(head);
 	return (head);
 }
@@ -138,30 +138,44 @@ t_element *parsing(char *line)
 therefore considered as a COMMAND instead of an ARGUMENT in the parsing function.
 This functions sets all arguments that are not of type OPTION after a cmd
 "echo" or "cd" to ARGUMENT until a type PIPE is found.*/
-t_element	*parsing_fix(t_element *current)
+t_element	*parsing_fix(t_element *current, t_env *env_list)
 {
 	t_element	*head;
+	t_element	*temp;
 
 	head = current;
 	if (current->next == NULL || current->next->type == PIPE)
 		return (head);
-	while(current->next != NULL)
+	while(current != NULL)
 	{
-		if (strncmp(current->content, "echo", ft_strlen("echo")) == 0 || strncmp(current->content, "cd", ft_strlen("cd")) == 0)
+		if (strncmp(current->content, "echo", ft_strlen(current->content)) == 0 || strncmp(current->content, "cd", ft_strlen("cd")) == 0)
 		{
-			current = current->next;
-			while (current->type != PIPE && current->next != NULL)
+			temp = current->next;
+			while (temp->type != PIPE && temp->next != NULL)
 			{
-				if (current->type != OPTION)
-					current->type = ARGUMENT;
-				current = current->next;
+				if (temp->type != OPTION)
+					temp->type = ARGUMENT;
+				temp = temp->next;
 			}
 		}
-		if (current->next != NULL)
-			current = current->next;
+		else if (current->content[0] == '$')
+		{
+			if (ft_isalpha(current->content[1]) == 0)
+			{
+				temp = current->prev;
+				while (temp->type != COMMAND && temp != NULL)
+					temp = temp->prev;
+				if (strncmp(temp->content, "echo", ft_strlen(temp->content)) == 0)
+				{
+					free(current->content);
+					current->content = ""; //et non \n car deja un \n a la fin de la fonction echo
+				}
+			}
+			else
+				current->content = dollar(current->content, env_list);
+		}
+		current = current->next;
 	}
-	if (current->type != OPTION && current->type != PIPE)
-		current->type = ARGUMENT;
 	return (head);
 }
 

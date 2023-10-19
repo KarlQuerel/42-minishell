@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/19 15:03:18 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/19 17:30:42 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ int main (int argc, char **argv, char **env)
 		new_line = erase_spaces(line);
 		new_line = line_errors_and_fix(new_line, env_list);
 	/*SI line_errors_and_fix TROUVE DES ERREURS IL NE FAUDRAIT PAS ENTRER DANS PARSING*/
-		cmd_list = parsing(new_line);
+		cmd_list = parsing(new_line, env_list);
 		//ft_env(env_list, 0);
 		// ft_export(cmd_list, env_list);
 		//ft_redirect(cmd_list); // a finir
@@ -164,10 +164,10 @@ int main (int argc, char **argv, char **env)
 		//printlist_test(cmd_list);
 
 		//commands(cmd_list, env_list, home_path); // À effacer : c'est juste pour test mes builtins tant que ton exec est en commentaire
-		//echo(cmd_list);
-		cd(cmd_list, env_list);
+		echo(cmd_list);
+		//cd(cmd_list, env_list);
 
-		free(new_line);
+		//free(new_line); //en commentaire pour tests avec dollar
 		free_cmd_list(cmd_list);
 		//free(path);
 /* 		path = home_path_simplified(pwd(NO_PRINT), env_list);

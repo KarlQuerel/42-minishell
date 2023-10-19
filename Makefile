@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
+#    By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/17 18:23:05 by kquerel          ###   ########.fr        #
+#    Updated: 2023/10/19 15:42:44 by octonaute        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,9 +68,9 @@ CC = cc
 
 RM = rm -f
 
-CFLAGS = -Wall -Wextra -Werror -g3
+#CFLAGS = -Wall -Wextra -Werror -g3
 
-#CFLAGS = -gdwarf-4 #-Wall -Wextra -Werror -g3
+CFLAGS = -gdwarf-4 #-Wall -Wextra -Werror -g3
 
 #PENSER À ENLEVER -G3 (juste pour gdb)
 MAKEFLAGS   += --no-print-directory

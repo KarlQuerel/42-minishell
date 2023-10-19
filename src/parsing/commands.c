@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/18 15:11:06 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/19 16:36:07 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ char	*line_errors_and_fix(char *line, t_env *env_list)
 	line[0] == '/' || line[0] == '|' || line[0] == '&' || \
 	line[0] == '\'' || line[0] == '\"')
 		first_character_error(line);
-	else if (is_cmd_in_line(line, "$") == true)
-		line = dollar(line, env_list);
 	return (line);
 }
 
