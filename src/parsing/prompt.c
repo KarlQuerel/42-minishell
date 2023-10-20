@@ -80,7 +80,7 @@ void    prompt(t_env *env_list)
 /*C'est ici que je dois gérer d'écrire "home" quand on cd .. après avoir cd ou de ne rien écrire (comme je veux)
 Avant je le gérais dans le cd mais du coup je ne permettais pas de monter aussi haut que voulu*/
 
-/*-----------------> je crois que ça ne marche pas parce que ça rentre dans le premier if tjrs car si on est 
+/* /*-----------------> je crois que ça ne marche pas parce que ça rentre dans le premier if tjrs car si on est 
 dans le home alors la fin du path est home et non le nom du user >------------------------------*/
 /*     if (ft_strncmp(pwd(NO_PRINT), home->value, ft_strlen(pwd(NO_PRINT)) - i + 1) == 0)
     {

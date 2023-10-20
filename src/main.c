@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
 /*   Updated: 2023/10/20 17:00:49 by kquerel          ###   ########.fr       */
@@ -141,14 +141,12 @@ int main (int argc, char **argv, char **env)
 		new_line = line_errors_and_fix(new_line, env_list);
 	/*SI line_errors_and_fix TROUVE DES ERREURS IL NE FAUDRAIT PAS ENTRER DANS PARSING*/
 		cmd_list = parsing(new_line, env_list);
-		
 		//ft_redirect(cmd_list); // a finir
-    	printlist_test(cmd_list);
+    printlist_test(cmd_list);
 		ft_execute(cmd_list, env_list, exec);
 		//echo(cmd_list);
 		//cd(cmd_list, env_list);
-    	//pwd(PRINT);
-		
+    //pwd(PRINT);
 		free(new_line); //en commentaire pour tests avec dollar
 		free_cmd_list(cmd_list);
 //--------------------------------
