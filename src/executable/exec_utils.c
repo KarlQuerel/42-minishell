@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/20 14:41:09 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 16:30:53 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,16 @@ Splits the path
 Get the PATH variable from env list and split it by ':'
 Returns an array of strings
 */
-char	**split_path(t_env *env_list)
+char	**split_path(t_env *env)
 {
 	char **res_split;
 	
 	res_split = NULL;
-	env_list = find_value_with_key_env(env_list, "PATH");
-	res_split = ft_split(env_list->value, ':');
+	if (is_key_in_env(env, "PATH") == true)
+	{
+		env = find_value_with_key_env(env, "PATH");
+		res_split = ft_split(env->value, ':');
+	}
 	return (res_split);
 }
 
@@ -40,7 +43,7 @@ void	fill_cmd_tab(t_element *cmd, t_pipe *exec)
 	{
 		if (cmd->type == COMMAND || cmd->type == OPTION)
 		{
-			exec->cmd_tab[i] = malloc(sizeof(char ) * ft_strlen(cmd->content) + 1);
+			exec->cmd_tab[i] = malloc(sizeof(char ) * ft_strlen(cmd->content));
 			ft_strcpy(exec->cmd_tab[i], cmd->content);
 			// printf("cmd_tab[%d] = %s\n", i, exec->cmd_tab[i]);
 			i++;
@@ -117,7 +120,7 @@ void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd)
 	close(pipe_e[1]);
 	if (cmd->prev)
 		close(fd);
-	execute_command(cmd, exec->env, exec);
+	execute_command(cmd, exec->env_s, exec);
 	// printf("%sJE SUIS LA%s\n", BGRE, WHT);
 	
 }

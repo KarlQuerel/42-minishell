@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/20 14:29:45 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 16:46:19 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,12 +162,12 @@ int main (int argc, char **argv, char **env)
 		//ft_env(env_list, 0);
 		// ft_export(cmd_list, env_list);
 		//ft_redirect(cmd_list); // a finir
+		printlist_test(cmd_list);
 		ft_execute(cmd_list, env_list, exec);
-		//printlist_test(cmd_list);
 
 		//commands(new_line, env_list, home_path); // À effacer : c'est juste pour test mes builtins tant que ton exec est en commentaire
 		//echo(cmd_list);
-		cd(cmd_list, env_list);
+		//cd(cmd_list, env_list);
 
 		//free(new_line); //en commentaire pour tests avec dollar
 		free_cmd_list(cmd_list);
