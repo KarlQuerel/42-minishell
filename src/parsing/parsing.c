@@ -3,10 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< HEAD
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
 /*   Updated: 2023/10/18 14:44:36 by kquerel          ###   ########.fr       */
+=======
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
+/*   Updated: 2023/10/19 18:34:11 by octonaute        ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +36,21 @@ void printlist_test(t_element *head) // A EFFACER A LA FIN
 		head = head->next;
 		i++;
 	}
+}
+
+/*Returns the delimiter to look for depending
+on the type of string.*/
+char	type_of_separator(char *line, int i)
+{
+    char	type;
+    
+    if (line[i] == '\'')
+        type = '\'';
+    else if (line[i] == '\"')
+        type = '\"';
+    else
+        type = ' ';
+    return (type);
 }
 
 /*Determines the type of a given cmd for the parsing function.*/
@@ -63,20 +85,19 @@ int determine_command_type(char *line, size_t end, size_t start)
 /*Separates each argument in the command line in a t_element list.
 Only the redirectors and spaces that separate each command are not
 kept in the list. This list is then sent to the executor.*/
-t_element *parsing(char *line)
+t_element *parsing(char *line, t_env *env_list)
 {
 	int i;
 	int start;
 	int j;
 	t_element *current_cmd;
 	t_element *head;
-	bool	inside_quotes;
 	int	type;
+	char quote_type;
 
 	i = 0;
 	start = i;
 	current_cmd = NULL;
-	inside_quotes = false;
 	current_cmd = lstnew(line, start, CMD); //je pars du principe que tjrs cmd d abord
 	head = current_cmd;
 	
@@ -88,22 +109,23 @@ t_element *parsing(char *line)
 	while (line[i])
 	{
 		j = 0;
-		/*JE POURRAIS UTILISER LA FONCTION type_of_str POUR
-		RENDRE CETTE FONCTION PLUS COURTE*/
 		if ((line[start] == '\'' || line[start] == '\"') && quotes_can_close(line) == true)
 		{
 			type = STR;
-			while (line[i] && (line[i] != '\'' || line[i] != '\"')) //verifier sans le quotes_can_close pq je pense que j ai deja cette protection ailleurs
-				current_cmd->content[j++] = line[i++];
-			current_cmd->content[j] = '\0';
+			i++;
 		}
 		else
-		{
 			type = CMD;
-			while (line[i] && line[i] != ' ')
-				current_cmd->content[j++] = line[i++];
-			current_cmd->content[j] = '\0';
+		quote_type = type_of_separator(line, start);
+		while (line[i] && line[i] != quote_type)
+		{
+			if (line[i] == '\\') //pour le test echo hola\ncaro -> doit donner holancaro
+    		    i++;
+			current_cmd->content[j++] = line[i++];
 		}
+		current_cmd->content[j] = '\0';
+		if (quote_type != ' ')
+			i++;
 		current_cmd->type = determine_command_type(line, i, start);
 		while ((line[i] == ' ' || line[i] == '<' || line[i] == '>') && line[i])
 			i++;
@@ -120,38 +142,53 @@ t_element *parsing(char *line)
 			current_cmd = current_cmd->next;
 		}
 	}
-	head = parsing_fix(head);
+	head = parsing_fix(head, env_list);
 	head = builtin_fix(head);
 	return (head);
 }
+
 /* To fix the type of the arguments that are not in between quotes and are
 therefore considered as a COMMAND instead of an ARGUMENT in the parsing function.
 This functions sets all arguments that are not of type OPTION after a cmd
 "echo" or "cd" to ARGUMENT until a type PIPE is found.*/
-t_element	*parsing_fix(t_element *current)
+t_element	*parsing_fix(t_element *current, t_env *env_list)
 {
 	t_element	*head;
+	t_element	*temp;
 
 	head = current;
 	if (current->next == NULL || current->next->type == PIPE)
 		return (head);
-	while(current->next != NULL)
+	while(current != NULL)
 	{
-		if (strncmp(current->content, "echo", ft_strlen("echo")) == 0 || strncmp(current->content, "cd", ft_strlen("cd")) == 0)
+		if (strncmp(current->content, "echo", ft_strlen(current->content)) == 0 || strncmp(current->content, "cd", ft_strlen("cd")) == 0)
 		{
-			current = current->next;
-			while (current->type != PIPE && current->next != NULL)
+			temp = current->next;
+			while (temp->type != PIPE && temp->next != NULL)
 			{
-				if (current->type != OPTION)
-					current->type = ARGUMENT;
-				current = current->next;
+				if (temp->type != OPTION)
+					temp->type = ARGUMENT;
+				temp = temp->next;
 			}
 		}
-		if (current->next != NULL)
-			current = current->next;
+		else if (current->content[0] == '$')
+		{
+			if (ft_isalpha(current->content[1]) == 0)
+			{
+				temp = current->prev;
+				while (temp->type != COMMAND && temp != NULL)
+					temp = temp->prev;
+				if (strncmp(temp->content, "echo", ft_strlen(temp->content)) == 0)
+				{
+					free(current->content);
+					current->content = ""; //et non \n car deja un \n a la fin de la fonction echo
+				}
+			}
+			else
+				current->content = dollar(current->content, env_list);
+		}
+		current = current->next;
 	}
-	if (current->type != OPTION && current->type != PIPE)
-		current->type = ARGUMENT;
 	return (head);
 }
 

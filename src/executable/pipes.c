@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 15:02:53 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/20 13:20:49 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 13:56:26 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,18 @@ void	ft_close_pipe(int pip[2])
 {
 	ft_close(&pip[0]);
 	ft_close(&pip[1]);
+}
+
+// ferme toutes les pipes de notre exec avec panache
+void	ft_close_all_pipes(t_pipe *exec)
+{
+	int	i;
+
+	while (i < exec->cmd_nb - 1)
+	{
+		ft_close_pipe(exec->my_pipes[i]);
+		i++;
+	}
 }
 
 

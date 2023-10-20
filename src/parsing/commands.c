@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/10/18 14:40:59 by kquerel          ###   ########.fr       */
+=======
+/*   Updated: 2023/10/19 16:36:07 by octonaute        ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +33,10 @@ char	*line_errors_and_fix(char *line, t_env *env_list)
 	line[0] == '/' || line[0] == '|' || line[0] == '&' || \
 	line[0] == '\'' || line[0] == '\"')
 		first_character_error(line);
-	else if (is_cmd_in_line(line, "$") == true)
-		line = dollar(line, env_list);
 	return (line);
 }
 
+<<<<<<< HEAD
 void	commands(char *line, t_env *env_list, char *home_path)
 {
 	/*a la base j avais fait " cd " etc donc avec espace apres le 
@@ -59,6 +62,8 @@ void	commands(char *line, t_env *env_list, char *home_path)
 	//	ft_unset();
 }
 
+=======
+>>>>>>> main
 /*Checks if what is written in the command line corresponds to a command.*/
 bool	is_this_command(char *buffer, char* command)
 {

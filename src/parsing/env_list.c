@@ -3,10 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< HEAD
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:00:17 by casomarr          #+#    #+#             */
 /*   Updated: 2023/10/18 13:33:51 by kquerel          ###   ########.fr       */
+=======
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/20 17:00:17 by casomarr          #+#    #+#             */
+/*   Updated: 2023/10/19 18:30:48 by octonaute        ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,23 +82,14 @@ t_env	*find_value_with_key_env(t_env *env_list, char *key)
 matching key in **env*/
 bool	is_key_in_env(t_env *env_list, char *key)
 {
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
 	if (!key || !env_list)
 		return (false);
 	while (env_list != NULL)
 	{
-		j = 0;
-		while (env_list->key[i + j] == key[j] && key[j] != '\0' && env_list->key[i + j] != '\0')
-		{
-			j++;
-			if (key[j] == '\0')
-				return (true);
-		}
-		i++;
+		if (strncmp(key, env_list->key, ft_strlen(key)) == 0 && \
+		ft_strlen(key) == ft_strlen(env_list->key))
+			return (true);
+		env_list = env_list->next;
 	}
 	return (false);
 }

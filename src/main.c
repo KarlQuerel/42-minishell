@@ -3,10 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< HEAD
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
 /*   Updated: 2023/10/18 13:17:50 by kquerel          ###   ########.fr       */
+=======
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
+/*   Updated: 2023/10/19 18:48:47 by octonaute        ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,16 +78,12 @@ int main (int argc, char **argv, char **env)
 {
 	char                *line;
 	char                *new_line;
-	char                *home_path;
 	struct sigaction    signal;
 	t_env				*env_list;
 	t_element			*cmd_list;
 	t_pipe				*exec;
-	t_env				*path;
-	char				*new_path;
-
-
-
+	
+	
 	
 	exec = ft_calloc(1, sizeof(t_pipe));
 	if (!exec)
@@ -110,26 +113,47 @@ int main (int argc, char **argv, char **env)
 	ft_welcome();
 	env_list = put_env_in_list(env);
 	env_list->env = env;
-	path = find_value_with_key_env(env_list, "PWD");
-	home_path = home_path_simplified(path->value, env_list);
-	if (home_path == NULL)
-	{
-		printf("ERREUR HOME PATH");
-		exit(1);
-	}
-	new_path = malloc(sizeof(char) * ft_strlen(home_path) + 1);
-	ft_strlcpy(new_path, home_path, ft_strlen(home_path));
 	using_history();
 	line = NULL;
-	printf("%s", home_path);
+
+	// printf("pwd : %s\n", pwd(NO_PRINT));
+	// printf("simplified : %s\n", home_path_simplified(pwd(NO_PRINT), env_list));
+	
+///////////////////////
+/* 	//Gpath = find_value_with_key_env(env_list, "PATH");
+	user = find_value_with_key_env(env_list, "USER");
+	word = NULL;
+	int i = ft_strlen(pwd(NO_PRINT)) - 2; //pour sauter le dernier slash
+	while(i > 0)
+	{
+		if (pwd(NO_PRINT)[i - 1] == '/')
+			break;
+		i--;
+	}
+	word = strlcpy_middle(word, pwd(NO_PRINT), i, ft_strlen(pwd(NO_PRINT)));
+	// printf("word = %s\n", word);
+	// printf("user = %s\n", user->value);
+	if (ft_strncmp(word, user->value, ft_strlen(user->value)) != 0)
+	{
+		path = home_path_simplified(pwd(NO_PRINT), env_list);
+		printf("%s", path);
+	}
+	line = readline("$ "); */
+////////////////////
+
+
+//--------------------------------
+	prompt(env_list);
 	line = readline("$ ");
+//--------------------------------
+
 	while (is_this_command(line, "exit") == false) // while (1) et mettre line = readline("$ ") tout en haut de la while
 	//et mettre en commentaire le line = readline("$ ") du bas de la while
 	{
 		if (feof(stdin)) // pour ctrl + D?? // ne le comprend pas
 		{
 			printf("CTRL + D detected\n");
-			final_free(line, env_list, path, new_path);
+			final_free(line, env_list);
 			return (EXIT_SUCCESS);
 		}
 		add_history(line);
@@ -141,23 +165,54 @@ int main (int argc, char **argv, char **env)
 		new_line = erase_spaces(line);
 		new_line = line_errors_and_fix(new_line, env_list);
 	/*SI line_errors_and_fix TROUVE DES ERREURS IL NE FAUDRAIT PAS ENTRER DANS PARSING*/
-		cmd_list = parsing(new_line);
+		cmd_list = parsing(new_line, env_list);
 		//ft_env(env_list, 0);
 		// ft_export(cmd_list, env_list);
 		//ft_redirect(cmd_list); // a finir
-		ft_execute(cmd_list, env_list, exec, new_line, home_path);
+		//ft_execute(cmd_list, env_list, exec);
 		//printlist_test(cmd_list);
 
+<<<<<<< HEAD
 		//commands(new_line, env_list, home_path); // À effacer : c'est juste pour test mes builtins tant que ton exec est en commentaire
+=======
+		//commands(cmd_list, env_list, home_path); // À effacer : c'est juste pour test mes builtins tant que ton exec est en commentaire
+		//echo(cmd_list);
+		cd(cmd_list, env_list);
+>>>>>>> main
 
-		free(new_line);
+		//free(new_line); //en commentaire pour tests avec dollar
 		free_cmd_list(cmd_list);
-		free(new_path);
-		new_path = pwd(NO_PRINT);
-		new_path = home_path_simplified(new_path, env_list);
-		ft_putstr_fd(new_path, STDOUT_FILENO);
+/* 		path = home_path_simplified(pwd(NO_PRINT), env_list);
+		printf("%s", path);
+		line = readline("$ "); */
+
+///////////////////////
+/* 		//Gpath = find_value_with_key_env(env_list, "PATH");
+		user = find_value_with_key_env(env_list, "USER");
+		word = NULL;
+		int i = ft_strlen(pwd(NO_PRINT)) - 2; //pour sauter le dernier slash
+		while(i > 0)
+		{
+			if (pwd(NO_PRINT)[i - 1] == '/')
+				break;
+			i--;
+		}
+		word = strlcpy_middle(word, pwd(NO_PRINT), i, ft_strlen(pwd(NO_PRINT)));
+		// printf("word = %s\n", word);
+		// printf("user = %s\n", user->value);
+		if (ft_strncmp(word, user->value, ft_strlen(user->value)) != 0)
+		{
+			path = home_path_simplified(pwd(NO_PRINT), env_list);
+			printf("%s", path);
+		}
+		line = readline("$ "); */
+////////////////////
+//--------------------------------
+		prompt(env_list);
 		line = readline("$ ");
+//--------------------------------
+
 	}
-	final_free(line, env_list, path, new_path);
+	final_free(line, env_list);
 	return (EXIT_SUCCESS);
 }

@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/10/20 13:42:56 by kquerel          ###   ########.fr       */
+=======
+/*   Updated: 2023/10/19 14:06:54 by octonaute        ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +84,7 @@ int	get_cmds_nb(t_element *cmd, t_pipe *exec)
 
 
 /* Forks every child processes */
-int	ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, char *line, char *home_path)
+int	ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd)
 {
 	int	i;
 
@@ -94,13 +98,13 @@ int	ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, char *line, cha
 	}
 	// printf("%sJE SUIS LA%s\n", BGRE, WHT);
 	if (exec->pid[i] == 0)
-		ft_dup(cmd, exec, pipe_e, fd, line, home_path);
+		ft_dup(cmd, exec, pipe_e, fd);
 	i++;
 	return (EXIT_SUCCESS);
 }
 
 
-void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, char *line, char *home_path)
+void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd)
 {
 	exec->here_doc = 0; // juste pour utiliser exec
 	if (cmd->prev && dup2(fd, STDIN_FILENO) < 0)
@@ -117,7 +121,7 @@ void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, char *line, cha
 	close(pipe_e[1]);
 	if (cmd->prev)
 		close(fd);
-	execute_command(cmd, exec->env, exec, line, home_path);
+	execute_command(cmd, exec->env, exec);
 	// printf("%sJE SUIS LA%s\n", BGRE, WHT);
 	
 }
