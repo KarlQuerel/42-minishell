@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/20 15:10:41 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 17:48:49 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,12 @@ void	commands(t_element *current_cmd, t_env *env_list)
         echo(current_cmd);
 	else if (ft_strncmp(current_cmd->content, "env", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("env"))
         ft_env(env_list, 0);
+	else if (ft_strncmp(current_cmd->content, "exit", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("exit"))
+    {
+		// free
+		ft_putendl_fd("exit", STDOUT_FILENO);
+		exit (127);
+	}
 	
 	/*
 	else if (ft_strncmp(current_cmd->content, "export", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("export"))

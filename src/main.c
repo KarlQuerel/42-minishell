@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/20 17:00:49 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 17:28:42 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,8 @@ int main (int argc, char **argv, char **env)
 	prompt(env_list);
 	line = readline("$ ");
 //--------------------------------
-
-	while (is_this_command(line, "exit") == false) // while (1) et mettre line = readline("$ ") tout en haut de la while
+	while (1)
+	//while (is_this_command(line, "exit") == false) // while (1) et mettre line = readline("$ ") tout en haut de la while
 	//et mettre en commentaire le line = readline("$ ") du bas de la while
 	{
 //-----------------------------------------------------

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/20 16:47:54 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 17:38:57 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,10 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 		}
 		if (cmd->builtin == true)
 		{
-			printf("hello\n");
 			commands(cmd, env);
+			// while (cmd->type != PIPE && cmd)
+			// 	cmd = cmd->next;
+			// cmd = cmd->next;
 			return ;
 		}
 		cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
