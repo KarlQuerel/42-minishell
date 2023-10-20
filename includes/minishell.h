@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/10/20 13:40:27 by kquerel          ###   ########.fr       */
-=======
-/*   Updated: 2023/10/19 18:48:19 by octonaute        ###   ########.fr       */
->>>>>>> main
+/*   Updated: 2023/10/20 14:34:13 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,7 +251,7 @@ int		get_cmds_nb(t_element *cmd, t_pipe *exec);
 char	*ft_strcpy(char *dst, char *src);
 
 /* Pipes */
-void	ft_close_pipe(t_pipe *exec);
+// void	ft_close_pipe(t_pipe *exec);
 void	ft_create_pipe(t_pipe *exec, int *pipe_end);
 int		ft_waitpid(int *pid, int n);
 
@@ -276,15 +272,12 @@ void	msg_error(int err);
 int		childrens(t_element *cmd, t_pipe *exec);
 
 
-void ft_children(t_element *cmd, t_pipe *exec, int i, char *line, char *home_path);
-
-void	redir(t_element *cmd, t_pipe *exec, t_env *env, char *line, char *home_path);
-
 // utilitaires du panache
 void	ft_close(int *fd);
 void	ft_close_pipe(int pip[2]);
 void	ft_close_all_pipes(t_pipe *exec);
 bool	ft_is_a_pipe_after(t_element *cmd);
 bool	ft_is_a_pipe_before(t_element *cmd);
+bool	ft_redir(t_element *cmd, t_pipe *exec, int i);
 
 #endif

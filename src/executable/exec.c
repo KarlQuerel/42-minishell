@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/20 13:44:12 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 14:47:37 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ char	*ft_get_command(char **path, char *argument)
 			to_free = ft_strjoin(path[i], "/");
 			to_return = ft_strjoin(to_free, argument);
 			free(to_free);
+			// printf("path[%d] = %s\n", i, to_return);
 			if (access(to_return, F_OK) == 0)
 				return (to_return);
 			free(to_return);
@@ -106,55 +107,55 @@ char	*ft_get_command(char **path, char *argument)
 /* Handles execution */
 void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 {
+	int	i;
+	
+	i = 0;
 	exec->av_nb = get_args_nb(cmd);
 	exec->cmd_tab = malloc(sizeof(char *) * (exec->av_nb + 1));
 	if (!exec->cmd_tab)
 		return ;
 	fill_cmd_tab(cmd, exec);
-	get_cmds_nb(cmd, exec); // utiliser le nombre de commands while (i < nb_commands)
+	get_cmds_nb(cmd, exec);
 	if (exec->cmd_nb == 1) // dans le cas d'une single command
 		execute_command(cmd, env, exec);
 	else // plusieurs commandes
 	{
-		redir(cmd, exec, env, line, home_path);
+		while (i < exec->cmd_nb - 1)
+		{
+			//ft_redir(cmd, exec, i);
+			i++;
+		}
 	}
 }
 
-// void ft_children(t_element *cmd, t_pipe *exec, int i, char *line, char *home_path)
+// void	redir(t_element *cmd, t_pipe *exec, t_env *env, char *line, char *home_path)
 // {
-	
+// 	pid_t	pid;
+// 	int	pipefd[2];
+
+// 	if (pipe(pipefd) < 0)
+// 	{
+// 		perror("pipe");
+// 		return ;
+// 	}
+// 	pid = fork();
+// 	if (pid) // parent
+// 	{
+// 		close(pipefd[1]);
+// 		dup2(pipefd[0], STDIN_FILENO);
+// 		waitpid(pid, NULL, 0);
+// 	}
+// 	else // child pid == 0
+// 	{
+// 		close(pipefd[0]);
+// 		dup2(pipefd[1], STDOUT_FILENO);
+// 		execute_command(cmd, env, exec, line, home_path);
+// 		exec->pid = ft_calloc(sizeof(int), exec->cmd_nb + 2);
+// 		if (!exec->pid)
+// 			return (msg_error(0));
+// 		childrens(cmd, exec);
+// 	}
 // }
-
-void	redir(t_element *cmd, t_pipe *exec, t_env *env, char *line, char *home_path)
-{
-	pid_t	pid;
-	int	pipefd[2];
-
-	if (pipe(pipefd) < 0)
-	{
-		perror("pipe");
-		return ;
-	}
-	pid = fork();
-	if (pid) // parent
-	{
-		close(pipefd[1]);
-		dup2(pipefd[0], STDIN_FILENO);
-		waitpid(pid, NULL, 0);
-	}
-	else // child pid == 0
-	{
-		close(pipefd[0]);
-		dup2(pipefd[1], STDOUT_FILENO);
-		execute_command(cmd, env, exec, line, home_path);
-=======
-		exec->pid = ft_calloc(sizeof(int), exec->cmd_nb + 2);
-		if (!exec->pid)
-			return (msg_error(0));
-		childrens(cmd, exec);
->>>>>>> main
-	}
-}
 
 bool	ft_is_a_pipe_before(t_element *cmd)
 {
@@ -190,7 +191,7 @@ bool	ft_give_me_my_pipes(t_pipe *exec)
 		return (false);
 	return (true);
 }
-
+//->PABLO
 // ici on fair les redirection avec panache
 // cas 1 : j'ai pas de pipe avant :
 // je ne fais rien
@@ -201,6 +202,7 @@ bool	ft_give_me_my_pipes(t_pipe *exec)
 // je ne fais rien
 // cas 2 bis : j'ai une pipe apres :
 // je dois dup 2 mon fd 1 vers le fd 1 de la pipe
+/*
 bool	ft_redir(t_element *cmd, t_pipe *exec, int i)
 {
 	if ()//j'ai une / des redirection d'entree
@@ -224,11 +226,12 @@ bool	ft_redir(t_element *cmd, t_pipe *exec, int i)
 	ft_close_all_pipes(exec);
 	return (true);
 }
+*/
 
 void	ft_child(t_element *cmd, t_pipe *exec, int i)
 {
 	// etape 1 on redirige les trucs
-	if (!ft_redir(cmd, exec, i))
+	//if (!ft_redir(cmd, exec, i))
 		;
 	// etape 2 on cherche un chemin
 	// etape 3 on execute l'enfant
@@ -249,51 +252,7 @@ void	execution(t_element *cmd, t_pipe *exec)
 	}
 	while (i < exec->cmd_nb)
 	{
-		ft_children(cmd, exec, i);
+		ft_child(cmd, exec, i);
 		i++;
 	}
 }
-
-
-
-
-
-
-/* fonction test */
-int	childrens(t_element *cmd, t_pipe *exec)
-{
-	int		pipe_end[2];
-	int		fd;
-
-	fd = STDIN_FILENO;
-	// printf("JE SUIS LA\n");
-	while (cmd && cmd->next)
-	{
-		if (cmd->type != COMMAND && cmd->type != OPTION) // pour sauter les pipes
-			cmd = cmd->next;
-		printf("cmd = %s\n", cmd->content);
-		if (cmd->next)
-		{
-			if (pipe(pipe_end) < 0)
-			{
-				printf("hello\n");
-				exit(EXIT_FAILURE);
-			}
-			ft_create_pipe(exec, pipe_end);
-		}
-		ft_fork(cmd, exec, pipe_end, fd, line, home_path);
-		// send_heredoc(exec, exec->simple_cmds);
-		ft_fork(cmd, exec, pipe_end, fd);
-		close(pipe_end[1]);
-		if (cmd->prev)
-			close(fd);
-		if (cmd->next)
-			cmd = cmd->next;
-		else
-			break ;
-
-	}
-	ft_waitpid(exec->pid, exec->cmd_nb);
-	return (0);
-}
-
