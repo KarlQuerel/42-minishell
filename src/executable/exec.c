@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/20 16:47:54 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 17:12:58 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 		}
 		if (cmd->builtin == true)
 		{
-			printf("hello\n");
 			commands(cmd, env);
 			return ;
 		}
@@ -135,7 +134,7 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 		return ;
 	fill_cmd_tab(cmd, exec);
 	get_cmds_nb(cmd, exec);
-	printf("%d\n", exec->cmd_nb);
+	// printf("%d\n", exec->cmd_nb);
 	if (exec->cmd_nb == 1) // dans le cas d'une single command
 		execute_command(cmd, env, exec);
 	else // plusieurs commandes
