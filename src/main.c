@@ -6,7 +6,11 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/10/20 17:13:39 by kquerel          ###   ########.fr       */
+=======
+/*   Updated: 2023/10/20 17:46:57 by casomarr         ###   ########.fr       */
+>>>>>>> caro
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +146,7 @@ int main (int argc, char **argv, char **env)
 	/*SI line_errors_and_fix TROUVE DES ERREURS IL NE FAUDRAIT PAS ENTRER DANS PARSING*/
 		cmd_list = parsing(new_line, env_list);
 		//ft_redirect(cmd_list); // a finir
-    	// printlist_test(cmd_list);
+    	printlist_test(cmd_list);
 		ft_execute(cmd_list, env_list, exec);
 		free(new_line); //en commentaire pour tests avec dollar
 		free_cmd_list(cmd_list);
