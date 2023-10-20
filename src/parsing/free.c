@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/20 14:28:22 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 14:36:51 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	final_free(char *line, t_env *env_list)
 {
 	free(line);
 	history(FREE_HISTORY);
-	while (env_list->next != NULL)
+	while (env_list != NULL)
 	{
 		free(env_list->key);
 		free(env_list->value);
@@ -28,16 +28,26 @@ void	final_free(char *line, t_env *env_list)
 
 void	free_cmd_list(t_element *cmd_list)
 {
-	
 	// // KARL -> j'ai ajoute ca pour regler une seg fault
 	// if (!cmd_list)
 	// 	return ;
 	// // fin
-	
-	while (cmd_list && cmd_list->next != NULL)
+  
+	while (cmd_list != NULL)
 	{
 		free(cmd_list->content);
 		cmd_list = cmd_list->next;
 	}
 	free(cmd_list);
 }
+
+/* void	free_env_list(t_env *env_list)
+{
+	while(env_list != NULL)
+	{
+		free(env_list->value);
+		free(env_list->key);
+		env_list = env_list->next;
+	}
+	free(env_list);
+} */
