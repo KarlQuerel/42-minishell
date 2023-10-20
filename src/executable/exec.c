@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/20 17:53:45 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 20:00:00 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ Structure pour les pipes:
 void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
 	int	pid;
+	if (cmd->content[0] == '\0')
+		return ;
 	pid = fork();
 	if (pid < 0)
 	{

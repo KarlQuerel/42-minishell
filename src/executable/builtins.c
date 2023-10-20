@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/20 16:27:19 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 19:54:10 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	ft_env(t_env *env, int option)
 	{
 		if (option == 1)
 			ft_putstr_fd("export ", STDOUT_FILENO);
+		ft_putstr_fd(env->key, STDOUT_FILENO);
+		ft_putstr_fd("=", STDOUT_FILENO);
 		ft_putendl_fd(env->value, STDOUT_FILENO);
 		env = env->next;
 	}

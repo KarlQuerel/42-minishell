@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/20 17:48:49 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 20:06:46 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,12 +150,12 @@ void	commands(t_element *current_cmd, t_env *env_list)
 		exit (127);
 	}
 	
-	/*
+	
 	else if (ft_strncmp(current_cmd->content, "export", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("export"))
-        ft_export(line);
-	else if (ft_strncmp(current_cmd->content, "unset", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("unset"))
-        unset(line);
-		*/
+        ft_export(current_cmd, env_list);
+/* 	else if (ft_strncmp(current_cmd->content, "unset", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("unset"))
+		unset(line); */
+
 
 	
 }

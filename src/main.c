@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/20 18:15:46 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/20 19:52:29 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,3 +155,4 @@ int main (int argc, char **argv, char **env)
 	final_free(line, env_list);
 	return (EXIT_SUCCESS);
 }
+
