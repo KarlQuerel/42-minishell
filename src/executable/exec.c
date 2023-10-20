@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/20 20:00:00 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/20 20:36:31 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,14 +139,14 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 		return ;
 	fill_cmd_tab(cmd, exec);
 	get_cmds_nb(cmd, exec);
-	// printf("%d\n", exec->cmd_nb);
+	//printf("exec->cmd_nb = %d\n", exec->cmd_nb);
 	if (exec->cmd_nb == 1) // dans le cas d'une single command
 		execute_command(cmd, env, exec);
 	else // plusieurs commandes
 	{
 		while (i < exec->cmd_nb - 1)
 		{
-			// ft_redir(cmd, exec, i);
+			//ft_redir(cmd, exec, i);
 			i++;
 		}
 	}
@@ -235,7 +235,10 @@ bool	ft_redir(t_element *cmd, t_pipe *exec, int i)
 // 	{
 
 // 	}
-
+	
+	if (!cmd)
+		return (true);
+	printf("i = %d\n", i);
 
 	if (ft_is_a_pipe_before(cmd))
 	{
@@ -247,13 +250,12 @@ bool	ft_redir(t_element *cmd, t_pipe *exec, int i)
 	// {
 
 	// }
-
 	
 	else if (ft_is_a_pipe_after(cmd))
 	{
 		dup2(exec->my_pipes[i][1], 1);
 	}
-	ft_close_pipe(exec->fd_file); // apres
+	// ft_close_pipe(exec->fd_file); // apres
 	ft_close_all_pipes(exec);
 	return (true);
 }

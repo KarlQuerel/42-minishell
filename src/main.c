@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/20 19:52:29 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/20 20:36:12 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ int main (int argc, char **argv, char **env)
 //-----------------------------------------------------
 //MODIFIER A CHAQUE TOUR DE WHILE LA VALEUR DE LA KEY PWD DE ENV!!!! CA REGLERA LE PROMPT
 // + C ETS NECESSAIRE POUR LA FONCTION ENV SINON PWD SERA FAUX!
+// changer de piste : je ne peux pas creer une node new_pwd pour convenir a la fonction 
+// unset pq cette fonction cherche cmd->next et que du coup il n y a  pas de next donc refaire une fonction
 // 		new_pwd = find_value_with_key_env(env_list, "PWD");
 // /* 		if (new_pwd->value != NULL)
 // 			free(new_pwd->value); */
@@ -151,7 +153,6 @@ int main (int argc, char **argv, char **env)
 		line = readline("$ ");
 //--------------------------------
 	}
-	
 	final_free(line, env_list);
 	return (EXIT_SUCCESS);
 }

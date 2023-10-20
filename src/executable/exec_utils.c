@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/20 16:30:53 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 18:12:32 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	fill_cmd_tab(t_element *cmd, t_pipe *exec)
 	{
 		if (cmd->type == COMMAND || cmd->type == OPTION)
 		{
-			exec->cmd_tab[i] = malloc(sizeof(char ) * ft_strlen(cmd->content));
+			exec->cmd_tab[i] = malloc(sizeof(char ) * ft_strlen(cmd->content) + 1);
 			ft_strcpy(exec->cmd_tab[i], cmd->content);
 			// printf("cmd_tab[%d] = %s\n", i, exec->cmd_tab[i]);
 			i++;

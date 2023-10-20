@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/20 20:06:46 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/20 20:37:12 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ void	commands(t_element *current_cmd, t_env *env_list)
     {
 		// free
 		ft_putendl_fd("exit", STDOUT_FILENO);
-		exit (127);
+		exit (1);
 	}
 	
 	
