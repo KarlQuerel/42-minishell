@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/19 18:34:11 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/20 16:50:47 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,11 +151,14 @@ t_element	*parsing_fix(t_element *current, t_env *env_list)
 		if (strncmp(current->content, "echo", ft_strlen(current->content)) == 0 || strncmp(current->content, "cd", ft_strlen("cd")) == 0)
 		{
 			temp = current->next;
-			while (temp->type != PIPE && temp->next != NULL)
+			while (temp->type != PIPE && temp != NULL)
 			{
 				if (temp->type != OPTION)
 					temp->type = ARGUMENT;
-				temp = temp->next;
+				if (temp->next != NULL)
+					temp = temp->next;
+				else
+					break;
 			}
 		}
 		else if (current->content[0] == '$')
