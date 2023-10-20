@@ -3,10 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< HEAD
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
+/*   Updated: 2023/10/18 13:17:50 by kquerel          ###   ########.fr       */
+=======
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
 /*   Updated: 2023/10/19 18:48:47 by octonaute        ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,9 +172,13 @@ int main (int argc, char **argv, char **env)
 		//ft_execute(cmd_list, env_list, exec);
 		//printlist_test(cmd_list);
 
+<<<<<<< HEAD
+		//commands(new_line, env_list, home_path); // À effacer : c'est juste pour test mes builtins tant que ton exec est en commentaire
+=======
 		//commands(cmd_list, env_list, home_path); // À effacer : c'est juste pour test mes builtins tant que ton exec est en commentaire
 		//echo(cmd_list);
 		cd(cmd_list, env_list);
+>>>>>>> main
 
 		//free(new_line); //en commentaire pour tests avec dollar
 		free_cmd_list(cmd_list);

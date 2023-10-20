@@ -6,7 +6,11 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
+<<<<<<< HEAD
+/*   Updated: 2023/10/20 13:40:27 by kquerel          ###   ########.fr       */
+=======
 /*   Updated: 2023/10/19 18:48:19 by octonaute        ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +75,7 @@
 # define WHT "\e[0;37m"
 # define BGRE "\033[1m\033[32m"
 
-#define PC "             ________________________________________________\n            /                                                \\\n           |    _________________________________________     |\n           |   |                                         |    |\n           |   |  Welcome                                |    |\n           |   |    to                                   |    |\n           |   |      Minishell                          |    |\n           |   |        by                               |    |\n           |   |          casomarr                       |    |\n           |   |            and                          |    |\n           |   |              kquerel                    |    |\n           |   |                                         |    |\n           |   |                                         |    |\n           |   |                                         |    |\n           |   |                                         |    |\n           |   |                                         |    |\n           |   |_________________________________________|    |\n           |                                                  |\n            \\_________________________________________________/\n                   \\___________________________________/\n                ___________________________________________\n             _-'    .-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.  --- `-_\n          _-'.-.-. .---.-.-.-.-.-.-.-.-.-.-.-.-.-.-.--.  .-.-.`-_\n       _-'.-.-.-. .---.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-`__`. .-.-.-.`-_\n    _-'.-.-.-.-. .-----.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-----. .-.-.-.-.`-_\n _-'.-.-.-.-.-. .---.-. .-------------------------. .-.---. .---.-.-.-.`-_\n:-------------------------------------------------------------------------:\n`---._.-------------------------------------------------------------._.---'"
+#define PC "             ________________________________________________\n            /                                                \\\n           |    _________________________________________     |\n           |   |                                         |    |\n           |   |  Welcome                                |    |\n           |   |    to                                   |    |\n           |   |      MinisHELL                          |    |\n           |   |        by                               |    |\n           |   |          casomarr                       |    |\n           |   |            and                          |    |\n           |   |              kquerel                    |    |\n           |   |                                         |    |\n           |   |                                         |    |\n           |   |                                         |    |\n           |   |                                         |    |\n           |   |                                         |    |\n           |   |_________________________________________|    |\n           |                                                  |\n            \\_________________________________________________/\n                   \\___________________________________/\n                ___________________________________________\n             _-'    .-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.  --- `-_\n          _-'.-.-. .---.-.-.-.-.-.-.-.-.-.-.-.-.-.-.--.  .-.-.`-_\n       _-'.-.-.-. .---.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-`__`. .-.-.-.`-_\n    _-'.-.-.-.-. .-----.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-----. .-.-.-.-.`-_\n _-'.-.-.-.-.-. .---.-. .-------------------------. .-.---. .---.-.-.-.`-_\n:-------------------------------------------------------------------------:\n`---._.-------------------------------------------------------------._.---'"
 
 
 /*Structures*/
@@ -119,10 +123,12 @@ typedef struct s_pipe
 	int		*pid;
 	char	**cmd_tab;
 	char	**cmd_path;
-	int		*pipe_end;
-	int		fd_infile;
-	int		fd_outfile;
+	int		*pipe_end; //pipe_end[2];
+	// int		fd_infile;
+	// int		fd_outfile;
+	int		fd_file[2];
 	int		av_nb;
+	int		**my_pipes;
 	struct s_element *cmd;
 	struct s_env *env;
 }	t_pipe;
@@ -250,7 +256,7 @@ char	*ft_strcpy(char *dst, char *src);
 
 /* Pipes */
 void	ft_close_pipe(t_pipe *exec);
-void	ft_create_pipe(t_pipe *exec, int i, int *pipe_end);
+void	ft_create_pipe(t_pipe *exec, int *pipe_end);
 int		ft_waitpid(int *pid, int n);
 
 
@@ -260,12 +266,25 @@ int		ft_infile(char *file);
 int		ft_outfile(t_element *cmd);
 
 
-
+void	ft_delete_node(t_env **env, t_element *to_delete);
+void	ft_remove_var(t_element *cmd_list, t_env *env, char *to_remove);
 
 
 int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
 void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
 void	msg_error(int err);
 int		childrens(t_element *cmd, t_pipe *exec);
+
+
+void ft_children(t_element *cmd, t_pipe *exec, int i, char *line, char *home_path);
+
+void	redir(t_element *cmd, t_pipe *exec, t_env *env, char *line, char *home_path);
+
+// utilitaires du panache
+void	ft_close(int *fd);
+void	ft_close_pipe(int pip[2]);
+void	ft_close_all_pipes(t_pipe *exec);
+bool	ft_is_a_pipe_after(t_element *cmd);
+bool	ft_is_a_pipe_before(t_element *cmd);
 
 #endif

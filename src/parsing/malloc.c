@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   malloc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:08:27 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/18 13:25:24 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 14:40:48 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ char	*erase_spaces_malloc(char *line)
 
 	i = 0;
 	spaces = 0;
+	
+	// KARL -> j'ai ajoute ca pour regler une seg fault
+	if (!line)
+		return (NULL);
+	// fin
+	
+	
 	while (line[i])
 	{
 		if (line[i] == '\'' && quotes_can_close(line) == true) //pour ne pas compter les espaces entre quotes (ex: dans les str de echo)

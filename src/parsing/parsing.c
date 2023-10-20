@@ -3,10 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< HEAD
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
+/*   Updated: 2023/10/18 14:44:36 by kquerel          ###   ########.fr       */
+=======
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
 /*   Updated: 2023/10/19 18:34:11 by octonaute        ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +100,12 @@ t_element *parsing(char *line, t_env *env_list)
 	current_cmd = NULL;
 	current_cmd = lstnew(line, start, CMD); //je pars du principe que tjrs cmd d abord
 	head = current_cmd;
+	
+	// KARL -> j'ai ajoute ca pour regler une seg fault
+	if (!line)
+		return (NULL);
+	// fin
+
 	while (line[i])
 	{
 		j = 0;

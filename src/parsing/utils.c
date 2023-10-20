@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/18 13:21:25 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 14:41:21 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,12 @@ char	*erase_spaces(char *line)
 
 	i = 0;
 	j = 0;
+
+	// KARL -> j'ai ajoute ca pour regler une seg fault
+	if (!line)
+		return (NULL);
+	// fin
+	
 	new_line = erase_spaces_malloc(line);
 	while (line[i])
 	{

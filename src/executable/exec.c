@@ -6,7 +6,11 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
+<<<<<<< HEAD
+/*   Updated: 2023/10/20 13:44:12 by kquerel          ###   ########.fr       */
+=======
 /*   Updated: 2023/10/19 14:06:28 by octonaute        ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +22,6 @@ TO DO:
 
 - UNSET
 - EXPORT
-
-
-
 - cas pablo (demander a caro la photo)
 - gerer open et HEREDOC
 
@@ -55,33 +56,15 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 			printf("Split_path failed\n");
 			// free des trucs
 		}
-		
-
-		// printf("cmd_builtin = %d\n", cmd->builtin);
-		// printf("cmd->content = %s\n", cmd->content);
 		if (cmd->builtin == true)
 		{
+<<<<<<< HEAD
+			commands(line, env, home_path);
+=======
 			
 			//commands(line, env, home_path); //CARO ---> la commande n'existe plus, il fallait la changer pour que ça colle avec les nouveaux builtins
+>>>>>>> main
 			return ;
-			// if (ft_strncmp(cmd->content, "echo", ft_strlen("echo")))
-			// {
-			// 	// if (cmd->next->content /*&& cmd->next->type == ARGUMENT*/)
-			// 	printf("----------------->line = %s\n", line);
-			// 		echo(line);
-			// 	// else
-			// 	// 	ft_putstr_fd("\n", 1);
-			// }
-			// // else if (ft_strncmp(cmd->content, "cd", ft_strlen("cd")))
-			// // 	cd(line);
-			// else if (ft_strncmp(cmd->content, "pwd", ft_strlen("pwd")))
-			// 	pwd(PRINT);
-			// else if (ft_strncmp(cmd->content, "export", ft_strlen("export")))
-			// 	ft_export(cmd, env);
-			// // if (ft_strncmp(cmd->content, "unset", ft_strlen("unset")))
-			// // 	ft_unset();
-			// else if (ft_strncmp(cmd->content, "env", ft_strlen("env")))
-			// 	ft_env(env, 0);
 		}
 		cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
 		if (!cmd->content)
@@ -132,30 +115,159 @@ char	*ft_get_command(char **path, char *argument)
 void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 {
 	exec->av_nb = get_args_nb(cmd);
-	exec->cmd_tab = malloc(sizeof(char *) * (exec->av_nb + 1)); // utiliser la fonction de caro
+	exec->cmd_tab = malloc(sizeof(char *) * (exec->av_nb + 1));
 	if (!exec->cmd_tab)
 		return ;
 	fill_cmd_tab(cmd, exec);
-
-	// if (cmd->builtin == true)
-	// {
-	// 	// cd();
-	// 	//commands()
-	// 	exit(127);
-	// }
-	
 	get_cmds_nb(cmd, exec); // utiliser le nombre de commands while (i < nb_commands)
 	if (exec->cmd_nb == 1) // dans le cas d'une single command
 		execute_command(cmd, env, exec);
 	else // plusieurs commandes
 	{
+<<<<<<< HEAD
+		redir(cmd, exec, env, line, home_path);
+	}
+}
+
+// void ft_children(t_element *cmd, t_pipe *exec, int i, char *line, char *home_path)
+// {
+	
+// }
+
+void	redir(t_element *cmd, t_pipe *exec, t_env *env, char *line, char *home_path)
+{
+	pid_t	pid;
+	int	pipefd[2];
+
+	if (pipe(pipefd) < 0)
+	{
+		perror("pipe");
+		return ;
+	}
+	pid = fork();
+	if (pid) // parent
+	{
+		close(pipefd[1]);
+		dup2(pipefd[0], STDIN_FILENO);
+		waitpid(pid, NULL, 0);
+	}
+	else // child pid == 0
+	{
+		close(pipefd[0]);
+		dup2(pipefd[1], STDOUT_FILENO);
+		execute_command(cmd, env, exec, line, home_path);
+=======
 		exec->pid = ft_calloc(sizeof(int), exec->cmd_nb + 2);
 		if (!exec->pid)
 			return (msg_error(0));
 		childrens(cmd, exec);
+>>>>>>> main
 	}
 }
-	
+
+bool	ft_is_a_pipe_before(t_element *cmd)
+{
+	while (cmd)
+	{
+		if (cmd->type == PIPE)
+			return (true);
+		cmd = cmd->prev;
+	}
+	return (false);
+}
+
+bool	ft_is_a_pipe_after(t_element *cmd)
+{
+	while (cmd)
+	{
+		if (cmd->type == PIPE)
+			return (true);
+		cmd = cmd->next;
+	}
+	return (false);
+}
+
+bool	ft_give_me_my_pipes(t_pipe *exec)
+{
+	if (exec->cmd_nb == 1)
+	{
+		exec->my_pipes = NULL;
+		return (true);
+	}
+	exec->my_pipes = malloc(sizeof(int) * 2 * (exec->cmd_nb - 1));
+	if (!exec->my_pipes)
+		return (false);
+	return (true);
+}
+
+// ici on fair les redirection avec panache
+// cas 1 : j'ai pas de pipe avant :
+// je ne fais rien
+// cas 2 : j'ai une pipe avant :
+// je dois dup 2 mon fd 0 vers le fd[0] de la pipe
+
+// cas 1 bis : j'ai pas de pipe apres :
+// je ne fais rien
+// cas 2 bis : j'ai une pipe apres :
+// je dois dup 2 mon fd 1 vers le fd 1 de la pipe
+bool	ft_redir(t_element *cmd, t_pipe *exec, int i)
+{
+	if ()//j'ai une / des redirection d'entree
+	{
+
+	}
+	else if (ft_is_a_pipe_before(cmd))
+	{
+		dup2(exec->my_pipes[i - 1][0], 0);
+	}
+
+	if ()// j'ai une / des redirections de sortie
+	{
+
+	}
+	else if (ft_is_a_pipe_after(cmd))
+	{
+		dup2(exec->my_pipes[i][1], 1);
+	}
+	ft_close_pipe(exec->fd_file);
+	ft_close_all_pipes(exec);
+	return (true);
+}
+
+void	ft_child(t_element *cmd, t_pipe *exec, int i)
+{
+	// etape 1 on redirige les trucs
+	if (!ft_redir(cmd, exec, i))
+		;
+	// etape 2 on cherche un chemin
+	// etape 3 on execute l'enfant
+}
+
+
+void	execution(t_element *cmd, t_pipe *exec)
+{
+	int	i;
+
+	if (!ft_give_me_my_pipes(exec))
+		;// le menage
+	i = 0;
+	if (exec->cmd_nb == 1 && cmd->builtin)
+	{
+		;//je lance le builtin sans lancer de child process
+		return ;
+	}
+	while (i < exec->cmd_nb)
+	{
+		ft_children(cmd, exec, i);
+		i++;
+	}
+}
+
+
+
+
+
+
 /* fonction test */
 int	childrens(t_element *cmd, t_pipe *exec)
 {
@@ -163,37 +275,34 @@ int	childrens(t_element *cmd, t_pipe *exec)
 	int		fd;
 
 	fd = STDIN_FILENO;
+	// printf("JE SUIS LA\n");
 	while (cmd && cmd->next)
 	{
-		// printf("%scommand = %s\n%s", BGRE, cmd->content, WHT);
-		// printf("%scommand->next = %s\n%s", BGRE, cmd->next->content, WHT);
-
-		// while(cmd->content)
-		// {
 		if (cmd->type != COMMAND && cmd->type != OPTION) // pour sauter les pipes
 			cmd = cmd->next;
 		printf("cmd = %s\n", cmd->content);
-		// }
-		// exec->simple_cmds = call_expander(exec, exec->simple_cmds);
-		if (cmd)
+		if (cmd->next)
 		{
 			if (pipe(pipe_end) < 0)
 			{
 				printf("hello\n");
 				exit(EXIT_FAILURE);
 			}
-			// ft_create_pipe(exec, i, pipe_end);
+			ft_create_pipe(exec, pipe_end);
 		}
+<<<<<<< HEAD
+		ft_fork(cmd, exec, pipe_end, fd, line, home_path);
+=======
 		// send_heredoc(exec, exec->simple_cmds);
 		ft_fork(cmd, exec, pipe_end, fd);
+>>>>>>> main
 		close(pipe_end[1]);
 		if (cmd->prev)
 			close(fd);
-		// fd_in = check_fd_heredoc(exec, end, exec->simple_cmds);
 		if (cmd->next)
 			cmd = cmd->next;
-		// else
-		// 	break ;
+		else
+			break ;
 
 	}
 	ft_waitpid(exec->pid, exec->cmd_nb);
