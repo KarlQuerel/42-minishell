@@ -101,10 +101,10 @@ char	**ft_split(char const *s, char c)
 	return (string);
 }
 
-/*
-int main()
+
+/* int main()
 {
-	char s[] = "ca ro";
+	char s[] = "ca ro\nka rl\nPATH=             HELLO";
 	char c = ' ';
 
 	int i = 0;
@@ -115,6 +115,13 @@ int main()
         printf("%s\n", split[i]);
         i++;
     }
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
     return 0;
-}
-*/
+} */
+

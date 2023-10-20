@@ -28,6 +28,11 @@ void	final_free(char *line, t_env *env_list)
 
 void	free_cmd_list(t_element *cmd_list)
 {
+	// // KARL -> j'ai ajoute ca pour regler une seg fault
+	// if (!cmd_list)
+	// 	return ;
+	// // fin
+  
 	while (cmd_list != NULL)
 	{
 		free(cmd_list->content);

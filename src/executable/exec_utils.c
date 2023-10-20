@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/19 14:06:54 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/20 14:41:09 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char	**split_path(t_env *env_list)
 {
 	char **res_split;
 	
+	res_split = NULL;
 	env_list = find_value_with_key_env(env_list, "PATH");
 	res_split = ft_split(env_list->value, ':');
 	return (res_split);
@@ -51,16 +52,16 @@ void	fill_cmd_tab(t_element *cmd, t_pipe *exec)
 /* Gets COMMAND and OPTION cmd type number */
 int	get_args_nb(t_element *cmd)
 {
-	int	nb_args;
+	int	cmds_and_options;
 
-	nb_args = 0;
+	cmds_and_options = 0;
 	while (cmd)
 	{
 		if (cmd->type == COMMAND || cmd->type == OPTION)
-			nb_args++;
+			cmds_and_options++;
 		cmd = cmd->next;
 	}
-	return (nb_args);
+	return (cmds_and_options);
 }
 
 
@@ -81,7 +82,7 @@ int	get_cmds_nb(t_element *cmd, t_pipe *exec)
 /* Forks every child processes */
 int	ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd)
 {
-	static int	i;
+	int	i;
 
 	i = 0;
 	

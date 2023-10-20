@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lstnew.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/19 18:00:41 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/20 14:27:01 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_env	*lstnew_env(char *line, int i)
 {
 	t_env	*new;
 
-	//new = (t_env *)malloc(sizeof(*new));
+	// new = (t_env *)malloc(sizeof(*new));
 	new = (t_env *)calloc(1, sizeof(t_env));
 	if (!new)
 		return (NULL);

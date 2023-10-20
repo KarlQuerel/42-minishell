@@ -93,6 +93,12 @@ t_element *parsing(char *line, t_env *env_list)
 	current_cmd = NULL;
 	current_cmd = lstnew(line, start, CMD); //je pars du principe que tjrs cmd d abord
 	head = current_cmd;
+	
+	// KARL -> j'ai ajoute ca pour regler une seg fault
+	if (!line)
+		return (NULL);
+	// fin
+
 	while (line[i])
 	{
 		j = 0;

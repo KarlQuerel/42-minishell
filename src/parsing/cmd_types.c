@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_types.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:58:39 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/17 15:47:54 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 18:38:10 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@ int	cmd_type(char *command, int len)
 
 	size = 0;
     // printf("%slen = %d, command[len] = %c\n%s", YELLOW, len, command[len], RESET);
+    
+    // KARL -> j'ai ajoute ca pour regler une seg fault
+	if (!command)
+		return (0);
+	// fin
+    
     while (command[len] != ' ' && command[len] != '\0')
     {
         //printf("%scommand[len] = %c\n%s", YELLOW, command[len], RESET);
@@ -41,6 +47,12 @@ int	key_and_value_type(char *command, int len, int type)
     int	size;
 
 	size = 0;
+
+    // KARL -> j'ai ajoute ca pour regler une seg fault
+	if (!command)
+		return (0);
+	// fin
+    
     while (command[len] != '=')
     {
         size++;

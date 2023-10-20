@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:00:17 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/19 18:30:48 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/20 14:22:39 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_env	*put_env_in_list(char **env)
 }
 
 /*Parses all the list until it finds a matching key*/
-t_env   *find_value_with_key_env(t_env *env_list, char *key)
+t_env	*find_value_with_key_env(t_env *env_list, char *key)
 {
 	int i;
 
@@ -68,7 +68,7 @@ t_env   *find_value_with_key_env(t_env *env_list, char *key)
 		}
 		env_list = env_list->next;
 	}
-	return (env_list); //ne devrait jamais arriver ici
+	return (env_list);
 }
 
 /*Checks if the arg following $ in the command line has a 
