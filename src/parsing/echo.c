@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:35 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/19 18:32:58 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/20 15:43:57 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ En mettant chaque signe au milieu de ab et en les faisant echo :
 the next cmd is a pipe or equals NULL.*/
 void	echo(t_element *current)
 {
-	/*GERER L'OPTION -n : 
+	/*Utiliser ft_putstrfd[] avec un fd envoye par Karl a la place 
+    de tous mes printf dans tous mes builtins*/
+    
+    /*GERER L'OPTION -n : 
 	if(line[i] == ' ' && line[i + 1] == '-' && line[i + 2] == 'n' && line[i + 3] == ' '
 		i+=3 //ou i+=4 ?*/
 	int	type;

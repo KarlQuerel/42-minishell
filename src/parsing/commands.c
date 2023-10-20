@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/20 14:26:42 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 15:10:41 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,4 +122,34 @@ int	where_is_cmd_in_line(char *line, char *cmd)
 		i++;
 	}
 	return (0);
+}
+
+void	commands(t_element *current_cmd, t_env *env_list)
+{
+	// a la base j avais fait " cd " etc donc avec espace apres le 
+	// nom du builtin pour eviter les erreur du type "holacdhey" et 
+	// que ca compte comme cd mais pb : cd tout seul sans espace avant
+	// car premiere cmd de la ligne et sans espace apres car c est a 
+	// moi de remplacer par le home_path alors ca ne marche pas. Même
+	// pb pour le $ dans la fonction line_errors_and_fix car on peut
+	// avoir $ suivi de '?'.
+	if (ft_strncmp(current_cmd->content, "history", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("history"))
+		history(HISTORY);
+	else if (ft_strncmp(current_cmd->content, "pwd", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("pwd"))
+		pwd(PRINT);
+	else if (ft_strncmp(current_cmd->content, "cd", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("cd"))
+		cd(current_cmd, env_list);
+	else if (ft_strncmp(current_cmd->content, "echo", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("echo"))
+        echo(current_cmd);
+	else if (ft_strncmp(current_cmd->content, "env", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("env"))
+        ft_env(env_list, 0);
+	
+	/*
+	else if (ft_strncmp(current_cmd->content, "export", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("export"))
+        ft_export(line);
+	else if (ft_strncmp(current_cmd->content, "unset", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("unset"))
+        unset(line);
+		*/
+
+	
 }

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/20 14:34:13 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 16:34:25 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,8 @@ typedef struct s_env
 {
 	char	*key;
 	char	*value;
+	char	**env;
 	struct s_env *next;
-	char	**env; //karl
 }	t_env;
 
 /* To handles pipes
@@ -124,9 +124,10 @@ typedef struct s_pipe
 	// int		fd_outfile;
 	int		fd_file[2];
 	int		av_nb;
-	int		**my_pipes;
+	int		**my_pipes; //*pipes[2]
+	char 	**env;
 	struct s_element *cmd;
-	struct s_env *env;
+	struct s_env *env_s;
 }	t_pipe;
 
 /*-------------------MAIN FOLDER-------------------*/
@@ -138,7 +139,7 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list);
 /*------------------PARSING FOLDER------------------*/
 
 /*Commands*/
-//void	commands(t_element *current_cmd, t_env *env_list, char *home_path);
+void	commands(t_element *current_cmd, t_env *env_list);
 bool	is_this_command(char *buffer, char* command);
 int		size_of_command(char *command, int len, int type);
 bool    is_cmd_in_line(char *line, char *cmd);
@@ -195,8 +196,6 @@ int		put_new_var(t_env *env, char *key, char *content);
 //int 	skip(char *line, int i, int option);
 char	type_of_separator(char *line, int i);
 int		type_of_str(char *cmd);
-void   print_skiping_quotes(char *str);
-//void	echo(char *line);
 void	echo(t_element *current);
 
 /*Cd*/
@@ -204,7 +203,6 @@ char	*split_at_user(char *big_path, char *user);
 void	cd_home(t_env *env_list);
 char    *fix_path_if_spaces(char *path);
 void	cd_directory(char *path, t_env *env_list);
-// void	cd(char *line, char *home_path, t_env *env_list);
 void	cd(t_element *current, t_env *env_list);
 
 /*Errors*/

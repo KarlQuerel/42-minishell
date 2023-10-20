@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/20 14:20:34 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 16:27:19 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,35 @@
 if option == 1, 
 reproduces export behaviour when used without an argument
 */
+// void	ft_env(t_env *env, int option)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (env->env[i])
+// 	{
+// 		if (option == 1)
+// 			ft_putstr_fd("export ", STDOUT_FILENO);
+// 		ft_putendl_fd(env->env[i], STDOUT_FILENO);
+// 		i++;
+// 	}
+// }
+
 void	ft_env(t_env *env, int option)
 {
 	int	i;
 
 	i = 0;
-	while (env->env[i])
+	while (env)
 	{
 		if (option == 1)
 			ft_putstr_fd("export ", STDOUT_FILENO);
-		ft_putendl_fd(env->env[i], STDOUT_FILENO);
-		i++;
+		ft_putendl_fd(env->value, STDOUT_FILENO);
+		env = env->next;
 	}
 }
+
+
 /* Reproduces the export command */
 int	ft_export(t_element *cmd_list, t_env *env)
 {

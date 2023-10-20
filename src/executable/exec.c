@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/20 14:47:37 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 16:47:54 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 	}
 	if (pid == 0)
 	{
-		exec->cmd_path = split_path(env);
+		exec->cmd_path = split_path(env); // prenne exec->env ou t_pipe *exec
 		if (!exec->cmd_path)
 		{
 			printf("Split_path failed\n");
@@ -54,8 +54,8 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 		}
 		if (cmd->builtin == true)
 		{
-			
-			//commands(line, env, home_path); //CARO ---> la commande n'existe plus, il fallait la changer pour que ça colle avec les nouveaux builtins
+			printf("hello\n");
+			commands(cmd, env);
 			return ;
 		}
 		cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
@@ -69,6 +69,25 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 				ft_putstr_fd(": command not found\n", 2);
 			}
 		}
+		
+		//-------------------------------
+		//to print execve args
+		// printf("cmd->content = %s\n", cmd->content);
+		// int	i = 0;
+		// while (exec->cmd_tab)
+		// {
+		// 	printf("exec->cmd_tab[%d] = %s\n", i, exec->cmd_tab[i]);
+		// 	i++;
+		// }
+		// i = 0;
+		// while (env->env[i])
+		// {
+			
+		// 	printf("env->env[%d] = %s\n", i, env->env[i]);
+		// 	i++;
+		// }
+		//--------------------------------
+		
 		if (execve(cmd->content, exec->cmd_tab, env->env) == -1)
 			ft_putstr_fd("execve failed\n", STDOUT_FILENO);
 		/* wlaw
@@ -111,18 +130,19 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 	
 	i = 0;
 	exec->av_nb = get_args_nb(cmd);
-	exec->cmd_tab = malloc(sizeof(char *) * (exec->av_nb + 1));
+	exec->cmd_tab = malloc(sizeof(char *) * (exec->av_nb + 1)); //peut etre calloc
 	if (!exec->cmd_tab)
 		return ;
 	fill_cmd_tab(cmd, exec);
 	get_cmds_nb(cmd, exec);
+	printf("%d\n", exec->cmd_nb);
 	if (exec->cmd_nb == 1) // dans le cas d'une single command
 		execute_command(cmd, env, exec);
 	else // plusieurs commandes
 	{
 		while (i < exec->cmd_nb - 1)
 		{
-			//ft_redir(cmd, exec, i);
+			// ft_redir(cmd, exec, i);
 			i++;
 		}
 	}
@@ -202,31 +222,38 @@ bool	ft_give_me_my_pipes(t_pipe *exec)
 // je ne fais rien
 // cas 2 bis : j'ai une pipe apres :
 // je dois dup 2 mon fd 1 vers le fd 1 de la pipe
-/*
+
 bool	ft_redir(t_element *cmd, t_pipe *exec, int i)
 {
-	if ()//j'ai une / des redirection d'entree
-	{
 
-	}
-	else if (ft_is_a_pipe_before(cmd))
+//	A GERER APRES
+// 	if ()//j'ai une / des redirection d'entree
+// 	{
+
+// 	}
+
+
+	if (ft_is_a_pipe_before(cmd))
 	{
 		dup2(exec->my_pipes[i - 1][0], 0);
 	}
 
-	if ()// j'ai une / des redirections de sortie
-	{
+	// A GERER APRES
+	// if ()// j'ai une / des redirections de sortie
+	// {
 
-	}
+	// }
+
+	
 	else if (ft_is_a_pipe_after(cmd))
 	{
 		dup2(exec->my_pipes[i][1], 1);
 	}
-	ft_close_pipe(exec->fd_file);
+	ft_close_pipe(exec->fd_file); // apres
 	ft_close_all_pipes(exec);
 	return (true);
 }
-*/
+
 
 void	ft_child(t_element *cmd, t_pipe *exec, int i)
 {
@@ -245,7 +272,7 @@ void	execution(t_element *cmd, t_pipe *exec)
 	if (!ft_give_me_my_pipes(exec))
 		;// le menage
 	i = 0;
-	if (exec->cmd_nb == 1 && cmd->builtin)
+	if (exec->cmd_nb == 1 && cmd->builtin == true)
 	{
 		;//je lance le builtin sans lancer de child process
 		return ;
