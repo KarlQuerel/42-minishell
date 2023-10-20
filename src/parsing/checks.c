@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:07:47 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/17 16:57:10 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/20 17:46:47 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ bool		is_builtin(char *cmd_content)
 	ft_strncmp(cmd_content, "pwd", ft_strlen("pwd")) == 0 || \
 	ft_strncmp(cmd_content, "export", ft_strlen("export")) == 0 || \
 	ft_strncmp(cmd_content, "unset", ft_strlen("unset")) == 0 || \
-	ft_strncmp(cmd_content, "env", ft_strlen("env")) == 0) //j'ai pas mis exit, ce qui se pase qd on ecrit exit apres une pipe sur bash n est pas clair
+	ft_strncmp(cmd_content, "env", ft_strlen("env")) == 0 || \
+	ft_strncmp(cmd_content, "exit", ft_strlen("exit")) == 0)
 		return (true);
 	else
 		return (false);
