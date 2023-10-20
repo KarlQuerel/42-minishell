@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/18 18:39:25 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 13:44:12 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,13 +156,13 @@ void	redir(t_element *cmd, t_pipe *exec, t_env *env, char *line, char *home_path
 		return ;
 	}
 	pid = fork();
-	if (pid)
+	if (pid) // parent
 	{
 		close(pipefd[1]);
 		dup2(pipefd[0], STDIN_FILENO);
 		waitpid(pid, NULL, 0);
 	}
-	else
+	else // child pid == 0
 	{
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
@@ -170,9 +170,71 @@ void	redir(t_element *cmd, t_pipe *exec, t_env *env, char *line, char *home_path
 	}
 }
 
+bool	ft_is_a_pipe_before(t_element *cmd)
+{
+	while (cmd)
+	{
+		if (cmd->type == PIPE)
+			return (true);
+		cmd = cmd->prev;
+	}
+	return (false);
+}
+
+bool	ft_is_a_pipe_after(t_element *cmd)
+{
+	while (cmd)
+	{
+		if (cmd->type == PIPE)
+			return (true);
+		cmd = cmd->next;
+	}
+	return (false);
+}
+
+bool	ft_give_me_my_pipes(t_pipe *exec)
+{
+	if (exec->cmd_nb == 1)
+	{
+		exec->my_pipes = NULL;
+		return (true);
+	}
+	exec->my_pipes = malloc(sizeof(int) * 2 * (exec->cmd_nb - 1));
+	if (!exec->my_pipes)
+		return (false);
+	return (true);
+}
 
 
+void	execution(t_element *cmd, t_pipe *exec)
+{
+	int	i;
 
+	if (!ft_give_me_my_pipes(exec))
+		;// le menage
+	i = 0;
+	while (i < exec->cmd_nb)
+	{
+		if ()
+		ft_children(cmd, exec, i);
+		i++;
+	}
+}
+// 	if (ft_is_a_pipe_before(cmd))
+// 	{
+// 		dup2(, 0);
+// 		close();
+// 	}
+
+// cas 1 : j'ai pas de pipe avant :
+// je ne fais rien
+// cas 2 : j'ai une pipe avant :
+// je dois dup 2 mon fd 0 vers le fd[0] de la pipe
+
+// cas 1 bis : j'ai pas de pipe apres :
+// je ne fais rien
+// cas 2 bis : j'ai une pipe apres :
+// je dois dup 2 mon fd 1 vers le fd 1 de la pipe
 
 
 

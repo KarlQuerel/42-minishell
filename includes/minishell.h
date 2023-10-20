@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/18 16:54:11 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 13:40:27 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,10 +119,11 @@ typedef struct s_pipe
 	int		*pid;
 	char	**cmd_tab;
 	char	**cmd_path;
-	int		*pipe_end;
+	int		*pipe_end; //pipe_end[2];
 	int		fd_infile;
 	int		fd_outfile;
 	int		av_nb;
+	int		**my_pipes;
 	struct s_element *cmd;
 	struct s_env *env;
 }	t_pipe;
@@ -266,5 +267,10 @@ void ft_children(t_element *cmd, t_pipe *exec, int i, char *line, char *home_pat
 
 void	redir(t_element *cmd, t_pipe *exec, t_env *env, char *line, char *home_path);
 
+// utilitaires du panache
+void	ft_close(int *fd);
+void	ft_close_pipe(int pip[2]);
+bool	ft_is_a_pipe_after(t_element *cmd);
+bool	ft_is_a_pipe_before(t_element *cmd);
 
 #endif

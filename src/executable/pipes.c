@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 15:02:53 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/18 16:09:08 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/20 13:20:49 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,37 @@ void	ft_create_pipe(t_pipe *exec, int *pipe_end)
 	}
 }
 
-/* Close all pipe ends */
-void	ft_close_pipe(t_pipe *exec)
+// close un fd avec panache
+void	ft_close(int *fd)
 {
-	int	i;
-
-	i = 0;
-	while (i < exec->cmd_nb)
+	if (*fd > 2)
 	{
-		close(exec->pipe_end[i]);
-		i++;
+		close(*fd);
+		*fd = 0;
 	}
 }
+
+// fonction qui ferme un pipe avec panache
+void	ft_close_pipe(int pip[2])
+{
+	ft_close(&pip[0]);
+	ft_close(&pip[1]);
+}
+
+
+// pantheon des fonctions
+/* Close all pipe ends */
+// void	ft_close_pipe(t_pipe *exec)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (i < exec->cmd_nb)
+// 	{
+// 		close(exec->pipe_end[i]);
+// 		i++;
+// 	}
+// }
 
 /* Use waitpid function to wait for every child process */
 int	ft_waitpid(int *pid, int n)
