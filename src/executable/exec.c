@@ -6,11 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-<<<<<<< HEAD
 /*   Updated: 2023/10/20 13:44:12 by kquerel          ###   ########.fr       */
-=======
-/*   Updated: 2023/10/19 14:06:28 by octonaute        ###   ########.fr       */
->>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +54,8 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 		}
 		if (cmd->builtin == true)
 		{
-<<<<<<< HEAD
-			commands(line, env, home_path);
-=======
 			
 			//commands(line, env, home_path); //CARO ---> la commande n'existe plus, il fallait la changer pour que ça colle avec les nouveaux builtins
->>>>>>> main
 			return ;
 		}
 		cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
@@ -124,7 +116,6 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 		execute_command(cmd, env, exec);
 	else // plusieurs commandes
 	{
-<<<<<<< HEAD
 		redir(cmd, exec, env, line, home_path);
 	}
 }
@@ -290,12 +281,9 @@ int	childrens(t_element *cmd, t_pipe *exec)
 			}
 			ft_create_pipe(exec, pipe_end);
 		}
-<<<<<<< HEAD
 		ft_fork(cmd, exec, pipe_end, fd, line, home_path);
-=======
 		// send_heredoc(exec, exec->simple_cmds);
 		ft_fork(cmd, exec, pipe_end, fd);
->>>>>>> main
 		close(pipe_end[1]);
 		if (cmd->prev)
 			close(fd);
@@ -308,119 +296,4 @@ int	childrens(t_element *cmd, t_pipe *exec)
 	ft_waitpid(exec->pid, exec->cmd_nb);
 	return (0);
 }
-
-// int	execute_cmd(t_element *cmd, t_pipe *exec)
-// {
-// }
-
-		
-	// else // on split les process car pipe presents
-	// {
-	// 	i = 0;
-	// 	// ft_create_pipe(exec); // ne marche ->bad adress
-	// 	while (i < exec->av_nb)
-	// 	{
-	// 		mult_commands(cmd, env, exec, i);
-	// 		i++;
-	// 	}
-	// }
-
-
-	//--------------------- pipe
-
-	// printf("pipe_end[%d] = %d\n", 0, exec->pipe_end[0]);
-	// printf("pipe_end[%d] = %d\n", 1, exec->pipe_end[1]);
-	// printf("pipe_end[%d] = %d\n", 2, exec->pipe_end[2]);
-
-	// if (pipe(exec->pipe_end) < 0)
-	// {
-	// 	perror("pipe:");
-	// 	//free
-	// 	exit(EXIT_FAILURE);
-	// }
-
-
-	//------------------------- fork
-
-	// exec->pid = fork();
-	// if(exec->pid == -1)
-	// {
-	// 	perror("fork:");
-	// 	//free
-	// 	exit(EXIT_FAILURE);
-	// }
-	// else if (exec->pid == 0)
-	// {
-	// 	if (dup2(exec->pipe_end[1], 1) < 0)
-	// 	{
-	// 		perror("dup2:");
-	// 		//free
-	// 		exit(EXIT_FAILURE);
-	// 	}
-	// 	close(exec->pipe_end[0]);
-	// 	close(exec->pipe_end[1]);
-	// }
-
-	
-	
-	// if (exec->av_nb == 0)
-	// {
-	// 	printf("Je suis la\n"); // c'est pour ca que ce connard de minishell exit
-	// 	exit(127);
-	// }
-
-	// TEST TEST TEST
-	// exec->cmd_path = split_path(env);
-	// if (!exec->cmd_path)
-	// {
-	// 	printf("Split_path failed\n");
-	// 	//free les pipes dans le cas ou on les malloc
-	// 	// free (exec);
-	// 	// free en plus dans le code de caro ?
-	// }
-	
-	
-	/* POUR PRINT LE PATH
-	-> la ou toutes les commandes se trouvent (check avec whereis)
-	*/
-	// int	j = 0;
-	// while (exec->cmd_path[j])
-	// {
-	// 	printf("cmd_path[%d] = %s\n", j, exec->cmd_path[j]);
-	// 	j++;
-	// }
-	// exec->cmd_tab = ft_split(exec->cmd_tab[0], ' ')
-
-	// TEST TEST TEST
-	// cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
-	// if (!cmd->content)
-	// {
-	// 	if (!exec->cmd_tab[0])
-	// 		ft_putstr_fd("\n", 2);
-	// 	else
-	// 	{
-	// 		ft_putstr_fd(exec->cmd_tab[0], 2);
-	// 		ft_putstr_fd(": command not found\n", 2);
-	// 	}
-	// }
-	// printf("1st argument AKA cmd->content = %s\n", cmd->content);
-	// printf("2nd argument AKA cmd->content_tab[0] = %s\n", exec->cmd_tab[0]);
-	// printf("2nd argument AKA cmd->content_tab[1] = %s\n", exec->cmd_tab[1]);
-	
-	
-	// TEST TEST TEST
-	// execve(cmd->content, exec->cmd_tab, env->env);
-	// printf("--> S'affiche uniquement si execve fail <--\n");
-
-	
-	// ft_create_pipe(exec); // cree le bon nombre de pipes
-	// int i = 0;
-	// while (i < exec->av_nb)
-	// {
-	// 	ft_babyboom(cmd, env, exec, i);
-	// 	i++;
-	// }
-	// ft_close_pipe(exec);
-	// waitpid(exec->pid, NULL, 0);
-
 
