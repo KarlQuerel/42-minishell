@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:34:22 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/19 19:05:55 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/21 17:28:21 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	cd_home(t_env *env_list)
 		while (ft_strncmp(current_path, home->value, ft_strlen(current_path)) != 0 && \
 	ft_strlen(home->value) != ft_strlen(current_path))
 		{
+			// -----> cd qd plus haut que user devrait nous faire avancer jusqu'à après le user!!!!
 			if (chdir("..") != 0)
 			{
 				free(current_path);

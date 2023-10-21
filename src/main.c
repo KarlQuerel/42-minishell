@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/21 16:11:55 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/21 16:31:03 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int main (int argc, char **argv, char **env)
 	t_pipe				*exec;
 	t_history			*entries;
 	//char				*temp_pwd;
-	//t_element			*temp;
+	//t_env			*temp;
 	
 	exec = ft_calloc(1, sizeof(t_pipe));
 	if (!exec)
@@ -140,9 +140,11 @@ int main (int argc, char **argv, char **env)
 //--------------------------------
 		env_list = pwd_update_in_env(env_list);
 /* 		temp = find_value_with_key_env(env_list, "PWD");
-		free(temp->content);
-		temp->content = calloc(ft_strlen(pwd(NO_PRINT)) + 1, sizeof(char));
-		ft_strlcpy(temp->content, pwd(NO_PRINT), ft_strlen(pwd(NO_PRINT))); */
+		printf("%s\nenv_list->value : %s\n%s", GREEN, temp->value, RESET);
+		free(temp->value);
+		temp->value = calloc(ft_strlen(pwd(NO_PRINT)) + 1, sizeof(char));
+		ft_strlcpy(temp->value, pwd(NO_PRINT), ft_strlen(pwd(NO_PRINT) + 1));
+		printf("%s\ntemp->value : %s\n%s", GREEN, temp->value, RESET); */
 		prompt(env_list);
 		line = readline("$ ");
 //--------------------------------
