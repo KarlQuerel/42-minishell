@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lstnew.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/20 14:27:01 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/21 13:48:13 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,19 @@ t_env	*lstnew_env(char *line, int i)
 	// new -> value = malloc(sizeof(char) * size_of_command(line, i, VALUE));
 	new -> value = calloc(size_of_command(line, i, VALUE), sizeof(char));
 	new -> next = NULL;
+	return (new);
+}
+
+t_history	*lstnew_history(t_history *entries, char *line, int size_of_list)
+{
+	t_history	*new;
+
+	new = (t_history *)calloc(1, sizeof(t_history));
+	if (!new)
+		return (NULL);
+	new->cmd = calloc(ft_strlen(line) + 1, sizeof(char));
+	ft_strlcpy(new->cmd, line, ft_strlen(line) + 1);
+	new->nb = size_of_list;
+	new->next = NULL;
 	return (new);
 }

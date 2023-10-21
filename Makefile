@@ -78,6 +78,8 @@ MAKEFLAGS   += --no-print-directory
 
 #OÙ DOIS-JE METTRE $(HEADER)??? POUR QUE ÇA RECOMPILE TOUT QD JE MODIFIE LE .H
 
+
+#VOIR MAKEFILE PHILO DE LEILA ELLE A REUSSI A FAIRE UN DOSSIER BINARIES!!
 binaries/%.o : src/%.c $(HEADER)
 	mkdir -p binaries
 	$(CC) $(CFLAGS) -c $< -o $@ 

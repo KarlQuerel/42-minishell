@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/16 15:04:10 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/21 12:32:45 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,22 @@ void	signal_handler(int signal/*, char *line*/)
 }
 
 //pour ctrl + D https://github.com/Swoorup/mysh
-/*
-if (feof(stdin)) {
-	exit(0);
-	return 0;
+
+		/* if (feof(stdin)) // pour ctrl + D?? // ne le comprend pas
+		{
+			printf("CTRL + D detected\n");
+			final_free(line, env_list);
+			return (EXIT_SUCCESS);
+		} */
+
+void	ctrlD(char *line) //lui envoyer line ou new_line?
+{
+	if (fgets(line, sizeof(line), stdin) == NULL)
+	{
+		printf("exit\n");
+		//free all
+		exit(0);
+	}
 }
-*/
+	
 

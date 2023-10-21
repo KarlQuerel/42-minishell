@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/20 20:36:12 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/21 13:51:30 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int main (int argc, char **argv, char **env)
 	t_element			*cmd_list;
 	t_element			*temp;
 	t_pipe				*exec;
+	t_history			*entries;
 	
 	
 	
@@ -104,8 +105,8 @@ int main (int argc, char **argv, char **env)
 	ft_welcome();
 	env_list = put_env_in_list(env);
 	env_list->env = env;
-	using_history();
 	line = NULL;
+	entries = NULL;
 
 //--------------------------------
 	prompt(env_list);
@@ -127,14 +128,9 @@ int main (int argc, char **argv, char **env)
 // 		new_pwd->value = ft_strlcpy(new_pwd->value, pwd(NO_PRINT), ft_strlen(pwd(NO_PRINT)));
 //-----------------------------------------------------
 
-		if (feof(stdin)) // pour ctrl + D?? // ne le comprend pas
-		{
-			printf("CTRL + D detected\n");
-			final_free(line, env_list);
-			return (EXIT_SUCCESS);
-		}
-		add_history(line);
-
+/* 		if (commande en cours)
+			ctrlD(line); */
+		entries = ft_add_history(entries, line);
 
 	/*J'envoie new_line au lieu de line aux fonctions qui suivent
 	car sur bash qd on fait flèche du haut on retrouve la commande
@@ -145,7 +141,13 @@ int main (int argc, char **argv, char **env)
 		cmd_list = parsing(new_line, env_list);
 		//ft_redirect(cmd_list); // a finir
     	//printlist_test(cmd_list);
-		ft_execute(cmd_list, env_list, exec);
+		// history(entries);
+		
+		/* KARL : IL FAUDRA MODIFIER TES FONCTIONS DANS L'EXEC 
+		DE FAÇON À CE QU'ELLES ENVOIENT LA LISTE CHAINEE ENTRIES À COMMANDS
+		POUR LA FONCTION HISTORY()*/
+
+		//ft_execute(cmd_list, env_list, exec);
 		free(new_line); //en commentaire pour tests avec dollar
 		free_cmd_list(cmd_list);
 //--------------------------------
@@ -153,7 +155,7 @@ int main (int argc, char **argv, char **env)
 		line = readline("$ ");
 //--------------------------------
 	}
-	final_free(line, env_list);
+	final_free(line, env_list, entries);
 	return (EXIT_SUCCESS);
 }
 

@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/20 14:36:51 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/21 13:22:40 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-void	final_free(char *line, t_env *env_list)
+void	final_free(char *line, t_env *env_list, t_history *entries)
 {
 	free(line);
-	history(FREE_HISTORY);
+	free_history(entries);
 	while (env_list != NULL)
 	{
 		free(env_list->key);

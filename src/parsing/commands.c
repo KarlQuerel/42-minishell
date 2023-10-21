@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/20 20:37:12 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/21 13:43:50 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,10 +133,10 @@ void	commands(t_element *current_cmd, t_env *env_list)
 	// moi de remplacer par le home_path alors ca ne marche pas. Même
 	// pb pour le $ dans la fonction line_errors_and_fix car on peut
 	// avoir $ suivi de '?'.
-	if (ft_strncmp(current_cmd->content, "history", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("history"))
-		history(HISTORY);
-	else if (ft_strncmp(current_cmd->content, "pwd", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("pwd"))
+	if (ft_strncmp(current_cmd->content, "pwd", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("pwd"))
 		pwd(PRINT);
+	/* else if (ft_strncmp(current_cmd->content, "history", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("history"))
+		history(entries); */ //en train d'être modifié
 	else if (ft_strncmp(current_cmd->content, "cd", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("cd"))
 		cd(current_cmd, env_list);
 	else if (ft_strncmp(current_cmd->content, "echo", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("echo"))

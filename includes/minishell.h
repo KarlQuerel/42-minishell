@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/20 16:34:25 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/21 13:51:46 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@
 # define CMD 2
 # define STR 3
 
-# define HISTORY 0
-# define FREE_HISTORY 1
+/* # define HISTORY 0
+# define FREE_HISTORY 1 */
 
 # define PRINT 0
 # define NO_PRINT 1
@@ -81,6 +81,15 @@
 --> type is the command type
 --> cmd_tab is an array of all commands (type 0)
 */
+
+
+typedef struct s_history {
+	int nb;
+	char *cmd;
+	struct s_history *next;
+} t_history;
+
+
 typedef struct s_element
 {
 	char	*content;
@@ -161,13 +170,19 @@ bool	is_key_in_env(t_env *env_list, char *key);
 /*Lstnew*/
 t_element	*lstnew(char *line, int i, int type);
 t_env		*lstnew_env(char *line, int i);
+t_history	*lstnew_history(t_history *entries, char *line, int size_of_list);
+int			ft_lstsize_history(t_history *lst);
 
 /*Free*/
-void	final_free(char *line, t_env *env_list);
+void	final_free(char *line, t_env *env_list, t_history *entries);
 void	free_cmd_list(t_element *cmd_list);
 
 /*History*/
-void		history(int option);
+t_history	*ft_add_history(t_history *entries, char *line);
+void		history(t_history *current_entry);
+void		free_history(t_history *current_entry);
+void		lstadd_back_history(t_history *entries, char *line);
+t_history	*ft_lstlast_history(t_history *lst);
 
 /*Checks*/
 bool		quotes_can_close(char *line);
@@ -175,6 +190,7 @@ bool		is_builtin(char *cmd_content);
 
 /*Signal*/
 void		signal_handler(int signal);
+void		ctrlD(char *line);
 
 /*Pwd*/
 char    *pwd(int option);
