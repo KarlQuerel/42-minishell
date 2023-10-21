@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:35 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/20 15:43:57 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/21 16:18:10 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ void	echo(t_element *current)
 	if(line[i] == ' ' && line[i + 1] == '-' && line[i + 2] == 'n' && line[i + 3] == ' '
 		i+=3 //ou i+=4 ?*/
 	int	type;
+    bool newline;
     
+    newline = true;
     if (current->next == NULL)
     {
         printf("\n");
@@ -67,6 +69,11 @@ void	echo(t_element *current)
     current = current->next; 
  	while(current != NULL && current->type != PIPE)
 	{
+        if (current->type == OPTION && ft_strncmp(current->content, "-n", ft_strlen(current->content)) == 0)
+        {
+            newline = false;
+            current = current->next;
+        }
         type = type_of_str(current->content);
         if (type == STR)
             print_skiping_quotes(current->content);
@@ -76,5 +83,6 @@ void	echo(t_element *current)
             printf(" ");
         current = current->next;
 	}
-    printf("\n");
+    if (newline == true)
+        printf("\n");
 }

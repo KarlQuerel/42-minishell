@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/20 14:34:15 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/21 15:22:59 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,15 @@ char	*pwd(int option)
 	if (option == PRINT)
 		printf("%s\n", path);
 	return (path);
+}
+
+t_env	*pwd_update_in_env(t_env *env_list)
+{
+	t_element			*temp;
+	
+	temp = find_value_with_key_env(env_list, "PWD");
+	free(temp->content);
+	temp->content = calloc(ft_strlen(pwd(NO_PRINT)) + 1, sizeof(char));
+	ft_strlcpy(temp->content, pwd(NO_PRINT), ft_strlen(pwd(NO_PRINT)));
+	return (env_list);
 }

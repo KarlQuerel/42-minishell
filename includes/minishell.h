@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/21 13:51:46 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/21 15:12:19 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ void		ctrlD(char *line);
 
 /*Pwd*/
 char    *pwd(int option);
+t_env	*pwd_update_in_env(t_env *env_list);
 
 /*Dollar*/
 char	*dollar(char *content, t_env *env_list);

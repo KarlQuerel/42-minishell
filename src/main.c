@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/21 13:51:30 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/21 16:11:55 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,10 @@ int main (int argc, char **argv, char **env)
 	t_env				*env_list;
 	t_env				*new_pwd;
 	t_element			*cmd_list;
-	t_element			*temp;
 	t_pipe				*exec;
 	t_history			*entries;
-	
-	
+	//char				*temp_pwd;
+	//t_element			*temp;
 	
 	exec = ft_calloc(1, sizeof(t_pipe));
 	if (!exec)
@@ -116,18 +115,6 @@ int main (int argc, char **argv, char **env)
 	while (is_this_command(line, "exit") == false) // while (1) et mettre line = readline("$ ") tout en haut de la while
 	//et mettre en commentaire le line = readline("$ ") du bas de la while
 	{
-//-----------------------------------------------------
-//MODIFIER A CHAQUE TOUR DE WHILE LA VALEUR DE LA KEY PWD DE ENV!!!! CA REGLERA LE PROMPT
-// + C ETS NECESSAIRE POUR LA FONCTION ENV SINON PWD SERA FAUX!
-// changer de piste : je ne peux pas creer une node new_pwd pour convenir a la fonction 
-// unset pq cette fonction cherche cmd->next et que du coup il n y a  pas de next donc refaire une fonction
-// 		new_pwd = find_value_with_key_env(env_list, "PWD");
-// /* 		if (new_pwd->value != NULL)
-// 			free(new_pwd->value); */
-// 		new_pwd->value = malloc(ft_strlen(pwd(NO_PRINT)));
-// 		new_pwd->value = ft_strlcpy(new_pwd->value, pwd(NO_PRINT), ft_strlen(pwd(NO_PRINT)));
-//-----------------------------------------------------
-
 /* 		if (commande en cours)
 			ctrlD(line); */
 		entries = ft_add_history(entries, line);
@@ -141,16 +128,21 @@ int main (int argc, char **argv, char **env)
 		cmd_list = parsing(new_line, env_list);
 		//ft_redirect(cmd_list); // a finir
     	//printlist_test(cmd_list);
-		// history(entries);
 		
+		// history(entries);
 		/* KARL : IL FAUDRA MODIFIER TES FONCTIONS DANS L'EXEC 
 		DE FAÇON À CE QU'ELLES ENVOIENT LA LISTE CHAINEE ENTRIES À COMMANDS
 		POUR LA FONCTION HISTORY()*/
 
-		//ft_execute(cmd_list, env_list, exec);
+		ft_execute(cmd_list, env_list, exec);
 		free(new_line); //en commentaire pour tests avec dollar
 		free_cmd_list(cmd_list);
 //--------------------------------
+		env_list = pwd_update_in_env(env_list);
+/* 		temp = find_value_with_key_env(env_list, "PWD");
+		free(temp->content);
+		temp->content = calloc(ft_strlen(pwd(NO_PRINT)) + 1, sizeof(char));
+		ft_strlcpy(temp->content, pwd(NO_PRINT), ft_strlen(pwd(NO_PRINT))); */
 		prompt(env_list);
 		line = readline("$ ");
 //--------------------------------
