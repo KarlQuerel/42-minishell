@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/20 20:29:25 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/22 17:56:37 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -46,7 +46,7 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 	}
 	if (pid == 0)
 	{
-		exec->cmd_path = split_path(env); // prenne exec->env ou t_pipe *exec
+		exec->cmd_path = split_path(env);
 		if (!exec->cmd_path)
 		{
 			printf("Split_path failed\n");

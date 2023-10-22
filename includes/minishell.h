@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/20 16:34:25 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/22 21:11:22 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 /*Libraries*/
 
@@ -142,7 +142,7 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list);
 void	commands(t_element *current_cmd, t_env *env_list);
 bool	is_this_command(char *buffer, char* command);
 int		size_of_command(char *command, int len, int type);
-bool    is_cmd_in_line(char *line, char *cmd);
+bool	is_cmd_in_line(char *line, char *cmd);
 int 	where_is_cmd_in_line(char *line, char *cmd);
 char	*line_errors_and_fix(char *line, t_env *env_list);
 
@@ -176,38 +176,13 @@ bool		is_builtin(char *cmd_content);
 /*Signal*/
 void		signal_handler(int signal);
 
-/*Pwd*/
-char    *pwd(int option);
-
 /*Dollar*/
 char	*dollar(char *content, t_env *env_list);
-void	ft_env(t_env *env, int option);
-
-/*Export*/
-int		ft_export(t_element *cmd_list, t_env *env);
-int		ft_is_valid(char *s);
-char 	**new_env_var(char *s);
-int		put_new_var(t_env *env, char *key, char *content);
-
-
-// unset
-
-/*Echo*/
-//int 	skip(char *line, int i, int option);
-char	type_of_separator(char *line, int i);
-int		type_of_str(char *cmd);
-void	echo(t_element *current);
-
-/*Cd*/
-char	*split_at_user(char *big_path, char *user);
-void	cd_home(t_env *env_list);
-char    *fix_path_if_spaces(char *path);
-void	cd_directory(char *path, t_env *env_list);
-void	cd(t_element *current, t_env *env_list);
+void	ft_env(t_env *env, t_element *cmd, int option);
 
 /*Errors*/
 void	first_character_error(char *line);
-void    redirecters_error(char *line);
+void	redirecters_error(char *line);
 void	slash_error(char *line);
 void	pipe_error(char *line);
 void	and_error(char *line);
@@ -235,6 +210,40 @@ void	prompt(t_env *env_list);
 
 /*-----------------EXECUTABLE FOLDER------------------*/
 
+/*------------------BUILT-INS FOLDER------------------*/
+
+/*Cd*/
+char	*split_at_user(char *big_path, char *user);
+void	cd_home(t_env *env_list);
+char	*fix_path_if_spaces(char *path);
+void	cd_directory(char *path, t_env *env_list);
+void	cd(t_element *current, t_env *env_list);
+
+/*Echo*/
+//int 	skip(char *line, int i, int option);
+char	type_of_separator(char *line, int i);
+int		type_of_str(char *cmd);
+void	echo(t_element *current);
+
+/*Env*/
+void	ft_env(t_env *env, t_element *cmd, int option);
+
+/*Export*/
+int		ft_export(t_element *cmd_list, t_env *env);
+int		ft_is_valid(char *s);
+char 	**new_env_var(char *s);
+int		put_new_var(t_env *env, char *key, char *content);
+
+/*Pwd*/
+char	*pwd(int option);
+
+/*Unset*/
+int		ft_unset(t_element *cmd_list, t_env *env);
+void	ft_delete_node(t_env *to_delete);
+
+//voir avec caro
+/*-----------------TO_NAME FOLDER------------------*/
+
 /* Exec*/
 void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec);
 void	execute_command(t_element *cmd, t_env *env, t_pipe *exec);
@@ -253,22 +262,16 @@ char	*ft_strcpy(char *dst, char *src);
 void	ft_create_pipe(t_pipe *exec, int *pipe_end);
 int		ft_waitpid(int *pid, int n);
 
-
 /* Redirect */
 int		ft_redirect(t_element *s);
 int		ft_infile(char *file);
 int		ft_outfile(t_element *cmd);
 
-
-void	ft_delete_node(t_env **env, t_element *to_delete);
-void	ft_remove_var(t_element *cmd_list, t_env *env, char *to_remove);
-
-
+// void	ft_remove_var(t_element *cmd_list, t_env *env, char *to_remove);
 int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
 void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
 void	msg_error(int err);
 int		childrens(t_element *cmd, t_pipe *exec);
-
 
 // utilitaires du panache
 void	ft_close(int *fd);

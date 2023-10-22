@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/20 17:58:19 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/22 18:52:58 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -140,22 +140,17 @@ void	commands(t_element *current_cmd, t_env *env_list)
 	else if (ft_strncmp(current_cmd->content, "cd", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("cd"))
 		cd(current_cmd, env_list);
 	else if (ft_strncmp(current_cmd->content, "echo", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("echo"))
-        echo(current_cmd);
+		echo(current_cmd);
 	else if (ft_strncmp(current_cmd->content, "env", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("env"))
-        ft_env(env_list, 0);
+		ft_env(env_list, current_cmd, 0);
+	else if (ft_strncmp(current_cmd->content, "export", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("export"))
+		ft_export(current_cmd, env_list);
+	else if (ft_strncmp(current_cmd->content, "unset", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("unset"))
+		ft_unset(current_cmd, env_list);
 	else if (ft_strncmp(current_cmd->content, "exit", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("exit"))
-    {
+	{
 		// free
 		ft_putendl_fd("exit", STDOUT_FILENO);
 		exit (1);
 	}
-	
-	/*
-	else if (ft_strncmp(current_cmd->content, "export", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("export"))
-        ft_export(line);
-	else if (ft_strncmp(current_cmd->content, "unset", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("unset"))
-        unset(line);
-		*/
-
-	
 }

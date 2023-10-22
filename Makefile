@@ -1,14 +1,14 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+         #
+#    By: karl <karl@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/19 18:40:06 by octonaute        ###   ########.fr        #
+#    Updated: 2023/10/22 20:59:16 by karl             ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
 
 #modifier le makefile de la libft maintenant que je sais en faire des mieux?
 #ça ne crée pas le directory binaries
@@ -41,15 +41,17 @@ SRC = src/main.c \
 	src/executable/exec_errors.c \
 	src/executable/redirect.c \
 	src/executable/pipes.c \
-	src/executable/builtins.c \
+	src/executable/builtins/cd.c \
+	src/executable/builtins/echo.c \
+	src/executable/builtins/env.c \
+	src/executable/builtins/export.c \
+	src/executable/builtins/pwd.c \
+	src/executable/builtins/unset.c \
 	src/parsing/errors.c \
 	src/parsing/utils.c \
 	src/parsing/malloc.c \
 	src/parsing/cmd_types.c \
-	src/parsing/cd.c \
-	src/parsing/pwd.c \
 	src/parsing/dollar.c \
-	src/parsing/echo.c \
 	src/parsing/prompt.c \
 	
 SRC_OBJS = $(SRC:.c=.o)
@@ -69,9 +71,9 @@ CC = cc
 
 RM = rm -f
 
-#CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = #-Wall -Wextra -Werror -g3
 
-CFLAGS = -gdwarf-4 #-Wall -Wextra -Werror -g3
+#CFLAGS = -gdwarf-4 #-Wall -Wextra -Werror -g3
 
 #PENSER À ENLEVER -G3 (juste pour gdb)
 MAKEFLAGS   += --no-print-directory
