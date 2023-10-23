@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lstnew.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/21 13:48:13 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/23 12:10:42 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_env	*lstnew_env(char *line, int i)
 	return (new);
 }
 
-t_history	*lstnew_history(t_history *entries, char *line, int size_of_list)
+t_history	*lstnew_history(char *line, int size_of_list)
 {
 	t_history	*new;
 

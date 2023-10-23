@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/10/21 15:12:19 by octonaute        ###   ########.fr       */
-=======
-/*   Updated: 2023/10/23 11:23:27 by kquerel          ###   ########.fr       */
->>>>>>> karl
+/*   Updated: 2023/10/23 12:11:09 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,22 +170,12 @@ bool	is_key_in_env(t_env *env_list, char *key);
 /*Lstnew*/
 t_element	*lstnew(char *line, int i, int type);
 t_env		*lstnew_env(char *line, int i);
-t_history	*lstnew_history(t_history *entries, char *line, int size_of_list);
+t_history	*lstnew_history(char *line, int size_of_list);
 int			ft_lstsize_history(t_history *lst);
 
 /*Free*/
 void	final_free(char *line, t_env *env_list, t_history *entries);
 void	free_cmd_list(t_element *cmd_list);
-
-<<<<<<< HEAD
-/*History*/
-t_history	*ft_add_history(t_history *entries, char *line);
-void		history(t_history *current_entry);
-void		free_history(t_history *current_entry);
-void		lstadd_back_history(t_history *entries, char *line);
-t_history	*ft_lstlast_history(t_history *lst);
-=======
->>>>>>> karl
 
 /*Checks*/
 bool		quotes_can_close(char *line);
@@ -198,39 +184,6 @@ bool		is_builtin(char *cmd_content);
 /*Signal*/
 void		signal_handler(int signal);
 void		ctrlD(char *line);
-
-<<<<<<< HEAD
-/*Pwd*/
-char    *pwd(int option);
-t_env	*pwd_update_in_env(t_env *env_list);
-
-/*Dollar*/
-char	*dollar(char *content, t_env *env_list);
-void	ft_env(t_env *env, int option);
-
-/*Export*/
-int		ft_export(t_element *cmd_list, t_env *env);
-int		ft_is_valid(char *s);
-char 	**new_env_var(char *s);
-int		put_new_var(t_env *env, char *key, char *content);
-
-
-// unset
-
-/*Echo*/
-//int 	skip(char *line, int i, int option);
-char	type_of_separator(char *line, int i);
-int		type_of_str(char *cmd);
-void	echo(t_element *current);
-
-/*Cd*/
-char	*split_at_user(char *big_path, char *user);
-void	cd_home(t_env *env_list);
-char    *fix_path_if_spaces(char *path);
-void	cd_directory(char *path, t_env *env_list);
-void	cd(t_element *current, t_env *env_list);
-=======
->>>>>>> karl
 
 /*Errors*/
 void	first_character_error(char *line);
@@ -288,10 +241,15 @@ char 	**new_env_var(char *s);
 int		put_new_var(t_env *env, char *key, char *content);
 
 /*History*/
-void		history(int option);
+t_history	*ft_add_history(t_history *entries, char *line);
+void		history(t_history *current_entry);
+void		free_history(t_history *current_entry);
+void		lstadd_back_history(t_history *entries, char *line);
+t_history	*ft_lstlast_history(t_history *lst);
 
 /*Pwd*/
 char	*pwd(int option);
+t_env	*pwd_update_in_env(t_env *env_list);
 
 /*Unset*/
 int		ft_unset(t_element *cmd_list, t_env *env);

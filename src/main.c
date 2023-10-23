@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/23 11:58:12 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/23 12:14:12 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ int main (int argc, char **argv, char **env)
 		//ft_redirect(cmd_list); // a finir
     	//printlist_test(cmd_list);
 		
-		// history(entries);
+		//history(entries);
 		/* KARL : IL FAUDRA MODIFIER TES FONCTIONS DANS L'EXEC 
 		DE FAÇON À CE QU'ELLES ENVOIENT LA LISTE CHAINEE ENTRIES À COMMANDS
 		POUR LA FONCTION HISTORY()*/

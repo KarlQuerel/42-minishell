@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:38 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/23 12:00:58 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/23 12:14:07 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 	/* 
 		history ls donne :
 		error bash: history: ls: numeric argument required
-
+		le 2eme numero affiche 1
 	 */
 	
 int	ft_lstsize_history(t_history *lst)
@@ -55,7 +55,7 @@ void	lstadd_back_history(t_history *entries, char *line)
 	t_history	*temp;
 
 	temp = ft_lstlast_history(entries);
-	temp->next = lstnew_history(temp, line, ft_lstsize_history(entries));
+	temp->next = lstnew_history(line, ft_lstsize_history(entries));
 }
 
 
@@ -65,7 +65,7 @@ t_history	*ft_add_history(t_history *entries, char *line)
 
 	if (entries == NULL)
 	{
-		entries = lstnew_history(entries, line, 1);
+		entries = lstnew_history(line, 1);
 		return (entries);
 	}
 	head = entries;
