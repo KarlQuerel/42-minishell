@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:34:22 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/23 11:58:27 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/23 17:00:33 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,42 +51,87 @@ char	*split_at_user(char *big_path, char *user)
 	return (NULL); //ne devrait jamais arriver la
 }
 
+void	go_backwards_until_user(char *current_path, char *home_value)
+{
+	while (is_this_command(current_path, home_value) == false)
+	{
+		// -----> cd qd plus haut que user devrait nous faire avancer jusqu'à après le user!!!!
+		if (chdir("..") != 0)
+		{
+			free(current_path);
+			//printf errno
+			return ;
+		}
+		current_path = pwd(NO_PRINT);
+		//user = find_value_with_key_env(env_list, "USER");
+		//path = home_path_simplified(path, user);
+	}
+	free(current_path);
+}
+
+size_t	size_of_word(char *path, int i)
+{
+	if (path[i] == '/')
+		i+=1;
+	while(path[i] != '/' && path[i])
+		i++;
+	return(i + 1);
+}
+
+void	go_forward_until_user(char *current_path, char *home_value)
+{
+	//on retrouve ou est current_path compare a home_path
+	// on fait cd() de chaque word entre slashes jusqu a ce que 
+	// current_path = home_value
+	
+	int 	end;
+	int		start;
+	char	*word;
+
+	end = 0;
+	while(current_path[end] == home_value[end])
+		end++;
+	end+=1;
+	start = end;
+	word = ft_calloc(size_of_word(home_value, start) + 1, sizeof(char));
+	printf("home_value = %s\n", home_value);
+	while(is_this_command(current_path, home_value) == false)
+	{
+		while(home_value[end] != '/' && home_value[end])
+			end++;
+		word = strlcpy_middle(word, home_value, start, end - 1);
+		printf("word = %s\n", word);
+		if (chdir(word) != 0)
+		{
+			//free
+			return ;
+		}
+		if (home_value[end + 1] == '\0')
+			break;
+		end+=1;
+		start = end;
+		free(word);
+		word = ft_calloc(size_of_word(home_value, start) + 1, sizeof(char));
+	}
+}
+
 /*Handles the case where cd has no specified path afterwards by 
 making "cd .." until it arrives to the home folder.*/
 void	cd_home(t_env *env_list)
 {
-	//t_env	*path;
-	// t_env	*user;
 	t_env	*home;
-	//char *home_path;
 	char *current_path;
 
 	current_path = pwd(NO_PRINT);
-	// user = find_value_with_key_env(env_list, "USER");
-	// path = find_value_with_key_env(env_list, "PATH");
 	home = find_value_with_key_env(env_list, "HOME");
-	//home_path = split_at_user(path->value, user->value);
-	//printf("path simplified = %s\n", home_path);
-	if(ft_strncmp(current_path, home->value, ft_strlen(current_path)) != 0 && \
-	ft_strlen(home->value) != ft_strlen(current_path))
+	if(is_this_command(current_path, home->value) == false)
 	{
-		while (ft_strncmp(current_path, home->value, ft_strlen(current_path)) != 0 && \
-	ft_strlen(home->value) != ft_strlen(current_path))
-		{
-			// -----> cd qd plus haut que user devrait nous faire avancer jusqu'à après le user!!!!
-			if (chdir("..") != 0)
-			{
-				free(current_path);
-				//printf errno
-				return ;
-			}
-			current_path = pwd(NO_PRINT);
-			//user = find_value_with_key_env(env_list, "USER");
-			//path = home_path_simplified(path, user);
-		}
-		free(current_path);
+		if (is_user_in_path(current_path, env_list) == true)
+			go_backwards_until_user(current_path, home->value);
+		else
+			go_forward_until_user(current_path, home->value);
 	}
-	else
+	else //already in home
 		return ;
 }
 
@@ -100,7 +145,7 @@ char    *fix_path_if_spaces(char *path)
 
     j = 0;
 	i = 0;
-	new_path = calloc(ft_strlen(path) + 1, sizeof(char)); //new_path fera max la len de path (en cas de non espaces)
+	new_path = ft_calloc(ft_strlen(path) + 1, sizeof(char)); //new_path fera max la len de path (en cas de non espaces)
     while(path[i]) //traite les cas où le nom du dossier contient des espaces
 	{
 		if (path[i] == '\\' && path[i + 1] == ' ')
@@ -126,41 +171,10 @@ void	cd_directory(char *path, t_env *env_list)
 	char	*new_path;
 	t_env *home;
 	int i;
-
-	/* char *test;
-	test = NULL; */
-
-////////////////////////////////
-	//POUR EVITER QUE QD ON FAIT CD PUIS CD .. CA ECRIVE (NULL)$ SUR LE PROMPT
-	// POUR L'INSTANT NE MARCHE PAS
+	
 	home = find_value_with_key_env(env_list, "HOME");
 	i = ft_strlen(pwd(NO_PRINT)) - 2; //pour sauter le dernier slash
     new_path = fix_path_if_spaces(path);
-	
-//----------------------------------- Le fait de le mettre ce qu'il y a ci-dessous en commentaire remet le pb du prompt mais ne devrait pas être géré ici pour permettre de monter aussi haut qu'on veut
-// 	if (ft_strncmp(new_path, "..", ft_strlen(new_path)) == 0)
-// 	{
-// 		while(i > 0)
-// 		{
-// 			if (pwd(NO_PRINT)[i - 1] == '/')
-// 				break;
-// 			i--;
-// 		}
-// /* 		printf("home : [%s]\n", home->value);
-// 		test = strlcpy_middle(test, pwd(NO_PRINT), 0, ft_strlen(pwd(NO_PRINT - i + 1)));
-// 		printf("path : [%s]\n", test);
-// 		printf("compare = [%d]\n", ft_strncmp(pwd(NO_PRINT), home->value, ft_strlen(pwd(NO_PRINT - i + 1)))); */
-// 		if (ft_strncmp(pwd(NO_PRINT), home->value, ft_strlen(pwd(NO_PRINT)) - i + 1) == 0)
-// 		{
-// 			//ne rien faire :
-// 			free(new_path);
-// 			return ;
-// 		}
-// 	}
-//-----------------------------------
-
-
-///////////////////////////
 	if (chdir(new_path) != 0)
 	{
 		printf("bash : cd : %s: No such file or directory\n", path);

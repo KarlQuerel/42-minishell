@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:07:47 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/23 13:56:30 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/23 15:05:54 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,29 @@ bool		is_builtin(char *cmd_content)
 		if (ft_strncmp(cmd_content, builtins[i], ft_strlen(cmd_content)) == 0 && \
 		ft_strlen(cmd_content) == ft_strlen(builtins[i]))
 			return (true);
+		i++;
+	}
+	return (false);
+}
+
+bool	is_user_in_path(char *path, t_env *env_list)
+{
+	int		i;
+	int		j;
+	t_env	*user;
+
+	i = 0;
+	user = find_value_with_key_env(env_list, "USER");
+	while(path[i])
+	{
+		j = 0;
+		if (path[i] == user->value[j])
+		{
+			while(path[i + j] == user->value[j] && user->value[j])
+				j++;
+			if (user->value[j] == '\0')
+				return (true);
+		}
 		i++;
 	}
 	return (false);

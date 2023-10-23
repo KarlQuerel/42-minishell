@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:39:52 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/18 13:17:48 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/23 16:09:06 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	str_error(char *line)
 	while(line[i] != type)
 		i++;
 	// str = malloc(sizeof(char) * i + 1);
-	str = calloc(i + 1, sizeof(char));
+	str = ft_calloc(i + 1, sizeof(char));
 	i = 1;
 	j = 0;
 	while(line[i] != type)

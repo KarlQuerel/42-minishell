@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/23 14:18:57 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/23 16:43:19 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,7 @@ void	free_cmd_list(t_element *cmd_list);
 /*Checks*/
 bool		quotes_can_close(char *line);
 bool		is_builtin(char *cmd_content);
+bool		is_user_in_path(char *path, t_env *env_list);
 
 /*Signal*/
 void		signal_handler(int signal);
@@ -220,6 +221,9 @@ void	cd_home(t_env *env_list);
 char	*fix_path_if_spaces(char *path);
 void	cd_directory(char *path, t_env *env_list);
 void	cd(t_element *current, t_env *env_list);
+void	go_forward_until_user(char *current_path, char *home_value);
+void	go_backwards_until_user(char *current_path, char *home_value);
+size_t	size_of_word(char *path, int i);
 
 /*Dollar*/
 char	*dollar(char *content, t_env *env_list);
