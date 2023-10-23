@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/20 18:12:32 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/23 14:18:19 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	get_cmds_nb(t_element *cmd, t_pipe *exec)
 
 
 /* Forks every child processes */
-int	ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd)
+int	ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, t_history *entries)
 {
 	int	i;
 
@@ -97,13 +97,13 @@ int	ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd)
 	}
 	// printf("%sJE SUIS LA%s\n", BGRE, WHT);
 	if (exec->pid[i] == 0)
-		ft_dup(cmd, exec, pipe_e, fd);
+		ft_dup(cmd, exec, pipe_e, fd, entries);
 	i++;
 	return (EXIT_SUCCESS);
 }
 
 
-void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd)
+void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, t_history *entries)
 {
 	exec->here_doc = 0; // juste pour utiliser exec
 	if (cmd->prev && dup2(fd, STDIN_FILENO) < 0)
@@ -120,7 +120,7 @@ void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd)
 	close(pipe_e[1]);
 	if (cmd->prev)
 		close(fd);
-	execute_command(cmd, exec->env_s, exec);
+	execute_command(cmd, exec->env_s, exec, entries);
 	// printf("%sJE SUIS LA%s\n", BGRE, WHT);
 	
 }

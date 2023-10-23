@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/23 12:11:09 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/23 14:18:57 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,11 +148,11 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list);
 /*------------------PARSING FOLDER------------------*/
 
 /*Commands*/
-void	commands(t_element *current_cmd, t_env *env_list);
+void	commands(t_element *current_cmd, t_env *env_list, t_history *entries);
 bool	is_this_command(char *buffer, char* command);
 int		size_of_command(char *command, int len, int type);
 bool	is_cmd_in_line(char *line, char *cmd);
-int 	where_is_cmd_in_line(char *line, char *cmd);
+// int 	where_is_cmd_in_line(char *line, char *cmd);
 char	*line_errors_and_fix(char *line, t_env *env_list);
 
 /*Parsing*/
@@ -258,8 +258,8 @@ void	ft_delete_node(t_env *to_delete);
 /*-----------------EXECUTABLE FOLDER ------------------*/
 
 /* Exec*/
-void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec);
-void	execute_command(t_element *cmd, t_env *env, t_pipe *exec);
+void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
 void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, int i);
 char	*ft_get_command(char **path, char *argument);
 
@@ -281,8 +281,8 @@ int		ft_infile(char *file);
 int		ft_outfile(t_element *cmd);
 
 // void	ft_remove_var(t_element *cmd_list, t_env *env, char *to_remove);
-int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
-void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
+int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, t_history *entries);
+void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, t_history *entries);
 void	msg_error(int err);
 int		childrens(t_element *cmd, t_pipe *exec);
 

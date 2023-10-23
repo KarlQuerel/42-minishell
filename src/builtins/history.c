@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:38 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/23 12:14:07 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/23 12:25:36 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 	/* 
 		history ls donne :
 		error bash: history: ls: numeric argument required
-		le 2eme numero affiche 1
 	 */
 	
 int	ft_lstsize_history(t_history *lst)
@@ -55,7 +54,7 @@ void	lstadd_back_history(t_history *entries, char *line)
 	t_history	*temp;
 
 	temp = ft_lstlast_history(entries);
-	temp->next = lstnew_history(line, ft_lstsize_history(entries));
+	temp->next = lstnew_history(line, ft_lstsize_history(entries) + 1);
 }
 
 

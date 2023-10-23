@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/23 12:01:26 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/23 14:16:40 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ Structure pour les pipes:
 */
 
 /* Executes the command */
-void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
+void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 {
 	int	pid;
 	if (cmd->content[0] == '\0')
@@ -56,7 +56,7 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 		}
 		if (cmd->builtin == true)
 		{
-			commands(cmd, env);
+			commands(cmd, env, entries);
 			// while (cmd->type != PIPE && cmd)
 			// 	cmd = cmd->next;
 			// cmd = cmd->next;
@@ -128,7 +128,7 @@ char	*ft_get_command(char **path, char *argument)
 }
 
 /* Handles execution */
-void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
+void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 {
 	int	i;
 	
@@ -141,7 +141,7 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 	get_cmds_nb(cmd, exec);
 	//printf("exec->cmd_nb = %d\n", exec->cmd_nb);
 	if (exec->cmd_nb == 1) // dans le cas d'une single command
-		execute_command(cmd, env, exec);
+		execute_command(cmd, env, exec, entries);
 	else // plusieurs commandes
 	{
 		while (i < exec->cmd_nb - 1)
