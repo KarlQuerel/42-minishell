@@ -1,48 +1,62 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/23 20:40:42 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 00:04:47 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
 /*
 TO DO:
-
+--> EN PARLER A CARO
+	pour le parsing 
+	il faut considerer tout ce qui est entre une COMMAND 
+	et une PIPE ou la fin de la liste chainee comme ARGUMENT
+	par exemple ls ls ls ls me renvoie command pour les 4
+	(0, 0, 0, 0)
+	et j'ai besoin de command puis arg arg arg (0, 2, 2, 2)
 - voir avec Alban, cat Makefile
-- UNSET (doubler l'env)
-- EXPORT (doubler l'env)
-- gerer open et HEREDOC
+- gerer open et HEREDOC, en dernier
+- redirections
+--> DEMANDER A ALBAN
+- 	UNSET (doubler l'env ?)
+- 	EXPORT (doubler l'env ?)
 
-Structure pour les pipes:
-- pipe(pipe_end), returns -1 upon failure
-- assigns fork return value to pid_t pid_child1;
-	-> fork returns -1 upon failure
-- in first child
-	-> open assigned to fd_infile (av[1], )
-	-> dup2 (fd_infile)
-	-> dup2 (pipe_end[1])
-- waitpid(pid_child1, NULL, 0)
-- waitpid(pid_child2, NULL, 0)
-*/
+- 	necessaire de fork dans execute_command ? 
+	  Sur papier, ca ne devrait pas etre le cas mais ca ne marche pas sans
+	--> waitpid du coup pas necessaire si pas besoin de fork.
 
-/* Executes the command */
+/* Executes the command
+---	If a builtin is detected, redirects to commands to avoid sending it 
+	to execve.
+---	split_path returns the "PATH=" variable from env, split the string by :
+	and assigns it to cmd_path.
+---	ft_get_command tests all paths variable from cmd_path, joins it with
+	the command cmd_tab[i] and tests its validity with access.
+---	Execve replaces the existing process by the program within his first argument
+	1st arg: cmd->content, pointer to a string that specifies the path
+		to the exec file, can be binary or script file.
+	2nd arg: array of strings (char **) representing the command-line of arguments
+		of the new program.
+	3st arg: array of strings (char **) representing the environment variables
+		for the new program.
+--- Waitpid waits for the process to end before continuing.
+ */
 void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, int i)
 {
-	//printf("--> i est egal a = %d\n", i);
 	if (cmd->builtin == true)
 	{
 		commands(cmd, env);
 		return ;
 	}
-	printf("--> exec->cmd_tab[%d] = %s\n",i , exec->cmd_tab[i]);
+	//printf("--> exec->cmd_tab[%d] = %s\n",i , exec->cmd_tab[i]);
 	int	pid;
 	if (cmd->content[i] == '\0')
 		return ;
@@ -72,16 +86,58 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, int i)
 				ft_putstr_fd(": command not found\n", 2);
 			}
 		}
-		//printf("--> cmd->content = %s\n", cmd->content);
-
 		if (execve(cmd->content, exec->cmd_tab, env->env) == -1)
 			ft_putstr_fd("execve failed\n", STDOUT_FILENO);
 	}
 	waitpid(pid, NULL, 0);
 }
 
+/* Handles execution 
+--- Gets arg number to be able to malloc cmd_tab (char **) to be sent to execve.
+--- Fills cmd_tab with every node with cmd->type COMMAND and cmd->type OPTION.
+--- Gets every node with cmd->type COMMAND and assigns to cmd_nb.
+	cmd_nb will determine the number of childs and pipes to create --> La ou est le probleme
+--- If only one COMMAND is detected, execute_command is called, no need for childs.
+--- init_pipes mallocs the pipe necessary for dup2
+--- ft_redir is called as many times as there are childs.
+*/
+void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
+{
+	int	i;
+	
+	i = 0;
+	exec->av_nb = get_args_nb(cmd);
+	exec->cmd_tab = ft_calloc(exec->av_nb + 1, sizeof(char *));
+	//IMPORTANT --> invalid read of size 4 sur l'ordi de la maison a tester a 42 
+	// qui se multiplie dans les childs
+	if (!exec->cmd_tab)
+		return ;
+	fill_cmd_tab(cmd, exec);
+	get_cmds_nb(cmd, exec);
+	if (exec->cmd_nb == 1)
+		execute_command(cmd, env, exec, 0);
+	else
+	{
+		if (!init_pipes(exec))
+				return ;
+		exec->pid = ft_calloc(exec->cmd_nb - 1, sizeof(pid_t));
+		if (!exec->pid)
+		{
+			ft_putendl_fd("Pid has failed to malloc", STDERR_FILENO);
+			// free
+			return ;
+		}
+		while (i < exec->cmd_nb)
+		{
+			ft_redir(cmd, env, exec, i);
+			i++;
+		}
+		ft_waitpid(exec->pid, i);
+	}
+}
+
 /* Extracts command from char *argument and verify if they are valid
-using access*/
+using access */
 char	*ft_get_command(char **path, char *argument)
 {
 	char	*to_free;
@@ -106,39 +162,6 @@ char	*ft_get_command(char **path, char *argument)
 	return (NULL);
 }
 
-/* Handles execution */
-void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
-{
-	int	i;
-	
-	i = 0;
-	exec->av_nb = get_args_nb(cmd);
-	exec->cmd_tab = malloc(sizeof(char *) * (exec->av_nb + 1)); //peut etre calloc
-	if (!exec->cmd_tab)
-		return ;
-	fill_cmd_tab(cmd, exec);
-	get_cmds_nb(cmd, exec);
-	if (exec->cmd_nb == 1) // dans le cas d'une single command
-		execute_command(cmd, env, exec, 0);
-	else // plusieurs commandes
-	{
-		if (!ft_give_me_my_pipes(exec))
-				return ;
-		exec->pid = ft_calloc(exec->cmd_nb - 1, sizeof(pid_t)); // malloc pid et malloc pid[i]
-		if (!exec->pid)
-		{
-			ft_putendl_fd("Pid has failed to malloc", STDERR_FILENO);
-			// free
-			return ;
-		}
-		while (i < exec->cmd_nb)
-		{
-			ft_redir(cmd, env, exec, i);
-			i++;
-		}
-		ft_waitpid(exec->pid, i);
-	}
-}
 /* Checks if there is a pipe before */
 bool	ft_is_a_pipe_before(t_element *cmd)
 {
@@ -164,7 +187,7 @@ bool	ft_is_a_pipe_after(t_element *cmd)
 }
 
 /* Malloc all the pipes */
-bool	ft_give_me_my_pipes(t_pipe *exec)
+bool	init_pipes(t_pipe *exec)
 {
 	int	i;
 
@@ -197,6 +220,7 @@ bool	ft_give_me_my_pipes(t_pipe *exec)
 	}
 	while (i < exec->cmd_nb)
 	{
+		//exec->my_pipes[0];
 		exec->my_pipes[i][0] = 0; // fd[0]
 		exec->my_pipes[i][1] = 0; // fd[1]
 		i++;
@@ -204,12 +228,7 @@ bool	ft_give_me_my_pipes(t_pipe *exec)
 	return (true);
 }
 
-
-/* Malloc all the pipes */
-// bool	ft_give_me_my_pipes(t_pipe *exec)
-// {
-// 	int	i;
-
+// --> Fonction originale, ne pas effacer
 // 	i = 0;
 // 	if (exec->cmd_nb == 1)
 // 	{
@@ -233,7 +252,103 @@ bool	ft_give_me_my_pipes(t_pipe *exec)
 // 	return (true);
 // }
 
+// --> FONCTION DE PERE FOURAS
+bool ft_redir(t_element *cmd, t_env *env, t_pipe *exec, int i) {
+	if (pipe(exec->my_pipes[i % 2]) < 0)
+	{
+		perror("pipe");
+		return false;
+	}
+	exec->pid[i] = fork();
+	if (exec->pid[i] < 0)
+	{
+		perror("fork");
+		return false;
+	}
+		
+	if (exec->pid[i] == 0) // child process
+	{
+		if (i == 0) // First command, redirect output to the pipe
+		{
+			close(exec->my_pipes[i % 2][0]);
+			dup2(exec->my_pipes[i % 2][1], STDOUT_FILENO);
+		}
+		else if (i == exec->cmd_nb - 1) // Last command, redirect input from the pipe
+		{
+			close(exec->my_pipes[(i + 1) % 2][1]);
+			dup2(exec->my_pipes[(i + 1) % 2][0], STDIN_FILENO);
+		}
+		else // Middle commands, set up input and output redirection
+		{
+			close(exec->my_pipes[i % 2][0]);
+			close(exec->my_pipes[(i + 1) % 2][1]);
+			dup2(exec->my_pipes[(i + 1) % 2][0], STDIN_FILENO);
+			dup2(exec->my_pipes[i % 2][1], STDOUT_FILENO);
+		}
+		// Call the function to execute the command, assuming it exists
+		execute_command(cmd, env, exec, i);
+		// If execute_command fails, exit the child process
+		exit(EXIT_FAILURE);
+	}
+	// Close unnecessary file descriptors in the parent process
+	close(exec->my_pipes[i % 2][1]);
+	close(exec->my_pipes[(i + 1) % 2][0]);
+	waitpid(exec->pid[i], NULL, 0);
+	return true;
+}
 
+// --> OG FUNCTION
+// /* Handles multiples pipes */
+// bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, int i)
+// {
+// 	// A GERER APRES
+// 	// if ()//j'ai une / des redirection d'entree
+// 	// {
+// 	// }
+// 	if (pipe(exec->my_pipes[i]) < 0)
+// 		perror("pipe");
+// 	exec->pid[i] = fork();
+// 	if (exec->pid[i] < 0)
+// 	{
+// 		perror ("fork");
+// 		return (false);
+// 	}
+// 	if (exec->pid[i] == 0) //child
+// 	{
+// 		if (i == 0) // first command
+// 		{
+// 			//dans le cas d'infile dup2(fd_infile, 0);
+// 			if (dup2(exec->my_pipes[i][1], 1) < 0)
+// 				printf("dup2 1 failed\n");
+// 			// ft_close(exec->my_pipes[0]);
+// 			//close(exec->my_pipes[0][0]);
+// 			close(exec->my_pipes[0][1]);
+// 		}
+// 		else if (i == exec->cmd_nb - 1) // last command
+// 		{
+// 			//dans le cas outfile dup(fd, 1);
+// 			if (dup2(exec->my_pipes[(i + 1) % 2][0], 0) < 0)
+// 				printf("dup2 2 failed\n");
+// 			// ft_close(exec->my_pipes[1]);
+// 			close(exec->my_pipes[(i + 1) % 2][0]);
+// 			close(exec->my_pipes[(i + 1) % 2][1]);
+// 		}
+// 		else // les middles commands
+// 		{
+// 			if (dup2(exec->my_pipes[(i + 1) % 2][0], 0) < 0) // on alterne entre 0 et 1 (pour alterner les fd)
+// 				printf("dup2 3 failed\n");
+// 			if (dup2(exec->my_pipes[i % 2][1], 1) < 0)
+// 				printf("dup2 4 failed\n");
+// 		}
+// 		// ft_close infile et outfile
+// 		//execute_command(cmd, env, exec, i);
+// 		//ft_execve();
+// 	}
+// 	// if (i)
+// 	// 	ft_close_pipe(exec->my_pipes[(i + 1) % 2]);
+// 	// ft_close_all_pipes(exec);
+// 	return (true);
+// }
 
 //->PABLO
 // ici on fair les redirection avec panache
@@ -247,84 +362,34 @@ bool	ft_give_me_my_pipes(t_pipe *exec)
 // cas 2 bis : j'ai une pipe apres :
 // je dois dup 2 mon fd 1 vers le fd 1 de la pipe
 
-bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, int i)
-{
 
-	// A GERER APRES
-	// if ()//j'ai une / des redirection d'entree
-	// {
-	// }
-	if (pipe(exec->my_pipes[i]) < 0)
-		perror("pipe");
-	exec->pid[i] = fork();
-	if (exec->pid[i] < 0)
-	{
-		perror ("fork");
-		return (false);
-	}
-	if (exec->pid[i] == 0) //child
-	{
-		if (i == 0) // first command
-		{
-			//dans le cas d'infile dup2(fd_infile, 0);
-			if (dup2(exec->my_pipes[i][1], 1) < 0)
-				printf("dup2 1 failed\n");
-			// ft_close(exec->my_pipes[0]);
-			close(exec->my_pipes[0][0]);
-			close(exec->my_pipes[0][1]);
-		}
-		else if (i == exec->cmd_nb - 1) // last command
-		{
-			//dans le cas outfile dup(fd, 1);
-			if (dup2(exec->my_pipes[(i + 1) % 2][0], 0) < 0)
-				printf("dup2 2 failed\n");
-			// ft_close(exec->my_pipes[1]);
-			close(exec->my_pipes[(i + 1) % 2][0]);
-			close(exec->my_pipes[(i + 1) % 2][1]);
-		}
-		else // les middles commands
-		{
-			if (dup2(exec->my_pipes[(i + 1) % 2][0], 0) < 0) // on alterne entre 0 et 1 (pour alterner les fd)
-				printf("dup2 3 failed\n");
-			if (dup2(exec->my_pipes[i % 2][1], 1) < 0)
-				printf("dup2 4 failed\n");
-		}
-		// ft_close infile et outfile
-		execute_command(cmd, env, exec, i);
-		//ft_execve();
-	}
-	// if (i)
-	// 	ft_close_pipe(exec->my_pipes[(i + 1) % 2]);
-	// ft_close_all_pipes(exec);
-	return (true);
-}
+// void	execution(t_element *cmd, t_pipe *exec)
+// {
+// 	int	i;
 
-void	ft_close_fd(t_pipe *exec)
-{
-	close(exec->my_pipes[0][0]);
-	close(exec->my_pipes[0][1]);
-	close(exec->my_pipes[1][0]);
-	close(exec->my_pipes[1][1]);
-}
-
-void	execution(t_element *cmd, t_pipe *exec)
-{
-	int	i;
-
-	if (!ft_give_me_my_pipes(exec))
-		;// le menage
-	i = 0;
-	if (exec->cmd_nb == 1 && cmd->builtin == true)
-	{
-		;//je lance le builtin sans lancer de child process
-		return ;
-	}
-	while (i < exec->cmd_nb)
-	{
-		//ft_child(cmd, exec, i);
-		i++;
-	}
+// 	if (!ft_give_me_my_pipes(exec))
+// 		;// le menage
+// 	i = 0;
+// 	if (exec->cmd_nb == 1 && cmd->builtin == true)
+// 	{
+// 		;//je lance le builtin sans lancer de child process
+// 		return ;
+// 	}
+// 	while (i < exec->cmd_nb)
+// 	{
+// 		//ft_child(cmd, exec, i);
+// 		i++;
+// 	}
 	
+// void	ft_close_fd(t_pipe *exec)
+// {
+// 	close(exec->my_pipes[0][0]);
+// 	close(exec->my_pipes[0][1]);
+// 	close(exec->my_pipes[1][0]);
+// 	close(exec->my_pipes[1][1]);
+// }
+
+
 // fin de ft_redir
 // if (!cmd)
 // 		return (true);
@@ -362,4 +427,3 @@ void	execution(t_element *cmd, t_pipe *exec)
 // 	// etape 2 on cherche un chemin
 // 	// etape 3 on execute l'enfant
 // }
-}
