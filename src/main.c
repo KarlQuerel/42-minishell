@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/23 14:59:13 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/23 19:40:27 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,6 @@ int main (int argc, char **argv, char **env)
     	//printlist_test(cmd_list);
 		
 		//history(entries);
-		/* KARL : IL FAUDRA MODIFIER TES FONCTIONS DANS L'EXEC 
-		DE FAÇON À CE QU'ELLES ENVOIENT LA LISTE CHAINEE ENTRIES À COMMANDS
-		POUR LA FONCTION HISTORY()*/
 
 		ft_execute(cmd_list, env_list, exec, entries);
 		free(new_line); //en commentaire pour tests avec dollar
