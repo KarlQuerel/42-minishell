@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/20 20:36:31 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/23 12:01:26 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 	}
 	if (pid == 0)
 	{
-		exec->cmd_path = split_path(env); // prenne exec->env ou t_pipe *exec
+		exec->cmd_path = split_path(env);
 		if (!exec->cmd_path)
 		{
 			printf("Split_path failed\n");
@@ -261,14 +261,14 @@ bool	ft_redir(t_element *cmd, t_pipe *exec, int i)
 }
 
 
-void	ft_child(t_element *cmd, t_pipe *exec, int i)
-{
-	// etape 1 on redirige les trucs
-	//if (!ft_redir(cmd, exec, i))
-		;
-	// etape 2 on cherche un chemin
-	// etape 3 on execute l'enfant
-}
+// void	ft_child(t_element *cmd, t_pipe *exec, int i)
+// {
+// 	// etape 1 on redirige les trucs
+// 	//if (!ft_redir(cmd, exec, i))
+// 		;
+// 	// etape 2 on cherche un chemin
+// 	// etape 3 on execute l'enfant
+// }
 
 
 void	execution(t_element *cmd, t_pipe *exec)
@@ -285,7 +285,7 @@ void	execution(t_element *cmd, t_pipe *exec)
 	}
 	while (i < exec->cmd_nb)
 	{
-		ft_child(cmd, exec, i);
+		//ft_child(cmd, exec, i);
 		i++;
 	}
 }

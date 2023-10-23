@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:36:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/21 17:27:51 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/23 12:03:42 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void    prompt(t_env *env_list)
     t_env   *Gpath;
     char	*path;
     
+    path = NULL;
 	word = NULL;
 	user = find_value_with_key_env(env_list, "USER");
     home = find_value_with_key_env(env_list, "HOME");

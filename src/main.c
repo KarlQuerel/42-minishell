@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/21 16:31:03 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/23 11:58:12 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,10 @@ int main (int argc, char **argv, char **env)
 	char                *new_line;
 	struct sigaction    signal;
 	t_env				*env_list;
-	t_env				*new_pwd;
+	//t_env				*new_pwd;
 	t_element			*cmd_list;
+
+	//t_element			*temp;
 	t_pipe				*exec;
 	t_history			*entries;
 	//char				*temp_pwd;

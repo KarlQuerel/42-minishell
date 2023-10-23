@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 15:02:53 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/20 13:56:26 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/23 11:47:03 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ void	ft_close_pipe(int pip[2])
 void	ft_close_all_pipes(t_pipe *exec)
 {
 	int	i;
-
+	
+	i = 0;
 	while (i < exec->cmd_nb - 1)
 	{
 		ft_close_pipe(exec->my_pipes[i]);

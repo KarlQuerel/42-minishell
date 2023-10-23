@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/21 13:43:50 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/23 12:03:13 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char	*line_errors_and_fix(char *line, t_env *env_list)
 	if (!line)
 		return (NULL);
 	// fin
+	(void)env_list;
 	
 	if (is_cmd_in_line(line, ">") == true || is_cmd_in_line(line, "<") == true)
 		redirecters_error(line);
@@ -133,6 +134,7 @@ void	commands(t_element *current_cmd, t_env *env_list)
 	// moi de remplacer par le home_path alors ca ne marche pas. Même
 	// pb pour le $ dans la fonction line_errors_and_fix car on peut
 	// avoir $ suivi de '?'.
+	
 	if (ft_strncmp(current_cmd->content, "pwd", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("pwd"))
 		pwd(PRINT);
 	/* else if (ft_strncmp(current_cmd->content, "history", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("history"))
@@ -140,22 +142,18 @@ void	commands(t_element *current_cmd, t_env *env_list)
 	else if (ft_strncmp(current_cmd->content, "cd", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("cd"))
 		cd(current_cmd, env_list);
 	else if (ft_strncmp(current_cmd->content, "echo", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("echo"))
-        echo(current_cmd);
+		echo(current_cmd);
 	else if (ft_strncmp(current_cmd->content, "env", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("env"))
-        ft_env(env_list, 0);
+		ft_env(env_list, current_cmd, 0);
+	else if (ft_strncmp(current_cmd->content, "export", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("export"))
+		ft_export(current_cmd, env_list);
+	else if (ft_strncmp(current_cmd->content, "unset", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("unset"))
+		ft_unset(current_cmd, env_list);
 	else if (ft_strncmp(current_cmd->content, "exit", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("exit"))
-    {
+	{
 		// free
 		ft_putendl_fd("exit", STDOUT_FILENO);
 		exit (1);
 	}
-	
-	
-	else if (ft_strncmp(current_cmd->content, "export", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("export"))
-        ft_export(current_cmd, env_list);
-/* 	else if (ft_strncmp(current_cmd->content, "unset", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("unset"))
-		unset(line); */
-
-
-	
 }
+

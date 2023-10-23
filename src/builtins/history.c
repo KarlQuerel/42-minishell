@@ -3,16 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:38 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/21 13:49:09 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/23 12:00:58 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
+	/*History : quand on fait cd et qu'on est deja tout en haut
+	on ne doit pas remettre cd dans history. Pareil qd on fait deux fois
+	de suite ls par exemple. Par contre quand on écrit une commande qui 
+	n'existe pas ça s'affiche dans history.*/
+
+	/* 
+		history ls donne :
+		error bash: history: ls: numeric argument required
+
+	 */
+	
 int	ft_lstsize_history(t_history *lst)
 {
 	int		len;

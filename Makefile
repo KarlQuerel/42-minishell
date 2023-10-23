@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+         #
+#    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/19 18:40:06 by octonaute        ###   ########.fr        #
+#    Updated: 2023/10/23 11:46:36 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,6 @@ NAME = minishell
 HEADER = includes/minishell.h
 
 SRC = src/main.c \
-	src/parsing/history.c \
 	src/parsing/commands.c \
 	src/parsing/parsing.c \
 	src/parsing/checks.c \
@@ -41,15 +40,18 @@ SRC = src/main.c \
 	src/executable/exec_errors.c \
 	src/executable/redirect.c \
 	src/executable/pipes.c \
-	src/executable/builtins.c \
+	src/builtins/cd.c \
+	src/builtins/dollar.c \
+	src/builtins/echo.c \
+	src/builtins/env.c \
+	src/builtins/export.c \
+	src/builtins/history.c \
+	src/builtins/pwd.c \
+	src/builtins/unset.c \
 	src/parsing/errors.c \
 	src/parsing/utils.c \
 	src/parsing/malloc.c \
 	src/parsing/cmd_types.c \
-	src/parsing/cd.c \
-	src/parsing/pwd.c \
-	src/parsing/dollar.c \
-	src/parsing/echo.c \
 	src/parsing/prompt.c \
 	
 SRC_OBJS = $(SRC:.c=.o)
@@ -69,9 +71,9 @@ CC = cc
 
 RM = rm -f
 
-#CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror -g3
 
-CFLAGS = -gdwarf-4 #-Wall -Wextra -Werror -g3
+#CFLAGS = -gdwarf-4 #-Wall -Wextra -Werror -g3
 
 #PENSER À ENLEVER -G3 (juste pour gdb)
 MAKEFLAGS   += --no-print-directory
