@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:34:22 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/23 17:00:33 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/23 17:26:18 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ void	go_forward_until_user(char *current_path, char *home_value)
 	//on retrouve ou est current_path compare a home_path
 	// on fait cd() de chaque word entre slashes jusqu a ce que 
 	// current_path = home_value
+
+	// marche bien sauf qd je fais cd en etant tout en haut (sur /)
 	
 	int 	end;
 	int		start;
@@ -91,16 +93,15 @@ void	go_forward_until_user(char *current_path, char *home_value)
 	end = 0;
 	while(current_path[end] == home_value[end])
 		end++;
-	end+=1;
+	if (ft_strncmp(current_path, "/", ft_strlen(current_path)) != 0)
+		end+=1;
 	start = end;
 	word = ft_calloc(size_of_word(home_value, start) + 1, sizeof(char));
-	printf("home_value = %s\n", home_value);
 	while(is_this_command(current_path, home_value) == false)
 	{
 		while(home_value[end] != '/' && home_value[end])
 			end++;
 		word = strlcpy_middle(word, home_value, start, end - 1);
-		printf("word = %s\n", word);
 		if (chdir(word) != 0)
 		{
 			//free
