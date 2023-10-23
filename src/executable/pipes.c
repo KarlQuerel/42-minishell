@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 15:02:53 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/23 11:47:03 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/23 19:23:48 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,6 @@
 // int	*pipe_end[2];
 // pipe_end[0];
 // pipe_end[1];
-
-
-// pipe(pipe_end);
-
-
 
 /* Initiate pipe and create all pipe ends according to commands number */
 void	ft_create_pipe(t_pipe *exec, int *pipe_end)
@@ -64,7 +59,7 @@ void	ft_close_all_pipes(t_pipe *exec)
 	int	i;
 	
 	i = 0;
-	while (i < exec->cmd_nb - 1)
+	while (i < exec->cmd_nb)
 	{
 		ft_close_pipe(exec->my_pipes[i]);
 		i++;
@@ -93,11 +88,8 @@ int	ft_waitpid(int *pid, int n)
 	int	status;
 
 	i = 1;
-	// printf("%sn = %d\n%s\n", BGRE, n, WHT);
-	while (i < n)
+	while (i < n - 1)
 	{
-		// printf("%spid[%d] = %d\n%s\n", BGRE, i, pid[i], WHT);
-		// printf("%si = %d\n%s\n", BGRE, i, WHT);
 		waitpid(pid[i], &status, 0);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/23 12:01:26 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/23 20:40:42 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 /*
 TO DO:
 
-- UNSET
-- EXPORT
-- cas pablo (demander a caro la photo)
+- voir avec Alban, cat Makefile
+- UNSET (doubler l'env)
+- EXPORT (doubler l'env)
 - gerer open et HEREDOC
 
 Structure pour les pipes:
@@ -34,10 +34,17 @@ Structure pour les pipes:
 */
 
 /* Executes the command */
-void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
+void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, int i)
 {
+	//printf("--> i est egal a = %d\n", i);
+	if (cmd->builtin == true)
+	{
+		commands(cmd, env);
+		return ;
+	}
+	printf("--> exec->cmd_tab[%d] = %s\n",i , exec->cmd_tab[i]);
 	int	pid;
-	if (cmd->content[0] == '\0')
+	if (cmd->content[i] == '\0')
 		return ;
 	pid = fork();
 	if (pid < 0)
@@ -54,49 +61,21 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec)
 			printf("Split_path failed\n");
 			// free des trucs
 		}
-		if (cmd->builtin == true)
-		{
-			commands(cmd, env);
-			// while (cmd->type != PIPE && cmd)
-			// 	cmd = cmd->next;
-			// cmd = cmd->next;
-			return ;
-		}
-		cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
+		cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[i]);
 		if (!cmd->content)
 		{
-			if (!exec->cmd_tab[0])
+			if (!exec->cmd_tab[i])
 				ft_putstr_fd("\n", 2);
 			else
 			{
-				ft_putstr_fd(exec->cmd_tab[0], 2);
+				ft_putstr_fd(exec->cmd_tab[i], 2);
 				ft_putstr_fd(": command not found\n", 2);
 			}
 		}
-		
-		//-------------------------------
-		//to print execve args
-		// printf("cmd->content = %s\n", cmd->content);
-		// int	i = 0;
-		// while (exec->cmd_tab)
-		// {
-		// 	printf("exec->cmd_tab[%d] = %s\n", i, exec->cmd_tab[i]);
-		// 	i++;
-		// }
-		// i = 0;
-		// while (env->env[i])
-		// {
-			
-		// 	printf("env->env[%d] = %s\n", i, env->env[i]);
-		// 	i++;
-		// }
-		//--------------------------------
-		
+		//printf("--> cmd->content = %s\n", cmd->content);
+
 		if (execve(cmd->content, exec->cmd_tab, env->env) == -1)
 			ft_putstr_fd("execve failed\n", STDOUT_FILENO);
-		/* wlaw
-			access(cmd_tab[0], F OK, regarder sur internet) */
-		
 	}
 	waitpid(pid, NULL, 0);
 }
@@ -139,48 +118,28 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 		return ;
 	fill_cmd_tab(cmd, exec);
 	get_cmds_nb(cmd, exec);
-	//printf("exec->cmd_nb = %d\n", exec->cmd_nb);
 	if (exec->cmd_nb == 1) // dans le cas d'une single command
-		execute_command(cmd, env, exec);
+		execute_command(cmd, env, exec, 0);
 	else // plusieurs commandes
 	{
-		while (i < exec->cmd_nb - 1)
+		if (!ft_give_me_my_pipes(exec))
+				return ;
+		exec->pid = ft_calloc(exec->cmd_nb - 1, sizeof(pid_t)); // malloc pid et malloc pid[i]
+		if (!exec->pid)
 		{
-			//ft_redir(cmd, exec, i);
+			ft_putendl_fd("Pid has failed to malloc", STDERR_FILENO);
+			// free
+			return ;
+		}
+		while (i < exec->cmd_nb)
+		{
+			ft_redir(cmd, env, exec, i);
 			i++;
 		}
+		ft_waitpid(exec->pid, i);
 	}
 }
-
-// void	redir(t_element *cmd, t_pipe *exec, t_env *env, char *line, char *home_path)
-// {
-// 	pid_t	pid;
-// 	int	pipefd[2];
-
-// 	if (pipe(pipefd) < 0)
-// 	{
-// 		perror("pipe");
-// 		return ;
-// 	}
-// 	pid = fork();
-// 	if (pid) // parent
-// 	{
-// 		close(pipefd[1]);
-// 		dup2(pipefd[0], STDIN_FILENO);
-// 		waitpid(pid, NULL, 0);
-// 	}
-// 	else // child pid == 0
-// 	{
-// 		close(pipefd[0]);
-// 		dup2(pipefd[1], STDOUT_FILENO);
-// 		execute_command(cmd, env, exec, line, home_path);
-// 		exec->pid = ft_calloc(sizeof(int), exec->cmd_nb + 2);
-// 		if (!exec->pid)
-// 			return (msg_error(0));
-// 		childrens(cmd, exec);
-// 	}
-// }
-
+/* Checks if there is a pipe before */
 bool	ft_is_a_pipe_before(t_element *cmd)
 {
 	while (cmd)
@@ -192,6 +151,7 @@ bool	ft_is_a_pipe_before(t_element *cmd)
 	return (false);
 }
 
+/* Checks if there is a pipe after */
 bool	ft_is_a_pipe_after(t_element *cmd)
 {
 	while (cmd)
@@ -203,18 +163,78 @@ bool	ft_is_a_pipe_after(t_element *cmd)
 	return (false);
 }
 
+/* Malloc all the pipes */
 bool	ft_give_me_my_pipes(t_pipe *exec)
 {
+	int	i;
+
+	i = 0;
 	if (exec->cmd_nb == 1)
 	{
 		exec->my_pipes = NULL;
 		return (true);
 	}
-	exec->my_pipes = malloc(sizeof(int) * 2 * (exec->cmd_nb - 1));
+	exec->my_pipes = ft_calloc(2, sizeof(int *));
 	if (!exec->my_pipes)
+	{	
+		ft_putendl_fd("Malloc failed\n", STDERR_FILENO);
+		// free
 		return (false);
+	}
+	exec->my_pipes[0] = ft_calloc (2, sizeof(int)); // on malloc 2 fd pour chaque pipe
+	if (!exec->my_pipes[0])
+	{
+		ft_putendl_fd("Malloc failed\n", STDERR_FILENO);
+		// free
+		return (false);
+	}
+	exec->my_pipes[1] = ft_calloc (2, sizeof(int)); // on malloc 2 fd pour chaque pipe
+	if (!exec->my_pipes[1])
+	{
+		ft_putendl_fd("Malloc failed\n", STDERR_FILENO);
+		// free
+		return (false);
+	}
+	while (i < exec->cmd_nb)
+	{
+		exec->my_pipes[i][0] = 0; // fd[0]
+		exec->my_pipes[i][1] = 0; // fd[1]
+		i++;
+	}
 	return (true);
 }
+
+
+/* Malloc all the pipes */
+// bool	ft_give_me_my_pipes(t_pipe *exec)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	if (exec->cmd_nb == 1)
+// 	{
+// 		exec->my_pipes = NULL;
+// 		return (true);
+// 	}
+// 	printf("exec->cmd_nb = %d\n", exec->cmd_nb);
+// 	exec->my_pipes = malloc(sizeof(int) * 2 * (exec->cmd_nb - 1));
+// 	if (!exec->my_pipes)
+// 		return (false);
+// 	exec->my_pipes[i] = malloc (sizeof(int) * (exec->cmd_nb - 1));
+// 	if (!exec->my_pipes)
+// 		return (false);
+// 	while (i < exec->cmd_nb - 1)
+// 	{
+// 		exec->my_pipes[i] = 0;
+// 		// exec->my_pipes[i][0] = 0;
+// 		// exec->my_pipes[i][1] = 0;
+// 		i++;
+// 	}
+// 	return (true);
+// }
+
+
+
 //->PABLO
 // ici on fair les redirection avec panache
 // cas 1 : j'ai pas de pipe avant :
@@ -227,49 +247,65 @@ bool	ft_give_me_my_pipes(t_pipe *exec)
 // cas 2 bis : j'ai une pipe apres :
 // je dois dup 2 mon fd 1 vers le fd 1 de la pipe
 
-bool	ft_redir(t_element *cmd, t_pipe *exec, int i)
+bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, int i)
 {
 
-//	A GERER APRES
-// 	if ()//j'ai une / des redirection d'entree
-// 	{
-
-// 	}
-	
-	if (!cmd)
-		return (true);
-	printf("i = %d\n", i);
-
-	if (ft_is_a_pipe_before(cmd))
-	{
-		dup2(exec->my_pipes[i - 1][0], 0);
-	}
-
 	// A GERER APRES
-	// if ()// j'ai une / des redirections de sortie
+	// if ()//j'ai une / des redirection d'entree
 	// {
-
 	// }
-	
-	else if (ft_is_a_pipe_after(cmd))
+	if (pipe(exec->my_pipes[i]) < 0)
+		perror("pipe");
+	exec->pid[i] = fork();
+	if (exec->pid[i] < 0)
 	{
-		dup2(exec->my_pipes[i][1], 1);
+		perror ("fork");
+		return (false);
 	}
-	// ft_close_pipe(exec->fd_file); // apres
-	ft_close_all_pipes(exec);
+	if (exec->pid[i] == 0) //child
+	{
+		if (i == 0) // first command
+		{
+			//dans le cas d'infile dup2(fd_infile, 0);
+			if (dup2(exec->my_pipes[i][1], 1) < 0)
+				printf("dup2 1 failed\n");
+			// ft_close(exec->my_pipes[0]);
+			close(exec->my_pipes[0][0]);
+			close(exec->my_pipes[0][1]);
+		}
+		else if (i == exec->cmd_nb - 1) // last command
+		{
+			//dans le cas outfile dup(fd, 1);
+			if (dup2(exec->my_pipes[(i + 1) % 2][0], 0) < 0)
+				printf("dup2 2 failed\n");
+			// ft_close(exec->my_pipes[1]);
+			close(exec->my_pipes[(i + 1) % 2][0]);
+			close(exec->my_pipes[(i + 1) % 2][1]);
+		}
+		else // les middles commands
+		{
+			if (dup2(exec->my_pipes[(i + 1) % 2][0], 0) < 0) // on alterne entre 0 et 1 (pour alterner les fd)
+				printf("dup2 3 failed\n");
+			if (dup2(exec->my_pipes[i % 2][1], 1) < 0)
+				printf("dup2 4 failed\n");
+		}
+		// ft_close infile et outfile
+		execute_command(cmd, env, exec, i);
+		//ft_execve();
+	}
+	// if (i)
+	// 	ft_close_pipe(exec->my_pipes[(i + 1) % 2]);
+	// ft_close_all_pipes(exec);
 	return (true);
 }
 
-
-// void	ft_child(t_element *cmd, t_pipe *exec, int i)
-// {
-// 	// etape 1 on redirige les trucs
-// 	//if (!ft_redir(cmd, exec, i))
-// 		;
-// 	// etape 2 on cherche un chemin
-// 	// etape 3 on execute l'enfant
-// }
-
+void	ft_close_fd(t_pipe *exec)
+{
+	close(exec->my_pipes[0][0]);
+	close(exec->my_pipes[0][1]);
+	close(exec->my_pipes[1][0]);
+	close(exec->my_pipes[1][1]);
+}
 
 void	execution(t_element *cmd, t_pipe *exec)
 {
@@ -288,4 +324,42 @@ void	execution(t_element *cmd, t_pipe *exec)
 		//ft_child(cmd, exec, i);
 		i++;
 	}
+	
+// fin de ft_redir
+// if (!cmd)
+// 		return (true);
+// 	if (ft_is_a_pipe_before(cmd))
+// 	{
+// 		printf("i = %d\n", i);
+// 		printf("content BEFORE = %s\n", cmd->content);
+// 		dup2(exec->my_pipes[i - 1][0], 0);
+// 	}
+
+// 	// A GERER APRES
+// 	// if ()// j'ai une / des redirections de sortie
+// 	// {
+
+// 	// }
+	
+// 	else if (ft_is_a_pipe_after(cmd))
+// 	{
+// 		printf("i = %d\n", i);
+// 		printf("content AFTER = %s\n", cmd->content);
+// 		dup2(exec->my_pipes[i][1], 1);
+// 	}
+// 	// ft_close_pipe(exec->fd_file); // apres
+// 	ft_close_all_pipes(exec);
+// 	//ft_execve()
+// 	return (true);
+// }
+
+
+// void	ft_child(t_element *cmd, t_pipe *exec, int i)
+// {
+// 	// etape 1 on redirige les trucs
+// 	//if (!ft_redir(cmd, exec, i))
+// 		;
+// 	// etape 2 on cherche un chemin
+// 	// etape 3 on execute l'enfant
+// }
 }

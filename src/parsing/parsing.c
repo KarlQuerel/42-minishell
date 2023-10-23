@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/23 11:54:27 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/23 20:47:30 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void printlist_test(t_element *head) // A EFFACER A LA FIN
 	{
 		// if (i != 0)
 		// 	printf("prev cmd = %s\n", head->prev->content);
+		printf("--------------------------------\n");
 		printf("content = %s\n", head->content);
 		printf("type = %d\n", head->type);
 		printf("builtin = %d\n", head->builtin);

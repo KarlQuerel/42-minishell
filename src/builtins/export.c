@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/23 11:59:49 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/23 13:45:15 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,11 @@
 /* Reproduces the export command */
 int	ft_export(t_element *cmd_list, t_env *env)
 {
-	//int	ret;
 	char	**new_var;
 	
-	//ret = 1;
 	if (cmd_list->next == NULL) // "export sans rien"
 		ft_env(env, cmd_list, 1);
+	printf("cmd_list->content %s\n", cmd_list->next->content);
 	while (cmd_list && cmd_list->next)
 	{
 		if (!ft_is_valid(cmd_list->next->content)) // si on envoie un mauvais argument a export

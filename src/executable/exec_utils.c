@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/20 18:12:32 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/23 20:31:23 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ void	fill_cmd_tab(t_element *cmd, t_pipe *exec)
 	i = 0;
 	while (cmd)
 	{
-		if (cmd->type == COMMAND || cmd->type == OPTION)
+		if (cmd->type == COMMAND || cmd->type == OPTION) // a changer pour apres
 		{
 			exec->cmd_tab[i] = malloc(sizeof(char ) * ft_strlen(cmd->content) + 1);
 			ft_strcpy(exec->cmd_tab[i], cmd->content);
-			// printf("cmd_tab[%d] = %s\n", i, exec->cmd_tab[i]);
+			//printf("cmd_tab[%d] = %s\n", i, exec->cmd_tab[i]);
 			i++;
 		}
 		cmd = cmd->next;
@@ -82,48 +82,48 @@ int	get_cmds_nb(t_element *cmd, t_pipe *exec)
 }
 
 
-/* Forks every child processes */
-int	ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd)
-{
-	int	i;
+// /* Forks every child processes */
+// int	ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd)
+// {
+// 	int	i;
 
-	i = 0;
+// 	i = 0;
 	
-	exec->pid[i] = fork();
-	if (exec->pid[i] < 0)
-	{
-		perror("pipe");
-		return (EXIT_FAILURE);
-	}
-	// printf("%sJE SUIS LA%s\n", BGRE, WHT);
-	if (exec->pid[i] == 0)
-		ft_dup(cmd, exec, pipe_e, fd);
-	i++;
-	return (EXIT_SUCCESS);
-}
+// 	exec->pid[i] = fork();
+// 	if (exec->pid[i] < 0)
+// 	{
+// 		perror("pipe");
+// 		return (EXIT_FAILURE);
+// 	}
+// 	// printf("%sJE SUIS LA%s\n", BGRE, WHT);
+// 	if (exec->pid[i] == 0)
+// 		ft_dup(cmd, exec, pipe_e, fd);
+// 	i++;
+// 	return (EXIT_SUCCESS);
+// }
 
 
-void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd)
-{
-	exec->here_doc = 0; // juste pour utiliser exec
-	if (cmd->prev && dup2(fd, STDIN_FILENO) < 0)
-	{
-		perror("dup");
-		ft_putstr_fd("pipe creation failed\n", STDERR_FILENO);
-	}
-	close(pipe_e[0]);
-	if (cmd->next && dup2(pipe_e[1], STDOUT_FILENO) < 0)
-	{
-		perror("dup");
-		ft_putstr_fd("pipe creation failed\n", STDERR_FILENO);
-	}
-	close(pipe_e[1]);
-	if (cmd->prev)
-		close(fd);
-	execute_command(cmd, exec->env_s, exec);
-	// printf("%sJE SUIS LA%s\n", BGRE, WHT);
+// void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd)
+// {
+// 	exec->here_doc = 0; // juste pour utiliser exec
+// 	if (cmd->prev && dup2(fd, STDIN_FILENO) < 0)
+// 	{
+// 		perror("dup");
+// 		ft_putstr_fd("pipe creation failed\n", STDERR_FILENO);
+// 	}
+// 	close(pipe_e[0]);
+// 	if (cmd->next && dup2(pipe_e[1], STDOUT_FILENO) < 0)
+// 	{
+// 		perror("dup");
+// 		ft_putstr_fd("pipe creation failed\n", STDERR_FILENO);
+// 	}
+// 	close(pipe_e[1]);
+// 	if (cmd->prev)
+// 		close(fd);
+// 	execute_command(cmd, exec->env_s, exec, i);
+// 	// printf("%sJE SUIS LA%s\n", BGRE, WHT);
 	
-}
+// }
 
 /* strcpy */
 char	*ft_strcpy(char *dst, char *src)

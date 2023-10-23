@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/23 12:11:09 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/23 20:21:53 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,15 +125,16 @@ typedef struct s_pipe
 {
 	int		here_doc;
 	int		cmd_nb;
-	int		*pid;
+	pid_t		*pid;
 	char	**cmd_tab;
 	char	**cmd_path;
-	int		*pipe_end; //pipe_end[2];
+	//int		*pipe_end; //pipe_end[2];
 	// int		fd_infile;
 	// int		fd_outfile;
-	int		fd_file[2];
+	//int		fd_file[2];
+	int		pipe_end[2];
 	int		av_nb;
-	int		**my_pipes; //*pipes[2]
+	int		**my_pipes; //*pipes[2] chaque pipe a deux fd
 	char 	**env;
 	struct s_element *cmd;
 	struct s_env *env_s;
@@ -259,9 +260,10 @@ void	ft_delete_node(t_env *to_delete);
 
 /* Exec*/
 void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec);
-void	execute_command(t_element *cmd, t_env *env, t_pipe *exec);
+void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, int i);
 void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, int i);
 char	*ft_get_command(char **path, char *argument);
+void	ft_close_fd(t_pipe *exec);
 
 /* Exec utils */
 char	**split_path(t_env *env_list);
@@ -292,6 +294,7 @@ void	ft_close_pipe(int pip[2]);
 void	ft_close_all_pipes(t_pipe *exec);
 bool	ft_is_a_pipe_after(t_element *cmd);
 bool	ft_is_a_pipe_before(t_element *cmd);
-bool	ft_redir(t_element *cmd, t_pipe *exec, int i);
+bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, int i);
+bool	ft_give_me_my_pipes(t_pipe *exec);
 
 #endif
