@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:38 by carolina          #+#    #+#             */
-/*   Updated: 2023/09/30 13:33:35 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/23 11:50:29 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,15 @@ void	history(int option)
 	on ne doit pas remettre cd dans history. Pareil qd on fait deux fois
 	de suite ls par exemple. Par contre quand on écrit une commande qui 
 	n'existe pas ça s'affiche dans history.*/
-	int i;
 
+	/* 
+		history ls donne :
+		error bash: history: ls: numeric argument required
+
+	 */
+
+	int i;
+	printf("hello\n");
 	i = 0;
 	/* get the state of your history list (offset, length, size) */
 	HISTORY_STATE *myhist = history_get_history_state ();

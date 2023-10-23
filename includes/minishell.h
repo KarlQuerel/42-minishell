@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/22 21:11:22 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/23 11:23:27 by kquerel          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 /*Libraries*/
 
@@ -166,8 +166,6 @@ t_env		*lstnew_env(char *line, int i);
 void	final_free(char *line, t_env *env_list);
 void	free_cmd_list(t_element *cmd_list);
 
-/*History*/
-void		history(int option);
 
 /*Checks*/
 bool		quotes_can_close(char *line);
@@ -176,9 +174,6 @@ bool		is_builtin(char *cmd_content);
 /*Signal*/
 void		signal_handler(int signal);
 
-/*Dollar*/
-char	*dollar(char *content, t_env *env_list);
-void	ft_env(t_env *env, t_element *cmd, int option);
 
 /*Errors*/
 void	first_character_error(char *line);
@@ -207,9 +202,6 @@ int		str_type(char *command, int len);
 /*Prompt*/
 void	prompt(t_env *env_list);
 
-
-/*-----------------EXECUTABLE FOLDER------------------*/
-
 /*------------------BUILT-INS FOLDER------------------*/
 
 /*Cd*/
@@ -218,6 +210,10 @@ void	cd_home(t_env *env_list);
 char	*fix_path_if_spaces(char *path);
 void	cd_directory(char *path, t_env *env_list);
 void	cd(t_element *current, t_env *env_list);
+
+/*Dollar*/
+char	*dollar(char *content, t_env *env_list);
+void	ft_env(t_env *env, t_element *cmd, int option);
 
 /*Echo*/
 //int 	skip(char *line, int i, int option);
@@ -234,6 +230,9 @@ int		ft_is_valid(char *s);
 char 	**new_env_var(char *s);
 int		put_new_var(t_env *env, char *key, char *content);
 
+/*History*/
+void		history(int option);
+
 /*Pwd*/
 char	*pwd(int option);
 
@@ -241,8 +240,7 @@ char	*pwd(int option);
 int		ft_unset(t_element *cmd_list, t_env *env);
 void	ft_delete_node(t_env *to_delete);
 
-//voir avec caro
-/*-----------------TO_NAME FOLDER------------------*/
+/*-----------------EXECUTABLE FOLDER ------------------*/
 
 /* Exec*/
 void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec);
@@ -273,7 +271,7 @@ void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
 void	msg_error(int err);
 int		childrens(t_element *cmd, t_pipe *exec);
 
-// utilitaires du panache
+// utilitaires du panache (pablo)
 void	ft_close(int *fd);
 void	ft_close_pipe(int pip[2]);
 void	ft_close_all_pipes(t_pipe *exec);

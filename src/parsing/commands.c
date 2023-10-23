@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/22 18:52:58 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/23 11:52:41 by kquerel          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -22,6 +22,7 @@ char	*line_errors_and_fix(char *line, t_env *env_list)
 	if (!line)
 		return (NULL);
 	// fin
+	(void)env_list;
 	
 	if (is_cmd_in_line(line, ">") == true || is_cmd_in_line(line, "<") == true)
 		redirecters_error(line);
@@ -134,7 +135,10 @@ void	commands(t_element *current_cmd, t_env *env_list)
 	// pb pour le $ dans la fonction line_errors_and_fix car on peut
 	// avoir $ suivi de '?'.
 	if (ft_strncmp(current_cmd->content, "history", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("history"))
+	{
+	printf("hello1111\n");
 		history(HISTORY);
+	}
 	else if (ft_strncmp(current_cmd->content, "pwd", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("pwd"))
 		pwd(PRINT);
 	else if (ft_strncmp(current_cmd->content, "cd", ft_strlen(current_cmd->content)) == 0 && ft_strlen(current_cmd->content) == ft_strlen("cd"))

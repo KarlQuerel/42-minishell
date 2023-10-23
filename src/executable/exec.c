@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/22 17:56:37 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/23 11:38:04 by kquerel          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -259,14 +259,14 @@ bool	ft_redir(t_element *cmd, t_pipe *exec, int i)
 }
 
 
-void	ft_child(t_element *cmd, t_pipe *exec, int i)
-{
-	// etape 1 on redirige les trucs
-	//if (!ft_redir(cmd, exec, i))
-		;
-	// etape 2 on cherche un chemin
-	// etape 3 on execute l'enfant
-}
+// void	ft_child(t_element *cmd, t_pipe *exec, int i)
+// {
+// 	// etape 1 on redirige les trucs
+// 	//if (!ft_redir(cmd, exec, i))
+// 		;
+// 	// etape 2 on cherche un chemin
+// 	// etape 3 on execute l'enfant
+// }
 
 
 void	execution(t_element *cmd, t_pipe *exec)
@@ -283,7 +283,7 @@ void	execution(t_element *cmd, t_pipe *exec)
 	}
 	while (i < exec->cmd_nb)
 	{
-		ft_child(cmd, exec, i);
+		//ft_child(cmd, exec, i);
 		i++;
 	}
 }

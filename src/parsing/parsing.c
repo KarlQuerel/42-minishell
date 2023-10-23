@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/20 16:50:47 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/23 11:54:27 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void printlist_test(t_element *head) // A EFFACER A LA FIN
 		printf("content = %s\n", head->content);
 		printf("type = %d\n", head->type);
 		printf("builtin = %d\n", head->builtin);
+		printf("--------------------------------\n");
 		// if (head->next != NULL)
 		// 	printf("next cmd = %s\n", head->next->content);
 		head = head->next;
@@ -192,6 +193,9 @@ t_element	*parsing_fix(t_element *current, t_env *env_list)
 a pipe to "builtin = true" so that the executor skips them.*/
 t_element	*builtin_fix(t_element *cmd_list)
 {
+	// env ls, ls doit etre builtin false;
+	//history, builtin == 0;
+	
 	t_element	*head;
 
 	head = cmd_list;
@@ -203,7 +207,8 @@ t_element	*builtin_fix(t_element *cmd_list)
 	}
 	while(cmd_list->next != NULL)
 	{
-		if (is_builtin(cmd_list->content) == true)
+		if (is_builtin(cmd_list->content) == true  && \
+			ft_strncmp(cmd_list->content, "env", ft_strlen(cmd_list->content)) != 0)
 		{
 			while (cmd_list->type != PIPE && cmd_list->next != NULL)
 			{
@@ -211,10 +216,20 @@ t_element	*builtin_fix(t_element *cmd_list)
 				cmd_list = cmd_list->next;
 			}
 		}
+		else if (is_builtin(cmd_list->content) == true  && \
+			ft_strncmp(cmd_list->content, "env", ft_strlen(cmd_list->content)) == 0)
+		{
+			cmd_list->builtin = true;
+			cmd_list = cmd_list->next;
+			while (cmd_list->type != PIPE && cmd_list->next != NULL)
+				cmd_list = cmd_list->next;
+			
+		}
 		else
 			cmd_list = cmd_list->next;
 	}
-	if (cmd_list->prev->builtin == true && cmd_list->type != PIPE)
+	if (cmd_list->prev->builtin == true && cmd_list->type != PIPE && \
+			ft_strncmp(cmd_list->content, "env", ft_strlen(cmd_list->content)) != 0)
 		cmd_list->builtin = true;
 	return (head);
 }

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:36:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/20 18:06:07 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/23 11:48:48 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void    prompt(t_env *env_list)
     t_env   *Gpath;
     char	*path;
     
+    path = NULL;
 	word = NULL;
 	user = find_value_with_key_env(env_list, "USER");
     home = find_value_with_key_env(env_list, "HOME");
