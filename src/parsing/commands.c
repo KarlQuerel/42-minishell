@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
 /*   Updated: 2023/10/24 13:37:09 by kquerel          ###   ########.fr       */
@@ -89,13 +89,15 @@ void	commands(t_element *current_cmd, t_env *env_list, t_history *entries)
 		pwd(PRINT);
 	else if (is_this_command(current_cmd->content, "history") == true)
 	{
-		if (current_cmd->next->type != PIPE || current_cmd->next == NULL) //si history pas tout seul
-			printf("Bash: history %s numeric agument required\n", current_cmd->next->content); /*Pq on a pas
-			a gerer les option de history (je pense) mais qd tu mets un numero apres
-			history ca affiche alors que les derniers X elements de history*/
+		if (current_cmd->next != NULL && current_cmd->next->type != PIPE) //si history pas tout seul
+		{
+			printf("Bash: history %s numeric agument required\n", current_cmd->next->content); 
+			/*Pq on a pas a gerer les option de history (je pense) mais qd tu mets un numero 
+			apres history ca affiche alors que les derniers X elements de history*/
 			
 			//ici : karl devra alors faire current_cmd = current_cmd->next
-			// dans sa fonction
+			// dans sa fonction	
+		}
 		else
 			history(entries);
 	}
@@ -111,9 +113,10 @@ void	commands(t_element *current_cmd, t_env *env_list, t_history *entries)
 		ft_unset(current_cmd, env_list);
 	else if (is_this_command(current_cmd->content, "exit") == true)
 	{
-		// free
+		//il manque free de new_line
+		exit_free(current_cmd, env_list, entries);
 		ft_putendl_fd("exit", STDOUT_FILENO);
-		exit (1);
+		exit (1); // voir les codes d'exit (127, 8)
 	}
 }
 

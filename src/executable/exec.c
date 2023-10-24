@@ -289,7 +289,6 @@ bool	init_pipes(t_pipe *exec)
 // --> FONCTION DE PERE FOURAS
 bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int i)
 {
-	
 	if (i != exec->cmd_nb) // we are on the last cmd
 	{
 		if (pipe(exec->my_pipes[i % 2]) < 0)
@@ -298,14 +297,6 @@ bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int 
 			return (false);
 		}
 	}
-	
-	
-	
-	// if (pipe(exec->my_pipes[i % 2]) < 0)
-	// {
-	// 	perror("pipe");
-	// 	return (false);
-	// }
 	exec->pid[i] = fork();
 	if (exec->pid[i] < 0)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/21 12:32:45 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/24 16:34:33 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,29 +19,30 @@ void	signal_handler(int signal/*, char *line*/)
 {
 	if (signal == SIGINT) //ctrl + C
 	{
-		/*qd je fais ctrl + C le prompt devient juste un dollar, je pense que 
-		c'est ici qu'il faut lui envoye rle path à imprimer (voir printf dans le main)*/
-		ft_putchar_fd('\n', STDOUT_FILENO);
+		/*qd je fais ctrl + C alors qu'aucune commande n'est en cours
+		(ex de commande en cours : "cat" tout seul) le prompt devient 
+		juste un dollar : devrait juste renvoyer le prompt normal*/
+		ft_putchar_fd('\n', STDERR_FILENO);
 		rl_on_new_line();
-		rl_replace_line("", 0);
+		rl_replace_line("", 0); /*ecrire le prompt la dedans ne marche pas non plus,
+		et en plus on ne peut pas passer de variables dans signal_handler*/
 		rl_redisplay();
 	}
     else if (signal == SIGQUIT) // ctrl + '\'
     {
-		/*
-		if (!line)
-			return ; // l'ignorer si pas de prompt en execution
-		else
-		{
-			ft_putchar_fd('\n', STDERR_FILENO);
-			ft_putstr_fd(printf("Quit (core dumped)\n");, STDERR_FILENO);
-		}
-		// l'ignorer sauf pendant l'execution ex: "cat" va donner ^\Quit (core dumped)
-		//ft_putnbr_fd(signal, STDERR_FILENO);
-		// ft_putchar_fd('\n', STDERR_FILENO);
-		*/
-		ft_putchar_fd('\n', STDERR_FILENO);
-		ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+		/*ignorer ce signal sauf pendant l'execution d'une commande ex: "cat" va 
+		donner ^\Quit (core dumped)*/
+		// if (!line)
+		// 	return ; // l'ignorer si pas de cmd en execution (ex de cmd en execution: cat tout seul)
+		// else 
+		//{
+			/*cette partie marche bien sauf qd plusieurs ctrl \ a la suite a pres 
+			avoir stop une commande en cours*/
+			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			rl_redisplay();
+		// }
     }
 }
 
@@ -63,5 +64,3 @@ void	ctrlD(char *line) //lui envoyer line ou new_line?
 		exit(0);
 	}
 }
-	
-

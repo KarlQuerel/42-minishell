@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   lstnew.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
 /*   Updated: 2023/10/24 13:38:29 by kquerel          ###   ########.fr       */
@@ -57,7 +57,7 @@ t_history	*lstnew_history(char *line, int size_of_list)
 	new = NULL;
 	if (!line || size_of_list == 0)
 		return (new);
-	new = /* (t_history *) */ft_calloc(1, sizeof(t_history));
+	new = (t_history *)ft_calloc(1, sizeof(t_history));
 	if (!new)
 		return (NULL);
 	new->cmd = ft_calloc(ft_strlen(line) + 1, sizeof(char));

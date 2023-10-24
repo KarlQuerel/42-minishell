@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
 /*   Updated: 2023/10/24 13:14:16 by kquerel          ###   ########.fr       */
@@ -112,9 +112,7 @@ int main (int argc, char **argv, char **env)
 	prompt(env_list);
 	line = readline("$ ");
 //--------------------------------
-	//while (1)
-	while (is_this_command(line, "exit") == false) // while (1) et mettre line = readline("$ ") tout en haut de la while
-	//et mettre en commentaire le line = readline("$ ") du bas de la while
+	while (1)
 	{
 /* 		if (commande en cours)
 			ctrlD(line); */
@@ -123,7 +121,7 @@ int main (int argc, char **argv, char **env)
 	/*J'envoie new_line au lieu de line aux fonctions qui suivent
 	car sur bash qd on fait flèche du haut on retrouve la commande
 	telle qu'elle avait été écrite alors qu'ici on la modifiait*/
-		new_line = erase_spaces(line);
+		new_line = erase_spaces(line); //line est free ici
 		new_line = line_errors_and_fix(new_line, env_list);
 	/*SI line_errors_and_fix TROUVE DES ERREURS IL NE FAUDRAIT PAS ENTRER DANS PARSING*/
 		cmd_list = parsing(new_line, env_list);

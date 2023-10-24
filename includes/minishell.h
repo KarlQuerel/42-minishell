@@ -177,6 +177,7 @@ int			ft_lstsize_history(t_history *lst);
 /*Free*/
 void	final_free(char *line, t_env *env_list, t_history *entries);
 void	free_cmd_list(t_element *cmd_list);
+void	exit_free(t_element *cmd_list, t_env *env_list, t_history *entries);
 
 /*Checks*/
 bool		quotes_can_close(char *line);

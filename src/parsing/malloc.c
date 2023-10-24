@@ -53,6 +53,7 @@ char	*erase_spaces_malloc(char *line)
 		perror("Error");
 		return (NULL); //il faut qd meme un return qd on utilise perror??
 	}
+	//free(line);
 	return (new_line);
 }
 
