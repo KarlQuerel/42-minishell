@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/24 15:12:23 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 16:49:56 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,19 +70,21 @@ void	fill_cmd_tab(t_element *cmd, t_pipe *exec)
 // 	exec->cmd_tab[i] = NULL;
 // }
 
-/* Gets COMMAND and OPTION cmd->type number */
+/* Gets all cmd->type number until the next PIPE */
 int	get_args_nb(t_element *cmd)
 {
 	int	cmds_and_options;
-
-	cmds_and_options = 0;
+	cmds_and_options = 1;
+	
+	if (!cmd)
+		return (0);
 	while (cmd)
 	{
-		if (cmd->type == COMMAND || cmd->type == OPTION)
+		if (cmd->type != PIPE)
 			cmds_and_options++;
 		cmd = cmd->next;
 	}
-	return (cmds_and_options + 1);
+	return (cmds_and_options);
 }
 
 /* Gets COMMAND cmd->type number */
@@ -90,14 +92,14 @@ int	get_cmds_nb(t_element *cmd, t_pipe *exec)
 {
 	exec->cmd_nb = 0;
 	if (!cmd)
-		return (exec->cmd_nb);
+		return (0);
 	while (cmd)
 	{
 		if (cmd->type == COMMAND)
 			exec->cmd_nb++;
 		cmd = cmd->next;
 	}
-	return (exec->cmd_nb + 1);
+	return (exec->cmd_nb);
 }
 
 /* strcpy */

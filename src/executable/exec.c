@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/24 15:11:08 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 16:51:53 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,8 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 	
 	i = 0;
 	exec->av_nb = get_args_nb(cmd);
-	exec->cmd_tab = ft_calloc(exec->av_nb, sizeof(char *)); // + 1
-	//IMPORTANT --> invalid read of size 4 sur l'ordi de la maison a tester a 42 
-	// qui se multiplie dans les childs
+	printf("av_nb = %d\n", exec->av_nb); //  boucle infinie ici
+	exec->cmd_tab = ft_calloc(exec->av_nb, sizeof(char *));
 	if (!exec->cmd_tab)
 		return ;
 	fill_cmd_tab(cmd, exec);
@@ -115,7 +114,8 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 	{
 		if (!init_pipes(exec))
 				return ;
-		exec->pid = ft_calloc(exec->cmd_nb - 1, sizeof(pid_t));
+		exec->pid = ft_calloc(10, sizeof(pid_t));
+		// exec->pid = ft_calloc(exec->cmd_nb - 1, sizeof(pid_t));
 		if (!exec->pid)
 		{
 			ft_putendl_fd("Pid has failed to malloc", STDERR_FILENO);
@@ -289,11 +289,23 @@ bool	init_pipes(t_pipe *exec)
 // --> FONCTION DE PERE FOURAS
 bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int i)
 {
-	if (pipe(exec->my_pipes[i % 2]) < 0)
+	
+	if (i != exec->cmd_nb) // we are on the last cmd
 	{
-		perror("pipe");
-		return (false);
+		if (pipe(exec->my_pipes[i % 2]) < 0)
+		{
+			perror("pipe");
+			return (false);
+		}
 	}
+	
+	
+	
+	// if (pipe(exec->my_pipes[i % 2]) < 0)
+	// {
+	// 	perror("pipe");
+	// 	return (false);
+	// }
 	exec->pid[i] = fork();
 	if (exec->pid[i] < 0)
 	{
@@ -305,6 +317,7 @@ bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int 
 	{
 		if (i == 0) // First command, redirect output to the pipe
 		{
+			//gerer les redirections >> > << <
 			close(exec->my_pipes[i % 2][0]);
 			dup2(exec->my_pipes[i % 2][1], STDOUT_FILENO); //STDOUT -> [0][1]
 		}
