@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
+#    By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/24 15:45:18 by kquerel          ###   ########.fr        #
+#    Updated: 2023/10/24 17:19:01 by casomarr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ NAME        := minishell
 #
 # CC        compiler
 # CFLAGS    compiler flags
-# CPPFLAGS  preprocessor flags
+# HFLAGS  preprocessor flags
 # DIR_DUP   duplicate directory tree
 
 SRC_DIR     := src
@@ -63,12 +63,14 @@ SRCS		:=  src/main.c \
 				src/parsing/malloc.c \
 				src/parsing/cmd_types.c \
 				src/parsing/prompt.c
-        
+
+OBJS 		:= $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))
+OBJS		:= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
+		
 CC          := cc
 CFLAGS      := -Wall -Wextra -Werror -g3
-CPPFLAGS    := -I$(INCLUDE_DIR)
-LDFLAGS     := -Llibft -lreadline
-LDLIBS      := -lft
+HFLAGS    	:= -I$(INCLUDE_DIR)
+RFLAGS     	:= -lreadline
 MAKEFLAGS	+= --no-print-directory
 
 LIBFT       := libft/libft.a
@@ -87,10 +89,10 @@ all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
 	@toilet MINISHELL -F border -f wideterm
-	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@ $(LDFLAGS) $(LDLIBS)
+	$(CC) $(CFLAGS) $(HFLAGS) $^ -o $@ $(RFLAGS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR) $(OBJ_DIR)/parsing $(OBJ_DIR)/executable $(OBJ_DIR)/builtins
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(HFLAGS) -c $< -o $@
 
 $(OBJ_DIR) $(OBJ_DIR)/parsing $(OBJ_DIR)/executable $(OBJ_DIR)/builtins:
 	mkdir -p $@
