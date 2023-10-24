@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/24 12:45:10 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 13:05:54 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ TO DO:
 		for the new program.
 --- Waitpid waits for the process to end before continuing.
  */
-void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, int i)
+void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int i)
 {
 	if (cmd->builtin == true)
 	{
-		commands(cmd, env);
+		commands(cmd, env, entries);
 		return ;
 	}
 	//printf("--> exec->cmd_tab[%d] = %s\n",i , exec->cmd_tab[i]);
@@ -102,7 +102,7 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, int i)
 --- init_pipes mallocs the pipe necessary for dup2
 --- ft_redir is called as many times as there are childs.
 */
-void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
+void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 {
 	int	i;
 	
@@ -116,7 +116,7 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 	fill_cmd_tab(cmd, exec);
 	get_cmds_nb(cmd, exec);
 	if (exec->cmd_nb == 1)
-		execute_command(cmd, env, exec, 0);
+		execute_command(cmd, env, exec, entries, 0);
 	else
 	{
 		if (!init_pipes(exec))
@@ -130,7 +130,7 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 		}
 		while (i < exec->cmd_nb)
 		{
-			ft_redir(cmd, env, exec, i);
+			ft_redir(cmd, env, exec, entries, i);
 			i++;
 		}
 		ft_waitpid(exec->pid, i);
@@ -172,7 +172,60 @@ char	*ft_get_command(char **path, char *argument)
 	return (NULL);
 }
 
-/* Checks if there is a pipe before */
+// /* Handles execution */
+// void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
+// {
+// 	int	i;
+	
+// 	i = 0;
+// 	exec->av_nb = get_args_nb(cmd);
+// 	exec->cmd_tab = malloc(sizeof(char *) * (exec->av_nb + 1)); //peut etre calloc
+// 	if (!exec->cmd_tab)
+// 		return ;
+// 	fill_cmd_tab(cmd, exec);
+// 	get_cmds_nb(cmd, exec);
+// 	//printf("exec->cmd_nb = %d\n", exec->cmd_nb);
+// 	if (exec->cmd_nb == 1) // dans le cas d'une single command
+// 		execute_command(cmd, env, exec, entries, 0);
+// 	else // plusieurs commandes
+// 	{
+// 		while (i < exec->cmd_nb - 1)
+// 		{
+// 			//ft_redir(cmd, exec, i);
+// 			i++;
+// 		}
+// 	}
+// }
+
+// void	redir(t_element *cmd, t_pipe *exec, t_env *env, char *line, char *home_path)
+// {
+// 	pid_t	pid;
+// 	int	pipefd[2];
+
+// 	if (pipe(pipefd) < 0)
+// 	{
+// 		perror("pipe");
+// 		return ;
+// 	}
+// 	pid = fork();
+// 	if (pid) // parent
+// 	{
+// 		close(pipefd[1]);
+// 		dup2(pipefd[0], STDIN_FILENO);
+// 		waitpid(pid, NULL, 0);
+// 	}
+// 	else // child pid == 0
+// 	{
+// 		close(pipefd[0]);
+// 		dup2(pipefd[1], STDOUT_FILENO);
+// 		execute_command(cmd, env, exec, line, home_path);
+// 		exec->pid = ft_calloc(sizeof(int), exec->cmd_nb + 2);
+// 		if (!exec->pid)
+// 			return (msg_error(0));
+// 		childrens(cmd, exec);
+// 	}
+// }
+
 bool	ft_is_a_pipe_before(t_element *cmd)
 {
 	while (cmd)
@@ -263,7 +316,8 @@ bool	init_pipes(t_pipe *exec)
 // }
 
 // --> FONCTION DE PERE FOURAS
-bool ft_redir(t_element *cmd, t_env *env, t_pipe *exec, int i) {
+bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int i)
+{
 	if (pipe(exec->my_pipes[i % 2]) < 0)
 	{
 		perror("pipe");
@@ -296,7 +350,7 @@ bool ft_redir(t_element *cmd, t_env *env, t_pipe *exec, int i) {
 			dup2(exec->my_pipes[i % 2][1], STDOUT_FILENO);
 		}
 		// Call the function to execute the command, assuming it exists
-		execute_command(cmd, env, exec, i);
+		execute_command(cmd, env, exec, entries, i);
 		// If execute_command fails, exit the child process
 		exit(EXIT_FAILURE);
 	}

@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/23 23:33:30 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/24 13:05:21 by kquerel          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 /*Libraries*/
 
@@ -149,11 +149,11 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list);
 /*------------------PARSING FOLDER------------------*/
 
 /*Commands*/
-void	commands(t_element *current_cmd, t_env *env_list);
+void	commands(t_element *current_cmd, t_env *env_list, t_history *entries);
 bool	is_this_command(char *buffer, char* command);
 int		size_of_command(char *command, int len, int type);
 bool	is_cmd_in_line(char *line, char *cmd);
-int 	where_is_cmd_in_line(char *line, char *cmd);
+// int 	where_is_cmd_in_line(char *line, char *cmd);
 char	*line_errors_and_fix(char *line, t_env *env_list);
 
 /*Parsing*/
@@ -181,6 +181,7 @@ void	free_cmd_list(t_element *cmd_list);
 /*Checks*/
 bool		quotes_can_close(char *line);
 bool		is_builtin(char *cmd_content);
+bool		is_user_in_path(char *path, t_env *env_list);
 
 /*Signal*/
 void		signal_handler(int signal);
@@ -221,6 +222,9 @@ void	cd_home(t_env *env_list);
 char	*fix_path_if_spaces(char *path);
 void	cd_directory(char *path, t_env *env_list);
 void	cd(t_element *current, t_env *env_list);
+void	go_forward_until_user(char *current_path, char *home_value);
+void	go_backwards_until_user(char *current_path, char *home_value);
+size_t	size_of_word(char *path, int i);
 
 /*Dollar*/
 char	*dollar(char *content, t_env *env_list);
@@ -259,8 +263,8 @@ void	ft_delete_node(t_env *to_delete);
 /*-----------------EXECUTABLE FOLDER ------------------*/
 
 /* Exec*/
-void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec);
-void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, int i);
+void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int i);
 void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, int i);
 char	*ft_get_command(char **path, char *argument);
 void	ft_close_fd(t_pipe *exec);
@@ -283,8 +287,8 @@ int		ft_infile(char *file);
 int		ft_outfile(t_element *cmd);
 
 // void	ft_remove_var(t_element *cmd_list, t_env *env, char *to_remove);
-int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
-void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd);
+int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, t_history *entries);
+void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, t_history *entries);
 void	msg_error(int err);
 int		childrens(t_element *cmd, t_pipe *exec);
 
@@ -294,7 +298,7 @@ void	ft_close_pipe(int pip[2]);
 void	ft_close_all_pipes(t_pipe *exec);
 bool	ft_is_a_pipe_after(t_element *cmd);
 bool	ft_is_a_pipe_before(t_element *cmd);
-bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, int i);
+bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int i);
 bool	init_pipes(t_pipe *exec);
 
 #endif

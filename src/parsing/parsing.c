@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/24 13:09:02 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 13:14:08 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ t_element	*parsing_fix(t_element *current, t_env *env_list)
 		}
 		else if (current->content[0] == '$')
 		{
+			// manque a gerer le cas "$?"
 			if (ft_isalpha(current->content[1]) == 0)
 			{
 				temp = current->prev;
@@ -194,9 +195,6 @@ t_element	*parsing_fix(t_element *current, t_env *env_list)
 a pipe to "builtin = true" so that the executor skips them.*/
 t_element	*builtin_fix(t_element *cmd_list)
 {
-	// env ls, ls doit etre builtin false;
-	//history, builtin == 0;
-	
 	t_element	*head;
 
 	head = cmd_list;
@@ -208,29 +206,11 @@ t_element	*builtin_fix(t_element *cmd_list)
 	}
 	while(cmd_list->next != NULL)
 	{
-		if (is_builtin(cmd_list->content) == true  && \
-			ft_strncmp(cmd_list->content, "env", ft_strlen(cmd_list->content)) != 0)
-		{
-			while (cmd_list->type != PIPE && cmd_list->next != NULL)
-			{
-				cmd_list->builtin = true;
-				cmd_list = cmd_list->next;
-			}
-		}
-		else if (is_builtin(cmd_list->content) == true  && \
-			ft_strncmp(cmd_list->content, "env", ft_strlen(cmd_list->content)) == 0)
-		{
+		if (is_builtin(cmd_list->content) == true)
 			cmd_list->builtin = true;
-			cmd_list = cmd_list->next;
-			while (cmd_list->type != PIPE && cmd_list->next != NULL)
-				cmd_list = cmd_list->next;
-			
-		}
-		else
-			cmd_list = cmd_list->next;
+		cmd_list = cmd_list->next;
 	}
-	if (cmd_list->prev->builtin == true && cmd_list->type != PIPE && \
-			ft_strncmp(cmd_list->content, "env", ft_strlen(cmd_list->content)) != 0)
+	if (is_builtin(cmd_list->content) == true)
 		cmd_list->builtin = true;
 	return (head);
 }

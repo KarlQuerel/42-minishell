@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:36:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/23 12:03:42 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/23 16:40:57 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,31 @@ void    prompt(t_env *env_list)
     //printf("home->value = [%s]\n", home->value);
     //printf("Gpath->value = [%s]\n",Gpath->value);
     
-    if (ft_strncmp(word, user->value, ft_strlen(user->value)) == 0)
+    if (ft_strncmp(word, user->value, ft_strlen(user->value)) == 0) //si user juste $
     {
         free(word);
         return ;
     }
-    else if (ft_strncmp(word, "homes", ft_strlen(word) - i + 1) == 0)
+    else if (ft_strncmp(word, "homes", ft_strlen(word) - i + 1) == 0) //si home on print jusqu a home
     {
 		path = strlcpy_middle(path, Gpath->value, 1, ft_strlen(Gpath->value) - 1);
         printf("%s", path);
         free(path);
     }
-    else if (ft_strncmp(word, "", ft_strlen(word)) == 0) //NE MARCHE PAS
+/*     else if (ft_strncmp(word, "", ft_strlen(word)) == 0) //NE MARCHE PAS
     {
 		printf("/");
         free(path);
-    }
-    else if (ft_strncmp(word, user->value, ft_strlen(user->value)) != 0)
+    } */
+    else if (ft_strncmp(word, user->value, ft_strlen(user->value)) != 0 && is_user_in_path(pwd(NO_PRINT), env_list) == true) //si pas dans home ni dans user et que plus loin que user
     {
 		path = home_path_simplified(pwd(NO_PRINT), env_list);
+        printf("%s", path);
+        free(path);
+    }
+    else
+    {
+        path = pwd(NO_PRINT);
         printf("%s", path);
         free(path);
     }
