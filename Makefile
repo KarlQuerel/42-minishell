@@ -6,7 +6,7 @@
 #    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/24 13:36:12 by kquerel          ###   ########.fr        #
+#    Updated: 2023/10/24 15:45:18 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,7 +66,7 @@ SRCS		:=  src/main.c \
 				src/parsing/cmd_types.c \
 				src/parsing/prompt.c
 
-SRCS 		:= $(addprefix $(SRC_DIR)/, main.c parsing/commands.c parsing/parsing.c parsing/checks.c parsing/signal.c parsing/env_list.c parsing/lstnew.c parsing/free.c executable/exec.c executable/exec_utils.c executable/exec_errors.c executable/redirect.c executable/pipes.c builtins/cd.c builtins/dollar.c builtins/echo.c builtins/env.c builtins/export.c builtins/history.c builtins/pwd.c builtins/unset.c parsing/errors.c parsing/utils.c parsing/malloc.c parsing/cmd_types.c parsing/prompt.c)
+SRCS 		:= $(addprefix $(SRC_DIR)/, main.c parsing/commands.c parsing/parsing.c parsing/checks.c parsing/signal.c parsing/env_list.c parsing/lstnew.c parsing/free.c executable/exec.c executable/exec_utils.c executable/exec_errors.c executable/redirect.c executable/pipes.c builtins/cd.c builtins/dollar.c builtins/echo.c builtins/env.c builtins/export.c builtins/history.c builtins/pwd.c builtins/unset.c parsing/errors.c parsing/utils.c parsing/malloc.c parsing/cmd_types.c parsing/prompt.c builtins/builtins_errors.c)
 OBJS		:= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
 

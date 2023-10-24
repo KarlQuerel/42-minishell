@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/24 13:05:21 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 15:41:53 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,28 +260,32 @@ t_env	*pwd_update_in_env(t_env *env_list);
 int		ft_unset(t_element *cmd_list, t_env *env);
 void	ft_delete_node(t_env *to_delete);
 
+/*Builtins_errors*/
+void	ft_msg_error_builtin(char *s);
+
 /*-----------------EXECUTABLE FOLDER ------------------*/
 
-/* Exec*/
+/*Exec*/
 void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
 void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int i);
 void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, int i);
 char	*ft_get_command(char **path, char *argument);
 void	ft_close_fd(t_pipe *exec);
 
-/* Exec utils */
+/*Exec utils */
 char	**split_path(t_env *env_list);
 int		get_args_nb(t_element *cmd);
 void	fill_cmd_tab(t_element *cmd, t_pipe *exec);
 int		get_cmds_nb(t_element *cmd, t_pipe *exec);
 char	*ft_strcpy(char *dst, char *src);
+void	ft_print_array(char **arr);
 
-/* Pipes */
+/*Pipes*/
 // void	ft_close_pipe(t_pipe *exec);
 void	ft_create_pipe(t_pipe *exec, int *pipe_end);
 int		ft_waitpid(int *pid, int n);
 
-/* Redirect */
+/*Redirect*/
 int		ft_redirect(t_element *s);
 int		ft_infile(char *file);
 int		ft_outfile(t_element *cmd);

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/23 13:45:15 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 15:39:18 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	ft_export(t_element *cmd_list, t_env *env)
 	
 	if (cmd_list->next == NULL) // "export sans rien"
 		ft_env(env, cmd_list, 1);
+	if (cmd_list->next->type == OPTION)
+		ft_msg_error_builtin("export");
 	printf("cmd_list->content %s\n", cmd_list->next->content);
 	while (cmd_list && cmd_list->next)
 	{
