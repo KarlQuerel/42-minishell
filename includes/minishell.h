@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/24 13:05:21 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 15:11:45 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,7 @@ int			ft_lstsize_history(t_history *lst);
 /*Free*/
 void	final_free(char *line, t_env *env_list, t_history *entries);
 void	free_cmd_list(t_element *cmd_list);
+void	exit_free(t_element *cmd_list, t_env *env_list, t_history *entries);
 
 /*Checks*/
 bool		quotes_can_close(char *line);

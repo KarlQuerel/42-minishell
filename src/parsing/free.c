@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/21 13:22:40 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/10/24 15:11:25 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,19 @@
 void	final_free(char *line, t_env *env_list, t_history *entries)
 {
 	free(line);
+	free_history(entries);
+	while (env_list != NULL)
+	{
+		free(env_list->key);
+		free(env_list->value);
+		env_list = env_list->next;
+	}
+	free(env_list);
+}
+
+void	exit_free(t_element *cmd_list, t_env *env_list, t_history *entries)
+{
+	free_cmd_list(cmd_list);
 	free_history(entries);
 	while (env_list != NULL)
 	{

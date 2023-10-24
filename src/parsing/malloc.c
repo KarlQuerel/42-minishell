@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:08:27 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/23 16:09:43 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/24 15:17:54 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ char	*erase_spaces_malloc(char *line)
 		perror("Error");
 		return (NULL); //il faut qd meme un return qd on utilise perror??
 	}
+	//free(line);
 	return (new_line);
 }
 

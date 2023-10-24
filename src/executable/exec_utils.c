@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/24 13:02:07 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 16:39:01 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,20 @@ int	get_args_nb(t_element *cmd)
 {
 	int	cmds_and_options;
 
-	cmds_and_options = 0;
+	cmds_and_options = 1;
 	while (cmd)
 	{
-		if (cmd->type == COMMAND || cmd->type == OPTION)
+		if (cmd->type != PIPE)
 			cmds_and_options++;
 		cmd = cmd->next;
 	}
-	return (cmds_and_options + 1);
+	return (cmds_and_options);
 }
 
 /* Gets COMMAND cmd->type number */
 int	get_cmds_nb(t_element *cmd, t_pipe *exec)
 {
-	exec->cmd_nb = 0;
+	exec->cmd_nb = 1;
 	while (cmd)
 	{
 		if (cmd->type == COMMAND)
