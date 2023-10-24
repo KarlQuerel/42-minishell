@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:21:09 by karl              #+#    #+#             */
-/*   Updated: 2023/10/24 15:33:21 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 18:54:37 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,8 @@ reproduces export behaviour when used without an argument
 */
 void	ft_env(t_env *env, t_element *cmd, int option)
 {
-	if (cmd->next)
-	{
-		ft_putendl_fd("env cannot take arguments", STDOUT_FILENO);
+	if (!check_next_node_builtin(cmd, 0))
 		return ;
-	}
 	while (env)
 	{
 		if (option == 1)

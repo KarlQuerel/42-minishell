@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/24 15:41:53 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 20:06:40 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,9 +242,10 @@ void	ft_env(t_env *env, t_element *cmd, int option);
 
 /*Export*/
 int		ft_export(t_element *cmd_list, t_env *env);
-int		ft_is_valid(char *s);
+bool	ft_is_valid_key_var(char *s);
 char 	**new_env_var(char *s);
-int		put_new_var(t_env *env, char *key, char *content);
+int		join_new_var(t_env *env, char *key, char *content);
+void	init_new_var(t_env *env, char *new_var);
 
 /*History*/
 t_history	*ft_add_history(t_history *entries, char *line);
@@ -254,15 +255,15 @@ void		lstadd_back_history(t_history *entries, char *line);
 t_history	*ft_lstlast_history(t_history *lst);
 
 /*Pwd*/
-char	*pwd(int option);
-t_env	*pwd_update_in_env(t_env *env_list);
+char	*pwd(/* t_element *cmd, */int option);
+t_env	*pwd_update_in_env(/* t_element *cmd, */t_env *env_list);
 
 /*Unset*/
 int		ft_unset(t_element *cmd_list, t_env *env);
 void	ft_delete_node(t_env *to_delete);
 
 /*Builtins_errors*/
-void	ft_msg_error_builtin(char *s);
+bool	check_next_node_builtin(t_element *cmd, int option);
 
 /*-----------------EXECUTABLE FOLDER ------------------*/
 

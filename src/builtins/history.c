@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:38 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/23 12:25:36 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/24 18:44:53 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,15 @@ t_history	*ft_add_history(t_history *entries, char *line)
 
 void	history(t_history *current_entry)
 {
+	
+	//--> caro tu geres deja l'erreur dans commands.c
+	// il faut envoyer t_history a check_next_node_builtins
+	// if (current_entry->next)
+	// {
+	// 	ft_putstr_fd(current_entry->cmd, STDERR_FILENO);
+	// 	ft_putendl_fd(" cannot take arguments", STDERR_FILENO);
+	// 	return ;
+	// }
 	while(current_entry != NULL)
 	{
 		printf("%d %s\n", current_entry->nb, current_entry->cmd);

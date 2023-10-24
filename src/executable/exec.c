@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/24 16:51:53 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 19:04:40 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 #include "../../libft/libft.h"
 
 /*
+-- CARO : pour le parsing, si deux pipes se suivent APRES la premiere commande
+	--> renvoyer une erreur, ls wc -l ||||||| hi, tourne
+	--> la logique a suivre si + que deux operateurs > ou |, renvoyez une erreur
+-- changer PWD, j'ai tout mis en commentaire
+
 TO DO:
 - voir avec Alban, cat Makefile
 - gerer open et HEREDOC, en dernier
@@ -101,7 +106,7 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 	
 	i = 0;
 	exec->av_nb = get_args_nb(cmd);
-	printf("av_nb = %d\n", exec->av_nb); //  boucle infinie ici
+	//printf("av_nb = %d\n", exec->av_nb); //  boucle infinie ici
 	exec->cmd_tab = ft_calloc(exec->av_nb, sizeof(char *));
 	if (!exec->cmd_tab)
 		return ;
@@ -125,7 +130,7 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 		}
 		while (i < exec->cmd_nb)
 		{
-			ft_redir(cmd, env, exec, entries, i);
+			//ft_redir(cmd, env, exec, entries, i);
 			i++;
 		}
 		ft_waitpid(exec->pid, i);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/23 16:09:02 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/24 19:02:36 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 
 /*Gets the current path and prints it if the 
 trigger reqiures it.*/
-char	*pwd(int option)
+char	*pwd(/* t_element *cmd, */int option)
 {
 	char *path;
 
+	//on doit envoyer t_element *cmd ici pour check les options cmd->next->type == OPTION
 	path = getcwd(NULL, 0);
 	//if (!path)
 		//printf errno
@@ -27,7 +28,7 @@ char	*pwd(int option)
 	return (path);
 }
 
-t_env	*pwd_update_in_env(t_env *env_list)
+t_env	*pwd_update_in_env(/* t_element *cmd, */t_env *env_list)
 {
 	t_env	*temp;
 	
