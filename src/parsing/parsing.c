@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/23 20:47:30 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 13:09:02 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ t_element	*parsing_fix(t_element *current, t_env *env_list)
 		return (head);
 	while(current != NULL)
 	{
-		if (strncmp(current->content, "echo", ft_strlen(current->content)) == 0 || strncmp(current->content, "cd", ft_strlen("cd")) == 0)
+		if (current->type == COMMAND)
 		{
 			temp = current->next;
 			while (temp->type != PIPE && temp != NULL)

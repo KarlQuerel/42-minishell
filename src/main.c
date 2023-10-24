@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/24 12:37:05 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 13:09:21 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int main (int argc, char **argv, char **env)
 	/*SI line_errors_and_fix TROUVE DES ERREURS IL NE FAUDRAIT PAS ENTRER DANS PARSING*/
 		cmd_list = parsing(new_line, env_list);
 		//ft_redirect(cmd_list); // a finir
-		//printlist_test(cmd_list);
+		printlist_test(cmd_list);
 		
 		//history(entries);
 		/* KARL : IL FAUDRA MODIFIER TES FONCTIONS DANS L'EXEC 
