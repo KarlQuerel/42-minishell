@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/24 13:02:07 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 13:50:09 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,8 @@ void	fill_cmd_tab(t_element *cmd, t_pipe *exec)
 	i = 0;
 	while (cmd)
 	{
-		if (cmd->type == COMMAND || cmd->type == OPTION) // a changer pour apres
+		if (cmd->type == COMMAND/*  || cmd->type == OPTION */) // a changer pour apres
 		{
-			// exec->cmd_tab[i] = malloc(sizeof(char ) * ft_strlen(cmd->content) + 1);
 			exec->cmd_tab[i] = ft_calloc(ft_strlen(cmd->content) + 1, sizeof(char));
 			ft_strcpy(exec->cmd_tab[i], cmd->content);
 			//printf("cmd_tab[%d] = %s\n", i, exec->cmd_tab[i]);
@@ -69,13 +68,15 @@ int	get_args_nb(t_element *cmd)
 int	get_cmds_nb(t_element *cmd, t_pipe *exec)
 {
 	exec->cmd_nb = 0;
+	if (!cmd)
+		return (exec->cmd_nb);
 	while (cmd)
 	{
 		if (cmd->type == COMMAND)
 			exec->cmd_nb++;
 		cmd = cmd->next;
 	}
-	return (exec->cmd_nb);
+	return (exec->cmd_nb + 1);
 }
 
 /* strcpy */

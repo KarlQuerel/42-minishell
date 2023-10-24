@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/24 13:05:54 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 13:47:28 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entrie
 		commands(cmd, env, entries);
 		return ;
 	}
-	//printf("--> exec->cmd_tab[%d] = %s\n",i , exec->cmd_tab[i]);
+	printf("--> exec->cmd_tab[%d] = %s\n",i , exec->cmd_tab[i]);
 	int	pid;
 	if (cmd->content[i] == '\0')
 		return ;
@@ -115,6 +115,7 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 		return ;
 	fill_cmd_tab(cmd, exec);
 	get_cmds_nb(cmd, exec);
+	printf("exec->cmd_nb = %d\n", exec->cmd_nb);
 	if (exec->cmd_nb == 1)
 		execute_command(cmd, env, exec, entries, 0);
 	else
@@ -125,6 +126,7 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 		if (!exec->pid)
 		{
 			ft_putendl_fd("Pid has failed to malloc", STDERR_FILENO);
+			exit (127); // a enlever apres
 			// free
 			return ;
 		}

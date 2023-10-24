@@ -6,7 +6,7 @@
 #    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/24 13:01:31 by kquerel          ###   ########.fr        #
+#    Updated: 2023/10/24 13:36:12 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,7 +80,7 @@ OBJS		:= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
 
 CC          := cc
-CFLAGS      := -Wall -Wextra -Werror
+CFLAGS      := -Wall -Wextra -Werror -g3
 CPPFLAGS    := -I$(INCLUDE_DIR)
 LDFLAGS     := -Llibft -lreadline
 LDLIBS      := -lft
@@ -96,6 +96,7 @@ LIBFT       := libft/libft.a
 # all       default goal
 # $(NAME)   linking .o -> binary
 # %.o       compilation .c -> .o
+
 
 all: $(NAME)
 	@toilet COMPILED -F border -f wideterm
@@ -130,3 +131,6 @@ fclean: clean
 	make -C libft fclean
 
 re: fclean all
+
+runv : minishell
+	@valgrind --suppressions=.ignore --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes ./minishell
