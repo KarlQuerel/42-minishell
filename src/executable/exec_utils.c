@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/24 16:39:01 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/24 16:49:56 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ void	fill_cmd_tab(t_element *cmd, t_pipe *exec)
 	i = 0;
 	while (cmd)
 	{
-		if (cmd->type == COMMAND || cmd->type == OPTION) // a changer pour apres
+		// if (cmd->type == COMMAND/*  || cmd->type == OPTION */) // a changer pour apres
+		if (cmd->type != PIPE)
 		{
-			// exec->cmd_tab[i] = malloc(sizeof(char ) * ft_strlen(cmd->content) + 1);
 			exec->cmd_tab[i] = ft_calloc(ft_strlen(cmd->content) + 1, sizeof(char));
 			ft_strcpy(exec->cmd_tab[i], cmd->content);
 			//printf("cmd_tab[%d] = %s\n", i, exec->cmd_tab[i]);
@@ -50,12 +50,34 @@ void	fill_cmd_tab(t_element *cmd, t_pipe *exec)
 	exec->cmd_tab[i] = NULL;
 }
 
-/* Gets COMMAND and OPTION cmd->type number */
+// /* Fills every COMMAND or OPTION type in cmd_tab */
+// void	fill_cmd_tab(t_element *cmd, t_pipe *exec)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (cmd)
+// 	{
+// 		// if (cmd->type == COMMAND/*  || cmd->type == OPTION */) // a changer pour apres
+// 		{
+// 			exec->cmd_tab[i] = ft_calloc(ft_strlen(cmd->content) + 1, sizeof(char));
+// 			ft_strcpy(exec->cmd_tab[i], cmd->content);
+// 			//printf("cmd_tab[%d] = %s\n", i, exec->cmd_tab[i]);
+// 			i++;
+// 		}
+// 		cmd = cmd->next;
+// 	}
+// 	exec->cmd_tab[i] = NULL;
+// }
+
+/* Gets all cmd->type number until the next PIPE */
 int	get_args_nb(t_element *cmd)
 {
 	int	cmds_and_options;
-
 	cmds_and_options = 1;
+	
+	if (!cmd)
+		return (0);
 	while (cmd)
 	{
 		if (cmd->type != PIPE)
@@ -68,7 +90,9 @@ int	get_args_nb(t_element *cmd)
 /* Gets COMMAND cmd->type number */
 int	get_cmds_nb(t_element *cmd, t_pipe *exec)
 {
-	exec->cmd_nb = 1;
+	exec->cmd_nb = 0;
+	if (!cmd)
+		return (0);
 	while (cmd)
 	{
 		if (cmd->type == COMMAND)
@@ -91,4 +115,15 @@ char	*ft_strcpy(char *dst, char *src)
 	}
 	dst[i] = '\0';
 	return (dst);
+}
+
+/* prints an array */
+void	ft_print_array(char **arr)
+{
+	int	i = 0;
+	while (arr[i])
+	{
+		printf("arr[%d] = %s\n", i, arr[i]);
+		i++;
+	}
 }

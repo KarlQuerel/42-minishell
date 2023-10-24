@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/24 15:16:45 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/24 13:14:16 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int main (int argc, char **argv, char **env)
 	/*SI line_errors_and_fix TROUVE DES ERREURS IL NE FAUDRAIT PAS ENTRER DANS PARSING*/
 		cmd_list = parsing(new_line, env_list);
 		//ft_redirect(cmd_list); // a finir
-		//printlist_test(cmd_list);
+		printlist_test(cmd_list);
 		
 		//history(entries);
 

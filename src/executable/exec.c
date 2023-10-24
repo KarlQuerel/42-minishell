@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/24 13:05:54 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 16:51:53 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,6 @@
 
 /*
 TO DO:
---> EN PARLER A CARO
-	pour le parsing 
-	il faut considerer tout ce qui est entre une COMMAND 
-	et une PIPE ou la fin de la liste chainee comme ARGUMENT
-	par exemple ls ls ls ls me renvoie command pour les 4
-	(0, 0, 0, 0)
-	et j'ai besoin de command puis arg arg arg (0, 2, 2, 2)
 - voir avec Alban, cat Makefile
 - gerer open et HEREDOC, en dernier
 - redirections
@@ -57,7 +50,6 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entrie
 		commands(cmd, env, entries);
 		return ;
 	}
-	//printf("--> exec->cmd_tab[%d] = %s\n",i , exec->cmd_tab[i]);
 	int	pid;
 	if (cmd->content[i] == '\0')
 		return ;
@@ -70,25 +62,26 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entrie
 	}
 	if (pid == 0)
 	{
-		exec->cmd_path = split_path(env);
-		if (!exec->cmd_path)
+	exec->cmd_path = split_path(env);
+	if (!exec->cmd_path)
+	{
+		printf("Split_path failed\n");
+		// free des trucs
+	}
+	cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[i]);
+	if (!cmd->content)
+	{
+		if (!exec->cmd_tab[i])
+			ft_putstr_fd("\n", 2);
+		else
 		{
-			printf("Split_path failed\n");
-			// free des trucs
+			ft_putstr_fd(exec->cmd_tab[i], 2);
+			ft_putstr_fd(": command not found\n", 2);
 		}
-		cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[i]);
-		if (!cmd->content)
-		{
-			if (!exec->cmd_tab[i])
-				ft_putstr_fd("\n", 2);
-			else
-			{
-				ft_putstr_fd(exec->cmd_tab[i], 2);
-				ft_putstr_fd(": command not found\n", 2);
-			}
-		}
-		if (execve(cmd->content, exec->cmd_tab, env->env) == -1)
-			ft_putstr_fd("execve failed\n", STDOUT_FILENO);
+	}
+	ft_print_array(exec->cmd_tab);
+	if (execve(cmd->content, exec->cmd_tab, env->env) == -1)
+		ft_putstr_fd("execve failed\n", STDOUT_FILENO);
 	}
 	waitpid(pid, NULL, 0);
 }
@@ -108,23 +101,25 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 	
 	i = 0;
 	exec->av_nb = get_args_nb(cmd);
-	exec->cmd_tab = ft_calloc(exec->av_nb, sizeof(char *)); // + 1
-	//IMPORTANT --> invalid read of size 4 sur l'ordi de la maison a tester a 42 
-	// qui se multiplie dans les childs
+	printf("av_nb = %d\n", exec->av_nb); //  boucle infinie ici
+	exec->cmd_tab = ft_calloc(exec->av_nb, sizeof(char *));
 	if (!exec->cmd_tab)
 		return ;
 	fill_cmd_tab(cmd, exec);
 	get_cmds_nb(cmd, exec);
+	// printf("exec->cmd_nb = %d\n", exec->cmd_nb);
 	if (exec->cmd_nb == 1)
 		execute_command(cmd, env, exec, entries, 0);
 	else
 	{
 		if (!init_pipes(exec))
 				return ;
-		exec->pid = ft_calloc(exec->cmd_nb - 1, sizeof(pid_t));
+		exec->pid = ft_calloc(10, sizeof(pid_t));
+		// exec->pid = ft_calloc(exec->cmd_nb - 1, sizeof(pid_t));
 		if (!exec->pid)
 		{
 			ft_putendl_fd("Pid has failed to malloc", STDERR_FILENO);
+			exit (127); // a enlever apres
 			// free
 			return ;
 		}
@@ -172,31 +167,6 @@ char	*ft_get_command(char **path, char *argument)
 	return (NULL);
 }
 
-// /* Handles execution */
-// void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
-// {
-// 	int	i;
-	
-// 	i = 0;
-// 	exec->av_nb = get_args_nb(cmd);
-// 	exec->cmd_tab = malloc(sizeof(char *) * (exec->av_nb + 1)); //peut etre calloc
-// 	if (!exec->cmd_tab)
-// 		return ;
-// 	fill_cmd_tab(cmd, exec);
-// 	get_cmds_nb(cmd, exec);
-// 	//printf("exec->cmd_nb = %d\n", exec->cmd_nb);
-// 	if (exec->cmd_nb == 1) // dans le cas d'une single command
-// 		execute_command(cmd, env, exec, entries, 0);
-// 	else // plusieurs commandes
-// 	{
-// 		while (i < exec->cmd_nb - 1)
-// 		{
-// 			//ft_redir(cmd, exec, i);
-// 			i++;
-// 		}
-// 	}
-// }
-
 // void	redir(t_element *cmd, t_pipe *exec, t_env *env, char *line, char *home_path)
 // {
 // 	pid_t	pid;
@@ -226,6 +196,7 @@ char	*ft_get_command(char **path, char *argument)
 // 	}
 // }
 
+/* Checks if there is a pipe before */
 bool	ft_is_a_pipe_before(t_element *cmd)
 {
 	while (cmd)
@@ -318,29 +289,33 @@ bool	init_pipes(t_pipe *exec)
 // --> FONCTION DE PERE FOURAS
 bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int i)
 {
-	if (pipe(exec->my_pipes[i % 2]) < 0)
+	if (i != exec->cmd_nb) // we are on the last cmd
 	{
-		perror("pipe");
-		return false;
+		if (pipe(exec->my_pipes[i % 2]) < 0)
+		{
+			perror("pipe");
+			return (false);
+		}
 	}
 	exec->pid[i] = fork();
 	if (exec->pid[i] < 0)
 	{
 		perror("fork");
-		return false;
+		return (false);
 	}
 		
 	if (exec->pid[i] == 0) // child process
 	{
 		if (i == 0) // First command, redirect output to the pipe
 		{
+			//gerer les redirections >> > << <
 			close(exec->my_pipes[i % 2][0]);
-			dup2(exec->my_pipes[i % 2][1], STDOUT_FILENO);
+			dup2(exec->my_pipes[i % 2][1], STDOUT_FILENO); //STDOUT -> [0][1]
 		}
 		else if (i == exec->cmd_nb - 1) // Last command, redirect input from the pipe
 		{
 			close(exec->my_pipes[(i + 1) % 2][1]);
-			dup2(exec->my_pipes[(i + 1) % 2][0], STDIN_FILENO);
+			dup2(exec->my_pipes[(i + 1) % 2][0], STDIN_FILENO); // STdIN -> [i][0]
 		}
 		else // Middle commands, set up input and output redirection
 		{
@@ -358,12 +333,12 @@ bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int 
 	close(exec->my_pipes[i % 2][1]);
 	close(exec->my_pipes[(i + 1) % 2][0]);
 	waitpid(exec->pid[i], NULL, 0);
-	return true;
+	return (true);
 }
 
 // --> OG FUNCTION
-// /* Handles multiples pipes */
-// bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, int i)
+/* Handles multiples pipes */
+// bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int i)
 // {
 // 	// A GERER APRES
 // 	// if ()//j'ai une / des redirection d'entree
@@ -405,11 +380,11 @@ bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int 
 // 				printf("dup2 4 failed\n");
 // 		}
 // 		// ft_close infile et outfile
-// 		//execute_command(cmd, env, exec, i);
+// 		execute_command(cmd, env, exec, entries, i);
 // 		//ft_execve();
 // 	}
-// 	// if (i)
-// 	// 	ft_close_pipe(exec->my_pipes[(i + 1) % 2]);
+// 	if (i)
+// 		ft_close_pipe(exec->my_pipes[(i + 1) % 2]);
 // 	// ft_close_all_pipes(exec);
 // 	return (true);
 // }

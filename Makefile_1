@@ -3,12 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
+#    By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/24 15:45:18 by kquerel          ###   ########.fr        #
+#    Updated: 2023/10/23 19:00:14 by casomarr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+.DEFAULT_GOAL := all
+#je ne me souviens pas à quoi servait la ligne au dessus. Tester sans.
 
 #------------------------------------------------#
 #   COLORS                                       #
@@ -32,10 +35,8 @@ NAME        := minishell
 # CPPFLAGS  preprocessor flags
 # DIR_DUP   duplicate directory tree
 
-SRC_DIR     := src
-OBJ_DIR     := obj
-INCLUDE_DIR := includes
-
+SRC_DIR		:= src
+OBJ_DIR		:= obj
 SRCS		:=  src/main.c \
 				src/parsing/commands.c \
 				src/parsing/parsing.c \
@@ -57,23 +58,23 @@ SRCS		:=  src/main.c \
 				src/builtins/history.c \
 				src/builtins/pwd.c \
 				src/builtins/unset.c \
-				src/builtins/builtins_errors.c \
 				src/parsing/errors.c \
 				src/parsing/utils.c \
 				src/parsing/malloc.c \
 				src/parsing/cmd_types.c \
 				src/parsing/prompt.c
-        
-CC          := cc
-CFLAGS      := -Wall -Wextra -Werror -g3
-CPPFLAGS    := -I$(INCLUDE_DIR)
-LDFLAGS     := -Llibft -lreadline
-LDLIBS      := -lft
+SRCS		:= $(SRCS:%=$(SRC_DIR)/%)
+OBJS		:= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+
+CC			:= cc
+CFLAGS		:= -Wall -Wextra -Werror
+#CFLAGS		:= -gdwarf-4
+CPPFLAGS	:= -I include
 MAKEFLAGS	+= --no-print-directory
+DIR_DUP     = mkdir -p $(@D)
 
-LIBFT       := libft/libft.a
-
-.PHONY: all clean fclean re
+PATH_LIBFT = "libft"
+LIBFT = $(PATH_LIBFT)/libft.a
 
 #------------------------------------------------#
 #   MAKE                                         #
@@ -82,21 +83,22 @@ LIBFT       := libft/libft.a
 # $(NAME)   linking .o -> binary
 # %.o       compilation .c -> .o
 
-all: $(NAME)
+all: $(NAME) $(LIBFT)
 	@toilet COMPILED -F border -f wideterm
 
+# $(LIBFT):
+# 	@toilet LIBFT -F border -f wideterm
+# 	@make -C $(PATH_LIBFT)
+	
 $(NAME): $(OBJS) $(LIBFT)
 	@toilet MINISHELL -F border -f wideterm
-	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@ $(LDFLAGS) $(LDLIBS)
+	$(CC) $(OBJS) -o $(NAME) $(LIBFT) -lreadline
+# $(info CREATED $(NAME))
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR) $(OBJ_DIR)/parsing $(OBJ_DIR)/executable $(OBJ_DIR)/builtins
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
-$(OBJ_DIR) $(OBJ_DIR)/parsing $(OBJ_DIR)/executable $(OBJ_DIR)/builtins:
-	mkdir -p $@
-
-$(LIBFT):
-	make -C libft
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER)
+	$(DIR_DUP)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+# $(info CREATED $@)
 
 #------------------------------------------------#
 #   CLEAN, RE AND PHONY                          #
@@ -106,18 +108,20 @@ $(LIBFT):
 # fclean    remove .o + binary
 # re        remake default goal
 
+RM          := rm -f
+
 clean:
-	$(RM) -r $(OBJ_DIR)
-	make -C libft clean
+	@toilet CLEAN -F border -f wideterm
+	$(RM) $(OBJS)
+	make clean -C $(PATH_LIBFT)
 
 fclean: clean
+	@toilet FCLEAN -F border -f wideterm
 	$(RM) $(NAME)
-	make -C libft fclean
+	make fclean -C $(PATH_LIBFT)
 
-re: fclean all
+re:
+	$(MAKE) fclean
+	$(MAKE) all
 
-v : minishell
-	@valgrind --suppressions=.readignore --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes ./minishell
-
-sv : minishell
-	@valgrind --suppressions=.readignore ./minishell
+.PHONY: all clean fclean re

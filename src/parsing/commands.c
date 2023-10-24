@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/24 15:25:42 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/24 13:37:09 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ char	*line_errors_and_fix(char *line, t_env *env_list)
 /*Checks if what is written in the command line corresponds to a command.*/
 bool	is_this_command(char *buffer, char* command)
 {
+	if (!buffer || !command)
+		return (false);
 	if (ft_strncmp(buffer, command, ft_strlen(buffer)) == 0 && \
 	ft_strlen(buffer) == ft_strlen(command))
 		return (true);

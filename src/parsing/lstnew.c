@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/24 15:44:08 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/24 13:38:29 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,9 @@ t_history	*lstnew_history(char *line, int size_of_list)
 {
 	t_history	*new;
 
+	new = NULL;
+	if (!line || size_of_list == 0)
+		return (new);
 	new = (t_history *)ft_calloc(1, sizeof(t_history));
 	if (!new)
 		return (NULL);
