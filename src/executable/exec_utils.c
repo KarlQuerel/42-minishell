@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/23 23:02:28 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/24 12:45:04 by kquerel          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -39,7 +39,8 @@ void	fill_cmd_tab(t_element *cmd, t_pipe *exec)
 	{
 		if (cmd->type == COMMAND || cmd->type == OPTION) // a changer pour apres
 		{
-			exec->cmd_tab[i] = malloc(sizeof(char ) * ft_strlen(cmd->content) + 1);
+			// exec->cmd_tab[i] = malloc(sizeof(char ) * ft_strlen(cmd->content) + 1);
+			exec->cmd_tab[i] = ft_calloc(ft_strlen(cmd->content) + 1, sizeof(char));
 			ft_strcpy(exec->cmd_tab[i], cmd->content);
 			//printf("cmd_tab[%d] = %s\n", i, exec->cmd_tab[i]);
 			i++;
@@ -61,7 +62,7 @@ int	get_args_nb(t_element *cmd)
 			cmds_and_options++;
 		cmd = cmd->next;
 	}
-	return (cmds_and_options);
+	return (cmds_and_options + 1);
 }
 
 /* Gets COMMAND cmd->type number */

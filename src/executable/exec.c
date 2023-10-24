@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/24 00:04:47 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/24 12:45:10 by kquerel          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -26,12 +26,13 @@ TO DO:
 - gerer open et HEREDOC, en dernier
 - redirections
 --> DEMANDER A ALBAN
-- 	UNSET (doubler l'env ?)
+- 	UNSET (doubler l'env ?) --> on utilise notre t_env et pas envp
 - 	EXPORT (doubler l'env ?)
 
 - 	necessaire de fork dans execute_command ? 
 	  Sur papier, ca ne devrait pas etre le cas mais ca ne marche pas sans
 	--> waitpid du coup pas necessaire si pas besoin de fork.
+*/
 
 /* Executes the command
 ---	If a builtin is detected, redirects to commands to avoid sending it 
@@ -107,7 +108,7 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 	
 	i = 0;
 	exec->av_nb = get_args_nb(cmd);
-	exec->cmd_tab = ft_calloc(exec->av_nb + 1, sizeof(char *));
+	exec->cmd_tab = ft_calloc(exec->av_nb, sizeof(char *)); // + 1
 	//IMPORTANT --> invalid read of size 4 sur l'ordi de la maison a tester a 42 
 	// qui se multiplie dans les childs
 	if (!exec->cmd_tab)
@@ -134,6 +135,15 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 		}
 		ft_waitpid(exec->pid, i);
 	}
+	
+	// a voir
+	i = 0;
+	while (exec->cmd_tab[i])
+	{
+		free(exec->cmd_tab[i]);
+		i++;
+	}
+	free(exec->cmd_tab);
 }
 
 /* Extracts command from char *argument and verify if they are valid
