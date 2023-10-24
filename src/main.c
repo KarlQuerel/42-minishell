@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/23 19:40:27 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/24 13:01:40 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ int main (int argc, char **argv, char **env)
 		perror("exec");
 		exit(EXIT_FAILURE);
 	}
-
 	sigemptyset(&signal.sa_mask);
 	// signal.sa_flags = SA_SIGINFO;
 	signal.sa_flags = SA_RESTART;
@@ -129,7 +128,7 @@ int main (int argc, char **argv, char **env)
 	/*SI line_errors_and_fix TROUVE DES ERREURS IL NE FAUDRAIT PAS ENTRER DANS PARSING*/
 		cmd_list = parsing(new_line, env_list);
 		//ft_redirect(cmd_list); // a finir
-    	//printlist_test(cmd_list);
+		//printlist_test(cmd_list);
 		
 		//history(entries);
 
@@ -138,6 +137,7 @@ int main (int argc, char **argv, char **env)
 		free_cmd_list(cmd_list);
 //--------------------------------
 		env_list = pwd_update_in_env(env_list);
+		env_list->env = env;
 /* 		temp = find_value_with_key_env(env_list, "PWD");
 		printf("%s\nenv_list->value : %s\n%s", GREEN, temp->value, RESET);
 		free(temp->value);

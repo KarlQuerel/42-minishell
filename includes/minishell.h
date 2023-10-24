@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/23 16:43:19 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/24 13:05:21 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,15 +125,16 @@ typedef struct s_pipe
 {
 	int		here_doc;
 	int		cmd_nb;
-	int		*pid;
+	pid_t		*pid;
 	char	**cmd_tab;
 	char	**cmd_path;
-	int		*pipe_end; //pipe_end[2];
+	//int		*pipe_end; //pipe_end[2];
 	// int		fd_infile;
 	// int		fd_outfile;
-	int		fd_file[2];
+	//int		fd_file[2];
+	int		pipe_end[2];
 	int		av_nb;
-	int		**my_pipes; //*pipes[2]
+	int		**my_pipes; //*pipes[2] chaque pipe a deux fd
 	char 	**env;
 	struct s_element *cmd;
 	struct s_env *env_s;
@@ -263,9 +264,10 @@ void	ft_delete_node(t_env *to_delete);
 
 /* Exec*/
 void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
-void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int i);
 void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, int i);
 char	*ft_get_command(char **path, char *argument);
+void	ft_close_fd(t_pipe *exec);
 
 /* Exec utils */
 char	**split_path(t_env *env_list);
@@ -290,12 +292,13 @@ void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, t_history *entr
 void	msg_error(int err);
 int		childrens(t_element *cmd, t_pipe *exec);
 
-// utilitaires du panache (pablo)
+// utilitaires du panache
 void	ft_close(int *fd);
 void	ft_close_pipe(int pip[2]);
 void	ft_close_all_pipes(t_pipe *exec);
 bool	ft_is_a_pipe_after(t_element *cmd);
 bool	ft_is_a_pipe_before(t_element *cmd);
-bool	ft_redir(t_element *cmd, t_pipe *exec, int i);
+bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int i);
+bool	init_pipes(t_pipe *exec);
 
 #endif
