@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/24 16:51:53 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 17:21:53 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entrie
 			ft_putstr_fd(": command not found\n", 2);
 		}
 	}
-	ft_print_array(exec->cmd_tab);
+	//ft_print_array(exec->cmd_tab);
 	if (execve(cmd->content, exec->cmd_tab, env->env) == -1)
 		ft_putstr_fd("execve failed\n", STDOUT_FILENO);
 	}
@@ -101,7 +101,7 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 	
 	i = 0;
 	exec->av_nb = get_args_nb(cmd);
-	printf("av_nb = %d\n", exec->av_nb); //  boucle infinie ici
+	//printf("av_nb = %d\n", exec->av_nb); //  boucle infinie ici
 	exec->cmd_tab = ft_calloc(exec->av_nb, sizeof(char *));
 	if (!exec->cmd_tab)
 		return ;

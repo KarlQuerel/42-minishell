@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/24 13:37:09 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 17:25:45 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,19 +88,7 @@ void	commands(t_element *current_cmd, t_env *env_list, t_history *entries)
 	if (is_this_command(current_cmd->content, "pwd") == true)
 		pwd(PRINT);
 	else if (is_this_command(current_cmd->content, "history") == true)
-	{
-		if (current_cmd->next != NULL && current_cmd->next->type != PIPE) //si history pas tout seul
-		{
-			printf("Bash: history %s numeric agument required\n", current_cmd->next->content); 
-			/*Pq on a pas a gerer les option de history (je pense) mais qd tu mets un numero 
-			apres history ca affiche alors que les derniers X elements de history*/
-			
-			//ici : karl devra alors faire current_cmd = current_cmd->next
-			// dans sa fonction	
-		}
-		else
-			history(entries);
-	}
+		history(entries);
 	else if (is_this_command(current_cmd->content, "cd") == true)
 		cd(current_cmd, env_list);
 	else if (is_this_command(current_cmd->content, "echo") == true)
