@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/24 19:03:18 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/25 17:39:53 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,25 @@
 
 //faire perror("Error") plutot que des printf pour toutes les fonctions qui utilisent errno
 //utiliser ft_putstr_fd au lieu de printf
+
+void	mini_getpid(/* t_pipe *exec */)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+	{
+		printf("fork failed\n");
+		//free
+		exit (1);
+	}
+	if (pid == 0) // child
+	{
+		exit(0);
+	}
+	waitpid(pid, NULL, 0);
+	//exec->pid = 0; // WHAT
+}
 
 void	ft_welcome(void)
 {
@@ -112,6 +131,9 @@ int main (int argc, char **argv, char **env)
 	prompt(env_list);
 	line = readline("$ ");
 //--------------------------------
+	
+	//mini_getpid(/* exec */);
+	
 	while (1)
 	{
 /* 		if (commande en cours)

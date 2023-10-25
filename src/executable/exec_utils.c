@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/24 16:49:56 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/25 18:17:45 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void	fill_cmd_tab(t_element *cmd, t_pipe *exec)
 		if (cmd->type != PIPE)
 		{
 			exec->cmd_tab[i] = ft_calloc(ft_strlen(cmd->content) + 1, sizeof(char));
-			ft_strcpy(exec->cmd_tab[i], cmd->content);
+			cmd = ft_calloc(1, sizeof(t_element))
+			exec->cmd_tab[i] = ft_strcpy(exec->cmd_tab[i], cmd->content);
 			//printf("cmd_tab[%d] = %s\n", i, exec->cmd_tab[i]);
 			i++;
 		}

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/25 18:07:33 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/25 15:34:43 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,118 +23,121 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 	// 	return ;
 	exec->pipe_nb = ft_count_pipes(cmd);
 	printf("%spipe_nb = %d\n%s", YELLOW, exec->pipe_nb, RESET);
-    exec->cmd_tab = ft_calloc(exec->pipe_nb + 2, sizeof(char *)); // +1 pour pour le nombre de commandes + 1 pour le NULL
+    exec->cmd_tab = ft_calloc(exec->pipe_nb, sizeof(char *));
 	if (!exec->cmd_tab)
 		return ;
 	fill_cmd_tab(cmd, exec);
 	if (exec->pipe_nb == 0)
 		single_command(cmd, env, exec, entries);
 	else
-		mult_commands(cmd, env, exec, entries);
+	{
+		exec->pid = ft_calloc(exec->pipe_nb + 2, sizeof(pid_t));
+		if (!exec->pid)
+		{
+			ft_putendl_fd("Pid has failed to malloc", STDERR_FILENO);
+			exit (127); // a enlever apres
+			// free
+			return ;
+		}
+		executor(cmd, env, exec, entries);
+	}
 }
 
-void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
+int	executor(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 {
-	int	i = 0;
-	int	fd_temp;
-	int	fd[2];
-	
-	while (i <= exec->pipe_nb)
+	int	end[2];
+	int	fd_in;
+	t_element	*head;
+
+	head = cmd;
+	fd_in = STDIN_FILENO;
+	while(cmd)
 	{
-		if ( i < exec->pipe_nb)
-		{
-			middle_pipes(fd, &fd_temp, cmd, env, exec, entries);
-			if (cmd->next && cmd->next->next)
-				cmd = cmd->next->next;
-		}
+		//redirectons
+		if (cmd->next) // rajouter un type // si on est pas a la fin
+			pipe(end);
+		ft_fork(cmd, env, exec, entries, end, fd_in);
+		close(end[1]);
+		if (cmd->prev)
+			close(fd_in);
+		//fd_in = check_heredoc;
+		if (cmd->next)
+			cmd = cmd->next;
 		else
-			last_pipe(fd, &fd_temp, cmd, env, exec, entries);
+			break;
+	}
+	pipe_wait(exec->pid, exec->pipe_nb);
+	if (cmd)
+		cmd = head;
+	return (0);
+}
+
+int	pipe_wait(int *pid, int amount)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	while (i < amount)
+	{
+		waitpid(pid[i], &status, 0);
 		i++;
 	}
-	wait(NULL);
+	waitpid(pid[i], &status, 0);
+	// 	if (WIFEXITED(status))
+	// 	g_global.error_num = WEXITSTATUS(status);
+	return (0);
 }
-
-void	middle_pipes(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
+void	ft_fork(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int end[2], int fd_in)
 {
-	int	pid;
-
-	if (pipe(fd) < 0)
-		perror("Pipe");
-	pid = fork();
-	if (pid < 0)
-		perror("Fork");
-	if (pid == 0)
-		ft_child(fd, *fd_temp, cmd, env, exec, entries);
-	else
-	{
-		if (*fd_temp)
-			close(*fd_temp);
-		*fd_temp = dup(fd[0]);
-		close(fd[0]);
-		close(fd[1]); // nouveau
-		// waitpid(pid, NULL, 0);
-	}
-}
-
-void	last_pipe(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
-{
-	int	pid;
-
-	pid = fork();
-	if (pid < 0)
-		perror("fork");
-	if (pid == 0)
-		exec_last_cmd(fd, *fd_temp, cmd, env, exec, entries);
-	else
-	{
-		if (*fd_temp)
-			close(*fd_temp);
-		close(fd[0]);
-		waitpid(pid, NULL, 0);
-	}
-}
-
-void exec_last_cmd(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
-{
-	if (dup2(fd_temp, STDIN_FILENO) < 0)
-		perror("dup");
-	(void)fd;
-	close(fd_temp);
-	handle_command(cmd, env, exec, entries);
-}
-void	ft_child(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
-{
-	if (dup2(fd_temp, STDIN_FILENO) < 0)
-	{
-		printf("error\n");
-		exit(0);
-	}
-	close(fd[0]);
-	if (dup2(fd[1], STDOUT_FILENO) < 0)
-	{
-		printf("error\n");
-		exit(0);
-	}
-	close(fd_temp);
-	close(fd[1]);
-	handle_command(cmd, env, exec, entries);
-	//execution(cmd, env, exec, entries);
-}
-
-// void execution(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
-// {
-// 	if (cmd && cmd->builtin == true)
-// 	{
-// 		commands(cmd, env, entries);
-// 		return ;
-// 	}
+	static int	i = 0;
 	
-// }
+	exec->pid[i] = fork();
+	if(exec->pid[i] < 0)
+	{
+		printf("%serror FORK\n%s", GREEN, RESET);
+		exit(1);
+	}
+	if (exec->pid[i] == 0) // child -> dup2
+		ft_dup(cmd, env, exec, entries, end, fd_in);
+	i++;
+}
+
+void	ft_dup(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int end[2], int fd_in)
+{
+	if (ft_is_a_pipe_before(cmd) && dup2(fd_in, STDIN_FILENO) < 0)
+	{
+		printf("dup2 prev failed\n");
+		exit(1);
+	}
+	// if (cmd->prev && cmd->prev->type == COMMAND && dup2(fd_in, STDIN_FILENO) < 0) // a regarder si cmd->prev->type == COMMAND
+	// {
+	// 	printf("dup2 prev failed\n");
+	// 	exit(1);
+	// }
+	close(end[0]);
+	printf("cmd->next->content = %s\n", cmd->next->content);
+	if (ft_is_a_pipe_after(cmd) && dup2(end[1], STDOUT_FILENO) < 0)
+	{
+		printf("dup2 next failed\n");
+		exit(0) ;
+	}
+	// if (cmd->next && cmd->next->type == COMMAND && dup2(end[1], STDOUT_FILENO) < 0)
+	// {
+	// 	printf("dup2 next failed\n");
+	// 	exit(0) ;
+	// }
+	close(end[1]);
+	// if (ft_is_a_pipe_before(cmd))
+	// 	close(fd_in); // pourquoi a voir
+	//handle_command(cmd, env, exec, entries);
+}
+
 
 void	single_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 {
 	int	pid;
-	int status;
+	int status; // pourquoi status undefined
 
 	if (cmd && cmd->builtin == true)
 	{
