@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/26 17:16:40 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/26 19:34:54 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,13 @@ bool	is_cmd_in_line(char *line, char *cmd)
 	return (false);
 }
 
+//KARL j'ai ratoute " && check_next_node_builtin(current_cmd, 1)" a chaque conditions pour refuser des options
+// --> pour echo je sais pas comment tu geres le -n donc je l'ai pas mis
 /* Handles builtins redirections */
 void	ft_builtins(t_element *current_cmd, t_env *env_list, t_history *entries)
 {
-	if (is_this_command(current_cmd->content, "pwd") == true)
-		pwd(/* current_cmd,  */PRINT);
+	if (is_this_command(current_cmd->content, "pwd") == true && check_next_node_builtin(current_cmd, 1))
+		pwd(PRINT);
 	else if (is_this_command(current_cmd->content, "history") == true)
 	{
 		if (current_cmd->next != NULL && current_cmd->next->type != PIPE) //si history pas tout seul
@@ -108,11 +110,11 @@ void	ft_builtins(t_element *current_cmd, t_env *env_list, t_history *entries)
 		echo(current_cmd);
 	else if (is_this_command(current_cmd->content, "env") == true)
 		ft_env(env_list, current_cmd, 0);
-	else if (is_this_command(current_cmd->content, "export") == true)
+	else if (is_this_command(current_cmd->content, "export") == true && check_next_node_builtin(current_cmd, 1))
 		ft_export(current_cmd, env_list);
-	else if (is_this_command(current_cmd->content, "unset") == true)
+	else if (is_this_command(current_cmd->content, "unset") == true && check_next_node_builtin(current_cmd, 1))
 		ft_unset(current_cmd, env_list);
-	else if (is_this_command(current_cmd->content, "exit") == true)
+	else if (is_this_command(current_cmd->content, "exit") == true && check_next_node_builtin(current_cmd, 1))
 	{
 		//il manque free de new_line
 		exit_free(current_cmd, env_list, entries);

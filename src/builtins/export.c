@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/24 20:14:07 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/26 19:35:02 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ int	ft_export(t_element *cmd, t_env *env)
 		ft_env(env, cmd, 1);
 		return (0);
 	}
-	if (!check_next_node_builtin(cmd, 1))
-		return (0);
+	// if (!check_next_node_builtin(cmd, 1))
+	// 	return (0);
 	while (cmd && cmd->next)
 	{
 		if (!ft_is_valid_key_var(cmd->next->content))

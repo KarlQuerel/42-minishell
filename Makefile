@@ -6,7 +6,7 @@
 #    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/26 17:15:45 by kquerel          ###   ########.fr        #
+#    Updated: 2023/10/26 19:40:01 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,20 +37,22 @@ OBJ_DIR     := obj
 INCLUDE_DIR := includes
 
 SRCS		:=  src/main.c \
+				src/builtins/builtins_errors.c \
 				src/builtins/cd.c \
 				src/builtins/dollar.c \
 				src/builtins/echo.c \
 				src/builtins/env.c \
+				src/builtins/exit.c \
 				src/builtins/export.c \
 				src/builtins/history.c \
 				src/builtins/pwd.c \
 				src/builtins/unset.c \
-				src/builtins/builtins_errors.c \
 				src/executable/exec.c \
 				src/executable/exec_utils.c \
 				src/executable/exec_errors.c \
 				src/executable/redirect.c \
 				src/executable/exec_continued.c \
+				src/executable/utils.c \
 				src/parsing/commands.c \
 				src/parsing/parsing.c \
 				src/parsing/checks.c \

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/26 17:43:51 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/26 19:59:12 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,38 @@
 	--> "ls wc -l || hi" ne doit pas etre accepte
 	Pas de pipe a la fin
 	--> "ls -a | wc -l |" ne doit pas etre accepte
+--> POUR ECHO: 
+	echo -nnnnnnnnnnnnnnn ca marche par contre echo -nnnnnnnnnt doit print le -nnnnnnnnt
 
 --> segfault: (lancer avec valgrind pour check d'ou ca vient)
 	"ls -a | wc -l | exit"
 	"ls -a | echo hi | wc -l"
 
--- changer PWD, j'ai tout mis en commentaire
+--> pour les builtins:
+	" pwd | ls -l" tourne dans le vide, il faut envoyer fd a ft_builtins pour utiliser ft_putstrfd dans tous nos builtins
+-- faire en sorte que tous les builtins prennent t_cmd pour check next node builtin
+	--> du coup plus besoin mais peut etre plus tard, je le laisse la dans le doute
 
+--> gerer l'exit code dans une variable globale pour les signaux (exit)
+	man waitpid, regarder tous les WIF et wstatus
+	si c'est $?, cas special
+	les signaux prennent 125 + l'int que rend le signal
+	CTRL + C = 130
+	127 command not found
+
+
+	utiliser strerror;
+	
+
+	
 TO DO:
 - gerer open et HEREDOC, en dernier
 - redirections
 - finir export et unset (env ne change pas)
 */
+
+//---------------------------------------------------------------------------------------------------------
+
 
 /* Executes the command
 ---	If a builtin is detected, redirects to commands to avoid sending it 
