@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/24 19:03:09 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/26 17:16:40 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ bool	is_cmd_in_line(char *line, char *cmd)
 	return (false);
 }
 
-void	commands(t_element *current_cmd, t_env *env_list, t_history *entries)
+/* Handles builtins redirections */
+void	ft_builtins(t_element *current_cmd, t_env *env_list, t_history *entries)
 {
 	if (is_this_command(current_cmd->content, "pwd") == true)
 		pwd(/* current_cmd,  */PRINT);
@@ -116,7 +117,6 @@ void	commands(t_element *current_cmd, t_env *env_list, t_history *entries)
 		//il manque free de new_line
 		exit_free(current_cmd, env_list, entries);
 		ft_putendl_fd("exit", STDOUT_FILENO);
-		exit (1); // voir les codes d'exit (127, 8)
+		exit (1); // voir les codes d'exit (127, 8, etc...)
 	}
 }
-

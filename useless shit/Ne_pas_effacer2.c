@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tmp_exec.c                                         :+:      :+:    :+:   */
+/*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/25 16:00:59 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/26 14:17:35 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 	--> renvoyer une erreur, ls wc -l ||||||| hi, tourne
 	--> la logique a suivre si + que deux operateurs (>> <<) ou |, renvoyez une erreur
 bash: syntax error near unexpected token `||'
+	--> pas de pipe a la fin " ls | wc -l |" ne doit pas etre accepte
 
 -- changer PWD, j'ai tout mis en commentaire
 
@@ -50,6 +51,8 @@ TO DO:
  */
 void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int i)
 {
+	if (!cmd)
+		return ;
 	if (cmd->builtin == true)
 	{
 		commands(cmd, env, entries);
@@ -58,7 +61,10 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entrie
 	int	pid;
 	if (cmd->content[i] == '\0')
 		return ;
-	pid = fork();
+	if (!i)
+		pid = fork();
+	else 
+		pid = exec->pid[i];
 	if (pid < 0)
 	{
 		perror("fork:");
@@ -91,6 +97,22 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entrie
 	waitpid(pid, NULL, 0);
 }
 
+int	ft_count_pipes(t_element *cmd)
+{
+	int	pipe_nb;
+	pipe_nb = 0;
+	
+	if (!cmd)
+		return (0);
+	while (cmd)
+	{
+		if (cmd->type == PIPE)
+			pipe_nb++;
+		cmd = cmd->next;
+	}
+	return (pipe_nb);
+}
+
 /* Handles execution 
 --- Gets arg number to be able to malloc cmd_tab (char **) to be sent to execve.
 --- Fills cmd_tab with every node with cmd->type COMMAND and cmd->type OPTION.
@@ -105,24 +127,24 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 	int	i;
 	
 	i = 0;
-
-	
-	
-	exec->av_nb = get_args_nb(cmd);
-	//printf("av_nb = %d\n", exec->av_nb); //  boucle infinie ici
-	exec->cmd_tab = ft_calloc(exec->av_nb, sizeof(char *));
+	exec->pipe_nb = ft_count_pipes(cmd);
+	//exec->av_nb = get_args_nb(cmd);
+		//ft_fork;
+	printf("pipe_nb = %d\n", exec->pipe_nb); //  boucle infinie ici
+	//exec->cmd_tab = ft_calloc(exec->av_nb, sizeof(char *));
+	exec->cmd_tab = ft_calloc(exec->pipe_nb + 2, sizeof(char *)); // +1 pour pour le nombre de commandes + 1 pour le NULL
 	if (!exec->cmd_tab)
 		return ;
-	fill_cmd_tab(cmd, exec);
-	get_cmds_nb(cmd, exec);
-	// printf("exec->cmd_nb = %d\n", exec->cmd_nb);
-	if (exec->cmd_nb == 1)
+	if (exec->pipe_nb == 0)
+	{	
+		fill_cmd_tab(cmd, exec);
 		execute_command(cmd, env, exec, entries, 0);
+	}
 	else
 	{
 		if (!init_pipes(exec))
 				return ;
-		exec->pid = ft_calloc(10, sizeof(pid_t));
+		exec->pid = ft_calloc(exec->pipe_nb, sizeof(pid_t));
 		// exec->pid = ft_calloc(exec->cmd_nb - 1, sizeof(pid_t));
 		if (!exec->pid)
 		{
@@ -131,9 +153,19 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 			// free
 			return ;
 		}
-		while (i < exec->cmd_nb)
+		while (i < exec->pipe_nb)
 		{
-			//ft_redir(cmd, env, exec, entries, i);
+			fill_cmd_tab(cmd, exec);
+			ft_redir(cmd, env, exec, entries, i);
+			while (cmd->next && cmd->type != PIPE)
+			{
+				cmd = cmd->next;
+				if (cmd->type == PIPE && cmd->next)
+				{
+					cmd = cmd->next;
+					break; 
+				}
+			}
 			i++;
 		}
 		ft_waitpid(exec->pid, i);

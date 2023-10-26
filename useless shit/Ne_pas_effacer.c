@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   Ne_pas_effacer.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/25 15:34:43 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/26 16:32:28 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ void	single_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries
 
 	if (cmd && cmd->builtin == true)
 	{
-		commands(cmd, env, entries);
+		ft_builtins(cmd, env, entries);
 		return ;
 	}
 	pid = fork();

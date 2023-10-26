@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/25 17:38:48 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/26 17:27:43 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list);
 /*------------------PARSING FOLDER------------------*/
 
 /*Commands*/
-void	commands(t_element *current_cmd, t_env *env_list, t_history *entries);
+void	ft_builtins(t_element *current_cmd, t_env *env_list, t_history *entries);
 bool	is_this_command(char *buffer, char* command);
 int		size_of_command(char *command, int len, int type);
 bool	is_cmd_in_line(char *line, char *cmd);
@@ -280,15 +280,10 @@ void	ft_close_fd(t_pipe *exec);
 /*Exec utils */
 char	**split_path(t_env *env_list);
 int		get_args_nb(t_element *cmd);
-void	fill_cmd_tab(t_element *cmd, t_pipe *exec);
-int		get_cmds_nb(t_element *cmd, t_pipe *exec);
+void	fill_array(t_element *cmd, t_pipe *exec);
+int		get_size_cmd(t_element *cmd, t_pipe *exec);
 char	*ft_strcpy(char *dst, char *src);
 void	ft_print_array(char **arr);
-
-/*Pipes*/
-// void	ft_close_pipe(t_pipe *exec);
-void	ft_create_pipe(t_pipe *exec, int *pipe_end);
-int		ft_waitpid(int *pid, int n);
 
 /*Redirect*/
 int		ft_redirect(t_element *s);
@@ -321,14 +316,14 @@ int		ft_count_pipes(t_element *cmd);
 char	*ft_get_command(char **path, char *argument);
 void	ft_fork(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int end[2], int fd_in);
 void	ft_dup(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int end[2], int fd_in);
-int	executor(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
-int	pipe_wait(int *pid, int amount);
+int		executor(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+int		pipe_wait(int *pid, int amount);
 
-void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
 void	middle_pipes(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
-void	ft_child(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	middle_dup(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
 void	last_pipe(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
-void exec_last_cmd(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	last_dup(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
 
 
 
