@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/26 19:59:12 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 15:37:19 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 	Pas de pipe a la fin
 	--> "ls -a | wc -l |" ne doit pas etre accepte
 --> POUR ECHO: 
+	-- on gere pas
 	echo -nnnnnnnnnnnnnnn ca marche par contre echo -nnnnnnnnnt doit print le -nnnnnnnnt
 
 --> segfault: (lancer avec valgrind pour check d'ou ca vient)
@@ -36,8 +37,8 @@
 	man waitpid, regarder tous les WIF et wstatus
 	si c'est $?, cas special
 	les signaux prennent 125 + l'int que rend le signal
-	CTRL + C = 130
-	127 command not found
+	CTRL + C = 5 + 125 = 130
+	127 command not found (2)
 
 
 	utiliser strerror;
@@ -86,7 +87,7 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 	if (!cmd)
 		return ;
 	i = 0;
-	size_cmd = get_size_cmd(cmd, exec);
+	size_cmd = get_size_cmd(cmd);
 	exec->pipe_nb = ft_count_pipes(cmd);
 	exec->cmd_tab = ft_calloc(size_cmd + 1, sizeof(char *));
 	if (!exec->cmd_tab)

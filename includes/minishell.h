@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/26 19:36:42 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 15:37:10 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@
 #include <readline/history.h>
 # include <signal.h>
 # include <sys/wait.h>
-#include <sys/uio.h>
+# include <sys/uio.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <limits.h>
+
 
 /*Macros*/
 # define COMMAND 0
@@ -45,6 +47,12 @@
 # define VALUE 1
 # define CMD 2
 # define STR 3
+
+# define NO_OPTIONS 0
+# define ENV 1
+# define ECHO 2
+# define HISTORY 3
+//# define les autres 3
 
 /* # define HISTORY 0
 # define FREE_HISTORY 1 */
@@ -149,7 +157,7 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list);
 /*------------------PARSING FOLDER------------------*/
 
 /*Commands*/
-void	ft_builtins(t_element *current_cmd, t_env *env_list, t_history *entries);
+void	ft_builtins(t_element *cmd, t_env *env_list, t_history *entries);
 bool	is_this_command(char *buffer, char* command);
 int		size_of_command(char *command, int len, int type);
 bool	is_cmd_in_line(char *line, char *cmd);
@@ -252,7 +260,7 @@ void	init_new_var(t_env *env, char *new_var);
 
 /*History*/
 t_history	*ft_add_history(t_history *entries, char *line);
-void		history(t_history *current_entry);
+void		history(t_history *current_entry, int len);
 void		free_history(t_history *current_entry);
 void		lstadd_back_history(t_history *entries, char *line);
 t_history	*ft_lstlast_history(t_history *lst);
@@ -267,6 +275,8 @@ void	ft_delete_node(t_env *to_delete);
 
 /*Builtins_errors*/
 bool	check_next_node_builtin(t_element *cmd, int option);
+bool	ft_is_num(char *s);
+bool	ft_atoi_check(char *str);
 
 /*-----------------EXECUTABLE FOLDER ------------------*/
 
@@ -294,7 +304,7 @@ void	msg_error(int err);
 /*Exec_utils*/
 char	**split_path(t_env *env_list);
 void	fill_array(t_element *cmd, t_pipe *exec);
-int		get_size_cmd(t_element *cmd, t_pipe *exec);
+int		get_size_cmd(t_element *cmd);
 int		ft_count_pipes(t_element *cmd);
 
 /*Redirect*/

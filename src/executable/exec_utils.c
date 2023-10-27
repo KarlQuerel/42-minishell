@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/26 19:13:23 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 15:37:03 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	fill_array(t_element *cmd, t_pipe *exec)
 }
 
 /* Gets the size of the while command for memory allocation */
-int		get_size_cmd(t_element *cmd, t_pipe *exec)
+int		get_size_cmd(t_element *cmd)
 {
 	int	i = 0;
 	while (cmd)

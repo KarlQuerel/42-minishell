@@ -6,7 +6,7 @@
 #    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/26 19:40:01 by kquerel          ###   ########.fr        #
+#    Updated: 2023/10/27 15:36:29 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,7 +71,7 @@ OBJS 		:= $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))
 OBJS		:= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 		
 CC          := cc
-CFLAGS      := -g3#-Wall -Wextra -Werror -g3
+CFLAGS      := -Wall -Wextra -Werror -g3
 HFLAGS    	:= -I$(INCLUDE_DIR)
 RFLAGS     	:= -lreadline
 MAKEFLAGS	+= --no-print-directory

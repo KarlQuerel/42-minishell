@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:38 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/24 18:44:53 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 15:34:19 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,21 +72,28 @@ t_history	*ft_add_history(t_history *entries, char *line)
 	return (head);
 }
 
-void	history(t_history *current_entry)
+void	history(t_history *current_entry, int len)
 {
-	
-	//--> caro tu geres deja l'erreur dans commands.c
-	// il faut envoyer t_history a check_next_node_builtins
-	// if (current_entry->next)
-	// {
-	// 	ft_putstr_fd(current_entry->cmd, STDERR_FILENO);
-	// 	ft_putendl_fd(" cannot take arguments", STDERR_FILENO);
-	// 	return ;
-	// }
-	while(current_entry != NULL)
+	int	i;
+
+	i = 0;
+	if (len >= 0)
 	{
-		printf("%d %s\n", current_entry->nb, current_entry->cmd);
-		current_entry = current_entry->next;
+		while(current_entry != NULL && i < len)
+		{
+			printf("%d %s\n", current_entry->nb, current_entry->cmd);
+			current_entry = current_entry->next;
+			i++;
+		}
+	}
+	else
+	{
+		while(current_entry != NULL)
+		{
+			printf("%d %s\n", current_entry->nb, current_entry->cmd);
+			current_entry = current_entry->next;
+			i++;
+		}
 	}
 }
 

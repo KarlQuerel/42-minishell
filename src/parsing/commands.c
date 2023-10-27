@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/26 19:34:54 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 14:46:50 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,39 +86,52 @@ bool	is_cmd_in_line(char *line, char *cmd)
 //KARL j'ai ratoute " && check_next_node_builtin(current_cmd, 1)" a chaque conditions pour refuser des options
 // --> pour echo je sais pas comment tu geres le -n donc je l'ai pas mis
 /* Handles builtins redirections */
-void	ft_builtins(t_element *current_cmd, t_env *env_list, t_history *entries)
+void	ft_builtins(t_element *cmd, t_env *env_list, t_history *entries)
 {
-	if (is_this_command(current_cmd->content, "pwd") == true && check_next_node_builtin(current_cmd, 1))
+	if (is_this_command(cmd->content, "pwd") == true && check_next_node_builtin(cmd, NO_OPTIONS))
 		pwd(PRINT);
-	else if (is_this_command(current_cmd->content, "history") == true)
+	else if (is_this_command(cmd->content, "history") == true && check_next_node_builtin(cmd, HISTORY))
 	{
-		if (current_cmd->next != NULL && current_cmd->next->type != PIPE) //si history pas tout seul
-		{
-			printf("Bash: history %s numeric agument required\n", current_cmd->next->content); 
-			/*Pq on a pas a gerer les option de history (je pense) mais qd tu mets un numero 
-			apres history ca affiche alors que les derniers X elements de history*/
-			
-			//ici : karl devra alors faire current_cmd = current_cmd->next
-			// dans sa fonction	
-		}
+		if (cmd->next && cmd->next->type != PIPE)
+			history(entries, ft_atoi(cmd->next->content));
 		else
-			history(entries);
+			history(entries, -1);
 	}
-	else if (is_this_command(current_cmd->content, "cd") == true)
-		cd(current_cmd, env_list);
-	else if (is_this_command(current_cmd->content, "echo") == true)
-		echo(current_cmd);
-	else if (is_this_command(current_cmd->content, "env") == true)
-		ft_env(env_list, current_cmd, 0);
-	else if (is_this_command(current_cmd->content, "export") == true && check_next_node_builtin(current_cmd, 1))
-		ft_export(current_cmd, env_list);
-	else if (is_this_command(current_cmd->content, "unset") == true && check_next_node_builtin(current_cmd, 1))
-		ft_unset(current_cmd, env_list);
-	else if (is_this_command(current_cmd->content, "exit") == true && check_next_node_builtin(current_cmd, 1))
-	{
-		//il manque free de new_line
-		exit_free(current_cmd, env_list, entries);
-		ft_putendl_fd("exit", STDOUT_FILENO);
-		exit (1); // voir les codes d'exit (127, 8, etc...)
-	}
+	else if (is_this_command(cmd->content, "cd") == true && check_next_node_builtin(cmd, NO_OPTIONS))
+		cd(cmd, env_list);
+	else if (is_this_command(cmd->content, "echo") == true && check_next_node_builtin(cmd, ECHO))
+		echo(cmd);
+	else if (is_this_command(cmd->content, "env") == true && check_next_node_builtin(cmd, ENV))
+		ft_env(env_list, cmd, 0);
+	else if (is_this_command(cmd->content, "export") == true && check_next_node_builtin(cmd, NO_OPTIONS))
+		ft_export(cmd, env_list);
+	else if (is_this_command(cmd->content, "unset") == true && check_next_node_builtin(cmd, NO_OPTIONS))
+		ft_unset(cmd, env_list);
+	else if (is_this_command(cmd->content, "exit") == true && check_next_node_builtin(cmd, NO_OPTIONS))
+		ft_exit();
 }
+
+/* exit:
+ALBAN 3 cas
+
+si le premier argument de exit n'est pas valide:
+- soit pas numerique
+- soit superieur a INT_MAX 
+meme si il y en a deux
+"exit abc def" OR "exit 999999999999"
+bash: exit: abc: numeric argument required
+--> ON EXIT
+
+
+si le premier arg marche( >= 0 && < INT_MAX) mais que le 2eme ne marche pas
+"exit 57 df"
+bash: exit: too many arguments
+--> ON EXIT PAS
+
+
+
+exit (int n)
+
+return (n % 255)
+
+*/
