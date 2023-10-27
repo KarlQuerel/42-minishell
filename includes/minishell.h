@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/27 16:27:17 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/27 18:33:42 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@
 # include <errno.h>
 # include <limits.h>
 
+/*Macros pour signaux*/
+# define IN_PROMPT 0
+# define IN_COMMAND 1
+# define IN_HEREDOC 2
 
 /*Macros*/
 # define COMMAND 0
@@ -106,6 +110,7 @@ typedef struct s_element
 	struct s_element *next;
 	struct s_pipe *exec;
 	struct s_env *env;
+	int		location;
 }	t_element;
 
 /* Environment

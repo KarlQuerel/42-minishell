@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/27 18:02:35 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/27 20:02:46 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,12 @@ de ma structure avant de rentrer dans la while de mon main.
 variable static dans le signal_handler pour stocker l'adresse 
 de ma structure en appelant une fonction qui rend cette adresse.
 
-Define une variable globale avec 4 autres define (int) :
+Define une variable globale avec 5 autres define (int) :
 0 IN_PROMPT
 1 IN_COMMAND
 2 IN_HEREDOC
+// les 2 autres define ne sont peut etre pas obligatoires en fonction de
+notre structure, a voir plus tard.
 
 C'est ces defines auxquels ont doit pouvoir acceder a travers la structure
 dans le signal_handler. Donc les mettre dans une structure deja existante
@@ -36,10 +38,14 @@ Je suppose qu'il faudra le mettre dans t_element du coup il ne faut pas
 la free en entier a chaque boucle while, il faudra free son content mais
 pas toucher a la variable globale qui stock cette info.
 
---> puisque c'est une variable globale pourquoi est-ce qu'on a besoin 
-d'une structure?? autant juste changer la valeur de la variable globale
-en fonction de ou on se trouve ex: a la sortie de l'executable on passe
-de IN_COMMAND a IN_PROMPT.
+---> voir photo aroise dans les favoris sur mon tel pour $? --> la variable
+globale est de type int et recoit le code erreur a afficher (ex: la variable
+globale aura la valeur 130 car a recu un sigint en dernier donc on affichera
+130 si on tape $?
+
+--> le sujet a change : on ne peut utiliser la variable globale que pour
+peu de choses, c'est pour ca qu'on ne l'utilise que pour garder ce num en 
+memoire, et non pour en plus gerer les signaux avec les 3 define plus haut
 ----------------------------------------------------------------------------
 */
 

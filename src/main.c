@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/27 17:34:37 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/27 19:56:14 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,7 @@ int main (int argc, char **argv, char **env)
 	/*J'envoie new_line au lieu de line aux fonctions qui suivent
 	car sur bash qd on fait flèche du haut on retrouve la commande
 	telle qu'elle avait été écrite alors qu'ici on la modifiait*/
-		printf("line = [%s]\n", line);
 		new_line = erase_spaces(line); //line est free ici
-		printf("new_line = [%s]\n", new_line);
 		if (line_errors_and_fix(&new_line) == true)
 		{
 			cmd_list = parsing(new_line, env_list);
