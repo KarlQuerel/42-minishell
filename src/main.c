@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/24 17:20:33 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/27 13:57:19 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,14 +127,11 @@ int main (int argc, char **argv, char **env)
 		cmd_list = parsing(new_line, env_list);
 		//ft_redirect(cmd_list); // a finir
 		//printlist_test(cmd_list);
-		
-		//history(entries);
-
 		ft_execute(cmd_list, env_list, exec, entries);
 		free(new_line); //en commentaire pour tests avec dollar
 		free_cmd_list(cmd_list);
 //--------------------------------
-		env_list = pwd_update_in_env(env_list);
+		env_list = pwd_update_in_env(/* cmd_list,  */env_list);
 		env_list->env = env;
 /* 		temp = find_value_with_key_env(env_list, "PWD");
 		printf("%s\nenv_list->value : %s\n%s", GREEN, temp->value, RESET);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/24 16:49:56 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 15:37:03 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,101 +29,49 @@ char	**split_path(t_env *env)
 	return (res_split);
 }
 
-/* Fills every COMMAND or OPTION type in cmd_tab */
-void	fill_cmd_tab(t_element *cmd, t_pipe *exec)
+/* Fills cmd_tab with the current cmd 
+Stops if it encounters a node with cmd->type PIPE or the end of the list*/
+void	fill_array(t_element *cmd, t_pipe *exec)
 {
 	int	i;
 
 	i = 0;
-	while (cmd)
+	while (cmd && cmd->type != PIPE)
 	{
-		// if (cmd->type == COMMAND/*  || cmd->type == OPTION */) // a changer pour apres
-		if (cmd->type != PIPE)
-		{
-			exec->cmd_tab[i] = ft_calloc(ft_strlen(cmd->content) + 1, sizeof(char));
-			ft_strcpy(exec->cmd_tab[i], cmd->content);
-			//printf("cmd_tab[%d] = %s\n", i, exec->cmd_tab[i]);
-			i++;
-		}
+		exec->cmd_tab[i] = ft_calloc(ft_strlen(cmd->content) + 1, sizeof(char));
+		exec->cmd_tab[i] = ft_strcpy(exec->cmd_tab[i], cmd->content);
 		cmd = cmd->next;
+		i++;
 	}
 	exec->cmd_tab[i] = NULL;
 }
 
-// /* Fills every COMMAND or OPTION type in cmd_tab */
-// void	fill_cmd_tab(t_element *cmd, t_pipe *exec)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (cmd)
-// 	{
-// 		// if (cmd->type == COMMAND/*  || cmd->type == OPTION */) // a changer pour apres
-// 		{
-// 			exec->cmd_tab[i] = ft_calloc(ft_strlen(cmd->content) + 1, sizeof(char));
-// 			ft_strcpy(exec->cmd_tab[i], cmd->content);
-// 			//printf("cmd_tab[%d] = %s\n", i, exec->cmd_tab[i]);
-// 			i++;
-// 		}
-// 		cmd = cmd->next;
-// 	}
-// 	exec->cmd_tab[i] = NULL;
-// }
-
-/* Gets all cmd->type number until the next PIPE */
-int	get_args_nb(t_element *cmd)
+/* Gets the size of the while command for memory allocation */
+int		get_size_cmd(t_element *cmd)
 {
-	int	cmds_and_options;
-	cmds_and_options = 1;
+	int	i = 0;
+	while (cmd)
+	{
+		if (cmd->type != PIPE)
+			i++;
+		cmd = cmd->next;
+	}
+	return (i);
+}
+
+/* Counts the number of pipes */
+int	ft_count_pipes(t_element *cmd)
+{
+	int	pipe_nb;
+	pipe_nb = 0;
 	
 	if (!cmd)
 		return (0);
 	while (cmd)
 	{
-		if (cmd->type != PIPE)
-			cmds_and_options++;
+		if (cmd->type == PIPE)
+			pipe_nb++;
 		cmd = cmd->next;
 	}
-	return (cmds_and_options);
-}
-
-/* Gets COMMAND cmd->type number */
-int	get_cmds_nb(t_element *cmd, t_pipe *exec)
-{
-	exec->cmd_nb = 0;
-	if (!cmd)
-		return (0);
-	while (cmd)
-	{
-		if (cmd->type == COMMAND)
-			exec->cmd_nb++;
-		cmd = cmd->next;
-	}
-	return (exec->cmd_nb);
-}
-
-/* strcpy */
-char	*ft_strcpy(char *dst, char *src)
-{
-	int	i;
-
-	i = 0;
-	while (src[i])
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (dst);
-}
-
-/* prints an array */
-void	ft_print_array(char **arr)
-{
-	int	i = 0;
-	while (arr[i])
-	{
-		printf("arr[%d] = %s\n", i, arr[i]);
-		i++;
-	}
+	return (pipe_nb);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:39:52 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/23 16:09:06 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/25 13:34:49 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	redirecters_error(char *line)
 			printf("bash: syntax error near unexpected token `>'\n");
 		if (i == 1 && line[0] == '<')
 			printf("bash: syntax error near unexpected token `<'\n");
+		//rajouter des if pour verifier que les differents operateurs ne se suivent pas ( | inclus)
 	}
 }
 

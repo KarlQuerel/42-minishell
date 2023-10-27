@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+         #
+#    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/24 17:19:01 by casomarr         ###   ########.fr        #
+#    Updated: 2023/10/27 15:36:29 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,22 @@ OBJ_DIR     := obj
 INCLUDE_DIR := includes
 
 SRCS		:=  src/main.c \
+				src/builtins/builtins_errors.c \
+				src/builtins/cd.c \
+				src/builtins/dollar.c \
+				src/builtins/echo.c \
+				src/builtins/env.c \
+				src/builtins/exit.c \
+				src/builtins/export.c \
+				src/builtins/history.c \
+				src/builtins/pwd.c \
+				src/builtins/unset.c \
+				src/executable/exec.c \
+				src/executable/exec_utils.c \
+				src/executable/exec_errors.c \
+				src/executable/redirect.c \
+				src/executable/exec_continued.c \
+				src/executable/utils.c \
 				src/parsing/commands.c \
 				src/parsing/parsing.c \
 				src/parsing/checks.c \
@@ -44,25 +60,12 @@ SRCS		:=  src/main.c \
 				src/parsing/env_list.c \
 				src/parsing/lstnew.c \
 				src/parsing/free.c \
-				src/executable/exec.c \
-				src/executable/exec_utils.c \
-				src/executable/exec_errors.c \
-				src/executable/redirect.c \
-				src/executable/pipes.c \
-				src/builtins/cd.c \
-				src/builtins/dollar.c \
-				src/builtins/echo.c \
-				src/builtins/env.c \
-				src/builtins/export.c \
-				src/builtins/history.c \
-				src/builtins/pwd.c \
-				src/builtins/unset.c \
-				src/builtins/builtins_errors.c \
 				src/parsing/errors.c \
 				src/parsing/utils.c \
 				src/parsing/malloc.c \
 				src/parsing/cmd_types.c \
 				src/parsing/prompt.c
+				
 
 OBJS 		:= $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))
 OBJS		:= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))

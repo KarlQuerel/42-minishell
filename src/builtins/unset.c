@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/10/23 11:20:32 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/24 19:44:11 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ int	ft_unset(t_element *cmd_list, t_env *env)
 {
 	t_env *tmp;
 	
+	check_next_node_builtin(cmd_list, 1);
 	tmp = env;
 	while (cmd_list && cmd_list->next)
 	{
-		printf("cmd ->next->content = %s\n", cmd_list->next->content);
-		if (!ft_is_valid(cmd_list->next->content) || ft_strchr(cmd_list->next->content, '='))
+		if (!ft_is_valid_key_var(cmd_list->next->content) || ft_strchr(cmd_list->next->content, '='))
 		{
 			ft_putstr_fd("unset: ", STDOUT_FILENO);
 			ft_putstr_fd(cmd_list->next->content, STDOUT_FILENO);

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/24 15:41:53 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 15:37:10 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@
 #include <readline/history.h>
 # include <signal.h>
 # include <sys/wait.h>
-#include <sys/uio.h>
+# include <sys/uio.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <limits.h>
+
 
 /*Macros*/
 # define COMMAND 0
@@ -45,6 +47,12 @@
 # define VALUE 1
 # define CMD 2
 # define STR 3
+
+# define NO_OPTIONS 0
+# define ENV 1
+# define ECHO 2
+# define HISTORY 3
+//# define les autres 3
 
 /* # define HISTORY 0
 # define FREE_HISTORY 1 */
@@ -81,9 +89,8 @@
 --> type is the command type
 --> cmd_tab is an array of all commands (type 0)
 */
-
-
-typedef struct s_history {
+typedef struct s_history
+{
 	int nb;
 	char *cmd;
 	struct s_history *next;
@@ -124,6 +131,7 @@ typedef struct s_env
 typedef struct s_pipe
 {
 	int		here_doc;
+	int		pipe_nb;
 	int		cmd_nb;
 	pid_t		*pid;
 	char	**cmd_tab;
@@ -149,7 +157,7 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list);
 /*------------------PARSING FOLDER------------------*/
 
 /*Commands*/
-void	commands(t_element *current_cmd, t_env *env_list, t_history *entries);
+void	ft_builtins(t_element *cmd, t_env *env_list, t_history *entries);
 bool	is_this_command(char *buffer, char* command);
 int		size_of_command(char *command, int len, int type);
 bool	is_cmd_in_line(char *line, char *cmd);
@@ -240,51 +248,64 @@ void	echo(t_element *current);
 /*Env*/
 void	ft_env(t_env *env, t_element *cmd, int option);
 
+/*Exit*/
+int	ft_exit();
+
 /*Export*/
 int		ft_export(t_element *cmd_list, t_env *env);
-int		ft_is_valid(char *s);
+bool	ft_is_valid_key_var(char *s);
 char 	**new_env_var(char *s);
-int		put_new_var(t_env *env, char *key, char *content);
+int		join_new_var(t_env *env, char *key, char *content);
+void	init_new_var(t_env *env, char *new_var);
 
 /*History*/
 t_history	*ft_add_history(t_history *entries, char *line);
-void		history(t_history *current_entry);
+void		history(t_history *current_entry, int len);
 void		free_history(t_history *current_entry);
 void		lstadd_back_history(t_history *entries, char *line);
 t_history	*ft_lstlast_history(t_history *lst);
 
 /*Pwd*/
-char	*pwd(int option);
-t_env	*pwd_update_in_env(t_env *env_list);
+char	*pwd(/* t_element *cmd, */int option);
+t_env	*pwd_update_in_env(/* t_element *cmd, */t_env *env_list);
 
 /*Unset*/
 int		ft_unset(t_element *cmd_list, t_env *env);
 void	ft_delete_node(t_env *to_delete);
 
 /*Builtins_errors*/
-void	ft_msg_error_builtin(char *s);
+bool	check_next_node_builtin(t_element *cmd, int option);
+bool	ft_is_num(char *s);
+bool	ft_atoi_check(char *str);
 
 /*-----------------EXECUTABLE FOLDER ------------------*/
 
-/*Exec*/
-void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
-void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int i);
-void	mult_commands(t_element *cmd, t_env *env, t_pipe *exec, int i);
-char	*ft_get_command(char **path, char *argument);
-void	ft_close_fd(t_pipe *exec);
-
-/*Exec utils */
-char	**split_path(t_env *env_list);
-int		get_args_nb(t_element *cmd);
-void	fill_cmd_tab(t_element *cmd, t_pipe *exec);
-int		get_cmds_nb(t_element *cmd, t_pipe *exec);
+/*Utils*/
 char	*ft_strcpy(char *dst, char *src);
 void	ft_print_array(char **arr);
 
-/*Pipes*/
-// void	ft_close_pipe(t_pipe *exec);
-void	ft_create_pipe(t_pipe *exec, int *pipe_end);
-int		ft_waitpid(int *pid, int n);
+/*Exec*/
+void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	single_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	middle_pipes(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	last_pipe(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+
+/*Exec_continued*/
+void	middle_dup(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	last_dup(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	handle_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+int		exec_command(t_element *cmd, t_env *env, t_pipe *exec);
+char	*ft_get_command(char **path, char *argument);
+
+/*Exec_errors*/
+void	msg_error(int err);
+
+/*Exec_utils*/
+char	**split_path(t_env *env_list);
+void	fill_array(t_element *cmd, t_pipe *exec);
+int		get_size_cmd(t_element *cmd);
+int		ft_count_pipes(t_element *cmd);
 
 /*Redirect*/
 int		ft_redirect(t_element *s);
@@ -292,12 +313,8 @@ int		ft_infile(char *file);
 int		ft_outfile(t_element *cmd);
 
 // void	ft_remove_var(t_element *cmd_list, t_env *env, char *to_remove);
-int		ft_fork(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, t_history *entries);
-void	ft_dup(t_element *cmd, t_pipe *exec, int pipe_e[2], int fd, t_history *entries);
-void	msg_error(int err);
-int		childrens(t_element *cmd, t_pipe *exec);
 
-// utilitaires du panache
+/* NE PAS EFFACER
 void	ft_close(int *fd);
 void	ft_close_pipe(int pip[2]);
 void	ft_close_all_pipes(t_pipe *exec);
@@ -305,5 +322,10 @@ bool	ft_is_a_pipe_after(t_element *cmd);
 bool	ft_is_a_pipe_before(t_element *cmd);
 bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int i);
 bool	init_pipes(t_pipe *exec);
+void	ft_fork(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int end[2], int fd_in);
+void	ft_dup(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int end[2], int fd_in);
+int		executor(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+int		pipe_wait(int *pid, int amount);
+*/
 
 #endif

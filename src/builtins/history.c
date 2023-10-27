@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:38 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/23 12:25:36 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/27 15:34:19 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,28 @@ t_history	*ft_add_history(t_history *entries, char *line)
 	return (head);
 }
 
-void	history(t_history *current_entry)
+void	history(t_history *current_entry, int len)
 {
-	while(current_entry != NULL)
+	int	i;
+
+	i = 0;
+	if (len >= 0)
 	{
-		printf("%d %s\n", current_entry->nb, current_entry->cmd);
-		current_entry = current_entry->next;
+		while(current_entry != NULL && i < len)
+		{
+			printf("%d %s\n", current_entry->nb, current_entry->cmd);
+			current_entry = current_entry->next;
+			i++;
+		}
+	}
+	else
+	{
+		while(current_entry != NULL)
+		{
+			printf("%d %s\n", current_entry->nb, current_entry->cmd);
+			current_entry = current_entry->next;
+			i++;
+		}
 	}
 }
 

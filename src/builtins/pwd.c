@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/23 16:09:02 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/26 19:26:12 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,24 @@ char	*pwd(int option)
 {
 	char *path;
 
+	
+	/*KARL
+	if (!check_next_node_builtin(cmd, 1))
+	{
+		//free
+		return (NULL);
+	}
+	*/
+
+
+		
+	//on doit envoyer t_element *cmd ici pour check les options cmd->next->type == OPTION
 	path = getcwd(NULL, 0);
 	//if (!path)
 		//printf errno
 	if (option == PRINT)
 		printf("%s\n", path);
+		//ft_putstr_fd(path, STDOUT_FILENO);
 	return (path);
 }
 
