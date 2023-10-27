@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/26 19:26:12 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 17:27:12 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*pwd(int option)
 		//printf errno
 	if (option == PRINT)
 		printf("%s\n", path);
-		//ft_putstr_fd(path, STDOUT_FILENO);
+		//ft_putstr_fd(path, STDOUT_FILENO/* exec->fd[] */); // doit ecrire dans l'enfant exec->fd[0] pwd | wc -l exec->fd ls -a | wc -l fd[i][1]
 	return (path);
 }
 

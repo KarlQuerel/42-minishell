@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:21:09 by karl              #+#    #+#             */
-/*   Updated: 2023/10/24 18:54:37 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 17:08:06 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	ft_env(t_env *env, t_element *cmd, int option)
 		ft_putstr_fd(env->key, STDOUT_FILENO);
 		ft_putstr_fd("=", STDOUT_FILENO);
 		ft_putendl_fd(env->value, STDOUT_FILENO);
-		env = env->next;
+		if (env->next)
+			env = env->next;
 	}
 }

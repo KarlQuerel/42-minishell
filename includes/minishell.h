@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/27 15:37:10 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 17:26:18 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ typedef struct s_env
 	char	*key;
 	char	*value;
 	char	**env;
+	struct s_env *prev;
 	struct s_env *next;
 }	t_env;
 
@@ -136,13 +137,9 @@ typedef struct s_pipe
 	pid_t		*pid;
 	char	**cmd_tab;
 	char	**cmd_path;
-	//int		*pipe_end; //pipe_end[2];
 	// int		fd_infile;
 	// int		fd_outfile;
-	//int		fd_file[2];
-	int		pipe_end[2];
-	int		av_nb;
-	int		**my_pipes; //*pipes[2] chaque pipe a deux fd
+	int		fd[2];
 	char 	**env;
 	struct s_element *cmd;
 	struct s_env *env_s;

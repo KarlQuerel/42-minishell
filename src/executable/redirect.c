@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/13 14:05:17 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 15:48:22 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,6 @@ int	ft_outfile(t_element *cmd)
 
 /* A FAIRE
 -rediriger dans le cas ou la commande est un built in a coder nous meme
-	- echo -n
-	- cd
-	- pwd
-	- export
-	- unset
-	- env
-	- exit
 - les << a gerer
 */
 int	ft_redirect(t_element *s)

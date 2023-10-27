@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/26 20:09:46 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 17:26:33 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	handle_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries
 	
 	if (cmd->builtin == true)
 	{
-		ft_builtins(cmd, env, entries); // on doit envoyer fd ici pour les pipes
+		ft_builtins(cmd, env, entries/* , exec */); // on doit envoyer fd ici pour les pipes, exec->fd
 		return ;
 	}
 	exit_code = 0;

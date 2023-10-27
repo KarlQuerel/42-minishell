@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/27 15:37:19 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 17:13:16 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entrie
 {
 	if (cmd->builtin == true)
 	{
-		commands(cmd, env, entries);
+		ft_builtins(cmd, env, entries);
 		return ;
 	}
 	int	pid;
@@ -179,7 +179,7 @@ void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec, t_history *entr
 {
 	int	i = 0;
 	int	fd_temp; // pour le cas du CTRL+D et heredoc, on gerera apres
-	int	fd[2];
+	int	fd[2]; // exec->fd[2];
 	
 	fd_temp = 0;
 	while (i <= exec->pipe_nb)
