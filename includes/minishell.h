@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/27 15:37:10 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 16:27:17 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ bool	is_this_command(char *buffer, char* command);
 int		size_of_command(char *command, int len, int type);
 bool	is_cmd_in_line(char *line, char *cmd);
 // int 	where_is_cmd_in_line(char *line, char *cmd);
-char	*line_errors_and_fix(char *line, t_env *env_list);
+bool	line_errors_and_fix(char **line);
 
 /*Parsing*/
 void	printlist_test(t_element   *head); //A EFFACER A LA FIN
@@ -197,12 +197,13 @@ void		signal_handler(int signal);
 void		ctrlD(char *line);
 
 /*Errors*/
-void	first_character_error(char *line);
-void	redirecters_error(char *line);
+bool	first_character_error(char *line);
+bool	redirecters_error(char *line);
 void	slash_error(char *line);
 void	pipe_error(char *line);
 void	and_error(char *line);
 void	str_error(char *line);
+bool	pipe_double_or_eof(char *line);
 
 /*Utils*/
 char	*ft_joinstr_minishell(char *line, int len, char *str, char type);

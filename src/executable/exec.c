@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/27 15:37:19 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 15:44:45 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entrie
 {
 	if (cmd->builtin == true)
 	{
-		commands(cmd, env, entries);
+		ft_builtins(cmd, env, entries);
 		return ;
 	}
 	int	pid;

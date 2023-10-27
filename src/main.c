@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/27 13:57:19 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 17:34:37 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,9 @@ int main (int argc, char **argv, char **env)
 	char                *new_line;
 	struct sigaction    signal;
 	t_env				*env_list;
-	//t_env				*new_pwd;
 	t_element			*cmd_list;
-
-	//t_element			*temp;
 	t_pipe				*exec;
 	t_history			*entries;
-	//char				*temp_pwd;
-	//t_env			*temp;
 	
 	exec = ft_calloc(1, sizeof(t_pipe));
 	if (!exec)
@@ -121,24 +116,21 @@ int main (int argc, char **argv, char **env)
 	/*J'envoie new_line au lieu de line aux fonctions qui suivent
 	car sur bash qd on fait flèche du haut on retrouve la commande
 	telle qu'elle avait été écrite alors qu'ici on la modifiait*/
+		printf("line = [%s]\n", line);
 		new_line = erase_spaces(line); //line est free ici
-		new_line = line_errors_and_fix(new_line, env_list);
-	/*SI line_errors_and_fix TROUVE DES ERREURS IL NE FAUDRAIT PAS ENTRER DANS PARSING*/
-		cmd_list = parsing(new_line, env_list);
-		//ft_redirect(cmd_list); // a finir
-		//printlist_test(cmd_list);
-		ft_execute(cmd_list, env_list, exec, entries);
+		printf("new_line = [%s]\n", new_line);
+		if (line_errors_and_fix(&new_line) == true)
+		{
+			cmd_list = parsing(new_line, env_list);
+			//ft_redirect(cmd_list); // a finir
+			//printlist_test(cmd_list);
+			ft_execute(cmd_list, env_list, exec, entries);
+			free_cmd_list(cmd_list);
+		}	
 		free(new_line); //en commentaire pour tests avec dollar
-		free_cmd_list(cmd_list);
 //--------------------------------
 		env_list = pwd_update_in_env(/* cmd_list,  */env_list);
 		env_list->env = env;
-/* 		temp = find_value_with_key_env(env_list, "PWD");
-		printf("%s\nenv_list->value : %s\n%s", GREEN, temp->value, RESET);
-		free(temp->value);
-		temp->value = calloc(ft_strlen(pwd(NO_PRINT)) + 1, sizeof(char));
-		ft_strlcpy(temp->value, pwd(NO_PRINT), ft_strlen(pwd(NO_PRINT) + 1));
-		printf("%s\ntemp->value : %s\n%s", GREEN, temp->value, RESET); */
 		prompt(env_list);
 		line = readline("$ ");
 //--------------------------------
