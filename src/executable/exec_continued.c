@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/27 17:26:33 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 18:23:35 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,31 @@
 #include "../../libft/libft.h"
 
 /* Being on the middle pipes, both fd are being redirected */
-void	middle_dup(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
+void	middle_dup(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 {
-	if (dup2(fd_temp, STDIN_FILENO) < 0)
+	if (dup2(*(exec->fd_temp), STDIN_FILENO) < 0)
 	{
 		perror("dup2");
 		exit(0);
 	}
-	close(fd[0]);
-	if (dup2(fd[1], STDOUT_FILENO) < 0)
+	close(exec->fd[0]);
+	if (dup2(exec->fd[1], STDOUT_FILENO) < 0)
 	{
 		perror("dup2");
 		exit(0);
 	}
-	//close(fd_temp); a garder pour le heredoc apparemment
-	close(fd[1]);
+	//close(*(exec->fd_temp)); a garder pour le heredoc apparemment
+	close(exec->fd[1]);
 	handle_command(cmd, env, exec, entries);
 }
 
 /* Being on the last pipe, only entry fd is being cloned and redirected */
-void last_dup(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
+void last_dup(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 {
-	if (dup2(fd_temp, STDIN_FILENO) < 0)
+	if (dup2(*(exec->fd_temp), STDIN_FILENO) < 0)
 		perror("dup");
-	(void)fd;
-	close(fd_temp);
+	(void)exec->fd;
+	close(*(exec->fd_temp));
 	handle_command(cmd, env, exec, entries);
 }
 

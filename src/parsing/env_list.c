@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:00:17 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/27 16:15:05 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 20:09:59 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,11 @@ t_env	*put_env_in_list(char **env)
 		current->value[i] = '\0';
 		//printf("value = %s\n", current->value);
 		line++;
-		//current->next->prev = current;
+		
 		if (env[line] != NULL)
 		{
 			current->next = lstnew_env(env[line], 0);
+			current->next->prev = current; //ajouter
 			current = current->next;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/27 17:26:18 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 19:41:54 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ typedef struct s_pipe
 	char	**cmd_path;
 	// int		fd_infile;
 	// int		fd_outfile;
+	int		*fd_temp;
 	int		fd[2];
 	char 	**env;
 	struct s_element *cmd;
@@ -268,7 +269,7 @@ t_env	*pwd_update_in_env(/* t_element *cmd, */t_env *env_list);
 
 /*Unset*/
 int		ft_unset(t_element *cmd_list, t_env *env);
-void	ft_delete_node(t_env *to_delete);
+void	ft_delete_node(t_env **head, t_env *to_delete);
 
 /*Builtins_errors*/
 bool	check_next_node_builtin(t_element *cmd, int option);
@@ -285,12 +286,19 @@ void	ft_print_array(char **arr);
 void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
 void	single_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
 void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
-void	middle_pipes(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
-void	last_pipe(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+// void	middle_pipes(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+// void	last_pipe(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+
+void	middle_pipes(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	last_pipe(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
 
 /*Exec_continued*/
-void	middle_dup(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
-void	last_dup(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+// void	middle_dup(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+// void	last_dup(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+
+void	middle_dup(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	last_dup(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+
 void	handle_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
 int		exec_command(t_element *cmd, t_env *env, t_pipe *exec);
 char	*ft_get_command(char **path, char *argument);

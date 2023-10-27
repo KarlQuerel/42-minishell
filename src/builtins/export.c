@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/27 16:33:24 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 18:36:12 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,14 +145,5 @@ int	join_new_var(t_env *env, char *key, char *content)
 	new_var = ft_strjoin(key, to_free); // on join variable avec =hello
 	printf("new_var_env = %s\n", new_var);
 	free(to_free);
-	//init_new_var(env, new_var);
 	return (1);
 }
-
-// void	init_new_var(t_env *env, char *new_var)
-// {
-// 	size_t	size;
-	
-// 	size = ft_strlen(new_var);
-	
-// }

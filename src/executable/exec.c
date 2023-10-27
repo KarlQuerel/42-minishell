@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/27 17:13:16 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 18:29:53 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,16 +178,17 @@ void	single_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries
 void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 {
 	int	i = 0;
-	int	fd_temp; // pour le cas du CTRL+D et heredoc, on gerera apres
-	int	fd[2]; // exec->fd[2];
+	//int	fd_temp; // pour le cas du CTRL+D et heredoc, on gerera apres
+	//int	fd[2]; // exec->fd[2];
 	
-	fd_temp = 0;
+	exec->fd_temp = ft_calloc(1, sizeof(int)); //doit free
+	*(exec->fd_temp) = 0;
 	while (i <= exec->pipe_nb)
 	{
 		fill_array(cmd, exec);
 		if ( i < exec->pipe_nb)
 		{
-			middle_pipes(fd, &fd_temp, cmd, env, exec, entries);
+			middle_pipes(cmd, env, exec, entries);
 			while (cmd->next && cmd->type != PIPE)
 			{
 				cmd = cmd->next;
@@ -200,7 +201,7 @@ void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec, t_history *entr
 			}
 		}
 		else
-			last_pipe(fd, &fd_temp, cmd, env, exec, entries);
+			last_pipe(cmd, env, exec, entries);
 		i++;
 	}
 	wait(NULL); // ou waitpid
@@ -209,30 +210,30 @@ void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec, t_history *entr
 /* Handles all middle pipes behaviour
 --- Calls middle_dup function if child process is created 
 ---	If fd_temp exists, we dup the reading fd and assigns it to fd_temp*/
-void	middle_pipes(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
+void	middle_pipes(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 {
 	int	pid;
 
-	if (pipe(fd) < 0)
+	if (pipe(exec->fd) < 0)
 		perror("Pipe");
 	pid = fork();
 	if (pid < 0)
 		perror("Fork");
 	if (pid == 0)
-		middle_dup(fd, *fd_temp, cmd, env, exec, entries);
+		middle_dup(cmd, env, exec, entries);
 	else
 	{
-		if (*fd_temp)
-			close(*fd_temp);
-		*fd_temp = dup(fd[0]);
-		close(fd[0]);
-		close(fd[1]); // nouveau
+		if (*(exec->fd_temp))
+			close(*(exec->fd_temp));
+		*(exec->fd_temp) = dup(exec->fd[0]);
+		close(exec->fd[0]);
+		close(exec->fd[1]); // nouveau
 		waitpid(pid, NULL, 0); // ca change rien avec ou sans
 	}
 }
 
 /* Handles last pipe behaviour */
-void	last_pipe(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
+void	last_pipe(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 {
 	int	pid;
 
@@ -240,12 +241,12 @@ void	last_pipe(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, 
 	if (pid < 0)
 		perror("fork");
 	if (pid == 0)
-		last_dup(fd, *fd_temp, cmd, env, exec, entries);
+		last_dup(cmd, env, exec, entries);
 	else
 	{
-		if (*fd_temp)
-			close(*fd_temp);
-		close(fd[0]);
+		if (*(exec->fd_temp))
+			close(*(exec->fd_temp));
+		close(exec->fd[0]);
 		waitpid(pid, NULL, 0);
 	}
 }
