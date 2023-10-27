@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
 /*   Updated: 2023/10/27 15:37:19 by kquerel          ###   ########.fr       */
@@ -70,7 +70,48 @@ TO DO:
 		for the new program.
 --- Waitpid waits for the process to end before continuing.
  */
-
+void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int i)
+{
+	if (cmd->builtin == true)
+	{
+		commands(cmd, env, entries);
+		return ;
+	}
+	int	pid;
+	if (cmd->content[i] == '\0')
+		return ;
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork:");
+		//free
+		exit(EXIT_FAILURE);
+	}
+	if (pid == 0)
+	{
+	exec->cmd_path = split_path(env);
+	if (!exec->cmd_path)
+	{
+		printf("Split_path failed\n");
+		// free des trucs
+	}
+	cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[i]);
+	if (!cmd->content)
+	{
+		if (!exec->cmd_tab[i])
+			ft_putstr_fd("\n", 2);
+		else
+		{
+			ft_putstr_fd(exec->cmd_tab[i], 2);
+			ft_putstr_fd(": command not found\n", 2);
+		}
+	}
+	//ft_print_array(exec->cmd_tab);
+	if (execve(cmd->content, exec->cmd_tab, env->env) == -1)
+		ft_putstr_fd("execve failed\n", STDOUT_FILENO);
+	}
+	waitpid(pid, NULL, 0);
+}
 
 /* Handles the execution part
 --- Gets size_cmd to alloc memory accordingly

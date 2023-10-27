@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/24 16:34:33 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/24 17:40:27 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	signal_handler(int signal/*, char *line*/)
 	{
 		/*qd je fais ctrl + C alors qu'aucune commande n'est en cours
 		(ex de commande en cours : "cat" tout seul) le prompt devient 
-		juste un dollar : devrait juste renvoyer le prompt normal*/
+		juste un dollar : devrait juste renvoyer le prompt normal.
+		Je dois tjrs taper entree apres le dollar pour retomber sur le prompt*/
 		ft_putchar_fd('\n', STDERR_FILENO);
 		rl_on_new_line();
 		rl_replace_line("", 0); /*ecrire le prompt la dedans ne marche pas non plus,
@@ -37,7 +38,8 @@ void	signal_handler(int signal/*, char *line*/)
 		// else 
 		//{
 			/*cette partie marche bien sauf qd plusieurs ctrl \ a la suite a pres 
-			avoir stop une commande en cours*/
+			avoir stop une commande en cours.
+			Je dois taper entree apres le dollar pour retomber sur le prompt*/
 			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 			rl_on_new_line();
 			rl_replace_line("", 0);
