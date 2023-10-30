@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:39:52 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/27 17:31:33 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/30 14:49:13 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -28,7 +28,7 @@ bool	first_character_error(char *line)
 		and_error(line);
 	else if (line[0] == '\'' || line[0] == '\"')
 		str_error(line);
-	else if (line[0] == '$')
+	else if (line[0] == '$' && line[1] != '?')
 		printf("Command not found\n"); //sur bash ca met en plus le nom du user : avant l erreur mais je sais pas si c est necessaire
 	else
 		status = true;
@@ -153,12 +153,12 @@ bool	pipe_double_or_eof(char *line)
 	{
 		if(line[i] == '|' && line[i + 1] == '|')
 		{
-			ft_putendl_fd("bash: syntax error : ||", STDERR_FILENO);
+			ft_putendl_fd("bash: syntax error near unexpected token `||'", STDERR_FILENO);
 			return (false);
 		}
 		i++;
 	}
-	if (line[i] == '|')
+	if (line[ft_strlen(line) - 1] == '|')
 	{
 		ft_putendl_fd("bash: syntax error : | at end of line", STDERR_FILENO);
 		return (false);

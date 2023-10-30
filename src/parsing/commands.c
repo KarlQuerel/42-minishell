@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/27 18:24:56 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/30 17:46:55 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -104,6 +104,8 @@ void	ft_builtins(t_element *cmd, t_env *env_list, t_history *entries)
 		ft_export(cmd, env_list);
 	else if (is_this_command(cmd->content, "unset") == true && check_next_node_builtin(cmd, NO_OPTIONS))
 		ft_unset(cmd, env_list);
+	else if (is_this_command(cmd->content, "$?") == true && check_next_node_builtin(cmd, NO_OPTIONS))
+		ft_dollar_question_mark(env_list);
 	else if (is_this_command(cmd->content, "exit") == true && check_next_node_builtin(cmd, NO_OPTIONS))
 		ft_exit();
 }

@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:00:17 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/27 20:09:59 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/30 17:32:31 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -70,7 +70,7 @@ t_env	*find_value_with_key_env(t_env *env_list, char *key)
 		}
 		env_list = env_list->next;
 	}
-	return (env_list);
+	return (NULL);
 }
 
 /*Checks if the arg following $ in the command line has a 

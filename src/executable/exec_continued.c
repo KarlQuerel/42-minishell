@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec_continued.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/27 18:23:35 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/30 19:15:20 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -48,17 +48,29 @@ void last_dup(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 */
 void	handle_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 {
-	int	exit_code;
+	//int	exit_code;
 	
 	if (cmd->builtin == true)
 	{
 		ft_builtins(cmd, env, entries/* , exec */); // on doit envoyer fd ici pour les pipes, exec->fd
 		return ;
 	}
-	exit_code = 0;
+	//exit_code = 0;
+	// if (exec->cmd_tab[0][0] != '\0')
+	// 	exit_code = exec_command(cmd, env, exec);
+	// printf("exit_code = %d\n", exit_code);
+	// exit(exit_code); // utile pour le $? // on doit peut etre free des trucs dans le child
 	if (exec->cmd_tab[0][0] != '\0')
-		exit_code = exec_command(cmd, env, exec);
-	exit(exit_code);
+		ft_set_exit_status(env, exec_command(cmd, env, exec));
+	
+	// int i = 0;
+	// while (env)
+	// {
+	// 	printf("env->exit_status[%d] = %d\n", i, env->exit_status);
+	// 	i++;
+	// 	env = env->next;
+	// }
+	exit(env->exit_status);
 }
 
 /* Executes the command
@@ -77,12 +89,18 @@ void	handle_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries
  */
 int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
+	
+	
+	// gerer /usr/bin/ls
+	//printf("-----cmd->content = %s\n", cmd->content);
+	if (ft_strchr(cmd->content, '/'))
+		execve(cmd->content, exec->cmd_tab, env->env);
 	exec->cmd_path = split_path(env);
 	if (!exec->cmd_path)
 	{
 		printf("Split_path failed\n");
 		// free des trucs
-		return (0);
+		return (127);
 	}
 	cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
 	if (!cmd->content)
@@ -95,7 +113,7 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 			ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
 			ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		}
-		return (1);
+		return (127);
 	}
 	//ft_print_array(exec->cmd_tab); // to test what is sent to execve
 	if (execve(cmd->content, exec->cmd_tab, env->env) == -1)
@@ -104,7 +122,7 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 		//perror("bash");
 		//strerror(errno); --> a utiliser, par exemple chmod 000 ./exec
 	}
-	return (1); //return a exit code, faire une fonction cmd not found
+	return (127); //return a exit code, faire une fonction cmd not found
 }
 
 /* Joins every splitted string from the PATH= env variable with the command

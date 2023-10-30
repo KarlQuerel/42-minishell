@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   lstnew.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/27 20:10:19 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/30 17:33:02 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -44,11 +44,12 @@ t_env	*lstnew_env(char *line, int i)
 	// new -> key = malloc(sizeof(char) * size_of_command(line, i, KEY));
 	/*LIGNE DU DESSOUS : j'ai mis + 100 pour regler les pb de valgrind mais 
 	je ne peux pas le laisser comme ca!!*/
-	new -> key = ft_calloc(size_of_command(line, i, KEY), sizeof(char));
-	// new -> value = malloc(sizeof(char) * size_of_command(line, i, VALUE));
-	new -> value = ft_calloc(size_of_command(line, i, VALUE), sizeof(char));
+	new->key = ft_calloc(size_of_command(line, i, KEY), sizeof(char));
+	// new->value = malloc(sizeof(char) * size_of_command(line, i, VALUE));
+	new->value = ft_calloc(size_of_command(line, i, VALUE), sizeof(char));
 	new->prev = NULL;
-	new -> next = NULL;
+	new->next = NULL;
+	new->exit_status = 0;
 	return (new);
 }
 

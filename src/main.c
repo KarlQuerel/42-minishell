@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/27 19:56:14 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/30 17:22:46 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 
 #include "../includes/minishell.h"
@@ -76,7 +76,8 @@ int main (int argc, char **argv, char **env)
 	t_element			*cmd_list;
 	t_pipe				*exec;
 	t_history			*entries;
-	
+
+
 	exec = ft_calloc(1, sizeof(t_pipe));
 	if (!exec)
 	{
@@ -109,6 +110,7 @@ int main (int argc, char **argv, char **env)
 //--------------------------------
 	while (1)
 	{
+		//global_location = IN_PROMPT;
 /* 		if (commande en cours)
 			ctrlD(line); */
 		entries = ft_add_history(entries, line);
@@ -128,6 +130,9 @@ int main (int argc, char **argv, char **env)
 		free(new_line); //en commentaire pour tests avec dollar
 //--------------------------------
 		env_list = pwd_update_in_env(/* cmd_list,  */env_list);
+		/*
+		dans le cas ou karl unset pwd, le prompt doit juste afficher $
+		*/
 		env_list->env = env;
 		prompt(env_list);
 		line = readline("$ ");

@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/27 17:27:12 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/30 13:22:14 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -43,10 +43,23 @@ char	*pwd(int option)
 t_env	*pwd_update_in_env(t_env *env_list)
 {
 	t_env	*temp;
-	
-	temp = find_value_with_key_env(env_list, "PWD");
-	free(temp->value);
-	temp->value = ft_calloc(ft_strlen(pwd(NO_PRINT)) + 100, sizeof(char));
-	ft_strlcpy(temp->value, pwd(NO_PRINT), ft_strlen(pwd(NO_PRINT)) + 1);
-	return(env_list);
+
+	if (is_key_in_env(env_list, "PWD"))
+	{
+		temp = find_value_with_key_env(env_list, "PWD");
+		free(temp->value);
+		temp->value = ft_calloc(ft_strlen(pwd(NO_PRINT)) + 100, sizeof(char));
+		ft_strlcpy(temp->value, pwd(NO_PRINT), ft_strlen(pwd(NO_PRINT)) + 1);
+	}
+	return (env_list);
 }
+
+// void	pwd_update_in_env(t_env **env_list)
+// {
+// 	t_env	**temp;
+	
+// 	temp = find_value_with_key_env(env_list, "PWD");
+// 	free(temp->value);
+// 	temp->value = ft_calloc(ft_strlen(pwd(NO_PRINT)) + 100, sizeof(char));
+// 	ft_strlcpy(temp->value, pwd(NO_PRINT), ft_strlen(pwd(NO_PRINT)) + 1);
+// }

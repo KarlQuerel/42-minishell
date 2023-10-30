@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   builtins_errors.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:39:41 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/27 15:34:28 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/30 14:44:39 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -22,10 +22,10 @@ bool	check_next_node_builtin(t_element *cmd, int option)
 	t_element *head;
 
 	head = cmd;
-	
+
 	if (option == NO_OPTIONS)
 	{
-		while (cmd)
+		while (cmd && cmd->type != PIPE)
 		{
 			if (cmd->type == OPTION)
 			{
@@ -38,7 +38,7 @@ bool	check_next_node_builtin(t_element *cmd, int option)
 	}
 	else if (option == ENV)
 	{
-		if (cmd->next)
+		if (cmd->next && cmd->next->type != PIPE) // ajoute  && cmd->next->type != PIPE
 		{
 			ft_putendl_fd("env cannot take arguments nor options", STDERR_FILENO);
 			return (false);
@@ -65,7 +65,7 @@ bool	check_next_node_builtin(t_element *cmd, int option)
 			ft_putendl_fd("echo only accepts option -n", STDERR_FILENO);
 			return (false);
 		}
-		if (cmd->next && cmd->next->type == OPTION && cmd->next->next && cmd->next->next->type != ARGUMENT)
+		if ((cmd->next && cmd->next->type == OPTION && ((cmd->next->next && cmd->next->next->type != ARGUMENT) || cmd->next->next == NULL)))
 		{
 			ft_putstr_fd("", STDOUT_FILENO); // envoyez au pipe suivant
 			return (false);

@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/27 19:41:54 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/30 19:40:13 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 /*Libraries*/
 
@@ -36,6 +36,9 @@
 # define IN_PROMPT 0
 # define IN_COMMAND 1
 # define IN_HEREDOC 2
+
+//extern int	global_location;
+//extern int	g_exit_status;
 
 /*Macros*/
 # define COMMAND 0
@@ -110,7 +113,7 @@ typedef struct s_element
 	struct s_element *next;
 	struct s_pipe *exec;
 	struct s_env *env;
-	int		location;
+	//int		location; //pour les signaux
 }	t_element;
 
 /* Environment
@@ -125,6 +128,7 @@ typedef struct s_env
 	char	**env;
 	struct s_env *prev;
 	struct s_env *next;
+	int		exit_status;
 }	t_env;
 
 /* To handles pipes
@@ -241,7 +245,7 @@ size_t	size_of_word(char *path, int i);
 
 /*Dollar*/
 char	*dollar(char *content, t_env *env_list);
-void	ft_env(t_env *env, t_element *cmd, int option);
+void	ft_dollar_question_mark(t_env *env);
 
 /*Echo*/
 //int 	skip(char *line, int i, int option);
@@ -272,6 +276,7 @@ t_history	*ft_lstlast_history(t_history *lst);
 /*Pwd*/
 char	*pwd(/* t_element *cmd, */int option);
 t_env	*pwd_update_in_env(/* t_element *cmd, */t_env *env_list);
+//void	pwd_update_in_env(t_env **env_list);
 
 /*Unset*/
 int		ft_unset(t_element *cmd_list, t_env *env);
@@ -292,6 +297,7 @@ void	ft_print_array(char **arr);
 void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
 void	single_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
 void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	ft_set_exit_status(t_env *env, int status);
 // void	middle_pipes(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
 // void	last_pipe(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
 

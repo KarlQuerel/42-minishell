@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:07:47 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/23 15:05:54 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/30 17:45:35 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -50,7 +50,7 @@ bool	quotes_can_close(char *line)
 bool		is_builtin(char *cmd_content)
 {
 	int		i;
-	char	*builtins[8];
+	char	*builtins[9];
 	
 	builtins[0] = "echo";
 	builtins[1] = "cd";
@@ -60,8 +60,9 @@ bool		is_builtin(char *cmd_content)
 	builtins[5] = "env";
 	builtins[6] = "exit";
 	builtins[7] = "history";
+	builtins[8] = "$?";
 	i = 0;
-	while(i < 8)
+	while(i < 9)
 	{
 		if (ft_strncmp(cmd_content, builtins[i], ft_strlen(cmd_content)) == 0 && \
 		ft_strlen(cmd_content) == ft_strlen(builtins[i]))

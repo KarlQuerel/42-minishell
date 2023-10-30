@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/27 20:02:46 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/30 14:55:19 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -49,6 +49,10 @@ memoire, et non pour en plus gerer les signaux avec les 3 define plus haut
 ----------------------------------------------------------------------------
 */
 
+//Karl
+// --> gerer l'exit code dans une variable globale pour les signaux (exit)
+	// man waitpid, regarder tous les WIF et wstatus
+
 /* void	signal_handler(int signal, \
 siginfo_t *info, void *ucontext) */
 void	signal_handler(int signal/*, char *line*/)
@@ -59,11 +63,18 @@ void	signal_handler(int signal/*, char *line*/)
 		(ex de commande en cours : "cat" tout seul) le prompt devient 
 		juste un dollar : devrait juste renvoyer le prompt normal.
 		Je dois tjrs taper entree apres le dollar pour retomber sur le prompt*/
-		ft_putchar_fd('\n', STDERR_FILENO);
-		rl_on_new_line();
-		rl_replace_line("", 0); /*ecrire le prompt la dedans ne marche pas non plus,
-		et en plus on ne peut pas passer de variables dans signal_handler*/
-		rl_redisplay();
+		// if (global_location == IN_PROMPT)
+		// {
+		// 	printf("test\n");
+		// }
+		// else
+		// {
+			ft_putchar_fd('\n', STDERR_FILENO);
+			rl_on_new_line();
+			rl_replace_line("", 0); /*ecrire le prompt la dedans ne marche pas non plus,
+			et en plus on ne peut pas passer de variables dans signal_handler*/
+			rl_redisplay();
+		// }
 	}
     else if (signal == SIGQUIT) // ctrl + '\'
     {
@@ -71,10 +82,17 @@ void	signal_handler(int signal/*, char *line*/)
 		avoir stop une commande en cours.
 		Je dois taper entree apres le dollar pour retomber sur le prompt alors que
 		je devrais juste l'ignorer si pas de cmd en execution*/
-		ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		// if (global_location == IN_PROMPT)
+		// {
+		// 	printf("test\n");
+		// }
+		// else
+		// {
+			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			rl_redisplay();
+		// }
     }
 }
 

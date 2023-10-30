@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:35 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/27 14:12:23 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/30 15:26:37 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -76,7 +76,7 @@ void	echo(t_element *current)
 		if (type == STR)
 			print_skiping_quotes(current->content);
 		else
-			printf("%s", current->content);
+			printf("%s", current->content); //echo 'caro ne print pas l'apostrophe, idem pour "caro
 		if (current->next != NULL)
 			printf(" ");
 		current = current->next;

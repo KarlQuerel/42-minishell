@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/10/27 20:03:10 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/30 13:49:59 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -104,15 +104,17 @@ void	ft_delete_node(t_env **head, t_env *to_delete)
 		tmp = to_delete->next;
 		tmp->prev = to_delete->prev;
 		//to_delete->next->prev = to_delete->prev;
-		//to_delete->prev->next = to_delete->next;
+		to_delete->prev->next = to_delete->next;
 	}
 	else if (to_delete->next == NULL && to_delete->prev)
 	{
 		tmp = to_delete->prev;
-		tmp->next = NULL;		
-	} // a la fin
+		tmp->next = NULL;
+	}
 	free(to_delete->key);
+	to_delete->key = NULL;
 	free(to_delete->value);
+	to_delete->value = NULL;
 	free(to_delete);
 	to_delete = NULL;
 	return ;

@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/23 16:08:57 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/10/30 19:05:03 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -41,4 +41,19 @@ char	*dollar(char *content, t_env *env_list)
 	}
 	free(key_to_find);
 	return (content);
+}
+
+void	ft_dollar_question_mark(t_env *env)
+{
+	ft_putstr_fd("bash: ", STDOUT_FILENO);
+	ft_putstr_fd(ft_itoa(env->exit_status), STDOUT_FILENO);
+	ft_putendl_fd(": command not found", STDOUT_FILENO);
+	// FREE ITOA
+
+	//mettre les exit status dans une variable globale
+
+	// 	si c'est $?, cas special
+	// les signaux prennent 125 + l'int que rend le signal
+	// CTRL + C = 5 + 125 = 130
+	// 127 command not found (+2)
 }
