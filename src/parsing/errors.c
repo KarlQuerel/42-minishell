@@ -3,18 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:39:52 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/25 13:34:49 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 17:31:33 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-void	first_character_error(char *line)
+bool	first_character_error(char *line)
 {
+	bool	status;
+	
+	status = false;
 	if (line[0] == '<' || line[0] == '>')
 		redirecters_error(line);
 	else if (line[0] == '/')
@@ -27,29 +30,45 @@ void	first_character_error(char *line)
 		str_error(line);
 	else if (line[0] == '$')
 		printf("Command not found\n"); //sur bash ca met en plus le nom du user : avant l erreur mais je sais pas si c est necessaire
+	else
+		status = true;
+	return (status);
 }
 
-void	redirecters_error(char *line)
+bool	redirecters_error(char *line)
 {
 	int	i;
-
+	
 	i = 0;
-	if (ft_strlen(line) <= 2)
-		printf("bash: syntax error near unexpected token `newline'\n");
-	if (ft_strlen(line) > 2)
+	if (ft_strlen(line) <= 2 && (is_cmd_in_line(line, "<") || is_cmd_in_line(line, ">")))
 	{
-		while (line[i] != ' ')
-			i++;
-		if (i > 1 && line[0] == '>')
-			printf("bash: syntax error near unexpected token `>>'\n");
-		if (i > 1 && line[0] == '<')
-			printf("bash: syntax error near unexpected token `<<'\n");
-		if (i == 1 && line[0] == '>')
-			printf("bash: syntax error near unexpected token `>'\n");
-		if (i == 1 && line[0] == '<')
-			printf("bash: syntax error near unexpected token `<'\n");
-		//rajouter des if pour verifier que les differents operateurs ne se suivent pas ( | inclus)
+		printf("bash: syntax error near unexpected token `newline'\n");
+		return (false);
 	}
+	else if (ft_strlen(line) > 2)
+	{
+		if (line[0] == '>' && line[1] == '>')
+		{
+			printf("bash: syntax error near unexpected token `>>'\n");
+			return (false);
+		}	
+		else if (line[0] == '<' && line[1] == '<')
+		{
+			printf("bash: syntax error near unexpected token `<<'\n");
+			return (false);
+		}	
+		else if (line[0] == '>')
+		{
+			printf("bash: syntax error near unexpected token `>'\n");
+			return (false);
+		}	
+		else if (line[0] == '<')
+		{
+			printf("bash: syntax error near unexpected token `<'\n");
+			return (false);
+		}	
+	}
+	return (true);
 }
 
 void	slash_error(char *line)
@@ -123,4 +142,26 @@ void	str_error(char *line)
 	str[j] = '\0';
 	printf("%s : command not found\n", str);
 	free(str);
+}
+
+bool	pipe_double_or_eof(char *line)
+{
+	int	i;
+
+	i = 0;
+	while(line[i])
+	{
+		if(line[i] == '|' && line[i + 1] == '|')
+		{
+			ft_putendl_fd("bash: syntax error : ||", STDERR_FILENO);
+			return (false);
+		}
+		i++;
+	}
+	if (line[i] == '|')
+	{
+		ft_putendl_fd("bash: syntax error : | at end of line", STDERR_FILENO);
+		return (false);
+	}
+	return (true);
 }

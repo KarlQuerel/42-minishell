@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/27 14:46:50 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/10/27 18:24:56 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,17 @@
 /*The first two "if" check if there are errors in the grammar of the command
 line and print the associated error. The last function replaces the $ by its
 associated value so that the executable receives directly the line completed.*/
-char	*line_errors_and_fix(char *line, t_env *env_list)
+bool	line_errors_and_fix(char **line)
 {
-	if (!line)
+	if (!*line)
 		return (NULL);
-	// fin
-	(void)env_list;
-	
-	if (is_cmd_in_line(line, ">") == true || is_cmd_in_line(line, "<") == true)
-		redirecters_error(line);
-	else if (line[0] == '<' || line[0] == '>' || \
-	line[0] == '/' || line[0] == '|' || line[0] == '&' || \
-	line[0] == '\'' || line[0] == '\"')
-		first_character_error(line);
-	return (line);
+	if (redirecters_error(*line) == false)
+		return (false);
+	if (first_character_error(*line) == false)
+		return (false);
+	if (pipe_double_or_eof(*line) == false)
+		return (false);
+	return (true);
 }
 
 /*Checks if what is written in the command line corresponds to a command.*/
