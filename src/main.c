@@ -6,13 +6,17 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/30 17:22:46 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/31 17:42:23 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 
 #include "../includes/minishell.h"
 #include "../libft/libft.h"
+
+
+// int g_signals;
+t_global g_signals;
 
 //faire perror("Error") plutot que des printf pour toutes les fonctions qui utilisent errno
 //utiliser ft_putstr_fd au lieu de printf
@@ -71,7 +75,7 @@ int main (int argc, char **argv, char **env)
 {
 	char                *line;
 	char                *new_line;
-	struct sigaction    signal;
+	//struct sigaction    signal;
 	t_env				*env_list;
 	t_element			*cmd_list;
 	t_pipe				*exec;
@@ -84,13 +88,16 @@ int main (int argc, char **argv, char **env)
 		perror("exec");
 		exit(EXIT_FAILURE);
 	}
-	sigemptyset(&signal.sa_mask);
-	// signal.sa_flags = SA_SIGINFO;
-	signal.sa_flags = SA_RESTART;
-	signal.sa_handler = &signal_handler;
-	if (sigaction(SIGINT, &signal, NULL) == -1 || \
-	sigaction(SIGQUIT, &signal, NULL) == -1)
-		return (EXIT_FAILURE);
+	// sigemptyset(&signal.sa_mask);
+	// // signal.sa_flags = SA_SIGINFO;
+	// signal.sa_flags = SA_RESTART;
+	// signal.sa_handler = &signal_handler;
+	// if (sigaction(SIGINT, &signal, NULL) == -1 || \
+	// sigaction(SIGQUIT, &signal, NULL) == -1)
+	// 	return (EXIT_FAILURE);
+
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
 
 	(void)argv;
 	if (argc != 1)
@@ -110,7 +117,7 @@ int main (int argc, char **argv, char **env)
 //--------------------------------
 	while (1)
 	{
-		//global_location = IN_PROMPT;
+		g_signals.location = IN_PROMPT;
 /* 		if (commande en cours)
 			ctrlD(line); */
 		entries = ft_add_history(entries, line);

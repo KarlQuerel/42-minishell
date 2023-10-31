@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/30 17:33:02 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/31 14:14:27 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -49,7 +49,6 @@ t_env	*lstnew_env(char *line, int i)
 	new->value = ft_calloc(size_of_command(line, i, VALUE), sizeof(char));
 	new->prev = NULL;
 	new->next = NULL;
-	new->exit_status = 0;
 	return (new);
 }
 

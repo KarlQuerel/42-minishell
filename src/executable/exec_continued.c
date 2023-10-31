@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/30 19:15:20 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/31 18:36:04 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -48,29 +48,15 @@ void last_dup(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 */
 void	handle_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 {
-	//int	exit_code;
-	
 	if (cmd->builtin == true)
 	{
 		ft_builtins(cmd, env, entries/* , exec */); // on doit envoyer fd ici pour les pipes, exec->fd
 		return ;
 	}
-	//exit_code = 0;
-	// if (exec->cmd_tab[0][0] != '\0')
-	// 	exit_code = exec_command(cmd, env, exec);
-	// printf("exit_code = %d\n", exit_code);
-	// exit(exit_code); // utile pour le $? // on doit peut etre free des trucs dans le child
+	// on doit peut etre free des trucs dans le child
 	if (exec->cmd_tab[0][0] != '\0')
-		ft_set_exit_status(env, exec_command(cmd, env, exec));
-	
-	// int i = 0;
-	// while (env)
-	// {
-	// 	printf("env->exit_status[%d] = %d\n", i, env->exit_status);
-	// 	i++;
-	// 	env = env->next;
-	// }
-	exit(env->exit_status);
+		g_signals.exit_status = exec_command(cmd, env, exec);
+	exit(g_signals.exit_status);
 }
 
 /* Executes the command

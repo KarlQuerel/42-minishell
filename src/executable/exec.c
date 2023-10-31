@@ -6,12 +6,15 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/30 19:44:37 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/31 18:44:04 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
+
+
+// extern t_global g_signals;
 
 /*
 -- CARO :
@@ -19,6 +22,8 @@
 	-- on gere pas
 	echo -nnnnnnnnnnnnnnn ca marche par contre echo -nnnnnnnnnt doit print le -nnnnnnnnt
 
+
+KARL A GERER
 --> segfault: gerer les fd -- voir cas Alban
 	"ls -a | wc -l | exit"
 	"ls -a | echo hi | wc -l"
@@ -28,84 +33,14 @@
 -- faire en sorte que tous les builtins prennent t_cmd pour check next node builtin
 	--> du coup plus besoin mais peut etre plus tard, je le laisse la dans le doute
 
---> gerer l'exit code dans une variable globale pour les signaux (exit)
-	man waitpid, regarder tous les WIF et wstatus
-
 --> /usr/bin/ls
 
-
-	utiliser strerror;
-	
-
-	
 TO DO:
 - gerer open et HEREDOC, en dernier
 - redirections
-- finir export et unset (env ne change pas)
+- finir export (n'ajoute pas de var a env)
 */
-
 //---------------------------------------------------------------------------------------------------------
-
-
-/* Executes the command
----	If a builtin is detected, redirects to commands to avoid sending it 
-	to execve.
----	split_path returns the "PATH=" variable from env, split the string by :
-	and assigns it to cmd_path.
----	ft_get_command tests all paths variable from cmd_path, joins it with
-	the command cmd_tab[i] and tests its validity with access.
----	Execve replaces the existing process by the program within his first argument
-	1st arg: cmd->content, pointer to a string that specifies the path
-		to the exec file, can be binary or script file.
-	2nd arg: array of strings (char **) representing the command-line of arguments
-		of the new program.
-	3st arg: array of strings (char **) representing the environment variables
-		for the new program.
---- Waitpid waits for the process to end before continuing.
- */
-// void	execute_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int i)
-// {
-// 	if (cmd->builtin == true)
-// 	{
-// 		ft_builtins(cmd, env, entries);
-// 		return ;
-// 	}
-// 	int	pid;
-// 	if (cmd->content[i] == '\0')
-// 		return ;
-// 	pid = fork();
-// 	if (pid < 0)
-// 	{
-// 		perror("fork:");
-// 		//free
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	if (pid == 0)
-// 	{
-// 	exec->cmd_path = split_path(env);
-// 	if (!exec->cmd_path)
-// 	{
-// 		printf("Split_path failed\n");
-// 		// free des trucs
-// 	}
-// 	cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[i]);
-// 	if (!cmd->content)
-// 	{
-// 		if (!exec->cmd_tab[i])
-// 			ft_putstr_fd("\n", 2);
-// 		else
-// 		{
-// 			ft_putstr_fd(exec->cmd_tab[i], 2);
-// 			ft_putstr_fd(": command not found\n", 2);
-// 		}
-// 	}
-// 	//ft_print_array(exec->cmd_tab);
-// 	if (execve(cmd->content, exec->cmd_tab, env->env) == -1)
-// 		ft_putstr_fd("execve failed\n", STDOUT_FILENO);
-// 	}
-// 	waitpid(pid, NULL, 0);
-// }
-
 /* Handles the execution part
 --- Gets size_cmd to alloc memory accordingly
 --- Gets the amount of pipe to detect if we need to create childs.
@@ -118,9 +53,7 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 	int	i;
 	int	size_cmd;
 
-	//CARO
-	// global_location = IN_COMMAND;
-	
+	g_signals.location = IN_COMMAND;
 	if (!cmd)
 		return ;
 	i = 0;
@@ -161,64 +94,32 @@ void	single_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries
 	}
 	if (pid == 0)
 		handle_command(cmd, env, exec, entries);
-	// int i = 0;
-	// while (env)
-	// {
-	// 	printf("env->exit_status[%d] = %d\n", i, env->exit_status);
-	// 	i++;
-	// 	env = env->next;
-	// }
 	if (waitpid(pid, &status, 0) == -1)
 	{
 		perror("waitpid");
 		return ;
 	}
+	//si execve marche normalement 
 	if (WIFEXITED(status))
-		ft_set_exit_status(env, WEXITSTATUS(status));
-	
-	//WIFEXITED doit aussi etre present dans multiples_commands
-
-
-	// signaux pour caro
-	// if (WIFEXITED(status))
-	// 	g_global.error_num = WEXITSTATUS(status);
-	
-	
-	/*
-
-	"cat"
-	"CTRL C"
-	on doit avoir 130
-	int	status;
-	if (WIFEXITED(status))
-		ft_set_exit_status(env, WEXITSTATUS(status));
-	*/
-}
-
-void	ft_set_exit_status(t_env *env, int status)
-{
-	t_env *tmp;
-
-	tmp = env;
-	while (tmp)
-	{
-		tmp->exit_status = status;
-		tmp = tmp->next;
-	}
+		g_signals.exit_status = WEXITSTATUS(status);
+	// si un signal interrompt execve
+	else if (WIFSIGNALED(status))
+		g_signals.exit_status = 128 + WTERMSIG(status);
+	else
+		g_signals.exit_status = status;
 }
 
 /* Separates the pipes according to their number
 --- If we are on the (1 to n -1) range, we call midde_pipes
 	--> when we are on a pipe and the pipe is
 ---	If we are on the last pipe we call last_pipe
-
+(le traduire en anglais pour les commentaires)
 le status s'initialise dans waitpid pour etre reutilise dans les W flags de waitpid
 */
 void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 {
 	int	i = 0;
 	int	status;
-	int	pid;
 	//int	fd_temp; // pour le cas du CTRL+D et heredoc, on gerera apres
 	//int	fd[2]; // exec->fd[2];
 	
@@ -231,33 +132,38 @@ void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec, t_history *entr
 		{
 			middle_pipes(cmd, env, exec, entries);
 			while (cmd->next && cmd->type != PIPE)
-			{
 				cmd = cmd->next;
-				if (cmd->type == PIPE && cmd->next)
-				// "&& cmd->next" ne devrait plus etre necessaire avec le fix du parsing de caro
-				{
-					cmd = cmd->next;
-					break; 
-				}
-			}
+			cmd = cmd->next;
 		}
 		else
 			last_pipe(cmd, env, exec, entries);
 		i++;
 	}
 	//wait(NULL); // ou waitpid
-	printf("pid = %d\n", pid);
-	// erreur ici
-	// on doit recuperer le pid du last process pour le faire wait
-
-
-	if (waitpid(pid, &status, 0) == -1)
+	// if (waitpid(exec->last_pid, &status, 0) == -1)
+	// if (waitpid(-1, &status, 0) == -1)
+	// {
+	// 	perror("waitpid MULT_COMMANDS.C");
+	// 	return ;
+	// }
+	pid_t	wpid;
+	wpid = 0;
+	//DEMANDER A ALBAN POURQUOI LE LAST PID NE MARCHE PAS
+	while (wpid != -1)
 	{
-		perror("waitpid");
-		return ;
+		wpid = waitpid(-1, &status, 0);
+		//si le wpid matche le pid de la derniere commande, on assigne le exit status de cette commande dans notre g_var
+		if (wpid == exec->last_pid)
+			g_signals.exit_status = status;
+		continue ;
 	}
-	if (WIFEXITED(status))
-		ft_set_exit_status(env, WEXITSTATUS(status));
+	if (WIFSIGNALED(status))
+		g_signals.exit_status = WTERMSIG(status) + 128;
+	else if (WIFEXITED(status))
+		g_signals.exit_status = WEXITSTATUS(status);
+	// si un signal interrompt execve
+	else
+		g_signals.exit_status = status;
 }
 
 /* Handles all middle pipes behaviour
@@ -294,7 +200,11 @@ void	last_pipe(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 	if (pid < 0)
 		perror("fork");
 	if (pid == 0)
+	{
+		exec->last_pid = getpid();
+		printf("exec->last_pid = %d\n", exec->last_pid);
 		last_dup(cmd, env, exec, entries);
+	}
 	else
 	{
 		if (*(exec->fd_temp))
@@ -302,6 +212,8 @@ void	last_pipe(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 		close(exec->fd[0]);
 		waitpid(pid, NULL, 0);
 	}
+	// exec->last_pid = pid;
+	// printf("pid dans last pipe = %d\n", pid);
 	//return (0);
 	//return (pid);
 }

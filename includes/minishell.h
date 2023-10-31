@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/30 19:40:13 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/31 17:37:52 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -31,14 +31,13 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <limits.h>
+#include <sys/ioctl.h>
 
 /*Macros pour signaux*/
 # define IN_PROMPT 0
 # define IN_COMMAND 1
 # define IN_HEREDOC 2
 
-//extern int	global_location;
-//extern int	g_exit_status;
 
 /*Macros*/
 # define COMMAND 0
@@ -90,6 +89,17 @@
 
 
 /*Structures*/
+/* Global structure
+--> exit_status gets the exit code of the last process
+--> location gives info to signals about the program location (IN HEREDOC, IN PROMPT, IN COMMAND)
+*/
+typedef struct	s_global
+{
+	int	exit_status;
+	int	location;
+}	t_global;
+
+extern t_global	g_signals;
 
 /* Command list
 --> content represents the command
@@ -113,7 +123,6 @@ typedef struct s_element
 	struct s_element *next;
 	struct s_pipe *exec;
 	struct s_env *env;
-	//int		location; //pour les signaux
 }	t_element;
 
 /* Environment
@@ -128,7 +137,6 @@ typedef struct s_env
 	char	**env;
 	struct s_env *prev;
 	struct s_env *next;
-	int		exit_status;
 }	t_env;
 
 /* To handles pipes
@@ -144,6 +152,7 @@ typedef struct s_pipe
 	int		pipe_nb;
 	int		cmd_nb;
 	pid_t		*pid;
+	int		last_pid;
 	char	**cmd_tab;
 	char	**cmd_path;
 	// int		fd_infile;
@@ -245,7 +254,7 @@ size_t	size_of_word(char *path, int i);
 
 /*Dollar*/
 char	*dollar(char *content, t_env *env_list);
-void	ft_dollar_question_mark(t_env *env);
+void	ft_dollar_question_mark();
 
 /*Echo*/
 //int 	skip(char *line, int i, int option);
@@ -297,7 +306,7 @@ void	ft_print_array(char **arr);
 void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
 void	single_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
 void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
-void	ft_set_exit_status(t_env *env, int status);
+//void	ft_set_exit_status(t_env *env, int status);
 // void	middle_pipes(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
 // void	last_pipe(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
 
@@ -344,5 +353,7 @@ void	ft_dup(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int en
 int		executor(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
 int		pipe_wait(int *pid, int amount);
 */
+
+void	handle_sigint(int sig);
 
 #endif

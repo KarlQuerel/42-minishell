@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/30 14:55:19 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/31 17:42:29 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -63,18 +63,20 @@ void	signal_handler(int signal/*, char *line*/)
 		(ex de commande en cours : "cat" tout seul) le prompt devient 
 		juste un dollar : devrait juste renvoyer le prompt normal.
 		Je dois tjrs taper entree apres le dollar pour retomber sur le prompt*/
-		// if (global_location == IN_PROMPT)
-		// {
-		// 	printf("test\n");
-		// }
-		// else
-		// {
+		if (g_signals.location == IN_PROMPT)
+		{
+            rl_replace_line("", 0);
+			rl_redisplay();
+			
+		}
+		else
+		{
 			ft_putchar_fd('\n', STDERR_FILENO);
 			rl_on_new_line();
 			rl_replace_line("", 0); /*ecrire le prompt la dedans ne marche pas non plus,
 			et en plus on ne peut pas passer de variables dans signal_handler*/
 			rl_redisplay();
-		// }
+		}
 	}
     else if (signal == SIGQUIT) // ctrl + '\'
     {
@@ -82,17 +84,17 @@ void	signal_handler(int signal/*, char *line*/)
 		avoir stop une commande en cours.
 		Je dois taper entree apres le dollar pour retomber sur le prompt alors que
 		je devrais juste l'ignorer si pas de cmd en execution*/
-		// if (global_location == IN_PROMPT)
-		// {
-		// 	printf("test\n");
-		// }
-		// else
-		// {
+		if (g_signals.location == IN_PROMPT)
+		{
+			printf("test\n");
+		}
+		else
+		{
 			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 			rl_on_new_line();
 			rl_replace_line("", 0);
 			rl_redisplay();
-		// }
+		}
     }
 }
 
@@ -117,3 +119,13 @@ void	ctrlD(char *line) //lui envoyer line ou new_line?
 
 
 
+void	handle_sigint(int sig)
+{
+	if (sig == SIGINT)
+	{
+		//g_status = 130;
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		rl_replace_line("", 0);
+		rl_on_new_line();
+	}
+}

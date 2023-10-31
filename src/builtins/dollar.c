@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/30 19:05:03 by karl             ###   ########.fr       */
+/*   Updated: 2023/10/31 15:43:19 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -43,14 +43,15 @@ char	*dollar(char *content, t_env *env_list)
 	return (content);
 }
 
-void	ft_dollar_question_mark(t_env *env)
+void	ft_dollar_question_mark()
 {
+	
+	printf("---->Exit : %d\n", g_signals.exit_status);
+	
 	ft_putstr_fd("bash: ", STDOUT_FILENO);
-	ft_putstr_fd(ft_itoa(env->exit_status), STDOUT_FILENO);
+	ft_putstr_fd(ft_itoa(g_signals.exit_status), STDOUT_FILENO);
 	ft_putendl_fd(": command not found", STDOUT_FILENO);
 	// FREE ITOA
-
-	//mettre les exit status dans une variable globale
 
 	// 	si c'est $?, cas special
 	// les signaux prennent 125 + l'int que rend le signal
