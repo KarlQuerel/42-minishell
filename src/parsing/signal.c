@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/01 16:42:56 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/01 18:00:32 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ memoire, et non pour en plus gerer les signaux avec les 3 define plus haut
 siginfo_t *info, void *ucontext) */
 void	signal_handler(int signal/*, char *line*/)
 {
+	printf("%sDEBUT signaux\n%s", YELLOW, RESET);
 	if (signal == SIGINT) //ctrl + C
 	{
 		/*qd je fais ctrl + C alors qu'aucune commande n'est en cours
@@ -75,7 +76,6 @@ void	signal_handler(int signal/*, char *line*/)
 			rl_redisplay(); */
 
 			ft_putchar_fd('\n', STDERR_FILENO);
-			printf("%sAPRÈS\n%s", YELLOW, RESET);
 /* 			rl_on_new_line();
 			rl_replace_line("", 0);
 			rl_redisplay();  */
@@ -107,8 +107,7 @@ void	signal_handler(int signal/*, char *line*/)
 			rl_redisplay();
 		}
     }
-	printf("%sFIN\n%s", YELLOW, RESET);
-	return ;
+	printf("%sFIN signaux\n%s", YELLOW, RESET);
 }
 
 //pour ctrl + D https://github.com/Swoorup/mysh

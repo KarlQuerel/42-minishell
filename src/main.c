@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/01 16:45:02 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/01 18:05:51 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,12 @@ int main (int argc, char **argv, char **env)
 
 //--------------------------------
 	prompt(env_list);
+	printf("%sAVANT READLINE AVANT LA WHILE\n%s", YELLOW, RESET);
 	line = readline("$ ");
-	//line = get_next_line(STDIN_FILENO); // fd 0 = stdin_fileno
+	printf("%sAPRES READLINE AVANT LA WHILE\n%s", YELLOW, RESET);
+/* 	printf("%sAVANT GNL AVANT LA WHILE\n%s", YELLOW, RESET);
+	line = get_next_line(STDIN_FILENO); // fd 0 = stdin_fileno
+	printf("%sAPRES GNL AVANT LA WHILE\n%s", YELLOW, RESET); */
 //--------------------------------
 	while (1)
 	{
@@ -129,9 +133,8 @@ int main (int argc, char **argv, char **env)
 			ctrlD(line); */
 		entries = ft_add_history(entries, line);
 		printf("%sline = [%s]\n%s", YELLOW, line, RESET);
-		if (line/*  && ft_strncmp(line, "^C", ft_strlen(line)) != 0 */)
+		if (line && ft_strncmp(line, "^C", ft_strlen(line)) != 0 )
 		{
-			printf("%sDEBUT IF DANS LE MAIN\n%s", YELLOW, RESET);
 			/*J'envoie new_line au lieu de line aux fonctions qui suivent
 			car sur bash qd on fait flèche du haut on retrouve la commande
 			telle qu'elle avait été écrite alors qu'ici on la modifiait*/
@@ -142,15 +145,12 @@ int main (int argc, char **argv, char **env)
 				//ft_redirect(cmd_list); // a finir
 				//printlist_test(cmd_list);
 				ft_execute(cmd_list, env_list, exec, entries);
-				printf("%sAPRES EXECUTE DANS LE MAIN\n%s", YELLOW, RESET);
 				free_cmd_list(cmd_list);
 			}
 			free(new_line); //en commentaire pour tests avec dollar
-			printf("%sFIN IF DANS LE MAIN\n%s", YELLOW, RESET);
 		}
 		else
 			free(line);
-		printf("%sAPRES LES DEUX CONDITIONS DU MAIN\n%s", YELLOW, RESET);
 //--------------------------------
 		env_list = pwd_update_in_env(/* cmd_list,  */env_list);
 		/*
@@ -158,8 +158,12 @@ int main (int argc, char **argv, char **env)
 		*/
 		env_list->env = env;
 		prompt(env_list);
+		printf("%sAVANT READLINE DANS LA WHILE\n%s", YELLOW, RESET);
 		line = readline("$ ");
-		//line = get_next_line(STDIN_FILENO); // fd 0 = stdin_fileno
+		printf("%sAPRES READLINE DANS LA WHILE\n%s", YELLOW, RESET);
+/* 		printf("%sAVANT GNL DANS LA WHILE\n%s", YELLOW, RESET);
+		line = get_next_line(STDIN_FILENO); // fd 0 = stdin_fileno
+		printf("%sAPRES GNL\n%s", YELLOW, RESET); */
 //--------------------------------
 		printf("%sFIN DU MAIN\n%s", YELLOW, RESET);
 	}
