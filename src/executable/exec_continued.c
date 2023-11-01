@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/01 12:52:56 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/01 19:04:19 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -80,7 +80,9 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 	exec->cmd_path = split_path(env);
 	if (!exec->cmd_path)
 	{
-		ft_putendl_fd("Split failed", STDERR_FILENO);
+		ft_putstr_fd("bash: ", STDERR_FILENO);
+		ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
+		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
 		// free des trucs
 		return (127);
 	}
@@ -94,6 +96,7 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 			ft_putstr_fd("bash: ", STDERR_FILENO);
 			ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
 			ft_putendl_fd(": command not found", STDERR_FILENO);
+			//free
 		}
 		return (127);
 	}
