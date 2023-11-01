@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/31 17:42:23 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/01 16:45:02 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
@@ -88,16 +88,21 @@ int main (int argc, char **argv, char **env)
 		perror("exec");
 		exit(EXIT_FAILURE);
 	}
-	// sigemptyset(&signal.sa_mask);
-	// // signal.sa_flags = SA_SIGINFO;
-	// signal.sa_flags = SA_RESTART;
-	// signal.sa_handler = &signal_handler;
-	// if (sigaction(SIGINT, &signal, NULL) == -1 || \
-	// sigaction(SIGQUIT, &signal, NULL) == -1)
-	// 	return (EXIT_FAILURE);
+/* 	sigemptyset(&signal.sa_mask);
+	// signal.sa_flags = SA_SIGINFO;
+	signal.sa_flags = SA_RESTART;
+	signal.sa_handler = &signal_handler;
+	if (sigaction(SIGINT, &signal, NULL) == -1 || \
+	sigaction(SIGQUIT, &signal, NULL) == -1)
+		return (EXIT_FAILURE); */
 
-	signal(SIGINT, handle_sigint);
+	/* signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
+ */
+
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
+	//signal(SIGQUIT, SIG_IGN);
 
 	(void)argv;
 	if (argc != 1)
@@ -114,27 +119,38 @@ int main (int argc, char **argv, char **env)
 //--------------------------------
 	prompt(env_list);
 	line = readline("$ ");
+	//line = get_next_line(STDIN_FILENO); // fd 0 = stdin_fileno
 //--------------------------------
 	while (1)
 	{
+		printf("%sDEBUT DU MAIN\n%s", YELLOW, RESET);
 		g_signals.location = IN_PROMPT;
 /* 		if (commande en cours)
 			ctrlD(line); */
 		entries = ft_add_history(entries, line);
-
-	/*J'envoie new_line au lieu de line aux fonctions qui suivent
-	car sur bash qd on fait flèche du haut on retrouve la commande
-	telle qu'elle avait été écrite alors qu'ici on la modifiait*/
-		new_line = erase_spaces(line); //line est free ici
-		if (line_errors_and_fix(&new_line) == true)
+		printf("%sline = [%s]\n%s", YELLOW, line, RESET);
+		if (line/*  && ft_strncmp(line, "^C", ft_strlen(line)) != 0 */)
 		{
-			cmd_list = parsing(new_line, env_list);
-			//ft_redirect(cmd_list); // a finir
-			//printlist_test(cmd_list);
-			ft_execute(cmd_list, env_list, exec, entries);
-			free_cmd_list(cmd_list);
-		}	
-		free(new_line); //en commentaire pour tests avec dollar
+			printf("%sDEBUT IF DANS LE MAIN\n%s", YELLOW, RESET);
+			/*J'envoie new_line au lieu de line aux fonctions qui suivent
+			car sur bash qd on fait flèche du haut on retrouve la commande
+			telle qu'elle avait été écrite alors qu'ici on la modifiait*/
+			new_line = erase_spaces(line); //line est free ici
+			if (line_errors_and_fix(&new_line) == true)
+			{
+				cmd_list = parsing(new_line, env_list);
+				//ft_redirect(cmd_list); // a finir
+				//printlist_test(cmd_list);
+				ft_execute(cmd_list, env_list, exec, entries);
+				printf("%sAPRES EXECUTE DANS LE MAIN\n%s", YELLOW, RESET);
+				free_cmd_list(cmd_list);
+			}
+			free(new_line); //en commentaire pour tests avec dollar
+			printf("%sFIN IF DANS LE MAIN\n%s", YELLOW, RESET);
+		}
+		else
+			free(line);
+		printf("%sAPRES LES DEUX CONDITIONS DU MAIN\n%s", YELLOW, RESET);
 //--------------------------------
 		env_list = pwd_update_in_env(/* cmd_list,  */env_list);
 		/*
@@ -143,7 +159,9 @@ int main (int argc, char **argv, char **env)
 		env_list->env = env;
 		prompt(env_list);
 		line = readline("$ ");
+		//line = get_next_line(STDIN_FILENO); // fd 0 = stdin_fileno
 //--------------------------------
+		printf("%sFIN DU MAIN\n%s", YELLOW, RESET);
 	}
 	final_free(line, env_list, entries);
 	return (EXIT_SUCCESS);

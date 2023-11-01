@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/31 17:42:29 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/01 16:42:56 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -65,9 +65,20 @@ void	signal_handler(int signal/*, char *line*/)
 		Je dois tjrs taper entree apres le dollar pour retomber sur le prompt*/
 		if (g_signals.location == IN_PROMPT)
 		{
-            rl_replace_line("", 0);
-			rl_redisplay();
-			
+/* 			ioctl(STDIN_FILENO, TIOCSTI, "\n");
+			rl_replace_line("", 0);
+			rl_on_new_line(); */
+
+/* 			write(1, "\n", 1);
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			rl_redisplay(); */
+
+			ft_putchar_fd('\n', STDERR_FILENO);
+			printf("%sAPRÈS\n%s", YELLOW, RESET);
+/* 			rl_on_new_line();
+			rl_replace_line("", 0);
+			rl_redisplay();  */
 		}
 		else
 		{
@@ -96,6 +107,8 @@ void	signal_handler(int signal/*, char *line*/)
 			rl_redisplay();
 		}
     }
+	printf("%sFIN\n%s", YELLOW, RESET);
+	return ;
 }
 
 //pour ctrl + D https://github.com/Swoorup/mysh
