@@ -6,12 +6,21 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/31 15:43:19 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/01 19:00:46 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
+
+
+// A GERER
+/*
+
+	bash:
+	--> si $? utilise deux fois (ou plus) de suite -> exit code de 127
+
+*/
 
 /*
 1. Checks if the $ is followed by alphanumeric

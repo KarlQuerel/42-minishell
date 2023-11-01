@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/31 17:37:52 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/01 18:34:16 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -266,7 +266,7 @@ void	echo(t_element *current);
 void	ft_env(t_env *env, t_element *cmd, int option);
 
 /*Exit*/
-int	ft_exit();
+int	ft_exit(t_element *cmd/*, t_env *env, t_history *entries*/);
 
 /*Export*/
 int		ft_export(t_element *cmd_list, t_env *env);

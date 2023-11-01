@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:39:52 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/30 14:49:13 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/01 12:50:58 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -20,8 +20,9 @@ bool	first_character_error(char *line)
 	status = false;
 	if (line[0] == '<' || line[0] == '>')
 		redirecters_error(line);
-	else if (line[0] == '/')
-		slash_error(line);
+	//KARL j'ai mis ca en commentaire pour tester /usr/bin/ls !
+	// else if (line[0] == '/')
+	// 	slash_error(line);
 	else if (line[0] == '|') //autre erreur : si les cmd avant/apres la pip ne sont pas des vrai cmd (erreur ligne 57 du google doc)
 		pipe_error(line);
 	else if (line[0] == '&')

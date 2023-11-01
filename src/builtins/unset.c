@@ -6,32 +6,12 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/10/30 13:49:59 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/01 18:56:53 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
-
-void deleteNode(t_env ** head, t_env *toBeDeleted) {
-    // If the node to be deleted is the head
-    if (*head == toBeDeleted) {
-        *head = toBeDeleted->next;
-    }
-
-    // Change next only if the node to be deleted is NOT the last node
-    if (toBeDeleted->next != NULL) {
-        toBeDeleted->next->prev = toBeDeleted->prev;
-    }
-
-    // Change prev only if the node to be deleted is NOT the first node
-    if (toBeDeleted->prev != NULL) {
-        toBeDeleted->prev->next = toBeDeleted->next;
-    }
-
-    // Free the memory occupied by the node
-    free(toBeDeleted);
-}
 
 // A FIX unset bash --posix regarder les arguments acceptes
 
@@ -64,10 +44,6 @@ int	ft_unset(t_element *cmd_list, t_env *env)
 	return (1);
 }
 
-
-
-
-
 void printenv(t_env *head) // A EFFACER A LA FIN
 {
 	int i = 0;
@@ -94,16 +70,15 @@ void	ft_delete_node(t_env **head, t_env *to_delete)
 	tmp = to_delete;
 	if (!to_delete)
 		return ;
-	if (to_delete->next && to_delete->prev == NULL) // head
+	if (to_delete->next && to_delete->prev == NULL)
 	{
 		(*head) = to_delete->next;
 		(*head)->prev = NULL;
 	}
-	else if (to_delete->next && to_delete->prev) // si to_delete au milieu;
+	else if (to_delete->next && to_delete->prev)
 	{
 		tmp = to_delete->next;
 		tmp->prev = to_delete->prev;
-		//to_delete->next->prev = to_delete->prev;
 		to_delete->prev->next = to_delete->next;
 	}
 	else if (to_delete->next == NULL && to_delete->prev)

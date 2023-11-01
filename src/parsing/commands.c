@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/30 17:46:55 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/01 18:42:59 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -107,30 +107,5 @@ void	ft_builtins(t_element *cmd, t_env *env_list, t_history *entries)
 	else if (is_this_command(cmd->content, "$?") == true && check_next_node_builtin(cmd, NO_OPTIONS))
 		ft_dollar_question_mark(env_list);
 	else if (is_this_command(cmd->content, "exit") == true && check_next_node_builtin(cmd, NO_OPTIONS))
-		ft_exit();
+		ft_exit(cmd); // peut etre envoyer t_history *entries -> voir avec caro
 }
-
-/* exit:
-ALBAN 3 cas
-
-si le premier argument de exit n'est pas valide:
-- soit pas numerique
-- soit superieur a INT_MAX 
-meme si il y en a deux
-"exit abc def" OR "exit 999999999999"
-bash: exit: abc: numeric argument required
---> ON EXIT
-
-
-si le premier arg marche( >= 0 && < INT_MAX) mais que le 2eme ne marche pas
-"exit 57 df"
-bash: exit: too many arguments
---> ON EXIT PAS
-
-
-
-exit (int n)
-
-return (n % 255)
-
-*/
