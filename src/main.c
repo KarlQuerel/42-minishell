@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/31 17:42:23 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/02 17:12:41 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
@@ -71,15 +71,25 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list)
 
 //PROTEGER TOUS MES MALLOCS!! --> avec perror
 
+void	signal_reset_prompt(int signo)
+{
+	(void)signo;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
 int main (int argc, char **argv, char **env)
 {
 	char                *line;
 	char                *new_line;
-	//struct sigaction    signal;
+	struct sigaction    signal;
 	t_env				*env_list;
 	t_element			*cmd_list;
 	t_pipe				*exec;
 	t_history			*entries;
+	char				*prompt;
 
 
 	exec = ft_calloc(1, sizeof(t_pipe));
@@ -88,16 +98,15 @@ int main (int argc, char **argv, char **env)
 		perror("exec");
 		exit(EXIT_FAILURE);
 	}
-	// sigemptyset(&signal.sa_mask);
-	// // signal.sa_flags = SA_SIGINFO;
-	// signal.sa_flags = SA_RESTART;
-	// signal.sa_handler = &signal_handler;
-	// if (sigaction(SIGINT, &signal, NULL) == -1 || \
-	// sigaction(SIGQUIT, &signal, NULL) == -1)
-	// 	return (EXIT_FAILURE);
 
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
+	
+	sigemptyset(&signal.sa_mask);
+	// signal.sa_flags = SA_SIGINFO;
+	signal.sa_flags = SA_RESTART;
+	signal.sa_handler = &signal_handler;
+	if (sigaction(SIGINT, &signal, NULL) == -1 || \
+	sigaction(SIGQUIT, &signal, NULL) == -1)
+		return (EXIT_FAILURE);
 
 	(void)argv;
 	if (argc != 1)
@@ -110,30 +119,37 @@ int main (int argc, char **argv, char **env)
 	env_list->env = env;
 	line = NULL;
 	entries = NULL;
+	
+//--------------------------------
+	prompt = ft_strjoin(ft_prompt(env_list, NO_PRINT), "$ ");
+	line = readline(prompt);
+//--------------------------------
 
-//--------------------------------
-	prompt(env_list);
-	line = readline("$ ");
-//--------------------------------
 	while (1)
 	{
 		g_signals.location = IN_PROMPT;
+		if (sigaction(SIGQUIT, &signal, NULL) == 0 && g_signals.location == IN_PROMPT)
+			signal.sa_handler = SIG_IGN;
+		
 /* 		if (commande en cours)
 			ctrlD(line); */
 		entries = ft_add_history(entries, line);
-
-	/*J'envoie new_line au lieu de line aux fonctions qui suivent
-	car sur bash qd on fait flèche du haut on retrouve la commande
-	telle qu'elle avait été écrite alors qu'ici on la modifiait*/
-		new_line = erase_spaces(line); //line est free ici
-		if (line_errors_and_fix(&new_line) == true)
+		// add_history(line);
+		new_line = erase_spaces(line);
+		if (new_line != NULL)
 		{
-			cmd_list = parsing(new_line, env_list);
-			//ft_redirect(cmd_list); // a finir
-			//printlist_test(cmd_list);
-			ft_execute(cmd_list, env_list, exec, entries);
-			free_cmd_list(cmd_list);
-		}	
+			/*J'envoie new_line au lieu de line aux fonctions qui suivent
+			car sur bash qd on fait flèche du haut on retrouve la commande
+			telle qu'elle avait été écrite alors qu'ici on la modifiait*/
+			if (line_errors_and_fix(&new_line) == true)
+			{
+				cmd_list = parsing(new_line, env_list);
+				//ft_redirect(cmd_list); // a finir
+				//printlist_test(cmd_list);
+				ft_execute(cmd_list, env_list, exec, entries);
+				free_cmd_list(cmd_list);
+			}
+		}
 		free(new_line); //en commentaire pour tests avec dollar
 //--------------------------------
 		env_list = pwd_update_in_env(/* cmd_list,  */env_list);
@@ -141,11 +157,10 @@ int main (int argc, char **argv, char **env)
 		dans le cas ou karl unset pwd, le prompt doit juste afficher $
 		*/
 		env_list->env = env;
-		prompt(env_list);
-		line = readline("$ ");
+		prompt = ft_strjoin(ft_prompt(env_list, NO_PRINT), "$ ");
+		line = readline(prompt);
 //--------------------------------
 	}
 	final_free(line, env_list, entries);
 	return (EXIT_SUCCESS);
 }
-
