@@ -267,7 +267,7 @@ void	echo(t_element *current);
 void	ft_env(t_env *env, t_element *cmd, int option);
 
 /*Exit*/
-int	ft_exit();
+int	ft_exit(t_element *cmd/*, t_env *env, t_history *entries*/);
 
 /*Export*/
 int		ft_export(t_element *cmd_list, t_env *env);

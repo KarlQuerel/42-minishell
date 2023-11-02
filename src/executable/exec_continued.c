@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/31 18:36:04 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/01 19:04:19 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -75,16 +75,14 @@ void	handle_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries
  */
 int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
-	
-	
-	// gerer /usr/bin/ls
-	//printf("-----cmd->content = %s\n", cmd->content);
-	if (ft_strchr(cmd->content, '/'))
+	if (ft_strchr(exec->cmd_tab[0], '/'))
 		execve(cmd->content, exec->cmd_tab, env->env);
 	exec->cmd_path = split_path(env);
 	if (!exec->cmd_path)
 	{
-		printf("Split_path failed\n");
+		ft_putstr_fd("bash: ", STDERR_FILENO);
+		ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
+		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
 		// free des trucs
 		return (127);
 	}
@@ -97,14 +95,15 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 		{
 			ft_putstr_fd("bash: ", STDERR_FILENO);
 			ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
-			ft_putstr_fd(": command not found\n", STDERR_FILENO);
+			ft_putendl_fd(": command not found", STDERR_FILENO);
+			//free
 		}
 		return (127);
 	}
 	//ft_print_array(exec->cmd_tab); // to test what is sent to execve
 	if (execve(cmd->content, exec->cmd_tab, env->env) == -1)
 	{
-		ft_putstr_fd("execve failed\n", STDERR_FILENO);
+		ft_putendl_fd("execve failed", STDERR_FILENO);
 		//perror("bash");
 		//strerror(errno); --> a utiliser, par exemple chmod 000 ./exec
 	}

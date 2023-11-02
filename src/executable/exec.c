@@ -27,14 +27,12 @@ KARL A GERER
 --> segfault: gerer les fd -- voir cas Alban
 	"ls -a | wc -l | exit"
 	"ls -a | echo hi | wc -l"
+	COUILLE DANS LE PROMPT -> a voir avec Caro
 
 --> pour les builtins:
 	" pwd | ls -l" tourne dans le vide, il faut envoyer fd a ft_builtins pour utiliser ft_putstrfd dans tous nos builtins
 -- faire en sorte que tous les builtins prennent t_cmd pour check next node builtin
 	--> du coup plus besoin mais peut etre plus tard, je le laisse la dans le doute
-
---> /usr/bin/ls
-
 TO DO:
 - gerer open et HEREDOC, en dernier
 - redirections
@@ -93,6 +91,7 @@ void	single_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries
 		exit(127);
 	}
 	if (pid == 0)
+		//signal(SIGQUIT, SIG_DFLG);
 		handle_command(cmd, env, exec, entries);
 	if (waitpid(pid, &status, 0) == -1)
 	{
@@ -201,8 +200,8 @@ void	last_pipe(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 		perror("fork");
 	if (pid == 0)
 	{
-		exec->last_pid = getpid();
-		printf("exec->last_pid = %d\n", exec->last_pid);
+		exec->last_pid = getpid(); //fonction interdite a enlever
+		//printf("exec->last_pid = %d\n", exec->last_pid);
 		last_dup(cmd, env, exec, entries);
 	}
 	else

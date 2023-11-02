@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/24 13:14:08 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/01 13:01:38 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -158,7 +158,11 @@ t_element	*parsing_fix(t_element *current, t_env *env_list)
 	{
 		if (current->type == COMMAND)
 		{
-			temp = current->next;
+			
+			//KARL pour proteger current->next
+			if (current->next)
+			//FIN
+				temp = current->next;
 			while (temp->type != PIPE && temp != NULL)
 			{
 				if (temp->type != OPTION)
