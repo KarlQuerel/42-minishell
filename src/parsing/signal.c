@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/02 14:05:35 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/02 16:50:59 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,18 +57,21 @@ memoire, et non pour en plus gerer les signaux avec les 3 define plus haut
 siginfo_t *info, void *ucontext) */
 void	signal_handler(int signal/*, char *line*/)
 {
-	// printf("%sDEBUT signaux\n%s", YELLOW, RESET);
+
+	struct sigaction	act;
+	
 	if (signal == SIGINT) //ctrl + C
 	{
-		/*qd je fais ctrl + C alors qu'aucune commande n'est en cours
-		(ex de commande en cours : "cat" tout seul) le prompt devient 
-		juste un dollar : devrait juste renvoyer le prompt normal.
-		Je dois tjrs taper entree apres le dollar pour retomber sur le prompt*/
 		if (g_signals.location == IN_PROMPT)
 		{
 			ft_putchar_fd('\n', STDERR_FILENO);
 			rl_on_new_line();
+			// rl_replace_line("", 0); //ne change rien je crois
 			rl_redisplay();
+			/*il n'y a que la première fois que je fais des ctrl+C
+			que le prompt de la ligne usivante s'affiche bien avant de reécrire
+			une commande. Les fois suivantes il faut retaper une touche pour
+			que le prompt s'affiche*/
 		}
 		else
 		{
@@ -78,17 +81,19 @@ void	signal_handler(int signal/*, char *line*/)
 	}
     else if (signal == SIGQUIT) // ctrl + '\'
     {
-		/*cette partie marche bien sauf qd je tapes plusieurs ctrl \ a la suite apres 
-		avoir stop une commande en cours.
-		Je dois taper entree apres le dollar pour retomber sur le prompt alors que
-		je devrais juste l'ignorer si pas de cmd en execution*/
 		if (g_signals.location == IN_PROMPT)
 		{
-			ft_putchar_fd('\n', STDERR_FILENO);
-			rl_on_new_line();
-			rl_redisplay();
+			// ft_putchar_fd('\n', STDERR_FILENO);
+			// rl_on_new_line();
+			// rl_redisplay();
+			//do nothing
+			// signal.SIG_IGN; // ignore signal
+			
+			// ft_memset(&act, 0, sizeof(act));
+			act.sa_handler = SIG_IGN;
+			sigaction(SIGQUIT, &act, NULL);
 		}
-		else //ne marche plus
+		if (g_signals.location == IN_COMMAND)
 		{
 			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 			rl_on_new_line();
@@ -96,7 +101,6 @@ void	signal_handler(int signal/*, char *line*/)
 			rl_redisplay();
 		}
     }
-	// printf("%sFIN signaux\n%s", YELLOW, RESET);
 }
 
 //pour ctrl + D https://github.com/Swoorup/mysh
@@ -115,18 +119,5 @@ void	ctrlD(char *line) //lui envoyer line ou new_line?
 		printf("exit\n");
 		//free all
 		exit(0);
-	}
-}
-
-
-
-void	handle_sigint(int sig)
-{
-	if (sig == SIGINT)
-	{
-		//g_status = 130;
-		ioctl(STDIN_FILENO, TIOCSTI, "\n");
-		rl_replace_line("", 0);
-		rl_on_new_line();
 	}
 }

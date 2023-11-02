@@ -6,14 +6,14 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:36:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/02 13:46:29 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/02 15:30:57 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-char	*prompt(t_env *env_list, int option)
+char	*ft_prompt(t_env *env_list, int option)
 {
 	char    *word;
 	int     i;
@@ -24,6 +24,13 @@ char	*prompt(t_env *env_list, int option)
 	
 	path = NULL;
 	word = NULL;
+
+	/*Bizarrement malgré unset PWD, USET et HOME le prompt marche tjrs...
+	Si jamais je trouves pourquoi et ça ne marche plus je peux doit changer le prompt
+	pour que ça ne montre que le dollar (je crois que sur bash c'est comme ça)
+	soit si je veux que le prompt marche tjrs je peux rendre les variables user, home et
+	Gpath constantes pour qu'elles gardent la valeur de base en mémoire (avant d'unset car 
+	le prompt s'affiche pour la première fois avant d'entrer dans la while du main)*/
 	user = find_value_with_key_env(env_list, "USER");
 	home = find_value_with_key_env(env_list, "HOME");
 	Gpath = find_value_with_key_env(env_list, "PWD");
@@ -42,11 +49,11 @@ char	*prompt(t_env *env_list, int option)
 	
 	if (ft_strncmp(word, user->value, ft_strlen(user->value)) == 0) //si user juste $
 	{
-		free(word);
+		// free(word);
 		/* printf("$"); //vérifier
 		return ("$"); //vérifier */
-		// path = "$";
-		return NULL;
+		path = "";
+		// return NULL;
 	}
 	else if (ft_strncmp(word, "homes", ft_strlen(word) - i + 1) == 0) //si home on print jusqu a home
 	{

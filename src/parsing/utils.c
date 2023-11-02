@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/27 17:40:12 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/02 14:39:39 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,15 @@ char	*erase_spaces(char *line)
 				new_line[j++] = line[i++];
 			new_line[j++] = line[i++];
 		}
-		else if(line[i] == ' ' && (line[i + 1] == ' ' || line[i + 1] == '\0'))
+		else if(line[i] == ' ' && line[i + 1] == ' ')
 			i+=2;
+		else if(line[i] == ' ' && line[i + 1] == '\0')
+			i+=1;
 		else
 			new_line[j++] = line[i++];
 	}
+	if (j == 0)
+		return (NULL);
 	new_line[j] = '\0';
 	free(line);
 	return (new_line);

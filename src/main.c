@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/02 13:57:51 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/02 17:12:41 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int main (int argc, char **argv, char **env)
 	t_element			*cmd_list;
 	t_pipe				*exec;
 	t_history			*entries;
+	char				*prompt;
 
 
 	exec = ft_calloc(1, sizeof(t_pipe));
@@ -118,27 +119,28 @@ int main (int argc, char **argv, char **env)
 	env_list->env = env;
 	line = NULL;
 	entries = NULL;
-
-	char *prompt1;
 	
 //--------------------------------
-	prompt1 = ft_strjoin(prompt(env_list, NO_PRINT), "$");
-	line = readline(prompt1);
+	prompt = ft_strjoin(ft_prompt(env_list, NO_PRINT), "$ ");
+	line = readline(prompt);
 //--------------------------------
 
 	while (1)
 	{
-		g_signals.location == IN_PROMPT;
+		g_signals.location = IN_PROMPT;
+		if (sigaction(SIGQUIT, &signal, NULL) == 0 && g_signals.location == IN_PROMPT)
+			signal.sa_handler = SIG_IGN;
 		
 /* 		if (commande en cours)
 			ctrlD(line); */
 		entries = ft_add_history(entries, line);
-		if (line && ft_strncmp(line, "^C", ft_strlen(line)) != 0)
+		// add_history(line);
+		new_line = erase_spaces(line);
+		if (new_line != NULL)
 		{
 			/*J'envoie new_line au lieu de line aux fonctions qui suivent
 			car sur bash qd on fait flèche du haut on retrouve la commande
 			telle qu'elle avait été écrite alors qu'ici on la modifiait*/
-			new_line = erase_spaces(line); //line est free ici
 			if (line_errors_and_fix(&new_line) == true)
 			{
 				cmd_list = parsing(new_line, env_list);
@@ -147,18 +149,16 @@ int main (int argc, char **argv, char **env)
 				ft_execute(cmd_list, env_list, exec, entries);
 				free_cmd_list(cmd_list);
 			}
-			free(new_line); //en commentaire pour tests avec dollar
 		}
-		else
-			free(line);
+		free(new_line); //en commentaire pour tests avec dollar
 //--------------------------------
 		env_list = pwd_update_in_env(/* cmd_list,  */env_list);
 		/*
 		dans le cas ou karl unset pwd, le prompt doit juste afficher $
 		*/
 		env_list->env = env;
-		prompt1 = ft_strjoin(prompt(env_list, NO_PRINT), "$");
-		line = readline(prompt1);
+		prompt = ft_strjoin(ft_prompt(env_list, NO_PRINT), "$ ");
+		line = readline(prompt);
 //--------------------------------
 	}
 	final_free(line, env_list, entries);
