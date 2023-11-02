@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/31 17:37:52 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/02 12:36:40 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 /*Libraries*/
 
@@ -238,7 +238,8 @@ int		key_and_value_type(char *command, int len, int type);
 int		str_type(char *command, int len);
 
 /*Prompt*/
-void	prompt(t_env *env_list);
+// void	prompt(t_env *env_list);
+char	*prompt(t_env *env_list, int option);
 
 /*------------------BUILT-INS FOLDER------------------*/
 

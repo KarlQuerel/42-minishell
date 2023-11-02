@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/01 18:00:32 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/02 14:05:35 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ memoire, et non pour en plus gerer les signaux avec les 3 define plus haut
 siginfo_t *info, void *ucontext) */
 void	signal_handler(int signal/*, char *line*/)
 {
-	printf("%sDEBUT signaux\n%s", YELLOW, RESET);
+	// printf("%sDEBUT signaux\n%s", YELLOW, RESET);
 	if (signal == SIGINT) //ctrl + C
 	{
 		/*qd je fais ctrl + C alors qu'aucune commande n'est en cours
@@ -66,27 +66,14 @@ void	signal_handler(int signal/*, char *line*/)
 		Je dois tjrs taper entree apres le dollar pour retomber sur le prompt*/
 		if (g_signals.location == IN_PROMPT)
 		{
-/* 			ioctl(STDIN_FILENO, TIOCSTI, "\n");
-			rl_replace_line("", 0);
-			rl_on_new_line(); */
-
-/* 			write(1, "\n", 1);
-			rl_on_new_line();
-			rl_replace_line("", 0);
-			rl_redisplay(); */
-
 			ft_putchar_fd('\n', STDERR_FILENO);
-/* 			rl_on_new_line();
-			rl_replace_line("", 0);
-			rl_redisplay();  */
+			rl_on_new_line();
+			rl_redisplay();
 		}
 		else
 		{
 			ft_putchar_fd('\n', STDERR_FILENO);
 			rl_on_new_line();
-			rl_replace_line("", 0); /*ecrire le prompt la dedans ne marche pas non plus,
-			et en plus on ne peut pas passer de variables dans signal_handler*/
-			rl_redisplay();
 		}
 	}
     else if (signal == SIGQUIT) // ctrl + '\'
@@ -97,9 +84,11 @@ void	signal_handler(int signal/*, char *line*/)
 		je devrais juste l'ignorer si pas de cmd en execution*/
 		if (g_signals.location == IN_PROMPT)
 		{
-			printf("test\n");
+			ft_putchar_fd('\n', STDERR_FILENO);
+			rl_on_new_line();
+			rl_redisplay();
 		}
-		else
+		else //ne marche plus
 		{
 			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 			rl_on_new_line();
@@ -107,7 +96,7 @@ void	signal_handler(int signal/*, char *line*/)
 			rl_redisplay();
 		}
     }
-	printf("%sFIN signaux\n%s", YELLOW, RESET);
+	// printf("%sFIN signaux\n%s", YELLOW, RESET);
 }
 
 //pour ctrl + D https://github.com/Swoorup/mysh

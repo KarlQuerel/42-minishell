@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/01 18:05:51 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/02 13:57:51 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,20 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list)
 
 //PROTEGER TOUS MES MALLOCS!! --> avec perror
 
+void	signal_reset_prompt(int signo)
+{
+	(void)signo;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
 int main (int argc, char **argv, char **env)
 {
 	char                *line;
 	char                *new_line;
-	//struct sigaction    signal;
+	struct sigaction    signal;
 	t_env				*env_list;
 	t_element			*cmd_list;
 	t_pipe				*exec;
@@ -88,21 +97,15 @@ int main (int argc, char **argv, char **env)
 		perror("exec");
 		exit(EXIT_FAILURE);
 	}
-/* 	sigemptyset(&signal.sa_mask);
+
+	
+	sigemptyset(&signal.sa_mask);
 	// signal.sa_flags = SA_SIGINFO;
 	signal.sa_flags = SA_RESTART;
 	signal.sa_handler = &signal_handler;
 	if (sigaction(SIGINT, &signal, NULL) == -1 || \
 	sigaction(SIGQUIT, &signal, NULL) == -1)
-		return (EXIT_FAILURE); */
-
-	/* signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
- */
-
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, signal_handler);
-	//signal(SIGQUIT, SIG_IGN);
+		return (EXIT_FAILURE);
 
 	(void)argv;
 	if (argc != 1)
@@ -116,24 +119,21 @@ int main (int argc, char **argv, char **env)
 	line = NULL;
 	entries = NULL;
 
+	char *prompt1;
+	
 //--------------------------------
-	prompt(env_list);
-	printf("%sAVANT READLINE AVANT LA WHILE\n%s", YELLOW, RESET);
-	line = readline("$ ");
-	printf("%sAPRES READLINE AVANT LA WHILE\n%s", YELLOW, RESET);
-/* 	printf("%sAVANT GNL AVANT LA WHILE\n%s", YELLOW, RESET);
-	line = get_next_line(STDIN_FILENO); // fd 0 = stdin_fileno
-	printf("%sAPRES GNL AVANT LA WHILE\n%s", YELLOW, RESET); */
+	prompt1 = ft_strjoin(prompt(env_list, NO_PRINT), "$");
+	line = readline(prompt1);
 //--------------------------------
+
 	while (1)
 	{
-		printf("%sDEBUT DU MAIN\n%s", YELLOW, RESET);
-		g_signals.location = IN_PROMPT;
+		g_signals.location == IN_PROMPT;
+		
 /* 		if (commande en cours)
 			ctrlD(line); */
 		entries = ft_add_history(entries, line);
-		printf("%sline = [%s]\n%s", YELLOW, line, RESET);
-		if (line && ft_strncmp(line, "^C", ft_strlen(line)) != 0 )
+		if (line && ft_strncmp(line, "^C", ft_strlen(line)) != 0)
 		{
 			/*J'envoie new_line au lieu de line aux fonctions qui suivent
 			car sur bash qd on fait flèche du haut on retrouve la commande
@@ -157,17 +157,10 @@ int main (int argc, char **argv, char **env)
 		dans le cas ou karl unset pwd, le prompt doit juste afficher $
 		*/
 		env_list->env = env;
-		prompt(env_list);
-		printf("%sAVANT READLINE DANS LA WHILE\n%s", YELLOW, RESET);
-		line = readline("$ ");
-		printf("%sAPRES READLINE DANS LA WHILE\n%s", YELLOW, RESET);
-/* 		printf("%sAVANT GNL DANS LA WHILE\n%s", YELLOW, RESET);
-		line = get_next_line(STDIN_FILENO); // fd 0 = stdin_fileno
-		printf("%sAPRES GNL\n%s", YELLOW, RESET); */
+		prompt1 = ft_strjoin(prompt(env_list, NO_PRINT), "$");
+		line = readline(prompt1);
 //--------------------------------
-		printf("%sFIN DU MAIN\n%s", YELLOW, RESET);
 	}
 	final_free(line, env_list, entries);
 	return (EXIT_SUCCESS);
 }
-
