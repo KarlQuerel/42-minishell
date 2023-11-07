@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/02 16:50:59 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/07 13:05:02 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,39 +66,29 @@ void	signal_handler(int signal/*, char *line*/)
 		{
 			ft_putchar_fd('\n', STDERR_FILENO);
 			rl_on_new_line();
-			// rl_replace_line("", 0); //ne change rien je crois
+			rl_replace_line("", 0); //a réglé le pb de prompt ne s'affiche pas sur lignw suivante
 			rl_redisplay();
-			/*il n'y a que la première fois que je fais des ctrl+C
-			que le prompt de la ligne usivante s'affiche bien avant de reécrire
-			une commande. Les fois suivantes il faut retaper une touche pour
-			que le prompt s'affiche*/
 		}
 		else
 		{
 			ft_putchar_fd('\n', STDERR_FILENO);
-			rl_on_new_line();
+			rl_reset_line_state();
 		}
 	}
     else if (signal == SIGQUIT) // ctrl + '\'
     {
-		if (g_signals.location == IN_PROMPT)
+		if (g_signals.location == IN_PROMPT) //marche parfaitement au bout de la troisième fois WTF
 		{
-			// ft_putchar_fd('\n', STDERR_FILENO);
-			// rl_on_new_line();
-			// rl_redisplay();
-			//do nothing
-			// signal.SIG_IGN; // ignore signal
-			
 			// ft_memset(&act, 0, sizeof(act));
 			act.sa_handler = SIG_IGN;
 			sigaction(SIGQUIT, &act, NULL);
-		}
-		if (g_signals.location == IN_COMMAND)
-		{
-			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 			rl_on_new_line();
 			rl_replace_line("", 0);
-			rl_redisplay();
+		}
+		if (g_signals.location == IN_COMMAND) //marche seulement la première fois
+		{
+			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+			rl_reset_line_state();
 		}
     }
 }
