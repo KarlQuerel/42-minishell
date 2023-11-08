@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/08 15:36:42 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/07 13:05:02 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -90,7 +90,6 @@ void	signal_handler(int signal/*, char *line*/)
 			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 			rl_reset_line_state();
 		}
-    }
 }
 
 //pour ctrl + D https://github.com/Swoorup/mysh
