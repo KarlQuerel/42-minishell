@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/02 14:12:52 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/08 19:32:54 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -24,10 +24,9 @@
 
 
 KARL A GERER
---> segfault: gerer les fd -- voir cas Alban
+--> GERER LES FDS -- voir cas Alban
 	"ls -a | wc -l | exit"
 	"ls -a | echo hi | wc -l"
-	COUILLE DANS LE PROMPT -> a voir avec Caro
 
 --> pour les builtins:
 	" pwd | ls -l" tourne dans le vide, il faut envoyer fd a ft_builtins pour utiliser ft_putstrfd dans tous nos builtins
@@ -81,7 +80,7 @@ void	single_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries
 
 	if (cmd && cmd->builtin == true)
 	{
-		ft_builtins(cmd, env, entries);
+		ft_builtins(cmd, env, entries, PRINT);
 		return ;
 	}
 	pid = fork();
@@ -91,8 +90,10 @@ void	single_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries
 		exit(127);
 	}
 	if (pid == 0)
+	{
 		//signal(SIGQUIT, SIG_DFLG);
 		handle_command(cmd, env, exec, entries);
+	}
 	if (waitpid(pid, &status, 0) == -1)
 	{
 		perror("waitpid");
@@ -200,7 +201,7 @@ void	last_pipe(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 		perror("fork");
 	if (pid == 0)
 	{
-		exec->last_pid = getpid(); //fonction interdite a enlever
+		//exec->last_pid = getpid(); //fonction interdite a enlever
 		//printf("exec->last_pid = %d\n", exec->last_pid);
 		last_dup(cmd, env, exec, entries);
 	}

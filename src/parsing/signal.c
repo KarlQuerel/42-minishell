@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
 /*   Updated: 2023/11/07 13:05:02 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -75,11 +75,11 @@ void	signal_handler(int signal/*, char *line*/)
 			rl_reset_line_state();
 		}
 	}
-    else if (signal == SIGQUIT) // ctrl + '\'
-    {
+	else if (signal == SIGQUIT) // ctrl + '\'
+	{
 		if (g_signals.location == IN_PROMPT) //marche parfaitement au bout de la troisième fois WTF
 		{
-			// ft_memset(&act, 0, sizeof(act));
+			ft_memset(&act, 0, sizeof(act));
 			act.sa_handler = SIG_IGN;
 			sigaction(SIGQUIT, &act, NULL);
 			rl_on_new_line();
@@ -90,7 +90,6 @@ void	signal_handler(int signal/*, char *line*/)
 			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 			rl_reset_line_state();
 		}
-    }
 }
 
 //pour ctrl + D https://github.com/Swoorup/mysh
