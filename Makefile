@@ -1,14 +1,14 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+         #
+#    By: karl <karl@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/11/01 16:11:06 by octonaute        ###   ########.fr        #
+#    Updated: 2023/11/08 12:07:51 by karl             ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
 
 #------------------------------------------------#
 #   COLORS                                       #
@@ -65,8 +65,8 @@ SRCS		:=  src/main.c \
 				src/parsing/malloc.c \
 				src/parsing/cmd_types.c \
 				src/parsing/prompt.c \
-				get_next_line/get_next_line_bonus.c \
-				get_next_line/get_next_line_utils_bonus.c \
+				#get_next_line/get_next_line_bonus.c \
+				#get_next_line/get_next_line_utils_bonus.c \
 				
 
 OBJS 		:= $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))
@@ -124,7 +124,7 @@ fclean: clean
 re: fclean all
 
 v : minishell
-	@valgrind --suppressions=.readignore --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes ./minishell
+	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes ./minishell
 
 sv : minishell
-	@valgrind --suppressions=.readignore ./minishell
+	@valgrind --suppressions=readline.supp ./minishell

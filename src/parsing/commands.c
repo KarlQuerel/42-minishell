@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/07 17:25:07 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/08 18:01:22 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -16,12 +16,12 @@
 /*The first two "if" check if there are errors in the grammar of the command
 line and print the associated error. The last function replaces the $ by its
 associated value so that the executable receives directly the line completed.*/
-bool	line_errors_and_fix(char **line)
+bool	line_errors_and_fix(char **line) // pourquoi double pointeur
 {
 	if (!*line)
 		return (NULL);
-	if (redirecters_error(*line) == false)
-		return (false);
+	// if (redirecters_error(*line) == false)
+	// 	return (false);
 	if (first_character_error(*line) == false)
 		return (false);
 	if (pipe_double_or_eof(*line) == false)
@@ -80,10 +80,8 @@ bool	is_cmd_in_line(char *line, char *cmd)
 	return (false);
 }
 
-//KARL j'ai ratoute " && check_next_node_builtin(current_cmd, 1)" a chaque conditions pour refuser des options
-// --> pour echo je sais pas comment tu geres le -n donc je l'ai pas mis
 /* Handles builtins redirections */
-void	ft_builtins(t_element *cmd, t_env *env_list, t_history *entries)
+void	ft_builtins(t_element *cmd, t_env *env_list, t_history *entries, int option)
 {
 	if (is_this_command(cmd->content, "pwd") == true && check_next_node_builtin(cmd, NO_OPTIONS))
 		pwd(PRINT);
@@ -97,13 +95,13 @@ void	ft_builtins(t_element *cmd, t_env *env_list, t_history *entries)
 	else if (is_this_command(cmd->content, "cd") == true && check_next_node_builtin(cmd, NO_OPTIONS))
 		cd(cmd, env_list);
 	else if (is_this_command(cmd->content, "echo") == true && check_next_node_builtin(cmd, ECHO))
-		echo(cmd);
+		echo(cmd, option);
 	else if (is_this_command(cmd->content, "env") == true && check_next_node_builtin(cmd, ENV))
 		ft_env(env_list, cmd, 0);
 	else if (is_this_command(cmd->content, "export") == true && check_next_node_builtin(cmd, NO_OPTIONS))
 		ft_export(cmd, env_list);
 	else if (is_this_command(cmd->content, "unset") == true && check_next_node_builtin(cmd, NO_OPTIONS))
-		ft_unset(cmd, env_list);
+			ft_unset(cmd, env_list);
 	else if (is_this_command(cmd->content, "$?") == true && check_next_node_builtin(cmd, NO_OPTIONS))
 		ft_dollar_question_mark(env_list);
 	else if (is_this_command(cmd->content, "exit") == true && check_next_node_builtin(cmd, NO_OPTIONS))

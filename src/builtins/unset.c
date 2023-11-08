@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/11/07 17:33:54 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/08 12:46:42 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -15,15 +15,16 @@
 
 // -->unset seg fault avec plusieurs arguments car tmp est vide
 // et n'est pas accessible
+// regarder unset abc=caro a 42 (valid identifier)
 
 /* Reproduces the unset command */
 int	ft_unset(t_element *cmd_list, t_env *env)
 {
 	t_env *tmp;
 	
-	tmp = env;
-	while (cmd_list && cmd_list->next)
+	while (cmd_list && cmd_list->next && cmd_list->next->type != PIPE)
 	{
+		tmp = env;
 		if (!ft_is_valid_key_var(cmd_list->next->content) || ft_strchr(cmd_list->next->content, '='))
 		{
 			ft_putstr_fd("unset: ", STDOUT_FILENO);
@@ -80,7 +81,7 @@ void	ft_delete_node(t_env **head, t_env *to_delete)
 
     free(to_delete->key);
     free(to_delete->value);
-    free(to_delete);
+   	free(to_delete);
 }
 
 

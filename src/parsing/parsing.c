@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/01 13:01:38 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/08 17:52:26 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -22,9 +22,9 @@ void printlist_test(t_element *head) // A EFFACER A LA FIN
 		// if (i != 0)
 		// 	printf("prev cmd = %s\n", head->prev->content);
 		printf("--------------------------------\n");
-		printf("content = %s\n", head->content);
-		printf("type = %d\n", head->type);
-		printf("builtin = %d\n", head->builtin);
+		printf("content = ---%s---\n", head->content);
+		printf("type = ---%d---\n", head->type);
+		printf("builtin = ---%d---\n", head->builtin);
 		printf("--------------------------------\n");
 		// if (head->next != NULL)
 		// 	printf("next cmd = %s\n", head->next->content);
@@ -58,20 +58,14 @@ int determine_command_type(char *line, size_t end, size_t start)
 	if ((line[start] == '\'' || line[start] == '\"') &&
 			 (line[end - 1] == '\'' || line[end - 1] == '\"'))
 		return (ARGUMENT);
-	if (end - start > end + 2)
-	{
-		if (line[end + 1] == '<' && line[end + 2] == ' ')
-			return (INFILE);
-		else if (line[end + 1] == '<' && line[end + 2] == '<')
-			return (INFILE_DELIMITER);
-	}
-	if (start > 1)
-	{
-		if (line[start - 2] == '>' && line[start - 3] == ' ')
-			return (OUTFILE);
-		else if (line[start - 2] == '>' && line[start - 3] == '>')
-			return (OUTFILE_APPEND);
-	}
+	if (line[end + 1] && line[end + 2] && line[end + 1] == '<' && line[end + 2] == ' ')
+		return (INFILE);
+	if (line[end + 1] && line[end + 2] && line[end + 1] == '<' && line[end + 2] == '<')
+		return (INFILE_DELIMITER);
+	if (start >= 2 && line[start - 2] == '>' && line[start - 3] == '>')
+		return (OUTFILE_APPEND);
+	if (start >= 2 && line[start - 2] == '>'/* && line[start - 3] == ' '*/)
+		return (OUTFILE);
 	if (ft_strncmp(&line[start], "|", 1) == 0)
 		return (PIPE);
 	return (COMMAND);
@@ -89,11 +83,25 @@ t_element *parsing(char *line, t_env *env_list)
 	t_element *head;
 	int	type;
 	char quote_type;
+	int typestr;
 
 	i = 0;
-	start = i;
+	start = 0;
+	while ((line[i] == '<' || line[i] == '>') && line[i])
+		i++;
+	if (i != 0)
+	{
+		i++;
+		start = i;
+	}
 	current_cmd = NULL;
-	current_cmd = lstnew(line, start, CMD); //je pars du principe que tjrs cmd d abord
+	typestr = 0;
+	if (line[start] == '\'' || line[start] == '\"')
+		typestr = STR;
+	else
+		typestr = CMD;
+	current_cmd = lstnew(line, start, typestr); //je pars du principe que tjrs cmd d abord
+	//current_cmd->type = determine_command_type(line, i, start);
 	head = current_cmd;
 	
 	// KARL -> j'ai ajoute ca pour regler une seg fault
@@ -156,16 +164,18 @@ t_element	*parsing_fix(t_element *current, t_env *env_list)
 		return (head);
 	while(current != NULL)
 	{
-		if (current->type == COMMAND)
+		if (current->type == COMMAND && current->next)
 		{
 			
 			//KARL pour proteger current->next
-			if (current->next)
+			//if (current->next)
 			//FIN
-				temp = current->next;
+			temp = current->next;
 			while (temp->type != PIPE && temp != NULL)
 			{
-				if (temp->type != OPTION)
+				if (temp->type != OPTION && temp->type != INFILE && \
+				temp->type != INFILE_DELIMITER && \
+				temp->type != OUTFILE && temp->type != OUTFILE_APPEND)
 					temp->type = ARGUMENT;
 				if (temp->next != NULL)
 					temp = temp->next;

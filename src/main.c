@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/07 17:34:25 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/08 18:21:35 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 
 #include "../includes/minishell.h"
@@ -119,15 +119,11 @@ int main (int argc, char **argv, char **env)
 	env_list->env = env;
 	line = NULL;
 	entries = NULL;
-	
-//--------------------------------
-	prompt = ft_strjoin(ft_prompt(env_list, NO_PRINT), "$ ");
-	line = readline(prompt);
-//--------------------------------
-
 	while (1)
 	{
 		g_signals.location = IN_PROMPT;
+		prompt = ft_strjoin(ft_prompt(env_list, NO_PRINT), "$ ");
+		line = readline(prompt);
 		if (sigaction(SIGQUIT, &signal, NULL) == 0 && g_signals.location == IN_PROMPT)
 			signal.sa_handler = SIG_IGN;
 		
@@ -144,9 +140,7 @@ int main (int argc, char **argv, char **env)
 			if (line_errors_and_fix(&new_line) == true)
 			{
 				cmd_list = parsing(new_line, env_list);
-        if (!ft_redirect(cmd_list)) // a finir
-				  exit(EXIT_FAILURE);
-				//printlist_test(cmd_list);
+				// printlist_test(cmd_list);
 				ft_execute(cmd_list, env_list, exec, entries);
 				free_cmd_list(cmd_list);
 			}
@@ -158,8 +152,6 @@ int main (int argc, char **argv, char **env)
 		dans le cas ou karl unset pwd, le prompt doit juste afficher $
 		*/
 		env_list->env = env;
-		prompt = ft_strjoin(ft_prompt(env_list, NO_PRINT), "$ ");
-		line = readline(prompt);
 //--------------------------------
 	}
 	final_free(line, env_list, entries);

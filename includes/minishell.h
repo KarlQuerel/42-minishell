@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/07 17:25:05 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/08 18:14:49 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 /*Libraries*/
 
@@ -173,7 +173,7 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list);
 /*------------------PARSING FOLDER------------------*/
 
 /*Commands*/
-void	ft_builtins(t_element *cmd, t_env *env_list, t_history *entries);
+void	ft_builtins(t_element *cmd, t_env *env_list, t_history *entries, int option);
 bool	is_this_command(char *buffer, char* command);
 int		size_of_command(char *command, int len, int type);
 bool	is_cmd_in_line(char *line, char *cmd);
@@ -259,9 +259,10 @@ void	ft_dollar_question_mark();
 
 /*Echo*/
 //int 	skip(char *line, int i, int option);
+void	print_skiping_quotes(char *str,/*t_pipe *exec */ int option);
 char	type_of_separator(char *line, int i);
 int		type_of_str(char *cmd);
-void	echo(t_element *current);
+void	echo(t_element *current, int option);
 
 /*Env*/
 void	ft_env(t_env *env, t_element *cmd, int option);
@@ -336,7 +337,7 @@ int		get_size_cmd(t_element *cmd);
 int		ft_count_pipes(t_element *cmd);
 
 /*Redirect*/
-int		ft_redirect(t_element *cmd);
+int		ft_redirect(t_element *cmd, int option);
 int		ft_infile(char *file);
 int		ft_outfile(t_element *cmd);
 
