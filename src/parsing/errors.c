@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:39:52 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/01 12:50:58 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/08 16:17:50 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -19,7 +19,7 @@ bool	first_character_error(char *line)
 	
 	status = false;
 	if (line[0] == '<' || line[0] == '>')
-		redirecters_error(line);
+		status = redirecters_error(line);
 	//KARL j'ai mis ca en commentaire pour tester /usr/bin/ls !
 	// else if (line[0] == '/')
 	// 	slash_error(line);
@@ -48,21 +48,21 @@ bool	redirecters_error(char *line)
 	}
 	else if (ft_strlen(line) > 2)
 	{
-		if (line[0] == '>' && line[1] == '>')
-		{
-			printf("bash: syntax error near unexpected token `>>'\n");
-			return (false);
-		}	
-		else if (line[0] == '<' && line[1] == '<')
+		// if (line[0] == '>' && line[1] == '>')
+		// {
+		// 	printf("bash: syntax error near unexpected token `>>'\n");
+		// 	return (false);
+		// }	
+		/* else */if (line[0] == '<' && line[1] == '<')
 		{
 			printf("bash: syntax error near unexpected token `<<'\n");
 			return (false);
 		}	
-		else if (line[0] == '>')
-		{
-			printf("bash: syntax error near unexpected token `>'\n");
-			return (false);
-		}	
+		// else if (line[0] == '>')
+		// {
+		// 	printf("bash: syntax error near unexpected token `>'\n");
+		// 	return (false);
+		// }	
 		else if (line[0] == '<')
 		{
 			printf("bash: syntax error near unexpected token `<'\n");

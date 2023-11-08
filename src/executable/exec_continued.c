@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/07 17:39:38 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/08 19:36:29 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -49,13 +49,17 @@ void last_dup(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 void	handle_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 {
 	// //TEST KARL
-	if (!ft_redirect(cmd))
+	if (!ft_redirect(cmd/*, exec*/, NO_PRINT))
+	{
+		// free et on return
 		printf("ft_redirect n'a pas marche\n");
+		return ;
+	}
 	//fin
 	
 	if (cmd->builtin == true)
 	{
-		ft_builtins(cmd, env, entries/* , exec */); // on doit envoyer fd ici pour les pipes, exec->fd
+		ft_builtins(cmd, env, entries/* , exec */, PRINT); // on doit envoyer fd ici pour les pipes, exec->fd
 		return ;
 	}
 	// on doit peut etre free des trucs dans le child
@@ -78,10 +82,21 @@ void	handle_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries
 		for the new program.
 --- Waitpid waits for the process to end before continuing.
  */
+
+
+// A FAIRE -> bash command not found qui s'ecrivent en meme temps
+
 int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
+	// close(0);
+	// close(1);
+	// close (2);
+	
 	if (ft_strchr(exec->cmd_tab[0], '/'))
+	{
+		//ft_access_slash(); // a faire s'inspirer de mini_comb
 		execve(cmd->content, exec->cmd_tab, env->env);
+	}
 	exec->cmd_path = split_path(env);
 	if (!exec->cmd_path)
 	{
@@ -89,6 +104,11 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 		ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
 		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
 		// free des trucs
+
+		close(0);
+		close(1);
+		close (2);
+		
 		return (127);
 	}
 	cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
@@ -101,6 +121,10 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 			ft_putstr_fd("bash: ", STDERR_FILENO);
 			ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
 			ft_putendl_fd(": command not found", STDERR_FILENO);
+
+			close(0);
+			close(1);
+			close(2);
 			//free
 		}
 		return (127);

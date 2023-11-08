@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/07 16:00:00 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/08 18:02:02 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -43,18 +43,19 @@ int	ft_outfile(t_element *cmd)
 		fd = open(cmd->content, O_CREAT | O_RDWR | O_APPEND, 0644);
 	else
 		fd = open(cmd->content, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (fd < 0)
+	if (fd == -1)
 	{
 		perror("open outfile");
 		return (0);
 	}
-	if (fd > 0 && dup2(fd, STDERR_FILENO) < 0)
+	if (fd > STDERR_FILENO && dup2(fd, STDERR_FILENO) < 0) //fd >= 0
 	{
 		perror("outfile dup perror");
+		close(fd);
 		return (0);
 	}
-	if (fd > 0)
-		close(fd);
+	// if (fd > 0)
+	close(fd);
 	return (1);
 }
 
@@ -62,9 +63,10 @@ int	ft_outfile(t_element *cmd)
 -rediriger dans le cas ou la commande est un built in a coder nous meme
 - les << a gerer
 */
-int	ft_redirect(t_element *cmd)
+int	ft_redirect(t_element *cmd, int option)
 {
 	t_element *tmp;
+
 	tmp = cmd;
 	while (tmp)
 	{
@@ -74,11 +76,15 @@ int	ft_redirect(t_element *cmd)
 				// gerer les free
 				return (0);
 		}
-		else if (tmp->type == INFILE_DELIMITER) //soit >>
+		else if (tmp->type == INFILE_DELIMITER) //soit <<
 		{
-			printf(("les << sont encore a gerer\n"));
+			// if (!ft_infile_def(tmp->content))
+			{
+			// 	//gerer les free
+				return (0);
+			}
 		}
-		else if (tmp->type == OUTFILE || tmp->type == OUTFILE_APPEND) // soit > soit >>
+		else if (tmp->type == OUTFILE || tmp->type == OUTFILE_APPEND) // soit > soit >> on cree le fichier
 		{
 			if (!ft_outfile(tmp))
 				// gerer les free
