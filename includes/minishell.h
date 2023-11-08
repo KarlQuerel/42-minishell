@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
 /*   Updated: 2023/11/07 17:25:05 by karl             ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 /*Libraries*/
 
@@ -238,7 +238,8 @@ int		key_and_value_type(char *command, int len, int type);
 int		str_type(char *command, int len);
 
 /*Prompt*/
-void	prompt(t_env *env_list);
+// void	prompt(t_env *env_list);
+char	*ft_prompt(t_env *env_list, int option);
 
 /*------------------BUILT-INS FOLDER------------------*/
 
@@ -281,6 +282,7 @@ void		history(t_history *current_entry, int len);
 void		free_history(t_history *current_entry);
 void		lstadd_back_history(t_history *entries, char *line);
 t_history	*ft_lstlast_history(t_history *lst);
+// void		history(int option);
 
 /*Pwd*/
 char	*pwd(/* t_element *cmd, */int option);

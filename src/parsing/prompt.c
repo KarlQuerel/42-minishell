@@ -3,31 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:36:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/10/23 16:40:57 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/02 15:30:57 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-void    prompt(t_env *env_list)
+char	*ft_prompt(t_env *env_list, int option)
 {
-    char    *word;
-    int     i;
-    t_env	*user;
-    t_env   *home;
-    t_env   *Gpath;
-    char	*path;
-    
-    path = NULL;
+	char    *word;
+	int     i;
+	t_env	*user;
+	t_env   *home;
+	t_env   *Gpath;
+	char	*path;
+	
+	path = NULL;
 	word = NULL;
+
+	/*Bizarrement malgré unset PWD, USET et HOME le prompt marche tjrs...
+	Si jamais je trouves pourquoi et ça ne marche plus je peux doit changer le prompt
+	pour que ça ne montre que le dollar (je crois que sur bash c'est comme ça)
+	soit si je veux que le prompt marche tjrs je peux rendre les variables user, home et
+	Gpath constantes pour qu'elles gardent la valeur de base en mémoire (avant d'unset car 
+	le prompt s'affiche pour la première fois avant d'entrer dans la while du main)*/
 	user = find_value_with_key_env(env_list, "USER");
-    home = find_value_with_key_env(env_list, "HOME");
-    Gpath = find_value_with_key_env(env_list, "PWD");
-    
+	home = find_value_with_key_env(env_list, "HOME");
+	Gpath = find_value_with_key_env(env_list, "PWD");
+	
 	i = ft_strlen(pwd(NO_PRINT)) - 2; //pour sauter le dernier slash
 	while(i > 0)
 	{
@@ -36,37 +43,44 @@ void    prompt(t_env *env_list)
 		i--;
 	}
 	word = strlcpy_middle(word, pwd(NO_PRINT), i, ft_strlen(pwd(NO_PRINT)));
-    //printf("last word from path = [%s]\n", word);
-    //printf("home->value = [%s]\n", home->value);
-    //printf("Gpath->value = [%s]\n",Gpath->value);
-    
-    if (ft_strncmp(word, user->value, ft_strlen(user->value)) == 0) //si user juste $
-    {
-        free(word);
-        return ;
-    }
-    else if (ft_strncmp(word, "homes", ft_strlen(word) - i + 1) == 0) //si home on print jusqu a home
-    {
+	//printf("last word from path = [%s]\n", word);
+	//printf("home->value = [%s]\n", home->value);
+	//printf("Gpath->value = [%s]\n",Gpath->value);
+	
+	if (ft_strncmp(word, user->value, ft_strlen(user->value)) == 0) //si user juste $
+	{
+		// free(word);
+		/* printf("$"); //vérifier
+		return ("$"); //vérifier */
+		path = "";
+		// return NULL;
+	}
+	else if (ft_strncmp(word, "homes", ft_strlen(word) - i + 1) == 0) //si home on print jusqu a home
+	{
 		path = strlcpy_middle(path, Gpath->value, 1, ft_strlen(Gpath->value) - 1);
-        printf("%s", path);
-        free(path);
-    }
+		//printf("%s", path);
+		// free(path);
+	}
 /*     else if (ft_strncmp(word, "", ft_strlen(word)) == 0) //NE MARCHE PAS
-    {
+	{
 		printf("/");
-        free(path);
-    } */
-    else if (ft_strncmp(word, user->value, ft_strlen(user->value)) != 0 && is_user_in_path(pwd(NO_PRINT), env_list) == true) //si pas dans home ni dans user et que plus loin que user
-    {
+		// free(path);
+	} */
+	else if (ft_strncmp(word, user->value, ft_strlen(user->value)) != 0 && is_user_in_path(pwd(NO_PRINT), env_list) == true) //si pas dans home ni dans user et que plus loin que user
+	{
 		path = home_path_simplified(pwd(NO_PRINT), env_list);
-        printf("%s", path);
-        free(path);
-    }
-    else
-    {
-        path = pwd(NO_PRINT);
-        printf("%s", path);
-        free(path);
-    }
-    free(word);
+		//printf("%s", path);
+		// free(path);
+	}
+	else
+	{
+		path = pwd(NO_PRINT);
+		// printf("%s", path);
+		// free(path);
+	}
+	
+	if (option == PRINT)
+		printf("%s", path);
+	free(word);
+	return (path);
 }

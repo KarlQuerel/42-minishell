@@ -1,14 +1,14 @@
-#******************************************************************************#
+# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: karl <karl@student.42.fr>                  +#+  +:+       +#+         #
+#    By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/10/31 13:37:26 by karl             ###   ########.fr        #
+#    Updated: 2023/11/01 16:11:06 by octonaute        ###   ########.fr        #
 #                                                                              #
-#******************************************************************************#
+# **************************************************************************** #
 
 #------------------------------------------------#
 #   COLORS                                       #
@@ -64,7 +64,9 @@ SRCS		:=  src/main.c \
 				src/parsing/utils.c \
 				src/parsing/malloc.c \
 				src/parsing/cmd_types.c \
-				src/parsing/prompt.c
+				src/parsing/prompt.c \
+				get_next_line/get_next_line_bonus.c \
+				get_next_line/get_next_line_utils_bonus.c \
 				
 
 OBJS 		:= $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))
