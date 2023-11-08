@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/01 18:34:16 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/07 17:25:05 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -334,7 +334,7 @@ int		get_size_cmd(t_element *cmd);
 int		ft_count_pipes(t_element *cmd);
 
 /*Redirect*/
-int		ft_redirect(t_element *s);
+int		ft_redirect(t_element *cmd);
 int		ft_infile(char *file);
 int		ft_outfile(t_element *cmd);
 

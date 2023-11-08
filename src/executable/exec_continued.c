@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/01 12:52:56 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/07 17:39:38 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -27,7 +27,7 @@ void	middle_dup(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 		perror("dup2");
 		exit(0);
 	}
-	//close(*(exec->fd_temp)); a garder pour le heredoc apparemment
+	close(*(exec->fd_temp)); //a garder pour le heredoc apparemment
 	close(exec->fd[1]);
 	handle_command(cmd, env, exec, entries);
 }
@@ -48,6 +48,11 @@ void last_dup(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 */
 void	handle_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 {
+	// //TEST KARL
+	if (!ft_redirect(cmd))
+		printf("ft_redirect n'a pas marche\n");
+	//fin
+	
 	if (cmd->builtin == true)
 	{
 		ft_builtins(cmd, env, entries/* , exec */); // on doit envoyer fd ici pour les pipes, exec->fd

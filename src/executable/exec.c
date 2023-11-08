@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/01 18:58:40 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/07 15:24:18 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -200,7 +200,7 @@ void	last_pipe(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 		perror("fork");
 	if (pid == 0)
 	{
-		exec->last_pid = getpid(); //fonction interdite a enlever
+		//exec->last_pid = getpid(); //fonction interdite a enlever
 		//printf("exec->last_pid = %d\n", exec->last_pid);
 		last_dup(cmd, env, exec, entries);
 	}

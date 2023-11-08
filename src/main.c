@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/10/31 17:42:23 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/07 17:34:25 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -129,8 +129,9 @@ int main (int argc, char **argv, char **env)
 		if (line_errors_and_fix(&new_line) == true)
 		{
 			cmd_list = parsing(new_line, env_list);
-			//ft_redirect(cmd_list); // a finir
-			//printlist_test(cmd_list);
+			if (!ft_redirect(cmd_list)) // a finir
+				exit(EXIT_FAILURE);
+			printlist_test(cmd_list);
 			ft_execute(cmd_list, env_list, exec, entries);
 			free_cmd_list(cmd_list);
 		}	

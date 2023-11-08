@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/31 18:40:40 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/07 16:00:00 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -21,17 +21,17 @@ int	ft_infile(char *file)
 	fd = open(file, O_RDONLY); // returns -1 on error and errno is set -> utiliser perror
 	if (fd < 0)
 	{
-		perror("bash"); // pour tester errno
-		return (EXIT_FAILURE);
+		perror("open perror"); // pour tester errno
+		return (0);
 	}
 	if (fd > 0 && dup2(fd, STDERR_FILENO) < 0)
 	{
-		perror("dup2"); //pour tester errno
-		return (EXIT_FAILURE);
+		perror("infile dup perror"); //pour tester errno
+		return (0);
 	}
 	if (fd > 0) //on success
 		close(fd);
-	return(EXIT_SUCCESS);
+	return(1);
 }
 
 /* If >> is present, then we create the outfile */
@@ -46,33 +46,33 @@ int	ft_outfile(t_element *cmd)
 	if (fd < 0)
 	{
 		perror("open outfile");
-		return (EXIT_FAILURE);
+		return (0);
 	}
 	if (fd > 0 && dup2(fd, STDERR_FILENO) < 0)
 	{
-		perror("open");
-		return (EXIT_FAILURE);
+		perror("outfile dup perror");
+		return (0);
 	}
 	if (fd > 0)
 		close(fd);
-	return (EXIT_SUCCESS);
+	return (1);
 }
 
 /* A FAIRE
 -rediriger dans le cas ou la commande est un built in a coder nous meme
 - les << a gerer
 */
-int	ft_redirect(t_element *s)
+int	ft_redirect(t_element *cmd)
 {
 	t_element *tmp;
-	tmp = s;
+	tmp = cmd;
 	while (tmp)
 	{
 		if (tmp->type == INFILE) // <
 		{
-			if (ft_infile(tmp->content))
+			if (!ft_infile(tmp->content))
 				// gerer les free
-				return (EXIT_FAILURE);
+				return (0);
 		}
 		else if (tmp->type == INFILE_DELIMITER) //soit >>
 		{
@@ -80,12 +80,12 @@ int	ft_redirect(t_element *s)
 		}
 		else if (tmp->type == OUTFILE || tmp->type == OUTFILE_APPEND) // soit > soit >>
 		{
-			if (ft_outfile(tmp))
+			if (!ft_outfile(tmp))
 				// gerer les free
-				return (EXIT_FAILURE);
+				return (0);
 		}
 		tmp = tmp->next;
 	}
-	tmp = s;
-	return (EXIT_SUCCESS);
+	tmp = cmd;
+	return (1);
 }
