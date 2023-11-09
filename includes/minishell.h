@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/08 18:14:49 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/09 16:44:02 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 /*Libraries*/
 
@@ -32,6 +32,8 @@
 # include <errno.h>
 # include <limits.h>
 #include <sys/ioctl.h>
+
+#include <termios.h>
 
 /*Macros pour signaux*/
 # define IN_PROMPT 0
@@ -60,8 +62,8 @@
 # define HISTORY 3
 //# define les autres 3
 
-/* # define HISTORY 0
-# define FREE_HISTORY 1 */
+# define HISTORY 0
+# define FREE_HISTORY 1
 
 # define PRINT 0
 # define NO_PRINT 1
@@ -278,12 +280,12 @@ int		join_new_var(t_env *env, char *key, char *content);
 void	init_new_var(t_env *env, char *new_var);
 
 /*History*/
-t_history	*ft_add_history(t_history *entries, char *line);
+/* t_history	*ft_add_history(t_history *entries, char *line);
 void		history(t_history *current_entry, int len);
 void		free_history(t_history *current_entry);
 void		lstadd_back_history(t_history *entries, char *line);
-t_history	*ft_lstlast_history(t_history *lst);
-// void		history(int option);
+t_history	*ft_lstlast_history(t_history *lst); */
+void		history(int option);
 
 /*Pwd*/
 char	*pwd(/* t_element *cmd, */int option);

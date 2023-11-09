@@ -1,14 +1,14 @@
-#******************************************************************************#
+# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: karl <karl@student.42.fr>                  +#+  +:+       +#+         #
+#    By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/11/08 12:07:51 by karl             ###   ########.fr        #
+#    Updated: 2023/11/09 15:33:45 by octonaute        ###   ########.fr        #
 #                                                                              #
-#******************************************************************************#
+# **************************************************************************** #
 
 #------------------------------------------------#
 #   COLORS                                       #
@@ -73,7 +73,7 @@ OBJS 		:= $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))
 OBJS		:= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 		
 CC          := cc
-CFLAGS      := -g3 -gdwarf-4 #-Wall -Wextra -Werror -g3
+CFLAGS      := #-g3 -gdwarf-4 #-Wall -Wextra -Werror -g3
 HFLAGS    	:= -I$(INCLUDE_DIR)
 RFLAGS     	:= -lreadline
 MAKEFLAGS	+= --no-print-directory

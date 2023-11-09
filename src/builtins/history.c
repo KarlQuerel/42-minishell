@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:38 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/02 17:13:43 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/09 16:43:10 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ on ne doit pas remettre cd dans history. Pareil qd on fait deux fois
 de suite ls par exemple. Par contre quand on écrit une commande qui 
 n'existe pas ça s'affiche dans history.*/
 	
-int	ft_lstsize_history(t_history *lst)
+/* int	ft_lstsize_history(t_history *lst)
 {
 	int		len;
 	t_history	*content;
@@ -69,6 +69,8 @@ t_history	*ft_add_history(t_history *entries, char *line)
 
 void	history(t_history *current_entry, int len)
 {
+	// FAIRE BIEN ATTENTION : si history 1 il faut print le
+	// DERNIER et non le premier entry
 	int	i;
 
 	i = 0;
@@ -100,40 +102,40 @@ void	free_history(t_history *current_entry)
 		current_entry = current_entry->next;
 	}
 	free(current_entry);
-}
+} */
 
 
 /*HISTORY QUE J'AVAI AVANT EN UTILISANT ADD_HISTORY POUR QUE LA FLÈCHE DU HAUT MARCHE. 
 SI JE VEUX REPRENDRE LE CODE DU HAUT IL FAUT UTILISER LIBRAIRIE TERMIOS)
 Il faudrait aussi changer la commande history dans l'exec du coup car on n'a plus entries*/
 
-// void	history(int option)
-// {
-// 	int i;
+void	history(int option)
+{
+	int i;
 
-// 	i = 0;
-// 	/* get the state of your history list (offset, length, size) */
-// 	HISTORY_STATE *myhist = history_get_history_state ();
-// 	/* retrieve the history list */
-// 	HIST_ENTRY **mylist = history_list ();
-// 	if (option == HISTORY)
-// 	{
-// 		while(i < myhist->length)
-// 		{
-// 			printf(" %d  %s\n", i + 1, mylist[i]->line);
-// 			//free_history_entry(mylist[i]); // FREE AU MOMENT DE EXIT
-// 			i++;
-// 		}
-// 		putchar ('\n');	
-// 	}
-// 	else if (option == FREE_HISTORY)
-// 	{
-// 		while(i < myhist->length)
-// 		{
-// 			free_history_entry(mylist[i]);
-// 			i++;
-// 		}
-// 		free (myhist);  /* free HIST_ENTRY list */ 
-// 		free (mylist);  /* free HISTORY_STATE   */ 
-// 	}
-// }
+	i = 0;
+	/* get the state of your history list (offset, length, size) */
+	HISTORY_STATE *myhist = history_get_history_state ();
+	/* retrieve the history list */
+	HIST_ENTRY **mylist = history_list ();
+	if (option == HISTORY)
+	{
+		while(i < myhist->length)
+		{
+			printf(" %d  %s\n", i + 1, mylist[i]->line);
+			//free_history_entry(mylist[i]); // FREE AU MOMENT DE EXIT
+			i++;
+		}
+		putchar ('\n');	
+	}
+	else if (option == FREE_HISTORY)
+	{
+		while(i < myhist->length)
+		{
+			free_history_entry(mylist[i]);
+			i++;
+		}
+		free (myhist);  /* free HIST_ENTRY list */ 
+		free (mylist);  /* free HISTORY_STATE   */ 
+	}
+}
