@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/09 16:52:52 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/09 17:25:55 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,7 @@ int main (int argc, char **argv, char **env)
 		
  		/*if (commande en cours)
 			ctrlD(line); */
-		// entries = ft_add_history(entries, line);
-		// add_history(line);
+			
 		new_line = erase_spaces(line);
 		if (new_line != NULL)
 		{

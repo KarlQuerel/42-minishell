@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/09 15:50:05 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/09 17:48:27 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,67 +111,3 @@ void	ctrlD(char *line) //lui envoyer line ou new_line?
 		exit(0);
 	}
 }
-
-
-
-
-
-
-/*
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <termios.h>
-
-void set_terminal_mode() {
-    struct termios t;
-    tcgetattr(STDIN_FILENO, &t);
-    t.c_lflag &= ~ICANON;  // Disable canonical mode
-    t.c_lflag &= ~ECHO;    // Disable echoing
-    tcsetattr(STDIN_FILENO, TCSANOW, &t);
-}
-
-void reset_terminal_mode() {
-    struct termios t;
-    tcgetattr(STDIN_FILENO, &t);
-    t.c_lflag |= ICANON;  // Enable canonical mode
-    t.c_lflag |= ECHO;    // Enable echoing
-    tcsetattr(STDIN_FILENO, TCSANOW, &t);
-}
-
-char get_key() {
-    char key;
-    read(STDIN_FILENO, &key, 1);
-    return key;
-}
-
-int main() {
-    set_terminal_mode();
-
-    char key;
-    while (1) {
-        key = get_key();
-
-        if (key == '\x1b') {  // Check if the key is the escape character
-            char sequence[3];
-            if (read(STDIN_FILENO, sequence, 3) == 3) {
-                if (sequence[0] == '[' && sequence[2] == 'A') {
-                    // Up arrow key is pressed
-                    printf("Up arrow key pressed!\n");
-                    // Your variable-changing logic goes here
-                }
-            }
-        }
-
-        // Add other key handling logic as needed
-
-        if (key == 'q') {
-            break;  // Exit the loop if 'q' is pressed
-        }
-    }
-
-    reset_terminal_mode();
-    return 0;
-}
-*/

@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/09 16:57:02 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/09 17:27:06 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,18 +81,16 @@ bool	is_cmd_in_line(char *line, char *cmd)
 }
 
 /* Handles builtins redirections */
-void	ft_builtins(t_element *cmd, t_env *env_list/* , t_history *entries */, int option)
+void	ft_builtins(t_element *cmd, t_env *env_list, int option)
 {
 	if (is_this_command(cmd->content, "pwd") == true && check_next_node_builtin(cmd, NO_OPTIONS))
 		pwd(PRINT);
 	else if (is_this_command(cmd->content, "history") == true && check_next_node_builtin(cmd, HISTORY))
 	{
 		if (cmd->next && cmd->next->type != PIPE)
-			// history(entries, ft_atoi(cmd->next->content));
-			history(FT_HISTORY, ft_atoi(cmd->next->content)); //avec numero
+			history(FT_HISTORY, ft_atoi(cmd->next->content)); //avec numero en option
 		else
-			// history(entries, -1);
-			history(FT_HISTORY, -1);
+			history(FT_HISTORY, -1); //sans option (print totalité de history)
 	}
 	else if (is_this_command(cmd->content, "cd") == true && check_next_node_builtin(cmd, NO_OPTIONS))
 		cd(cmd, env_list);
@@ -107,5 +105,5 @@ void	ft_builtins(t_element *cmd, t_env *env_list/* , t_history *entries */, int 
 	else if (is_this_command(cmd->content, "$?") == true && check_next_node_builtin(cmd, NO_OPTIONS))
 		ft_dollar_question_mark(env_list);
 	else if (is_this_command(cmd->content, "exit") == true && check_next_node_builtin(cmd, NO_OPTIONS))
-		ft_exit(cmd); // peut etre envoyer t_history *entries -> voir avec caro
+		ft_exit(cmd);
 }
