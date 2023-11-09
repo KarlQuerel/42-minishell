@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/09 17:25:55 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/09 19:54:16 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,14 @@ int main (int argc, char **argv, char **env)
 {
 	char                *line;
 	char                *new_line;
-	struct sigaction    signal;
+	// struct sigaction    signal;
 	t_env				*env_list;
 	t_element			*cmd_list;
 	t_pipe				*exec;
 	t_history			*entries;
 	char				*prompt;
+
+	struct sigaction act;
 
 	exec = ft_calloc(1, sizeof(t_pipe));
 	if (!exec)
@@ -98,13 +100,18 @@ int main (int argc, char **argv, char **env)
 
 	using_history(); // initialisation de l'historique
 	
-	sigemptyset(&signal.sa_mask);
+/* 	sigemptyset(&signal.sa_mask);
 	// signal.sa_flags = SA_SIGINFO;
 	signal.sa_flags = SA_RESTART;
 	signal.sa_handler = &signal_handler;
 	if (sigaction(SIGINT, &signal, NULL) == -1 || \
 	sigaction(SIGQUIT, &signal, NULL) == -1)
-		return (EXIT_FAILURE);
+		return (EXIT_FAILURE); */
+
+	memset(&act, 0, sizeof(act));
+    act.sa_handler = signal_handler;
+    sigaction(SIGINT, &act, NULL);
+    sigaction(SIGQUIT, &act, NULL);
 
 	(void)argv;
 	if (argc != 1)
@@ -123,8 +130,8 @@ int main (int argc, char **argv, char **env)
 		prompt = ft_strjoin(ft_prompt(env_list, NO_PRINT), "$ ");
 		line = readline(prompt);
 		add_history(line);
-		if (sigaction(SIGQUIT, &signal, NULL) == 0 && g_signals.location == IN_PROMPT)
-			signal.sa_handler = SIG_IGN;
+/* 		if (sigaction(SIGQUIT, &signal, NULL) == 0 && g_signals.location == IN_PROMPT)
+			signal.sa_handler = SIG_IGN; */
 		
  		/*if (commande en cours)
 			ctrlD(line); */
