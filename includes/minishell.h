@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/09 16:44:02 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/09 16:57:22 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@
 # define HISTORY 3
 //# define les autres 3
 
-# define HISTORY 0
+# define FT_HISTORY 0
 # define FREE_HISTORY 1
 
 # define PRINT 0
@@ -175,7 +175,7 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list);
 /*------------------PARSING FOLDER------------------*/
 
 /*Commands*/
-void	ft_builtins(t_element *cmd, t_env *env_list, t_history *entries, int option);
+void	ft_builtins(t_element *cmd, t_env *env_list/* , t_history *entries */, int option);
 bool	is_this_command(char *buffer, char* command);
 int		size_of_command(char *command, int len, int type);
 bool	is_cmd_in_line(char *line, char *cmd);
@@ -201,9 +201,9 @@ t_history	*lstnew_history(char *line, int size_of_list);
 int			ft_lstsize_history(t_history *lst);
 
 /*Free*/
-void	final_free(char *line, t_env *env_list, t_history *entries);
+void	final_free(char *line, t_env *env_list/* , t_history *entries */);
 void	free_cmd_list(t_element *cmd_list);
-void	exit_free(t_element *cmd_list, t_env *env_list, t_history *entries);
+void	exit_free(t_element *cmd_list, t_env *env_list/* , t_history *entries */);
 
 /*Checks*/
 bool		quotes_can_close(char *line);
@@ -280,12 +280,12 @@ int		join_new_var(t_env *env, char *key, char *content);
 void	init_new_var(t_env *env, char *new_var);
 
 /*History*/
-/* t_history	*ft_add_history(t_history *entries, char *line);
-void		history(t_history *current_entry, int len);
-void		free_history(t_history *current_entry);
-void		lstadd_back_history(t_history *entries, char *line);
-t_history	*ft_lstlast_history(t_history *lst); */
-void		history(int option);
+// t_history	*ft_add_history(t_history *entries, char *line);
+// void		history(t_history *current_entry, int len);
+// void		free_history(t_history *current_entry);
+// void		lstadd_back_history(t_history *entries, char *line);
+// t_history	*ft_lstlast_history(t_history *lst);
+void		history(int option, int len);
 
 /*Pwd*/
 char	*pwd(/* t_element *cmd, */int option);
@@ -308,24 +308,24 @@ char	*ft_strcpy(char *dst, char *src);
 void	ft_print_array(char **arr);
 
 /*Exec*/
-void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
-void	single_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
-void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec/* , t_history *entries */);
+void	single_command(t_element *cmd, t_env *env, t_pipe *exec/* , t_history *entries */);
+void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec/* , t_history *entries */);
 //void	ft_set_exit_status(t_env *env, int status);
-// void	middle_pipes(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
-// void	last_pipe(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+// void	middle_pipes(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec/* , t_history *entries */);
+// void	last_pipe(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec/* , t_history *entries */);
 
-void	middle_pipes(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
-void	last_pipe(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	middle_pipes(t_element *cmd, t_env *env, t_pipe *exec/* , t_history *entries */);
+void	last_pipe(t_element *cmd, t_env *env, t_pipe *exec/* , t_history *entries */);
 
 /*Exec_continued*/
-// void	middle_dup(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
-// void	last_dup(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+// void	middle_dup(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec/* , t_history *entries */);
+// void	last_dup(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec/* , t_history *entries */);
 
-void	middle_dup(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
-void	last_dup(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	middle_dup(t_element *cmd, t_env *env, t_pipe *exec/* , t_history *entries */);
+void	last_dup(t_element *cmd, t_env *env, t_pipe *exec/* , t_history *entries */);
 
-void	handle_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
+void	handle_command(t_element *cmd, t_env *env, t_pipe *exec/* , t_history *entries */);
 int		exec_command(t_element *cmd, t_env *env, t_pipe *exec);
 char	*ft_get_command(char **path, char *argument);
 

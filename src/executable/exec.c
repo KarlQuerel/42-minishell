@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/08 19:32:54 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/09 16:51:38 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -45,7 +45,7 @@ TO DO:
 --- If no pipes are detected, fills cmd_tab and calls single_command function
 --- Else we calls multipe_commands function
 */
-void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
+void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec/* , t_history *entries */)
 {
 	int	i;
 	int	size_cmd;
@@ -62,10 +62,10 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 	if (exec->pipe_nb == 0)
 	{
 		fill_array(cmd, exec);
-		single_command(cmd, env, exec, entries);
+		single_command(cmd, env, exec/* , entries */);
 	}
 	else
-		multiple_commands(cmd, env, exec, entries);
+		multiple_commands(cmd, env, exec/* , entries */);
 }
 
 /* If no pipes are present
@@ -73,14 +73,14 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 	from reaching handle_command
 ---	if child pid is detected, handle_command is called
 */
-void	single_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
+void	single_command(t_element *cmd, t_env *env, t_pipe *exec/* , t_history *entries */)
 {
 	int	pid;
 	int	status;
 
 	if (cmd && cmd->builtin == true)
 	{
-		ft_builtins(cmd, env, entries, PRINT);
+		ft_builtins(cmd, env/* , entries */, PRINT);
 		return ;
 	}
 	pid = fork();
@@ -92,7 +92,7 @@ void	single_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries
 	if (pid == 0)
 	{
 		//signal(SIGQUIT, SIG_DFLG);
-		handle_command(cmd, env, exec, entries);
+		handle_command(cmd, env, exec/* , entries */);
 	}
 	if (waitpid(pid, &status, 0) == -1)
 	{
@@ -116,7 +116,7 @@ void	single_command(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries
 (le traduire en anglais pour les commentaires)
 le status s'initialise dans waitpid pour etre reutilise dans les W flags de waitpid
 */
-void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
+void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec/* , t_history *entries */)
 {
 	int	i = 0;
 	int	status;
@@ -130,13 +130,13 @@ void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec, t_history *entr
 		fill_array(cmd, exec);
 		if ( i < exec->pipe_nb)
 		{
-			middle_pipes(cmd, env, exec, entries);
+			middle_pipes(cmd, env, exec/* , entries */);
 			while (cmd->next && cmd->type != PIPE)
 				cmd = cmd->next;
 			cmd = cmd->next;
 		}
 		else
-			last_pipe(cmd, env, exec, entries);
+			last_pipe(cmd, env, exec/* , entries */);
 		i++;
 	}
 	//wait(NULL); // ou waitpid
@@ -169,7 +169,7 @@ void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec, t_history *entr
 /* Handles all middle pipes behaviour
 --- Calls middle_dup function if child process is created 
 ---	If fd_temp exists, we dup the reading fd and assigns it to fd_temp*/
-void	middle_pipes(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
+void	middle_pipes(t_element *cmd, t_env *env, t_pipe *exec/* , t_history *entries */)
 {
 	int	pid;
 
@@ -179,7 +179,7 @@ void	middle_pipes(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 	if (pid < 0)
 		perror("Fork");
 	if (pid == 0)
-		middle_dup(cmd, env, exec, entries);
+		middle_dup(cmd, env, exec/* , entries */);
 	else
 	{
 		if (*(exec->fd_temp))
@@ -192,7 +192,7 @@ void	middle_pipes(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 }
 
 /* Handles last pipe behaviour */
-void	last_pipe(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
+void	last_pipe(t_element *cmd, t_env *env, t_pipe *exec/* , t_history *entries */)
 {
 	int	pid;
 
@@ -203,7 +203,7 @@ void	last_pipe(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries)
 	{
 		//exec->last_pid = getpid(); //fonction interdite a enlever
 		//printf("exec->last_pid = %d\n", exec->last_pid);
-		last_dup(cmd, env, exec, entries);
+		last_dup(cmd, env, exec/* , entries */);
 	}
 	else
 	{

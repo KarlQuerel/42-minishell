@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/08 18:01:22 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/09 16:57:02 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -81,16 +81,18 @@ bool	is_cmd_in_line(char *line, char *cmd)
 }
 
 /* Handles builtins redirections */
-void	ft_builtins(t_element *cmd, t_env *env_list, t_history *entries, int option)
+void	ft_builtins(t_element *cmd, t_env *env_list/* , t_history *entries */, int option)
 {
 	if (is_this_command(cmd->content, "pwd") == true && check_next_node_builtin(cmd, NO_OPTIONS))
 		pwd(PRINT);
 	else if (is_this_command(cmd->content, "history") == true && check_next_node_builtin(cmd, HISTORY))
 	{
 		if (cmd->next && cmd->next->type != PIPE)
-			history(entries, ft_atoi(cmd->next->content));
+			// history(entries, ft_atoi(cmd->next->content));
+			history(FT_HISTORY, ft_atoi(cmd->next->content)); //avec numero
 		else
-			history(entries, -1);
+			// history(entries, -1);
+			history(FT_HISTORY, -1);
 	}
 	else if (is_this_command(cmd->content, "cd") == true && check_next_node_builtin(cmd, NO_OPTIONS))
 		cd(cmd, env_list);

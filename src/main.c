@@ -6,53 +6,13 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/09 16:45:36 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/09 16:52:52 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
 #include "../libft/libft.h"
-
-////////////////////////////////////////
-/* void set_terminal_mode() {
-    struct termios t;
-    tcgetattr(STDIN_FILENO, &t);
-    t.c_lflag &= ~ICANON;  // Disable canonical mode
-    t.c_lflag &= ~ECHO;    // Disable echoing
-    tcsetattr(STDIN_FILENO, TCSANOW, &t);
-}
-
-void reset_terminal_mode() {
-    struct termios t;
-    tcgetattr(STDIN_FILENO, &t);
-    t.c_lflag |= ICANON;  // Enable canonical mode
-    t.c_lflag |= ECHO;    // Enable echoing
-    tcsetattr(STDIN_FILENO, TCSANOW, &t);
-}
-
-char get_key() {
-    char key;
-    read(STDIN_FILENO, &key, 1);
-    return key;
-} */
-
-/* void arrow_key_callback(int key) {
-    if (key == 0x401B5B41) {
-        // Check for the up arrow key (0x401B5B41 represents the up arrow key)
-        printf("Up arrow key pressed!\n");
-    }
-} */
-
-/* void up_arrow_callback(char* unused, int key) {
-    if (key == 0x101) {
-        // Check for the up arrow key (0x101 represents the up arrow key)
-        printf("Up arrow key pressed!\n");
-    }
-} */
-
-////////////////////////////////////////
-
 
 t_global g_signals;
 
@@ -129,40 +89,6 @@ int main (int argc, char **argv, char **env)
 	t_history			*entries;
 	char				*prompt;
 
-
-
-///////////////////////////////////////
-    // char key;
-	// set_terminal_mode();
-
-	// int n;
-	// char buffer[3]; // Buffer to store escape sequences
-
-	// rl_event_hook = arrow_key_callback;
-	// rl_bind_key(0x101, up_arrow_callback); // Bind the up arrow key to the callback
-
-
-
-/* 	struct termios term_settings;
-    if (tcgetattr(STDIN_FILENO, &term_settings) == -1) {
-        perror("tcgetattr");
-        exit(EXIT_FAILURE);
-    }
-
-    struct termios modified_term_settings = term_settings;
-    modified_term_settings.c_lflag &= ~(ICANON | ECHO); // Disable canonical mode and echoing
-
-    if (tcsetattr(STDIN_FILENO, TCSANOW, &modified_term_settings) == -1) {
-        perror("tcsetattr");
-        exit(EXIT_FAILURE);
-    }
-
-    char escape_sequence[3] = {0}; // Buffer to store escape sequences
-    int escape_sequence_length = 0; */
-///////////////////////////////////////
-
-
-
 	exec = ft_calloc(1, sizeof(t_pipe));
 	if (!exec)
 	{
@@ -170,6 +96,7 @@ int main (int argc, char **argv, char **env)
 		exit(EXIT_FAILURE);
 	}
 
+	using_history(); // initialisation de l'historique
 	
 	sigemptyset(&signal.sa_mask);
 	// signal.sa_flags = SA_SIGINFO;
@@ -195,63 +122,13 @@ int main (int argc, char **argv, char **env)
 		g_signals.location = IN_PROMPT;
 		prompt = ft_strjoin(ft_prompt(env_list, NO_PRINT), "$ ");
 		line = readline(prompt);
-
-/////////////////////////////////////
-
-		// printf("line = [%s]\n", line);
-
-/* 		key = get_key();
-
-        if (key == '\x1b') // Check if the key is the escape character
-		{
-            char sequence[3];
-            if (read(STDIN_FILENO, sequence, 3) == 3) 
-			{
-                if (sequence[0] == '[' && sequence[2] == 'A') // Up arrow key is pressed
-                    history(entries, 1); //show precedent line
-            }
-        } */
-
-		/* memset(buffer, 0, sizeof(buffer)); // Clear buffer
-        n = read(STDIN_FILENO, buffer, sizeof(buffer) - 1); // Read input
-
-        if (n == 3 && buffer[0] == 27 && buffer[1] == 91 && buffer[2] == 65) // Up arrow key is pressed
-			history(entries, 1); //show precedent line */
-/* 
-		if (line != NULL)
-		{
-			printf("line = [%s]\n", line);
-			if (ft_strncmp(line, "\x1b[A", ft_strlen(line)) == 0)
-				history(entries, 1);
-		} */
-
-/* 		char c;
-        if (read(STDIN_FILENO, &c, 1) == 1) {
-            // Append the character to the escape sequence buffer
-            escape_sequence[escape_sequence_length++] = c;
-
-            // Check if we have received a complete escape sequence for the up arrow key
-            if (escape_sequence_length == 3 &&
-                escape_sequence[0] == 27 && // ASCII code for escape character
-                escape_sequence[1] == '[' && escape_sequence[2] == 'A') {
-                printf("HEY\n");
-                escape_sequence_length = 0; // Reset the buffer
-            } else if (c == 'q') {
-                // Exit when 'q' is pressed
-                break;
-            } else if (escape_sequence_length >= 3) {
-                // Reset the buffer if the escape sequence is not recognized
-                escape_sequence_length = 0;
-            }
-        }
- */
-////////////////////////////////////////////
+		add_history(line);
 		if (sigaction(SIGQUIT, &signal, NULL) == 0 && g_signals.location == IN_PROMPT)
 			signal.sa_handler = SIG_IGN;
 		
  		/*if (commande en cours)
 			ctrlD(line); */
-		entries = ft_add_history(entries, line);
+		// entries = ft_add_history(entries, line);
 		// add_history(line);
 		new_line = erase_spaces(line);
 		if (new_line != NULL)
@@ -263,7 +140,7 @@ int main (int argc, char **argv, char **env)
 			{
 				cmd_list = parsing(new_line, env_list);
 				// printlist_test(cmd_list);
-				ft_execute(cmd_list, env_list, exec, entries);
+				ft_execute(cmd_list, env_list, exec/* , entries */);
 				free_cmd_list(cmd_list);
 			}
 		}
@@ -276,19 +153,6 @@ int main (int argc, char **argv, char **env)
 		env_list->env = env;
 //--------------------------------
 	}
-	
-	final_free(line, env_list, entries);
-
-///////////////////////////////////////
-	// reset_terminal_mode();
-
-
-/* 	// Restore terminal settings
-    if (tcsetattr(STDIN_FILENO, TCSANOW, &term_settings) == -1) {
-        perror("tcsetattr");
-        exit(EXIT_FAILURE);
-    } */
-///////////////////////////////////////
-	
+	final_free(line, env_list/* , entries */);
 	return (EXIT_SUCCESS);
 }

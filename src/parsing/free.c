@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/24 15:11:25 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/09 16:58:27 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-void	final_free(char *line, t_env *env_list, t_history *entries)
+void	final_free(char *line, t_env *env_list/* , t_history *entries */)
 {
 	free(line);
-	free_history(entries);
+	// free_history(entries);
+	history(FREE_HISTORY, 0); // 0 : on s'en fout, on utilise pas len qd on free
 	while (env_list != NULL)
 	{
 		free(env_list->key);
@@ -26,10 +27,11 @@ void	final_free(char *line, t_env *env_list, t_history *entries)
 	free(env_list);
 }
 
-void	exit_free(t_element *cmd_list, t_env *env_list, t_history *entries)
+void	exit_free(t_element *cmd_list, t_env *env_list/* , t_history *entries */)
 {
 	free_cmd_list(cmd_list);
-	free_history(entries);
+	// free_history(entries);
+	history(FREE_HISTORY, 0); // 0 : on s'en fout, on utilise pas len qd on free
 	while (env_list != NULL)
 	{
 		free(env_list->key);
