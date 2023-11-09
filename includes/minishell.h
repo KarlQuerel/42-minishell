@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/09 17:25:26 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/09 20:58:50 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,7 @@ int			ft_lstsize_history(t_history *lst);
 void	final_free(char *line, t_env *env_list);
 void	free_cmd_list(t_element *cmd_list);
 void	exit_free(t_element *cmd_list, t_env *env_list);
+void	free_env_list(t_env *env_list);
 
 /*Checks*/
 bool		quotes_can_close(char *line);

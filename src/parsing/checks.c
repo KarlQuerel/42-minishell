@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:07:47 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/30 17:45:35 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/09 20:34:19 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -19,7 +19,7 @@ the command line. If yes, it returns true.*/
 bool	quotes_can_close(char *line)
 {
 	size_t		i;
-	char	type;
+	char		type;
 	
 	i = 0;
 	while (line[i])
@@ -41,7 +41,7 @@ bool	quotes_can_close(char *line)
 					return (false);
 			}
 		}
-			i++;
+		i++;
 	}
 	return (true);
 }
@@ -72,6 +72,9 @@ bool		is_builtin(char *cmd_content)
 	return (false);
 }
 
+/*Checks if the username is in the current path to know
+if we have to go forward or backwards to display the prompt
+correctly.*/
 bool	is_user_in_path(char *path, t_env *env_list)
 {
 	int		i;

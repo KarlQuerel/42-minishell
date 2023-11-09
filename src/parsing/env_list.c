@@ -1,17 +1,42 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:00:17 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/07 17:11:52 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/09 20:56:17 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
+
+int	put_env_in_list_loop(char **env, t_env **current, int line)
+{
+	int letter;
+	int i;
+	
+	letter = 0;
+	i = 0;
+	while(env[line][letter] != '=')
+		(*current)->key[i++] = env[line][letter++];
+	(*current)->key[i] = '\0';
+	letter++;
+	i = 0;
+	while(env[line][letter] != '\0')
+		(*current)->value[i++] = env[line][letter++];
+	(*current)->value[i] = '\0';
+	line++;
+	if (env[line] != NULL)
+	{
+		(*current)->next = lstnew_env(env[line], 0);
+		(*current)->next->prev = (*current);
+		(*current) = (*current)->next;
+	}
+	return (line);
+}
 
 /*Cuts each line of **env into key and value in a t_env list*/
 t_env	*put_env_in_list(char **env)
@@ -19,36 +44,12 @@ t_env	*put_env_in_list(char **env)
 	t_env	*head;
 	t_env	*current;
 	int line;
-	int letter;
-	int i;
 
-	i = 0;
-	current = lstnew_env(env[i], 0);
+	current = lstnew_env(env[0], 0);
 	head = current;
 	line = 0;
 	while(env[line] != NULL)
-	{
-		letter = 0;
-		i = 0;
-		while(env[line][letter] != '=')
-			current->key[i++] = env[line][letter++];
-		current->key[i] = '\0';
-		//printf("key = %s\n", current->key);
-		letter++;
-		i = 0;
-		while(env[line][letter] != '\0')
-			current->value[i++] = env[line][letter++];
-		current->value[i] = '\0';
-		//printf("value = %s\n", current->value);
-		line++;
-		
-		if (env[line] != NULL)
-		{
-			current->next = lstnew_env(env[line], 0);
-			current->next->prev = current; //ajouter
-			current = current->next;
-		}
-	}
+		line = put_env_in_list_loop(env, &current, line);
 	current->next = NULL;
 	return (head);
 }

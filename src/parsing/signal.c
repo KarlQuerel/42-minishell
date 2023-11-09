@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/09 20:15:03 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/09 20:22:09 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,6 @@ memoire, et non pour en plus gerer les signaux avec les 3 define plus haut
 siginfo_t *info, void *ucontext) */
 void	signal_handler(int signal/*, char *line*/)
 {
-
-	struct sigaction	act;
-	
 	if (signal == SIGINT) //ctrl + C
 	{
 		if (g_signals.location == IN_PROMPT)
@@ -77,21 +74,6 @@ void	signal_handler(int signal/*, char *line*/)
 	}
 	else if (signal == SIGQUIT) // ctrl + '\'
 	{
-/* 		if (g_signals.location == IN_PROMPT) //marche parfaitement au bout de la troisième fois WTF
-		{
-			ft_memset(&act, 0, sizeof(act));
-			act.sa_handler = SIG_IGN;
-			sigaction(SIGQUIT, &act, NULL);
-			rl_on_new_line();
-			rl_replace_line("", 0);
-		}
-		if (g_signals.location == IN_COMMAND) //marche seulement la première fois
-		{
-			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
-			rl_reset_line_state();
-		} */
-
-
 		if (g_signals.location == IN_PROMPT) {
             rl_on_new_line();
             rl_replace_line("", 0);
@@ -112,7 +94,7 @@ void	signal_handler(int signal/*, char *line*/)
 			return (EXIT_SUCCESS);
 		} */
 
-void	ctrlD(char *line) //lui envoyer line ou new_line?
+/* void	ctrlD(char *line) //lui envoyer line ou new_line?
 {
 	if (fgets(line, sizeof(line), stdin) == NULL)
 	{
@@ -120,4 +102,4 @@ void	ctrlD(char *line) //lui envoyer line ou new_line?
 		//free all
 		exit(0);
 	}
-}
+} */

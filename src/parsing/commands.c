@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/09 17:27:06 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/09 20:37:15 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 /*The first two "if" check if there are errors in the grammar of the command
 line and print the associated error. The last function replaces the $ by its
 associated value so that the executable receives directly the line completed.*/
-bool	line_errors_and_fix(char **line) // pourquoi double pointeur
+bool	line_errors_and_fix(char **line) /*pourquoi double pointeur : 
+avant parce que je modifiais la ligne en même temps que je voulais return
+un bool mais plus besoin non? Vu que Maintenant c'est erase_spaces etc qui 
+modifie line*/
 {
 	if (!*line)
 		return (NULL);

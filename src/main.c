@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/09 19:54:16 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/09 20:50:24 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,13 @@ void	signal_reset_prompt(int signo)
 
 int main (int argc, char **argv, char **env)
 {
-	char                *line;
-	char                *new_line;
-	// struct sigaction    signal;
+	char				*line;
+	struct sigaction	signal;
 	t_env				*env_list;
 	t_element			*cmd_list;
 	t_pipe				*exec;
 	t_history			*entries;
 	char				*prompt;
-
-	struct sigaction act;
 
 	exec = ft_calloc(1, sizeof(t_pipe));
 	if (!exec)
@@ -98,20 +95,11 @@ int main (int argc, char **argv, char **env)
 		exit(EXIT_FAILURE);
 	}
 
-	using_history(); // initialisation de l'historique
-	
-/* 	sigemptyset(&signal.sa_mask);
-	// signal.sa_flags = SA_SIGINFO;
-	signal.sa_flags = SA_RESTART;
+	memset(&signal, 0, sizeof(signal));
 	signal.sa_handler = &signal_handler;
 	if (sigaction(SIGINT, &signal, NULL) == -1 || \
 	sigaction(SIGQUIT, &signal, NULL) == -1)
-		return (EXIT_FAILURE); */
-
-	memset(&act, 0, sizeof(act));
-    act.sa_handler = signal_handler;
-    sigaction(SIGINT, &act, NULL);
-    sigaction(SIGQUIT, &act, NULL);
+		return (EXIT_FAILURE);
 
 	(void)argv;
 	if (argc != 1)
@@ -121,6 +109,7 @@ int main (int argc, char **argv, char **env)
 	}
 	ft_welcome();
 	env_list = put_env_in_list(env);
+	using_history(); // initialisation de l'historique
 	env_list->env = env;
 	line = NULL;
 	entries = NULL;
@@ -130,35 +119,25 @@ int main (int argc, char **argv, char **env)
 		prompt = ft_strjoin(ft_prompt(env_list, NO_PRINT), "$ ");
 		line = readline(prompt);
 		add_history(line);
-/* 		if (sigaction(SIGQUIT, &signal, NULL) == 0 && g_signals.location == IN_PROMPT)
-			signal.sa_handler = SIG_IGN; */
 		
  		/*if (commande en cours)
 			ctrlD(line); */
 			
-		new_line = erase_spaces(line);
-		if (new_line != NULL)
+		line = erase_spaces(line);
+		if (line != NULL)
 		{
-			/*J'envoie new_line au lieu de line aux fonctions qui suivent
-			car sur bash qd on fait flèche du haut on retrouve la commande
-			telle qu'elle avait été écrite alors qu'ici on la modifiait*/
-			if (line_errors_and_fix(&new_line) == true)
+			if (line_errors_and_fix(&line) == true)
 			{
-				cmd_list = parsing(new_line, env_list);
+				cmd_list = parsing(line, env_list);
 				// printlist_test(cmd_list);
-				ft_execute(cmd_list, env_list, exec/* , entries */);
+				ft_execute(cmd_list, env_list, exec);
 				free_cmd_list(cmd_list);
 			}
 		}
-		free(new_line); //en commentaire pour tests avec dollar
-//--------------------------------
-		env_list = pwd_update_in_env(/* cmd_list,  */env_list);
-		/*
-		dans le cas ou karl unset pwd, le prompt doit juste afficher $
-		*/
+		free(line);
+		env_list = pwd_update_in_env(env_list);
 		env_list->env = env;
-//--------------------------------
 	}
-	final_free(line, env_list/* , entries */);
+	final_free(line, env_list);
 	return (EXIT_SUCCESS);
 }
