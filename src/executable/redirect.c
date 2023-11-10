@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/08 18:02:02 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/11 00:27:53 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -14,11 +14,11 @@
 #include "../../libft/libft.h"
 
 /* Opens file given in parameters */
-int	ft_infile(char *file)
+int	ft_infile(char *filename)
 {
 	int	fd;
 
-	fd = open(file, O_RDONLY); // returns -1 on error and errno is set -> utiliser perror
+	fd = open(filename, O_RDONLY); // returns -1 on error and errno is set -> utiliser perror
 	if (fd < 0)
 	{
 		perror("open perror"); // pour tester errno
@@ -39,19 +39,19 @@ int	ft_outfile(t_element *cmd)
 {
 	int	fd;
 
-	if (cmd->type == OUTFILE_APPEND)
-		fd = open(cmd->content, O_CREAT | O_RDWR | O_APPEND, 0644);
-	else
+	if (cmd->type == OUTFILE)
 		fd = open(cmd->content, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	else
+		fd = open(cmd->content, O_CREAT | O_RDWR | O_APPEND, 0644);
 	if (fd == -1)
 	{
 		perror("open outfile");
 		return (0);
 	}
-	if (fd > STDERR_FILENO && dup2(fd, STDERR_FILENO) < 0) //fd >= 0
+	if (fd > STDERR_FILENO && dup2(fd, STDOUT_FILENO) < 0) //fd >= 0
 	{
 		perror("outfile dup perror");
-		close(fd);
+		// close(fd);
 		return (0);
 	}
 	// if (fd > 0)

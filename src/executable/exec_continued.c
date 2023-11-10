@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec_continued.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/09 17:27:32 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/11 00:25:26 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -48,7 +48,7 @@ void last_dup(t_element *cmd, t_env *env, t_pipe *exec)
 */
 void	handle_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
-	// //TEST KARL
+	// Redirect
 	if (!ft_redirect(cmd/*, exec*/, NO_PRINT))
 	{
 		// free et on return

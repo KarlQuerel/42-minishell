@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/09 20:58:50 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/11 00:28:21 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 /*Libraries*/
 
@@ -341,7 +341,7 @@ int		ft_count_pipes(t_element *cmd);
 
 /*Redirect*/
 int		ft_redirect(t_element *cmd, int option);
-int		ft_infile(char *file);
+int		ft_infile(char *filename);
 int		ft_outfile(t_element *cmd);
 
 // void	ft_remove_var(t_element *cmd_list, t_env *env, char *to_remove);

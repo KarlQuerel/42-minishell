@@ -1,49 +1,30 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/27 18:36:12 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/11 00:42:02 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-/* Reproduces the export command */
-// int	ft_export(t_element *cmd_list, t_env *env)
-// {
-// 	char	**new_var;
-	
-// 	if (cmd_list->next == NULL)
-// 	{
-// 		ft_env(env, cmd_list, 1);
-// 		return (0);
-// 	}
-// 	if (!check_next_node_builtin(cmd_list, 1))
-// 		return (0);
-// 	while (cmd_list && cmd_list->next)
-// 	{
-// 		if (!ft_is_valid(cmd_list->next->content)) // si on envoie un mauvais argument a export
-// 		{
-// 			ft_putstr_fd("export: ", STDOUT_FILENO);
-// 			ft_putstr_fd(cmd_list->next->content, STDOUT_FILENO);
-// 			ft_putendl_fd(": not a valid identifier", STDOUT_FILENO);
-// 			return (0);
-// 		}
-// 		else if (ft_strchr(cmd_list->next->content, '=')) // si on trouve un = dans la string
-// 		{
-// 			new_var = new_env_var(cmd_list->next->content);
-// 			join_new_var(env, new_var[0], new_var[1]);
-// 		}
-// 		cmd_list = cmd_list->next;
-// 	}
-// 	return (1);
-// }
 
+/*
+	TO DO -> a regarder sur bash --posix a 42 lundi
+	--> example : variable=hello
+	
+	variable =hello -> ne doit pas marcher
+	varable = hello -> ne doit pas marcher
+	variable= hello -> donne "variable="
+*/
+
+
+/* Reproduces the export command */
 int	ft_export(t_element *cmd, t_env *env)
 {
 	char **new_key_var;
@@ -89,14 +70,6 @@ bool	ft_is_valid_key_var(char *s)
 	return (true);
 }
 
-/*
-	a regarder sur bash --posix a 42 lundi
-	--> example : variable=hello
-	
-	variable =hello -> ne doit pas marcher
-	varable = hello -> ne doit pas marcher
-	variable= hello -> donne "variable="
-*/
 /* Returns an array of strings with the new variable */
 char	**new_env_var(char *s)
 {
@@ -116,7 +89,7 @@ char	**new_env_var(char *s)
 	return (ret);
 }
 
-/* Puts the new variable in the environment */
+/* Joins the new variable */
 int	join_new_var(t_env *env, char *key, char *content)
 {
 	char	*to_free;
@@ -147,3 +120,14 @@ int	join_new_var(t_env *env, char *key, char *content)
 	free(to_free);
 	return (1);
 }
+
+// /* Puts the variable in the new environment */
+// int	put_var_in_env(t_env *env, char *new_var)
+// {
+// 	t_env *head;
+
+// 	head = env;
+// 	while (head)
+// 		head = head->next;
+// 	ft_lstadd_back(*env, )
+// }
