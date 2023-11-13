@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/08 17:52:26 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/13 12:54:51 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -71,6 +71,72 @@ int determine_command_type(char *line, size_t end, size_t start)
 	return (COMMAND);
 }
 
+t_element	*parsing_initialisation(char *line, int *i, int *start)
+{
+	int typestr;
+	
+	(*i) = 0;
+	(*start) = 0;
+	while ((line[(*i)] == '<' || line[(*i)] == '>') && line[(*i)])
+		(*i)++;
+	if ((*i) != 0)
+	{
+		(*i)++; //pour passer l'espace après le redirecteur
+		(*start) = (*i);
+	}
+	typestr = parsing_str_type(line, *start, &i);
+	return(lstnew(line, (*start), typestr));
+}
+
+int	parsing_str_type(char *line, int start, int *i)
+{
+	if ((line[start] == '\'' || line[start] == '\"') && quotes_can_close(line) == true)
+	{
+		(*i)++;
+		return(STR);
+	}
+	else
+		return(CMD);
+}
+
+void	parsing_advance_to_next_word(char *line, int *start, int *i)
+{
+	while ((line[(*i)] == ' ' || line[(*i)] == '<' || line[(*i)] == '>') && line[(*i)])
+		(*i)++;
+	if (line[(*i)] == ' ')
+		(*start) = (*i) + 1;
+	else
+		(*start) = (*i);
+}
+
+void	parsing_fill_content(t_element **current_cmd, char *line, int *i, char quote_type)
+{
+	int j;
+
+	j = 0;
+	while (line[(*i)] && line[(*i)] != quote_type)
+	{
+		if (line[(*i)] == '\\') //pour le test echo hola\ncaro -> doit donner holancaro
+			(*i)++;
+		(*current_cmd)->content[j++] = line[(*i)++];
+	}
+	(*current_cmd)->content[j] = '\0';
+	if (quote_type != ' ')
+		(*i)++;
+}
+
+void	parsing_initialize_next(t_element **current_cmd, char *line, int *i, int *start)
+{
+	if (line[(*i)] == '\0')
+			(*current_cmd)->next = NULL;
+		else
+		{
+			(*current_cmd)->next = lstnew(line, (*i), parsing_str_type(line, (*start), i));
+			(*current_cmd)->next->prev = (*current_cmd);
+			(*current_cmd) = (*current_cmd)->next;
+		}
+}
+
 /*Separates each argument in the command line in a t_element list.
 Only the redirectors and spaces that separate each command are not
 kept in the list. This list is then sent to the executor.*/
@@ -78,153 +144,119 @@ t_element *parsing(char *line, t_env *env_list)
 {
 	int i;
 	int start;
-	int j;
 	t_element *current_cmd;
 	t_element *head;
-	int	type;
 	char quote_type;
-	int typestr;
 
-	i = 0;
-	start = 0;
-	while ((line[i] == '<' || line[i] == '>') && line[i])
-		i++;
-	if (i != 0)
-	{
-		i++;
-		start = i;
-	}
-	current_cmd = NULL;
-	typestr = 0;
-	if (line[start] == '\'' || line[start] == '\"')
-		typestr = STR;
-	else
-		typestr = CMD;
-	current_cmd = lstnew(line, start, typestr); //je pars du principe que tjrs cmd d abord
-	//current_cmd->type = determine_command_type(line, i, start);
+	current_cmd = parsing_initialisation(line, &i, &start);
 	head = current_cmd;
-	
-	// KARL -> j'ai ajoute ca pour regler une seg fault
-	if (!line)
-		return (NULL);
-	// fin
-
 	while (line[i])
 	{
-		j = 0;
-		if ((line[start] == '\'' || line[start] == '\"') && quotes_can_close(line) == true)
-		{
-			type = STR;
-			i++;
-		}
-		else
-			type = CMD;
 		quote_type = type_of_separator(line, start);
-		while (line[i] && line[i] != quote_type)
-		{
-			if (line[i] == '\\') //pour le test echo hola\ncaro -> doit donner holancaro
-    		    i++;
-			current_cmd->content[j++] = line[i++];
-		}
-		current_cmd->content[j] = '\0';
-		if (quote_type != ' ')
-			i++;
+		parsing_fill_content(&current_cmd, line, &i, quote_type);
 		current_cmd->type = determine_command_type(line, i, start);
-		while ((line[i] == ' ' || line[i] == '<' || line[i] == '>') && line[i])
-			i++;
-		if (line[i] == ' ')
-			start = i + 1;
-		else
-			start = i;
-		if (line[i] == '\0')
+		parsing_advance_to_next_word(line, &start, &i);
+		parsing_initialize_next(&current_cmd, line, &i, &start);
+		/* if (line[i] == '\0')
 			current_cmd->next = NULL;
 		else
 		{
-			current_cmd->next = lstnew(line, i, type);
+			current_cmd->next = lstnew(line, i, parsing_str_type(line, start, &i));
 			current_cmd->next->prev = current_cmd;
 			current_cmd = current_cmd->next;
+		} */
+	}
+	parsing_fix(&head, env_list);
+	builtin_fix(&head);
+	return (head);
+}
+
+void	type_arg_after_cmd(t_element *current)
+{
+	t_element	*temp;
+	
+	if (current->type == COMMAND && current->next)
+	{	
+		//KARL pour proteger current->next
+		//if (current->next)
+		//FIN
+		temp = current->next;
+		while (temp->type != PIPE && temp != NULL)
+		{
+			if (temp->type != OPTION && temp->type != INFILE && \
+			temp->type != INFILE_DELIMITER && \
+			temp->type != OUTFILE && temp->type != OUTFILE_APPEND)
+				temp->type = ARGUMENT;
+			if (temp->next != NULL)
+				temp = temp->next;
+			else
+				break;
 		}
 	}
-	head = parsing_fix(head, env_list);
-	head = builtin_fix(head);
-	return (head);
+}
+
+void	dollar_fix(t_element *current, t_env *env_list)
+{
+	t_element	*temp;
+
+	// manque a gerer le cas "$?"
+	if (ft_isalpha(current->content[1]) == 0)
+	{
+		temp = current->prev;
+		while (temp->type != COMMAND && temp != NULL)
+			temp = temp->prev;
+		if (strncmp(temp->content, "echo", ft_strlen(temp->content)) == 0)
+		{
+			free(current->content);
+			current->content = ""; //et non \n car deja un \n a la fin de la fonction echo
+		}
+	}
+	else
+		current->content = dollar(current->content, env_list);
 }
 
 /* To fix the type of the arguments that are not in between quotes and are
 therefore considered as a COMMAND instead of an ARGUMENT in the parsing function.
 This functions sets all arguments that are not of type OPTION after a cmd
 "echo" or "cd" to ARGUMENT until a type PIPE is found.*/
-t_element	*parsing_fix(t_element *current, t_env *env_list)
+void	parsing_fix(t_element **cmd_list, t_env *env_list)
 {
-	t_element	*head;
-	t_element	*temp;
+	t_element	*current;
 
-	head = current;
+	current = (*cmd_list);
 	if (current->next == NULL || current->next->type == PIPE)
-		return (head);
+		return ;
 	while(current != NULL)
 	{
 		if (current->type == COMMAND && current->next)
-		{
-			
-			//KARL pour proteger current->next
-			//if (current->next)
-			//FIN
-			temp = current->next;
-			while (temp->type != PIPE && temp != NULL)
-			{
-				if (temp->type != OPTION && temp->type != INFILE && \
-				temp->type != INFILE_DELIMITER && \
-				temp->type != OUTFILE && temp->type != OUTFILE_APPEND)
-					temp->type = ARGUMENT;
-				if (temp->next != NULL)
-					temp = temp->next;
-				else
-					break;
-			}
-		}
+			type_arg_after_cmd(current);
 		else if (current->content[0] == '$')
-		{
-			// manque a gerer le cas "$?"
-			if (ft_isalpha(current->content[1]) == 0)
-			{
-				temp = current->prev;
-				while (temp->type != COMMAND && temp != NULL)
-					temp = temp->prev;
-				if (strncmp(temp->content, "echo", ft_strlen(temp->content)) == 0)
-				{
-					free(current->content);
-					current->content = ""; //et non \n car deja un \n a la fin de la fonction echo
-				}
-			}
-			else
-				current->content = dollar(current->content, env_list);
-		}
+			dollar_fix(current, env_list);
 		current = current->next;
 	}
-	return (head);
+	return ;
 }
 
 /*Sets all arguments encountered between a cmd that is a builtin and
 a pipe to "builtin = true" so that the executor skips them.*/
-t_element	*builtin_fix(t_element *cmd_list)
+void	builtin_fix(t_element **cmd_list)
 {
-	t_element	*head;
+	t_element	*current;
 
-	head = cmd_list;
-	if (cmd_list->next == NULL || cmd_list->next->type == PIPE) //??
+	current = (*cmd_list);
+	if (current->next == NULL || current->next->type == PIPE) //??
 	{
-		if (is_builtin(cmd_list->content) == true)
-			cmd_list->builtin = true;
-		return (head);
+		if (is_builtin(current->content) == true)
+			current->builtin = true;
+		return ;
 	}
-	while(cmd_list->next != NULL)
+	while(current->next != NULL)
 	{
-		if (is_builtin(cmd_list->content) == true)
-			cmd_list->builtin = true;
-		cmd_list = cmd_list->next;
+		if (is_builtin(current->content) == true)
+			current->builtin = true;
+		current = current->next;
 	}
-	if (is_builtin(cmd_list->content) == true)
-		cmd_list->builtin = true;
-	return (head);
+	if (is_builtin(current->content) == true)
+		current->builtin = true;
+	return ;
 }
