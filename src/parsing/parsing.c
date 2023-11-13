@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/13 12:54:51 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/13 15:43:35 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,14 @@ void printlist_test(t_element *head) // A EFFACER A LA FIN
 
 /*Returns the delimiter to look for depending
 on the type of string.*/
-char	type_of_separator(char *line, int i)
+char	type_of_separator(char *line, int i, int str_type)
 {
     char	type;
     
-    if (line[i] == '\'')
-        type = '\'';
-    else if (line[i] == '\"')
-        type = '\"';
-    else
-        type = ' ';
+	if (str_type == STR)
+		type = line[i];
+    else // if CMD (donc si rellement cmd ou si quotes can´t close)
+        type = ' '; //on force l'espace au cas où quotes can´t close
     return (type);
 }
 
@@ -71,24 +69,31 @@ int determine_command_type(char *line, size_t end, size_t start)
 	return (COMMAND);
 }
 
+/*Initializes the element_list by returning the first node.*/
 t_element	*parsing_initialisation(char *line, int *i, int *start)
 {
 	int typestr;
 	
 	(*i) = 0;
-	(*start) = 0;
 	while ((line[(*i)] == '<' || line[(*i)] == '>') && line[(*i)])
 		(*i)++;
 	if ((*i) != 0)
-	{
 		(*i)++; //pour passer l'espace après le redirecteur
-		(*start) = (*i);
-	}
-	typestr = parsing_str_type(line, *start, &i);
+	(*start) = (*i);
+	typestr = str_type1(line, (*i));
 	return(lstnew(line, (*start), typestr));
 }
 
-int	parsing_str_type(char *line, int start, int *i)
+int	str_type1(char *line, int i)
+{
+	if ((line[i] == '\'' || line[i] == '\"') && quotes_can_close(line) == true)
+		return(STR);
+	else
+		return(CMD);
+}
+
+/*Returns the type of string to know if quotes have to be skipped*/
+/* int	parsing_str_type(char *line, int start, int *i)
 {
 	if ((line[start] == '\'' || line[start] == '\"') && quotes_can_close(line) == true)
 	{
@@ -97,8 +102,9 @@ int	parsing_str_type(char *line, int start, int *i)
 	}
 	else
 		return(CMD);
-}
+} */
 
+/*Advances the i and start variables until the beginning of the next word*/
 void	parsing_advance_to_next_word(char *line, int *start, int *i)
 {
 	while ((line[(*i)] == ' ' || line[(*i)] == '<' || line[(*i)] == '>') && line[(*i)])
@@ -114,6 +120,8 @@ void	parsing_fill_content(t_element **current_cmd, char *line, int *i, char quot
 	int j;
 
 	j = 0;
+	if (quote_type != ' ')
+		(*i)++;
 	while (line[(*i)] && line[(*i)] != quote_type)
 	{
 		if (line[(*i)] == '\\') //pour le test echo hola\ncaro -> doit donner holancaro
@@ -125,16 +133,17 @@ void	parsing_fill_content(t_element **current_cmd, char *line, int *i, char quot
 		(*i)++;
 }
 
+/*Sets next to NULL if line is over, otherwise initialises the next command.*/
 void	parsing_initialize_next(t_element **current_cmd, char *line, int *i, int *start)
 {
 	if (line[(*i)] == '\0')
 			(*current_cmd)->next = NULL;
-		else
-		{
-			(*current_cmd)->next = lstnew(line, (*i), parsing_str_type(line, (*start), i));
-			(*current_cmd)->next->prev = (*current_cmd);
-			(*current_cmd) = (*current_cmd)->next;
-		}
+	else
+	{
+		(*current_cmd)->next = lstnew(line, (*i), str_type1(line, (*i)));
+		(*current_cmd)->next->prev = (*current_cmd);
+		(*current_cmd) = (*current_cmd)->next;
+	}
 }
 
 /*Separates each argument in the command line in a t_element list.
@@ -148,23 +157,16 @@ t_element *parsing(char *line, t_env *env_list)
 	t_element *head;
 	char quote_type;
 
+
 	current_cmd = parsing_initialisation(line, &i, &start);
 	head = current_cmd;
 	while (line[i])
 	{
-		quote_type = type_of_separator(line, start);
+		quote_type = type_of_separator(line, start, str_type1(line, start));
 		parsing_fill_content(&current_cmd, line, &i, quote_type);
 		current_cmd->type = determine_command_type(line, i, start);
 		parsing_advance_to_next_word(line, &start, &i);
 		parsing_initialize_next(&current_cmd, line, &i, &start);
-		/* if (line[i] == '\0')
-			current_cmd->next = NULL;
-		else
-		{
-			current_cmd->next = lstnew(line, i, parsing_str_type(line, start, &i));
-			current_cmd->next->prev = current_cmd;
-			current_cmd = current_cmd->next;
-		} */
 	}
 	parsing_fix(&head, env_list);
 	builtin_fix(&head);
@@ -195,7 +197,9 @@ void	type_arg_after_cmd(t_element *current)
 	}
 }
 
-void	dollar_fix(t_element *current, t_env *env_list)
+/*J'AI MIS CETTE FONCTION EN COMMENTAIRE CAR JE NE ME SOUVIENS PAS DE POURQUOI
+J'AVAIS LA PREMIÈRE IF ET QUE ÇA A L'AIR DE MARCHER PAREIL SANS*/
+/* void	dollar_fix(t_element *current, t_env *env_list)
 {
 	t_element	*temp;
 
@@ -213,12 +217,12 @@ void	dollar_fix(t_element *current, t_env *env_list)
 	}
 	else
 		current->content = dollar(current->content, env_list);
-}
+} */
 
 /* To fix the type of the arguments that are not in between quotes and are
 therefore considered as a COMMAND instead of an ARGUMENT in the parsing function.
-This functions sets all arguments that are not of type OPTION after a cmd
-"echo" or "cd" to ARGUMENT until a type PIPE is found.*/
+This functions sets all arguments that are not of type OPTION or redirecter after 
+a cmd to ARGUMENT until a type PIPE is found.*/
 void	parsing_fix(t_element **cmd_list, t_env *env_list)
 {
 	t_element	*current;
@@ -231,7 +235,8 @@ void	parsing_fix(t_element **cmd_list, t_env *env_list)
 		if (current->type == COMMAND && current->next)
 			type_arg_after_cmd(current);
 		else if (current->content[0] == '$')
-			dollar_fix(current, env_list);
+			current->content = dollar(current->content, env_list);
+			// dollar_fix(current, env_list);
 		current = current->next;
 	}
 	return ;
@@ -244,19 +249,11 @@ void	builtin_fix(t_element **cmd_list)
 	t_element	*current;
 
 	current = (*cmd_list);
-	if (current->next == NULL || current->next->type == PIPE) //??
-	{
-		if (is_builtin(current->content) == true)
-			current->builtin = true;
-		return ;
-	}
-	while(current->next != NULL)
+	while(current != NULL)
 	{
 		if (is_builtin(current->content) == true)
 			current->builtin = true;
 		current = current->next;
 	}
-	if (is_builtin(current->content) == true)
-		current->builtin = true;
 	return ;
 }
