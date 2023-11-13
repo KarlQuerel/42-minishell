@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/30 13:22:14 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/13 16:51:21 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -40,18 +40,17 @@ char	*pwd(int option)
 	return (path);
 }
 
-t_env	*pwd_update_in_env(t_env *env_list)
+void	pwd_update_in_env(t_env **env_list)
 {
 	t_env	*temp;
 
-	if (is_key_in_env(env_list, "PWD"))
+	if (is_key_in_env((*env_list), "PWD"))
 	{
-		temp = find_value_with_key_env(env_list, "PWD");
+		temp = find_value_with_key_env((*env_list), "PWD");
 		free(temp->value);
 		temp->value = ft_calloc(ft_strlen(pwd(NO_PRINT)) + 100, sizeof(char));
 		ft_strlcpy(temp->value, pwd(NO_PRINT), ft_strlen(pwd(NO_PRINT)) + 1);
 	}
-	return (env_list);
 }
 
 // void	pwd_update_in_env(t_env **env_list)

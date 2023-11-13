@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/13 15:43:44 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/13 15:55:29 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,24 @@ char	*ft_join_pour_cd(char *line_begining, char *path)
 	return (new_str);
 }
 
-// int	erase_spaces_loop(char *line, char **new_line, int *i, int *j)
-// {
+int	erase_spaces_loop(char *line, char **new_line, int *i, int *j)
+{
+	char	separator;
 	
-// }
+	if (str_type1(line, (*i)) == STR) //if quotes && quotes can close
+	{
+		separator = type_of_separator(line, (*i), str_type1(line, (*i))); 
+		(*new_line)[(*j)++] = line[(*i)++]; //pour copier/coller le separateur
+		while(line[(*i)] != separator && line[(*i)])
+			(*new_line)[(*j)++] = line[(*i)++];
+		(*new_line)[(*j)++] = line[(*i)++]; //pour copier/coller le separateur
+	}
+	else if((line[(*i)] == ' ' && line[(*i) + 1] == ' ') || (line[(*i)] == ' ' && line[(*i) + 1] == '\0'))
+		(*i)+=1;
+	else
+		(*new_line)[(*j)++] = line[(*i)++];
+}
+
 /*Returns a new_line that is the same as the original command line
 except all the superfulous spaces have been erased.*/
 char	*erase_spaces(char *line)
@@ -80,33 +94,13 @@ char	*erase_spaces(char *line)
 	char	*new_line;
 	int		i;
 	int		j;
-	char	separator;
-	// int type_of_str;
 
 	i = 0;
 	j = 0;
 
-	// KARL -> j'ai ajoute ca pour regler une seg fault
-	if (!line)
-		return (NULL);
-	// fin
-	
 	new_line = erase_spaces_malloc(line);
 	while (line[i])
-	{
-		if (str_type1(line, i) == STR) //if quotes && quotes can close
-		{
-			separator = type_of_separator(line, i, str_type1(line, i)); 
-			new_line[j++] = line[i++]; //pour copier/coller le separateur
-			while(line[i] != separator && line[i])
-				new_line[j++] = line[i++];
-			new_line[j++] = line[i++]; //pour copier/coller le separateur
-		}
-		else if((line[i] == ' ' && line[i + 1] == ' ') || (line[i] == ' ' && line[i + 1] == '\0'))
-			i+=1;
-		else
-			new_line[j++] = line[i++];
-	}
+		erase_spaces_loop(line, &new_line, &i, &j);
 	if (j == 0)
 		return (NULL);
 	new_line[j] = '\0';

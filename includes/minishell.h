@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/13 15:22:56 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/13 16:50:57 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,6 +235,7 @@ bool	pipe_double_or_eof(char *line);
 /*Utils*/
 char	*ft_joinstr_minishell(char *line, int len, char *str, char type);
 char	*ft_join_pour_cd(char *line_begining, char *path);
+int		erase_spaces_loop(char *line, char **new_line, int *i, int *j);
 char	*erase_spaces(char *line);
 char 	*strlcpy_middle(char *dst, const char *src, size_t start, size_t end);
 
@@ -298,8 +299,8 @@ void		history(int option, int len);
 
 /*Pwd*/
 char	*pwd(/* t_element *cmd, */int option);
-t_env	*pwd_update_in_env(/* t_element *cmd, */t_env *env_list);
-//void	pwd_update_in_env(t_env **env_list);
+// t_env	*pwd_update_in_env(/* t_element *cmd, */t_env *env_list);
+void	pwd_update_in_env(t_env **env_list);
 
 /*Unset*/
 int		ft_unset(t_element *cmd_list, t_env *env);

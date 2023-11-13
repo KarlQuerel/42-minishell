@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/13 15:39:53 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/13 16:52:43 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,11 +123,9 @@ int main (int argc, char **argv, char **env)
  		/*if (commande en cours)
 			ctrlD(line); */
 		
-		printf("BEFORE : %s\n", line);
-		line = erase_spaces(line);
-		printf("AFTER : %s\n", line);
 		if (line != NULL)
 		{
+			line = erase_spaces(line);
 			if (line_errors_and_fix(&line) == true)
 			{
 				cmd_list = parsing(line, env_list);
@@ -137,7 +135,7 @@ int main (int argc, char **argv, char **env)
 			}
 		}
 		free(line);
-		env_list = pwd_update_in_env(env_list);
+		pwd_update_in_env(&env_list);
 		env_list->env = env;
 	}
 	final_free(line, env_list);

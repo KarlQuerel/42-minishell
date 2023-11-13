@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/13 15:43:35 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/13 15:57:36 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void printlist_test(t_element *head) // A EFFACER A LA FIN
 {
-	int i = 0;
+	int	i = 0;
 
 	while (head)
 	{
@@ -72,7 +72,7 @@ int determine_command_type(char *line, size_t end, size_t start)
 /*Initializes the element_list by returning the first node.*/
 t_element	*parsing_initialisation(char *line, int *i, int *start)
 {
-	int typestr;
+	int	typestr;
 	
 	(*i) = 0;
 	while ((line[(*i)] == '<' || line[(*i)] == '>') && line[(*i)])
@@ -117,7 +117,7 @@ void	parsing_advance_to_next_word(char *line, int *start, int *i)
 
 void	parsing_fill_content(t_element **current_cmd, char *line, int *i, char quote_type)
 {
-	int j;
+	int	j;
 
 	j = 0;
 	if (quote_type != ' ')
@@ -151,11 +151,11 @@ Only the redirectors and spaces that separate each command are not
 kept in the list. This list is then sent to the executor.*/
 t_element *parsing(char *line, t_env *env_list)
 {
-	int i;
-	int start;
-	t_element *current_cmd;
-	t_element *head;
-	char quote_type;
+	int			i;
+	int			start;
+	t_element	*current_cmd;
+	t_element	*head;
+	char		quote_type;
 
 
 	current_cmd = parsing_initialisation(line, &i, &start);

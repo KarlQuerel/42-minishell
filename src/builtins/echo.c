@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:35 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/13 14:50:55 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/13 16:00:38 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	print_skiping_quotes(char *str,/*t_pipe *exec */ int option)
 	}
 }
 
-int	type_of_str(char *cmd)
+/* int	type_of_str(char *cmd)
 {
 	if (cmd[0] == '\'' && cmd[ft_strlen(cmd) - 1] == '\'')
 		return (STR);
@@ -39,7 +39,7 @@ int	type_of_str(char *cmd)
 		return (STR);
 	else
 		return (CMD);
-}
+} */
 
 /*CARACTERES QUI NECESSITENT UN \ POUR ETRE ECHO CORRECTEMENT
 En mettant chaque signe au milieu de ab et en les faisant echo :
@@ -87,12 +87,7 @@ void	echo(t_element *current,/* t_pipe *exec */ int option)
 			newline = false;
 			current = current->next;
 		}
-		// type = parsing_str_type(current->content, 0); 
-		/*Je peux gagner des lignes en utilisant la ligne du haut
-		et en supprimant les deux if suivantes car parsing_st_type me fait deja avancer i, je dois juste pouvoir
-		modifier la fonction de print pour print à partir de i et jusqu'à strlen - 1 si type == str*/
- 		// type = str_type1(current->content, 0);
-		type = type_of_str(current->content);
+ 		type = str_type1(current->content, 0); //0 car on commence du début
 		if (type == STR)
 			print_skiping_quotes(current->content, option);
 		else
