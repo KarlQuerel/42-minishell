@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/14 11:47:43 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/14 16:15:29 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ int	erase_spaces_loop(char *line, char **new_line, int *i, int *j)
 {
 	char	separator;
 	
-	if (str_type1(line, (*i)) == STR) //if quotes && quotes can close
+	if (parsing_str_type(line, (*i)) == STR) //if quotes && quotes can close
 	{
-		separator = type_of_separator(line, (*i), str_type1(line, (*i))); 
+		separator = type_of_separator(line, (*i), parsing_str_type(line, (*i))); 
 		(*new_line)[(*j)++] = line[(*i)++]; //pour copier/coller le separateur
 		while(line[(*i)] != separator && line[(*i)])
 			(*new_line)[(*j)++] = line[(*i)++];

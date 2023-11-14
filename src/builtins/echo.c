@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:35 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/13 16:00:38 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/14 16:15:23 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	echo(t_element *current,/* t_pipe *exec */ int option)
 			newline = false;
 			current = current->next;
 		}
- 		type = str_type1(current->content, 0); //0 car on commence du début
+ 		type = parsing_str_type(current->content, 0); //0 car on commence du début
 		if (type == STR)
 			print_skiping_quotes(current->content, option);
 		else

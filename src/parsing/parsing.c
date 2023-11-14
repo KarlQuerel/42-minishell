@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/14 16:07:02 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/14 16:15:26 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,12 @@ t_element	*parsing_initialisation(char *line, int *i, int *start)
 	if ((*i) != 0)
 		(*i)++; //pour passer l'espace après le redirecteur
 	(*start) = (*i);
-	typestr = str_type1(line, (*i));
+	typestr = parsing_str_type(line, (*i));
 	return(lstnew(line, (*start), typestr));
 }
 
-int	str_type1(char *line, int i)
+/*Returns the type of string to know if quotes have to be skipped*/
+int	parsing_str_type(char *line, int i)
 {
 	if ((line[i] == '\'' || line[i] == '\"') && quotes_can_close(line) == true)
 		return(STR);
@@ -103,24 +104,12 @@ int	str_type1(char *line, int i)
 		return(CMD);
 }
 
-/*Returns the type of string to know if quotes have to be skipped*/
-/* int	parsing_str_type(char *line, int start, int *i)
-{
-	if ((line[start] == '\'' || line[start] == '\"') && quotes_can_close(line) == true)
-	{
-		(*i)++;
-		return(STR);
-	}
-	else
-		return(CMD);
-} */
-
 /*Advances the i and start variables until the beginning of the next word*/
 void	parsing_advance_to_next_word(char *line, int *start, int *i)
 {
-	while ((line[(*i)] == ' ' || line[(*i)] == '<' || line[(*i)] == '>' || line[(*i)] == '|') && line[(*i)])
+	while ((line[(*i)] == ' ' || line[(*i)] == '<' || line[(*i)] == '>') && line[(*i)])
 		(*i)++;
-	if (line[(*i)] == ' ' || line[(*i)] == '<' || line[(*i)] == '>' || line[(*i)] == '|')
+	if (line[(*i)] == ' ' || line[(*i)] == '<' || line[(*i)] == '>')
 		(*start) = (*i) + 1;
 	else
 		(*start) = (*i);
@@ -141,6 +130,8 @@ void	parsing_fill_content(t_element **current_cmd, char *line, int *i, char *sep
 		{
 			if (line[(*i)] == separator[x])
 			{
+				if (separator[x] == '|' && j == 0) //si pipe tout seul
+					(*current_cmd)->content[j++] = line[(*i)++];
 				(*current_cmd)->content[j] = '\0';
 				if (separator == '\'' || separator == '\"')
 					(*i)++;
@@ -164,7 +155,7 @@ void	parsing_initialize_next(t_element **current_cmd, char *line, int *i, int *s
 			(*current_cmd)->next = NULL;
 	else
 	{
-		(*current_cmd)->next = lstnew(line, (*i), str_type1(line, (*i)));
+		(*current_cmd)->next = lstnew(line, (*i), parsing_str_type(line, (*i)));
 		(*current_cmd)->next->prev = (*current_cmd);
 		(*current_cmd) = (*current_cmd)->next;
 	}
@@ -186,7 +177,7 @@ t_element *parsing(char *line, t_env *env_list)
 	head = current_cmd;
 	while (line[i])
 	{
-		separator = type_of_separator(line, start, str_type1(line, start));
+		separator = type_of_separator(line, start, parsing_str_type(line, start));
 		parsing_fill_content(&current_cmd, line, &i, separator);
 		current_cmd->type = determine_command_type(line, i, start);
 		parsing_advance_to_next_word(line, &start, &i);
