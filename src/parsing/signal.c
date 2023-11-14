@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/09 20:22:09 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/14 11:16:43 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	signal_handler(int signal/*, char *line*/)
 		{
 			ft_putchar_fd('\n', STDERR_FILENO);
 			rl_on_new_line();
-			rl_replace_line("", 0); //a réglé le pb de prompt ne s'affiche pas sur lignw suivante
+			// rl_replace_line("", 0); //a réglé le pb de prompt ne s'affiche pas sur ligne suivante
 			rl_redisplay();
 		}
 		else
@@ -74,13 +74,11 @@ void	signal_handler(int signal/*, char *line*/)
 	}
 	else if (signal == SIGQUIT) // ctrl + '\'
 	{
-		if (g_signals.location == IN_PROMPT) {
-            rl_on_new_line();
+		if (g_signals.location == IN_PROMPT)
             rl_replace_line("", 0);
-        } else if (g_signals.location == IN_COMMAND) {
+        else if (g_signals.location == IN_COMMAND)
             printf("Quit (core dumped)\n");
-            rl_on_new_line(); // Move to a new line
-        }
+		rl_on_new_line();
         rl_redisplay(); // Redisplay the prompt or cleared line
 	}
 }

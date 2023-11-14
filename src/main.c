@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/13 16:52:43 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/14 15:43:31 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 t_global g_signals;
 
+//PROTEGER TOUS MES MALLOCS!! --> avec perror
 //faire perror("Error") plutot que des printf pour toutes les fonctions qui utilisent errno
 //utiliser ft_putstr_fd au lieu de printf
 
@@ -25,58 +26,6 @@ void	ft_welcome(void)
 	printf("%s", WHT);
 }
 
-/*Deleted the /mnt/nfs/homes/casomarr/ part*/
-char	*home_path_simplified(char *absolute_path, t_env *env_list)
-{
-	char	*path_from_home;
-	char	*temp;
-	t_env	*user;
-	int		i;
-	int		j;
-	int		start;
-
-	i = 0;
-	start = 1;
-	path_from_home = NULL;
-	user = find_value_with_key_env(env_list, "USER");
-	//je compares chaque element entre slashes au nom du user
-	while(absolute_path[i])
-	{
-		if(absolute_path[i + 1] == '/')
-		{
-			temp = NULL;
-			temp = strlcpy_middle(temp, absolute_path, start, i); // je copies absolute path jusqu a i dans temp
-			start = i + 2; //begining of next word for next round
-			if (ft_strncmp(temp, user->value, ft_strlen(user->value)) == 0 && ft_strlen(user->value) == ft_strlen(temp)) //je compares temp a user
-			{
-				//si sont les memes alors je mets dans path from home toutle reste de absolute path
-				j = 0;
-				i+=2;
-				path_from_home = malloc(sizeof(char) * (ft_strlen(absolute_path) - i + 2));
-				while (absolute_path[i])
-					path_from_home[j++] = absolute_path[i++];
-				path_from_home[j] = '\0';
-				//printf("path = [%s]\n", path_from_home);
-				free(temp);
-				return (path_from_home);
-			}
-			free(temp);
-		}
-		i++;
-	}
-	return (NULL);
-}
-
-//PROTEGER TOUS MES MALLOCS!! --> avec perror
-
-void	signal_reset_prompt(int signo)
-{
-	(void)signo;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
 
 int main (int argc, char **argv, char **env)
 {
@@ -129,12 +78,13 @@ int main (int argc, char **argv, char **env)
 			if (line_errors_and_fix(&line) == true)
 			{
 				cmd_list = parsing(line, env_list);
-				// printlist_test(cmd_list);
+				printlist_test(cmd_list);
 				ft_execute(cmd_list, env_list, exec);
 				free_cmd_list(cmd_list);
 			}
 		}
 		free(line);
+		free(prompt);
 		pwd_update_in_env(&env_list);
 		env_list->env = env;
 	}

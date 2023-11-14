@@ -37,18 +37,3 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	new_str[i] = '\0';
 	return (new_str);
 }
-
-/*
-int main()
-{
-    char str1[] = {'a', 'b', 'c', 'd', '\0'};
-    //char str1[] = "popet", "llopet", "lala";
-
-    char str2[] = "___";
-
-    printf("Ma fonction : %s\n", ft_strjoin(str1, str2));
-    //printf("Vraie fonction : %s", strjoin(str1, str2));
-
-return(0);
-}
-*/

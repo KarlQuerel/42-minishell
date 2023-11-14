@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/08 18:50:35 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/14 12:07:46 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -43,7 +43,7 @@ int	ft_exit(t_element *cmd/*, t_env *env, t_history *entries*/)
 		ft_putstr_fd(cmd->next->content, STDERR_FILENO);
 		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
 		cmd = cmd->next;
-		//free
+		//exit_free(cmd, env, entries);
 		close(0);
 		close(1);
 		close(2);
@@ -52,7 +52,7 @@ int	ft_exit(t_element *cmd/*, t_env *env, t_history *entries*/)
 	if (!cmd->next)
 	{
 		ft_putendl_fd("exit", STDOUT_FILENO);
-		//free
+		//exit_free(cmd, env, entries);
 		close(0);
 		close(1);
 		close(2);

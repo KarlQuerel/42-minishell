@@ -6,81 +6,105 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:36:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/02 15:30:57 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/14 11:55:46 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-char	*ft_prompt(t_env *env_list, int option)
+void	home_path_simplified_loop(char *absolute_path, t_env *user, int *i, int *start, char **path_from_home)
 {
-	char    *word;
-	int     i;
-	t_env	*user;
-	t_env   *home;
-	t_env   *Gpath;
-	char	*path;
+	int		j;
+	char	*temp;
 	
-	path = NULL;
-	word = NULL;
+	if(absolute_path[(*i) + 1] == '/')
+	{
+		temp = NULL;
+		temp = strlcpy_middle(temp, absolute_path, (*start), (*i));
+		(*start) = (*i) + 2;
+		if (ft_strncmp(temp, user->value, ft_strlen(user->value)) == 0 && ft_strlen(user->value) == ft_strlen(temp))
+		{
+			j = 0;
+			(*i)+=2;
+			(*path_from_home) = malloc(sizeof(char) * (ft_strlen(absolute_path) - (*i) + 2));
+			while (absolute_path[(*i)])
+				(*path_from_home)[j++] = absolute_path[(*i)++];
+			(*path_from_home)[j] = '\0';
+		}
+		free(temp);
+	}
+}
 
-	/*Bizarrement malgré unset PWD, USET et HOME le prompt marche tjrs...
-	Si jamais je trouves pourquoi et ça ne marche plus je peux doit changer le prompt
-	pour que ça ne montre que le dollar (je crois que sur bash c'est comme ça)
-	soit si je veux que le prompt marche tjrs je peux rendre les variables user, home et
-	Gpath constantes pour qu'elles gardent la valeur de base en mémoire (avant d'unset car 
-	le prompt s'affiche pour la première fois avant d'entrer dans la while du main)*/
+/*Deletes the /mnt/nfs/homes/casomarr/ part by comparing each word
+in between slashes to the username (user->value). If the word between
+slashes (stored in temp) == username, we store in path_from_home the
+rest of the path. This will be used in the prompt function, since the
+prompt only prints the path from home (unless we are located previous 
+the home folder)*/
+char	*home_path_simplified(char *absolute_path, t_env *env_list)
+{
+	char	*path_from_home;
+	t_env	*user;
+	int		i;
+	int		start;
+	char	*result;
+
+	i = 0;
+	start = 1;
+	path_from_home = NULL;
 	user = find_value_with_key_env(env_list, "USER");
-	home = find_value_with_key_env(env_list, "HOME");
-	Gpath = find_value_with_key_env(env_list, "PWD");
-	
-	i = ft_strlen(pwd(NO_PRINT)) - 2; //pour sauter le dernier slash
+	while(absolute_path[i])
+	{
+		home_path_simplified_loop(absolute_path, user, &i, &start, &path_from_home);
+		if (path_from_home != NULL)
+			return (path_from_home);
+		i++;
+	}
+	return (NULL);
+}
+
+/*Starts at the length of pwd and goes backwards until a
+slash is found : it represents the beggining of the
+last word of the path. We start at ft_strlen(PWD)-2 to skip
+the slash at the end of pwd.*/
+int	get_beggining_of_last_word()
+{
+	int     i;
+
+	i = ft_strlen(pwd(NO_PRINT)) - 2;
 	while(i > 0)
 	{
 		if (pwd(NO_PRINT)[i - 1] == '/')
 			break;
 		i--;
 	}
-	word = strlcpy_middle(word, pwd(NO_PRINT), i, ft_strlen(pwd(NO_PRINT)));
-	//printf("last word from path = [%s]\n", word);
-	//printf("home->value = [%s]\n", home->value);
-	//printf("Gpath->value = [%s]\n",Gpath->value);
+	return (i);
+}
+
+char	*ft_prompt(t_env *env_list, int option)
+{
+	char    *word;
+	t_env	*user;
+	t_env   *home;
+	t_env   *Gpath;
+	char	*path;
 	
+	user = find_value_with_key_env(env_list, "USER");
+	home = find_value_with_key_env(env_list, "HOME");
+	Gpath = find_value_with_key_env(env_list, "PWD");
+	word = strlcpy_middle(word, pwd(NO_PRINT), get_beggining_of_last_word(), ft_strlen(pwd(NO_PRINT)) - 1); //sans le -1 ne change rien mais fait plus de sens!
 	if (ft_strncmp(word, user->value, ft_strlen(user->value)) == 0) //si user juste $
-	{
-		// free(word);
-		/* printf("$"); //vérifier
-		return ("$"); //vérifier */
 		path = "";
-		// return NULL;
-	}
-	else if (ft_strncmp(word, "homes", ft_strlen(word) - i + 1) == 0) //si home on print jusqu a home
-	{
+	else if (ft_strncmp(word, "homes", ft_strlen(word) - get_beggining_of_last_word() + 1) == 0) //si home on print jusqu a home
 		path = strlcpy_middle(path, Gpath->value, 1, ft_strlen(Gpath->value) - 1);
-		//printf("%s", path);
-		// free(path);
-	}
-/*     else if (ft_strncmp(word, "", ft_strlen(word)) == 0) //NE MARCHE PAS
-	{
-		printf("/");
-		// free(path);
-	} */
-	else if (ft_strncmp(word, user->value, ft_strlen(user->value)) != 0 && is_user_in_path(pwd(NO_PRINT), env_list) == true) //si pas dans home ni dans user et que plus loin que user
-	{
+	else if (ft_strncmp(word, user->value, ft_strlen(user->value)) != 0 && \
+	is_user_in_path(pwd(NO_PRINT), env_list) == true) //si pas dans home ni dans user et que plus loin que user
 		path = home_path_simplified(pwd(NO_PRINT), env_list);
-		//printf("%s", path);
-		// free(path);
-	}
 	else
-	{
 		path = pwd(NO_PRINT);
-		// printf("%s", path);
-		// free(path);
-	}
-	
 	if (option == PRINT)
 		printf("%s", path);
 	free(word);
-	return (path);
+	return (path); //il faudra le free
 }

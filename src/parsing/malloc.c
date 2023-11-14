@@ -3,36 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   malloc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:08:27 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/23 16:09:43 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/14 15:39:37 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-/*Malloc for the new command line that replaces the original
-command line after all the extra spaces are deleted.*/
-char	*erase_spaces_malloc(char *line)
+/*The first two conditions are here to avoid counting the spaces between
+quotes, since those won't be deleted.*/
+int	count_spaces(char *line)
 {
-	char	*new_line;
 	int		i;
 	int		spaces;
 
 	i = 0;
 	spaces = 0;
-	
-	// KARL -> j'ai ajoute ca pour regler une seg fault
-	if (!line)
-		return (NULL);
-	// fin
-	
-	
 	while (line[i])
 	{
-		if (line[i] == '\'' && quotes_can_close(line) == true) //pour ne pas compter les espaces entre quotes (ex: dans les str de echo)
+		if (line[i] == '\'' && quotes_can_close(line) == true)
 		{
 			while(line[i] != '\'')
 				i++;
@@ -46,14 +38,23 @@ char	*erase_spaces_malloc(char *line)
 			spaces++;
 		i++;
 	}
-	// new_line = malloc(sizeof(char) * (ft_strlen(line) - spaces) + 1); // +2 au lieu de +1 a regle des pb de 
+	return (spaces);
+}
+
+/*Malloc for the new command line that replaces the original
+command line after all the extra spaces are deleted.*/
+char	*erase_spaces_malloc(char *line)
+{
+	char	*new_line;
+	int		spaces;
+
+	spaces = count_spaces(line);
 	new_line = ft_calloc(ft_strlen(line) - spaces + 3, sizeof(char)); // +2 au lieu de +1 a regle des pb de valgrind
 	if (!new_line)
 	{
 		perror("Error");
 		return (NULL); //il faut qd meme un return qd on utilise perror??
 	}
-	//free(line);
 	return (new_line);
 }
 

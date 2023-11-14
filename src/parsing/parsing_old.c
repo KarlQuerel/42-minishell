@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/14 16:07:02 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/13 15:57:36 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,25 +35,14 @@ void printlist_test(t_element *head) // A EFFACER A LA FIN
 
 /*Returns the delimiter to look for depending
 on the type of string.*/
-char	*type_of_separator(char *line, int i, int str_type)
+char	type_of_separator(char *line, int i, int str_type)
 {
-    char	*type;
+    char	type;
     
 	if (str_type == STR)
-	{
-		type = calloc(2, sizeof(char));
-		type[0] = line[i];
-		type[1] = '\0';
-	}
+		type = line[i];
     else // if CMD (donc si rellement cmd ou si quotes can´t close)
-	{
-/*         type[0] = ' '; //on force l'espace au cas où quotes can´t close
-		type[1] = '<';
-		type[1] = '>';
-		type[1] = '|';
-		type[1] = '<'; */
-		type = " |<>";
-	}
+        type = ' '; //on force l'espace au cas où quotes can´t close
     return (type);
 }
 
@@ -118,42 +107,29 @@ int	str_type1(char *line, int i)
 /*Advances the i and start variables until the beginning of the next word*/
 void	parsing_advance_to_next_word(char *line, int *start, int *i)
 {
-	while ((line[(*i)] == ' ' || line[(*i)] == '<' || line[(*i)] == '>' || line[(*i)] == '|') && line[(*i)])
+	while ((line[(*i)] == ' ' || line[(*i)] == '<' || line[(*i)] == '>') && line[(*i)])
 		(*i)++;
-	if (line[(*i)] == ' ' || line[(*i)] == '<' || line[(*i)] == '>' || line[(*i)] == '|')
+	if (line[(*i)] == ' ')
 		(*start) = (*i) + 1;
 	else
 		(*start) = (*i);
 }
 
-void	parsing_fill_content(t_element **current_cmd, char *line, int *i, char *separator)
+void	parsing_fill_content(t_element **current_cmd, char *line, int *i, char quote_type)
 {
 	int	j;
-	int	x;
 
 	j = 0;
-	if (separator[0] == '\'' || separator[0] == '\"')
+	if (quote_type != ' ')
 		(*i)++;
-	while (line[(*i)])
+	while (line[(*i)] && line[(*i)] != quote_type)
 	{
-		x = 0;
-		while(separator[x])
-		{
-			if (line[(*i)] == separator[x])
-			{
-				(*current_cmd)->content[j] = '\0';
-				if (separator == '\'' || separator == '\"')
-					(*i)++;
-				return ;
-			}
-			x++;
-		}
 		if (line[(*i)] == '\\') //pour le test echo hola\ncaro -> doit donner holancaro
 			(*i)++;
 		(*current_cmd)->content[j++] = line[(*i)++];
 	}
 	(*current_cmd)->content[j] = '\0';
-	if (separator[0] == '\'' || separator[0] == '\"')
+	if (quote_type != ' ')
 		(*i)++;
 }
 
@@ -179,19 +155,18 @@ t_element *parsing(char *line, t_env *env_list)
 	int			start;
 	t_element	*current_cmd;
 	t_element	*head;
-	char		*separator;
+	char		quote_type;
 
 
 	current_cmd = parsing_initialisation(line, &i, &start);
 	head = current_cmd;
 	while (line[i])
 	{
-		separator = type_of_separator(line, start, str_type1(line, start));
-		parsing_fill_content(&current_cmd, line, &i, separator);
+		quote_type = type_of_separator(line, start, str_type1(line, start));
+		parsing_fill_content(&current_cmd, line, &i, quote_type);
 		current_cmd->type = determine_command_type(line, i, start);
 		parsing_advance_to_next_word(line, &start, &i);
 		parsing_initialize_next(&current_cmd, line, &i, &start);
-		// free(separator); //pas tjrs malloc'ed
 	}
 	parsing_fix(&head, env_list);
 	builtin_fix(&head);

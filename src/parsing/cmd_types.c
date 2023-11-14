@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_types.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:58:39 by casomarr          #+#    #+#             */
-/*   Updated: 2023/10/18 18:38:10 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/14 16:01:43 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	cmd_type(char *command, int len)
 		return (0);
 	// fin
     
-    while (command[len] != ' ' && command[len] != '\0')
+    // while (command[len] != ' ' && command[len] != '\0') //LIGNE MODIFIEE POUR PARSING SANS ESPACES!!!!
+    while (command[len] != ' ' && command[len] != '|' && command[len] != '<' && command[len] != '>' && command[len] != '\0')
     {
         //printf("%scommand[len] = %c\n%s", YELLOW, command[len], RESET);
         //printf("%ssize = %d, command[len] = %c\n%s", YELLOW, size, command[len], RESET);

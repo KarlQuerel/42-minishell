@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/09 20:59:07 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/14 12:07:42 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ void	exit_free(t_element *cmd_list, t_env *env_list)
 	free_cmd_list(cmd_list);
 	history(FREE_HISTORY, 0); // 0 : on s'en fout, on utilise pas len qd on free
 	free_env_list(env_list);
+	//METTRE LINE ET PROMPT DANS DES STRUCTURES POUR POUVOIR LES FREE ICI
+	// free(line);
+	// free(prompt);
 }
 
 void	free_cmd_list(t_element *cmd_list)
