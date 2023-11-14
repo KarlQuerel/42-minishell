@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/14 16:17:32 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/14 23:41:27 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 /*Libraries*/
 
@@ -288,9 +288,9 @@ int	ft_exit(t_element *cmd/*, t_env *env, t_history *entries*/);
 /*Export*/
 int		ft_export(t_element *cmd_list, t_env *env);
 bool	ft_is_valid_key_var(char *s);
-char 	**new_env_var(char *s);
-int		join_new_var(t_env *env, char *key, char *content);
-void	init_new_var(t_env *env, char *new_var);
+char 	**split_var(char *s);
+void	join_new_var(t_env *env, char *key, char *value);
+void	put_var_in_env(t_env *env, char* key, char *value);
 
 /*History*/
 // t_history	*ft_add_history(t_history *entries, char *line);
@@ -316,10 +316,6 @@ bool	ft_atoi_check(char *str);
 
 /*-----------------EXECUTABLE FOLDER ------------------*/
 
-/*Utils*/
-char	*ft_strcpy(char *dst, char *src);
-void	ft_print_array(char **arr);
-
 /*Exec*/
 void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec);
 void	single_command(t_element *cmd, t_env *env, t_pipe *exec);
@@ -332,12 +328,8 @@ void	middle_pipes(t_element *cmd, t_env *env, t_pipe *exec);
 void	last_pipe(t_element *cmd, t_env *env, t_pipe *exec);
 
 /*Exec_continued*/
-// void	middle_dup(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec);
-// void	last_dup(int *fd, int fd_temp, t_element *cmd, t_env *env, t_pipe *exec);
-
 void	middle_dup(t_element *cmd, t_env *env, t_pipe *exec);
 void	last_dup(t_element *cmd, t_env *env, t_pipe *exec);
-
 void	handle_command(t_element *cmd, t_env *env, t_pipe *exec);
 int		exec_command(t_element *cmd, t_env *env, t_pipe *exec);
 char	*ft_get_command(char **path, char *argument);
@@ -350,6 +342,7 @@ char	**split_path(t_env *env_list);
 void	fill_array(t_element *cmd, t_pipe *exec);
 int		get_size_cmd(t_element *cmd);
 int		ft_count_pipes(t_element *cmd);
+char	*ft_strcpy(char *dst, char *src);
 
 /*Redirect*/
 int		ft_redirect(t_element *cmd, int option);

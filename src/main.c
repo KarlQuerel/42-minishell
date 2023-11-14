@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/14 15:43:31 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/14 19:59:01 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 
 #include "../includes/minishell.h"
@@ -78,7 +78,7 @@ int main (int argc, char **argv, char **env)
 			if (line_errors_and_fix(&line) == true)
 			{
 				cmd_list = parsing(line, env_list);
-				printlist_test(cmd_list);
+				//printlist_test(cmd_list);
 				ft_execute(cmd_list, env_list, exec);
 				free_cmd_list(cmd_list);
 			}

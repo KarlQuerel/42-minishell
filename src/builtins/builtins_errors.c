@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:39:41 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/30 14:44:39 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/14 23:47:08 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -19,10 +19,9 @@
 */
 bool	check_next_node_builtin(t_element *cmd, int option)
 {
-	t_element *head;
+	t_element	*head;
 
 	head = cmd;
-
 	if (option == NO_OPTIONS)
 	{
 		while (cmd && cmd->type != PIPE)
@@ -90,10 +89,10 @@ bool	ft_is_num(char *s)
 }
 
 /*Checks number validity for history*/
-bool ft_atoi_check(char *str)
+bool	ft_atoi_check(char *str)
 {
-	int nb;
-	unsigned int i;
+	int				nb;
+	unsigned int	i;
 
 	i = 0;
 	nb = 0;
@@ -107,10 +106,9 @@ bool ft_atoi_check(char *str)
 	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		if (nb > INT_MAX / 10 || (nb == INT_MAX / 10 && str[i] - '0' > INT_MAX % 10))
-		{
-				return (false);
-		}
+		if (nb > INT_MAX / 10 || (nb == INT_MAX / 10 \
+			&& str[i] - '0' > INT_MAX % 10))
+			return (false);
 		nb = nb * 10 + str[i] - '0';
 		i++;
 	}

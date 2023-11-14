@@ -6,29 +6,25 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/11 00:42:02 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/14 23:50:42 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-
 /*
-	TO DO -> a regarder sur bash --posix a 42 lundi
+	TO DO -> a regarder sur bash --posix a 42 des le defreeze
 	--> example : variable=hello
-	
 	variable =hello -> ne doit pas marcher
 	varable = hello -> ne doit pas marcher
 	variable= hello -> donne "variable="
 */
-
-
 /* Reproduces the export command */
 int	ft_export(t_element *cmd, t_env *env)
 {
-	char **new_key_var;
-	
+	char	**new_key_var;
+
 	if (cmd->next == NULL)
 	{
 		ft_env(env, cmd, 1);
@@ -43,9 +39,9 @@ int	ft_export(t_element *cmd, t_env *env)
 			ft_putendl_fd(": not a valid identifier", STDOUT_FILENO);
 			return (0);
 		}
-		else if (ft_strchr(cmd->next->content, '=')) // si on trouve un = dans la string
+		else if (ft_strchr(cmd->next->content, '='))
 		{
-			new_key_var = new_env_var(cmd->next->content);
+			new_key_var = split_var(cmd->next->content);
 			join_new_var(env, new_key_var[0], new_key_var[1]);
 		}
 		cmd = cmd->next;
@@ -70,13 +66,13 @@ bool	ft_is_valid_key_var(char *s)
 	return (true);
 }
 
-/* Returns an array of strings with the new variable */
-char	**new_env_var(char *s)
+/* Splits the command to fit the env struct */
+char	**split_var(char *s)
 {
-	char **ret;
-	char *position_equal;
+	char	**ret;
+	char	*position_equal;
 
-	ret = malloc(sizeof(ret) * 3); // 3 car ca sera toujours 3 string, variable, hello et la string ide
+	ret = malloc(sizeof(ret) * 3); // 3 car ca sera toujours 3 string, variable, hello et la string vide
 	if (!ret)
 	{
 		ft_putendl_fd("Malloc failed", STDERR_FILENO);
@@ -89,45 +85,45 @@ char	**new_env_var(char *s)
 	return (ret);
 }
 
-/* Joins the new variable */
-int	join_new_var(t_env *env, char *key, char *content)
+/* If the variable already exits in env, free the value and replace it */
+void	join_new_var(t_env *env, char *key, char *value)
 {
-	char	*to_free;
+	t_env	*head;
 	char	*new_var;
-	if (content == NULL)
-		content = ""; // pour quand meme ecrire le new env (variable=)
-	to_free = ft_strjoin("=", content); // on join = avec hello (=hello)
-	if (!to_free)
+
+	if (value == NULL)
+		value = "\0";
+	head = env;
+	if (!is_key_in_env(env, key))
 	{
-		ft_putendl_fd("Split failed", STDOUT_FILENO);
-		return (0);
+		put_var_in_env(env, key, value);
+		return ;
 	}
-	// t_env	*env_new;
-	// env_new = malloc(sizeof(t_env)); // a free apres
-	// if (!env_new)
-	// {
-	// 	ft_putendl_fd("Malloc failed", STDOUT_FILENO);
-	// 	return (0);
-	// }
-	env = find_value_with_key_env(env, key); // si variable existe deja dans env
-	if (env == NULL)
-	{
-		free(env);
-		return (0);
-	}
-	new_var = ft_strjoin(key, to_free); // on join variable avec =hello
-	printf("new_var_env = %s\n", new_var);
-	free(to_free);
-	return (1);
+	replace_var(env, value);
+	env = head;
+	return ;
 }
 
-// /* Puts the variable in the new environment */
-// int	put_var_in_env(t_env *env, char *new_var)
-// {
-// 	t_env *head;
+/* Replaces the existing var with a new value */
+void	replace_var(t_env *env, char *value)
+{
+	free(env->value);
+	env->value = NULL;
+	env->value = value;
+}
 
-// 	head = env;
-// 	while (head)
-// 		head = head->next;
-// 	ft_lstadd_back(*env, )
-// }
+/* Puts the new variable at the end of the environment */
+void	put_var_in_env(t_env *env, char *key, char *value)
+{
+	t_env	*new_node;
+
+	while (env->next) // je veux juste arriver a la fin de env
+		env = env->next; //	 env est vide
+	new_node = ft_calloc(1, sizeof(t_env));
+	if (!new_node)
+		return ;
+	new_node->key = key;
+	new_node->value = value;
+	new_node->next = NULL;
+	new_node->prev = env->prev;
+}

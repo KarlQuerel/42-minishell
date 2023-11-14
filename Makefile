@@ -6,7 +6,7 @@
 #    By: karl <karl@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/11/10 11:50:29 by karl             ###   ########.fr        #
+#    Updated: 2023/11/14 23:41:43 by karl             ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -52,7 +52,6 @@ SRCS		:=  src/main.c \
 				src/executable/exec_errors.c \
 				src/executable/redirect.c \
 				src/executable/exec_continued.c \
-				src/executable/utils.c \
 				src/parsing/commands.c \
 				src/parsing/parsing.c \
 				src/parsing/checks.c \

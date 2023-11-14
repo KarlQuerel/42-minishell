@@ -1,28 +1,21 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/09 17:27:47 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/14 23:42:39 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-
 // extern t_global g_signals;
 
 /*
--- CARO :
---> POUR ECHO: 
-	-- on gere pas
-	echo -nnnnnnnnnnnnnnn ca marche par contre echo -nnnnnnnnnt doit print le -nnnnnnnnt
-
-
 KARL A GERER
 --> GERER LES FDS -- voir cas Alban
 	"ls -a | wc -l | exit"

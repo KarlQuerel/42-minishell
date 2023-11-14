@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/30 15:24:50 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/14 23:44:52 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -18,8 +18,8 @@ Get the PATH variable from env list and split it by ':'
 Returns an array of strings */
 char	**split_path(t_env *env)
 {
-	char **res_split;
-	
+	char	**res_split;
+
 	res_split = NULL;
 	if (is_key_in_env(env, "PATH") == true)
 	{
@@ -47,9 +47,11 @@ void	fill_array(t_element *cmd, t_pipe *exec)
 }
 
 /* Gets the size of the while command for memory allocation */
-int		get_size_cmd(t_element *cmd)
+int	get_size_cmd(t_element *cmd)
 {
-	int	i = 0;
+	int	i;
+
+	i = 0;
 	while (cmd)
 	{
 		if (cmd->type != PIPE)
@@ -63,8 +65,8 @@ int		get_size_cmd(t_element *cmd)
 int	ft_count_pipes(t_element *cmd)
 {
 	int	pipe_nb;
+
 	pipe_nb = 0;
-	
 	if (!cmd)
 		return (0);
 	while (cmd)
@@ -74,4 +76,19 @@ int	ft_count_pipes(t_element *cmd)
 		cmd = cmd->next;
 	}
 	return (pipe_nb);
+}
+
+/* Strcpy */
+char	*ft_strcpy(char *dst, char *src)
+{
+	int	i;
+
+	i = 0;
+	while (src[i])
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (dst);
 }

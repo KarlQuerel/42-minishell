@@ -6,22 +6,19 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/11/08 12:46:42 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/14 23:55:54 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-// -->unset seg fault avec plusieurs arguments car tmp est vide
-// et n'est pas accessible
-// regarder unset abc=caro a 42 (valid identifier)
-
+// --> CARO ->seg fault quand unset USER, gdb me donne segfault ft_prompt a ligne 97
 /* Reproduces the unset command */
 int	ft_unset(t_element *cmd_list, t_env *env)
 {
-	t_env *tmp;
-	
+	t_env	*tmp;
+
 	while (cmd_list && cmd_list->next && cmd_list->next->type != PIPE)
 	{
 		tmp = env;
@@ -46,44 +43,21 @@ int	ft_unset(t_element *cmd_list, t_env *env)
 	return (1);
 }
 
-/* A EFFACTER A LA FIN */
-void printenv(t_env *head)
-{
-	while (head)
-	{
-		printf("--------------------------------\n");
-		printf("key = %s\n", head->key);
-		printf("value = %s\n", head->value);
-		printf("--------------------------------\n");
-		head = head->next;
-	}
-}
-
 /* Delete the node passed in parameters */
 void	ft_delete_node(t_env **head, t_env *to_delete)
-{   
-    if (!to_delete)
-        return;
-
-    if (to_delete->prev)
-    {
-        to_delete->prev->next = to_delete->next;
-    }
-    else
-    {
-        *head = to_delete->next;
-    }
-
-    if (to_delete->next)
-    {
-        to_delete->next->prev = to_delete->prev;
-    }
-
-    free(to_delete->key);
-    free(to_delete->value);
-   	free(to_delete);
+{
+	if (!to_delete)
+		return ;
+	if (to_delete->prev)
+		to_delete->prev->next = to_delete->next;
+	else
+		*head = to_delete->next;
+	if (to_delete->next)
+		to_delete->next->prev = to_delete->prev;
+	free(to_delete->key);
+	free(to_delete->value);
+	free(to_delete);
 }
-
 
 // {	
 // 	t_env	*tmp;
@@ -115,4 +89,3 @@ void	ft_delete_node(t_env **head, t_env *to_delete)
 // 	to_delete = NULL;
 // 	return ;
 // }
-
