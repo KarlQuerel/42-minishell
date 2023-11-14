@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/14 16:15:32 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/14 16:17:32 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,6 @@ void		printlist_test(t_element   *head); //A EFFACER A LA FIN
 char		*type_of_separator(char *line, int i, int str_type);
 int			determine_command_type(char *line, size_t i, size_t start);
 t_element	*parsing_initialisation(char *line, int *i, int *start);
-// int			parsing_str_type(char *line, int start, int *i);
 void		parsing_fill_content(t_element **current_cmd, char *line, int *i, char *separator);
 void		parsing_initialize_next(t_element **current_cmd, char *line, int *i, int *start);
 t_element	*parsing(char *command, t_env *env_list);
