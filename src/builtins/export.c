@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/14 23:50:42 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/15 16:06:38 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -19,15 +19,16 @@
 	variable =hello -> ne doit pas marcher
 	varable = hello -> ne doit pas marcher
 	variable= hello -> donne "variable="
+	variable == hello -> ??
 */
 /* Reproduces the export command */
-int	ft_export(t_element *cmd, t_env *env)
+int	ft_export(t_element *cmd, t_env **env)
 {
 	char	**new_key_var;
 
 	if (cmd->next == NULL)
 	{
-		ft_env(env, cmd, 1);
+		ft_env((*env), cmd, 1);
 		return (0);
 	}
 	while (cmd && cmd->next)
@@ -43,6 +44,10 @@ int	ft_export(t_element *cmd, t_env *env)
 		{
 			new_key_var = split_var(cmd->next->content);
 			join_new_var(env, new_key_var[0], new_key_var[1]);
+			// --> regle les pblms de valgrind mais export prend la value de la prochaine cmd
+			// free(new_key_var[0]);
+			// free(new_key_var[1]);
+			// free (new_key_var);
 		}
 		cmd = cmd->next;
 	}
@@ -79,51 +84,59 @@ char	**split_var(char *s)
 		return (NULL);
 	}
 	position_equal = ft_strchr(s, '='); // on prend la position du egal
-	ret[0] = ft_substr(s, 0, position_equal - s); // on ecrit le premier argument avant le egal "variable"
-	ret[1] = ft_substr(position_equal, 1, ft_strlen(position_equal)); // on passe le egal et on ecrit le mot apres "hello"
-	ret[3] = NULL;
+	ret[0] = strlcpy_middle(ret[0], s, 0, position_equal - s - 1); //A VERIFIER POUR DOUBLE EGAL
+	ret[1] = strlcpy_middle(ret[1], position_equal, 1, ft_strlen(position_equal));
+	ret[2] = NULL;
 	return (ret);
 }
 
 /* If the variable already exits in env, free the value and replace it */
-void	join_new_var(t_env *env, char *key, char *value)
+void	join_new_var(t_env **env, char *key, char *value)
 {
-	t_env	*head;
 	char	*new_var;
 
 	if (value == NULL)
 		value = "\0";
-	head = env;
-	if (!is_key_in_env(env, key))
+	if (!is_key_in_env(*env, key))
 	{
 		put_var_in_env(env, key, value);
 		return ;
 	}
-	replace_var(env, value);
-	env = head;
+	replace_var(env, key, value);
+	// free (key);
+	// free (value);
 	return ;
 }
 
 /* Replaces the existing var with a new value */
-void	replace_var(t_env *env, char *value)
+void	replace_var(t_env **env, char *key, char *value)
 {
-	free(env->value);
-	env->value = NULL;
-	env->value = value;
+	t_env	**tmp;
+
+	tmp = env;
+	*tmp = find_value_with_key_env(*env, key);
+	free((*tmp)->value);
+	(*tmp)->value = '\0';
+	(*tmp)->value = value;
 }
 
 /* Puts the new variable at the end of the environment */
-void	put_var_in_env(t_env *env, char *key, char *value)
+void	put_var_in_env(t_env **env, char *key, char *value)
 {
 	t_env	*new_node;
-
-	while (env->next) // je veux juste arriver a la fin de env
-		env = env->next; //	 env est vide
+	t_env	*head;
+	
+	head = *env;
+	while ((*env)->next)
+		*env = (*env)->next;
 	new_node = ft_calloc(1, sizeof(t_env));
 	if (!new_node)
 		return ;
-	new_node->key = key;
-	new_node->value = value;
-	new_node->next = NULL;
-	new_node->prev = env->prev;
+	(*env)->next = new_node;
+	(*env)->next->prev = (*env);
+	(*env) = (*env)->next;
+	(*env)->key = key;
+	(*env)->value = value;
+	(*env)->next = NULL;
+	*env = head;
 }

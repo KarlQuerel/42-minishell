@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/11 00:25:26 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/15 14:56:24 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -14,7 +14,7 @@
 #include "../../libft/libft.h"
 
 /* Being on the middle pipes, both fd are being redirected */
-void	middle_dup(t_element *cmd, t_env *env, t_pipe *exec)
+void	middle_dup(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	if (dup2(*(exec->fd_temp), STDIN_FILENO) < 0)
 	{
@@ -33,7 +33,7 @@ void	middle_dup(t_element *cmd, t_env *env, t_pipe *exec)
 }
 
 /* Being on the last pipe, only entry fd is being cloned and redirected */
-void last_dup(t_element *cmd, t_env *env, t_pipe *exec)
+void last_dup(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	if (dup2(*(exec->fd_temp), STDIN_FILENO) < 0)
 		perror("dup");
@@ -46,25 +46,25 @@ void last_dup(t_element *cmd, t_env *env, t_pipe *exec)
 --- if a builtin is detected, ft_builtins is sent
 ---	if the cmd is not empty, exec_command is called
 */
-void	handle_command(t_element *cmd, t_env *env, t_pipe *exec)
+void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	// Redirect
 	if (!ft_redirect(cmd/*, exec*/, NO_PRINT))
 	{
 		// free et on return
-		printf("ft_redirect n'a pas marche\n");
+		printf("ft_redirect n'a pas marche\n"); // VOIR AVEC ALBAN
 		return ;
 	}
 	//fin
 	
 	if (cmd->builtin == true)
 	{
-		ft_builtins(cmd, env/* , exec */, PRINT); // on doit envoyer fd ici pour les pipes, exec->fd
+		ft_builtins(cmd, env, exec, PRINT); // on doit envoyer fd ici pour les pipes, exec->fd , close (exec->fd)
 		return ;
 	}
 	// on doit peut etre free des trucs dans le child
 	if (exec->cmd_tab[0][0] != '\0')
-		g_signals.exit_status = exec_command(cmd, env, exec);
+		g_signals.exit_status = exec_command(cmd, *env, exec);
 	exit(g_signals.exit_status);
 }
 
@@ -108,7 +108,6 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 		close(0);
 		close(1);
 		close (2);
-		
 		return (127);
 	}
 	cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
@@ -125,8 +124,8 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 			close(0);
 			close(1);
 			close(2);
-			//free
 		}
+		free(exec->cmd_path);
 		return (127);
 	}
 	//ft_print_array(exec->cmd_tab); // to test what is sent to execve
@@ -136,6 +135,7 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 		//perror("bash");
 		//strerror(errno); --> a utiliser, par exemple chmod 000 ./exec
 	}
+	free(exec->cmd_path);
 	return (127); //return a exit code, faire une fonction cmd not found
 }
 

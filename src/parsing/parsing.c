@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/14 16:15:26 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/15 11:52:05 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -251,7 +251,13 @@ void	parsing_fix(t_element **cmd_list, t_env *env_list)
 		if (current->type == COMMAND && current->next)
 			type_arg_after_cmd(current);
 		else if (current->content[0] == '$')
+		{
 			current->content = dollar(current->content, env_list);
+			if (current->content == NULL)
+			{
+				ft_delete_node_cmd(cmd_list, current);
+			}
+		}
 			// dollar_fix(current, env_list);
 		current = current->next;
 	}

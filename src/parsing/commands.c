@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/13 15:55:54 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/15 13:40:09 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -84,7 +84,7 @@ bool	is_cmd_in_line(char *line, char *cmd)
 }
 
 /* Handles builtins redirections */
-void	ft_builtins(t_element *cmd, t_env *env_list, int option)
+void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec, int option)
 {
 	if (is_this_command(cmd->content, "pwd") == true && check_next_node_builtin(cmd, NO_OPTIONS))
 		pwd(PRINT);
@@ -96,17 +96,17 @@ void	ft_builtins(t_element *cmd, t_env *env_list, int option)
 			history(FT_HISTORY, -1); //sans option (print totalité de history)
 	}
 	else if (is_this_command(cmd->content, "cd") == true && check_next_node_builtin(cmd, NO_OPTIONS))
-		cd(cmd, env_list);
+		cd(cmd, *env_list);
 	else if (is_this_command(cmd->content, "echo") == true && check_next_node_builtin(cmd, ECHO))
 		echo(cmd, option);
 	else if (is_this_command(cmd->content, "env") == true && check_next_node_builtin(cmd, ENV))
-		ft_env(env_list, cmd, 0);
+		ft_env(*env_list, cmd, 0);
 	else if (is_this_command(cmd->content, "export") == true && check_next_node_builtin(cmd, NO_OPTIONS))
 		ft_export(cmd, env_list);
 	else if (is_this_command(cmd->content, "unset") == true && check_next_node_builtin(cmd, NO_OPTIONS))
 			ft_unset(cmd, env_list);
 	else if (is_this_command(cmd->content, "$?") == true && check_next_node_builtin(cmd, NO_OPTIONS))
-		ft_dollar_question_mark(env_list);
+		ft_dollar_question_mark(*env_list);
 	else if (is_this_command(cmd->content, "exit") == true && check_next_node_builtin(cmd, NO_OPTIONS))
-		ft_exit(cmd);
+		ft_exit(cmd, env_list, exec);
 }

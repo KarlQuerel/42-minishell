@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/14 19:59:01 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/15 16:23:59 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -78,9 +78,13 @@ int main (int argc, char **argv, char **env)
 			if (line_errors_and_fix(&line) == true)
 			{
 				cmd_list = parsing(line, env_list);
-				//printlist_test(cmd_list);
-				ft_execute(cmd_list, env_list, exec);
+				// printlist_test(cmd_list);
+				exec->line = &line;
+				exec->prompt = &prompt;
+				ft_execute(cmd_list, &env_list, exec);
 				free_cmd_list(cmd_list);
+				free_cmd_tab(exec);
+
 			}
 		}
 		free(line);
@@ -88,6 +92,5 @@ int main (int argc, char **argv, char **env)
 		pwd_update_in_env(&env_list);
 		env_list->env = env;
 	}
-	final_free(line, env_list);
 	return (EXIT_SUCCESS);
 }

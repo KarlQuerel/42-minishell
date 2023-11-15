@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:34:22 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/14 12:13:04 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/15 14:36:06 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -124,6 +124,12 @@ void	cd_home(t_env *env_list)
 	char *current_path;
 
 	current_path = pwd(NO_PRINT);
+	if (!is_key_in_env(env_list, "HOME"))
+	{
+		ft_putendl_fd("bash: cd: HOME not set", STDERR_FILENO);
+		free(current_path);
+		return ;
+	}
 	home = find_value_with_key_env(env_list, "HOME");
 	if(is_this_command(current_path, home->value) == false)
 	{
@@ -131,9 +137,13 @@ void	cd_home(t_env *env_list)
 			go_backwards_until_user(current_path, home->value);
 		else
 			go_forward_until_user(current_path, home->value);
+		free(current_path);
 	}
 	else //already in home
+	{
+		free(current_path);
 		return ;
+	}
 }
 
 /*Returns the specified path and handles the case where a directory
@@ -170,12 +180,10 @@ char    *fix_path_if_spaces(char *path)
 void	cd_directory(char *path, t_env *env_list)
 {
 	char	*new_path;
-	t_env *home;
-	int i;
+	t_env	*home;
 	
 	home = find_value_with_key_env(env_list, "HOME");
-	i = ft_strlen(pwd(NO_PRINT)) - 2; //pour sauter le dernier slash
-    new_path = fix_path_if_spaces(path);
+	new_path = fix_path_if_spaces(path);
 	if (chdir(new_path) != 0)
 	{
 		printf("bash : cd : %s: No such file or directory\n", path);

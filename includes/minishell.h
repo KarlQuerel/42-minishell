@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/14 23:41:27 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/15 15:20:49 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -162,6 +162,8 @@ typedef struct s_pipe
 	int		*fd_temp;
 	int		fd[2];
 	char 	**env;
+	char	**line;
+	char	**prompt;
 	struct s_element *cmd;
 	struct s_env *env_s;
 }	t_pipe;
@@ -174,7 +176,7 @@ void	ft_welcome(void);
 /*------------------PARSING FOLDER------------------*/
 
 /*Commands*/
-void	ft_builtins(t_element *cmd, t_env *env_list, int option);
+void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec, int option);
 bool	is_this_command(char *buffer, char* command);
 int		size_of_command(char *command, int len, int type);
 bool	is_cmd_in_line(char *line, char *cmd);
@@ -203,13 +205,12 @@ bool	is_key_in_env(t_env *env_list, char *key);
 /*Lstnew*/
 t_element	*lstnew(char *line, int i, int type);
 t_env		*lstnew_env(char *line, int i);
-t_history	*lstnew_history(char *line, int size_of_list);
+t_history	*lstnew_htory(char *line, int size_of_list);
 int			ft_lstsize_history(t_history *lst);
 
 /*Free*/
-void	final_free(char *line, t_env *env_list);
 void	free_cmd_list(t_element *cmd_list);
-void	exit_free(t_element *cmd_list, t_env *env_list);
+void	exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec);
 void	free_env_list(t_env *env_list);
 
 /*Checks*/
@@ -283,14 +284,15 @@ void	echo(t_element *current, int option);
 void	ft_env(t_env *env, t_element *cmd, int option);
 
 /*Exit*/
-int	ft_exit(t_element *cmd/*, t_env *env, t_history *entries*/);
+int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec);
 
 /*Export*/
-int		ft_export(t_element *cmd_list, t_env *env);
+int		ft_export(t_element *cmd_list, t_env **env);
 bool	ft_is_valid_key_var(char *s);
 char 	**split_var(char *s);
-void	join_new_var(t_env *env, char *key, char *value);
-void	put_var_in_env(t_env *env, char* key, char *value);
+void	join_new_var(t_env **env, char *key, char *value);
+void	put_var_in_env(t_env **env, char* key, char *value);
+void	replace_var(t_env **env, char *key, char *value);
 
 /*History*/
 // t_history	*ft_add_history(t_history *entries, char *line);
@@ -306,7 +308,7 @@ char	*pwd(/* t_element *cmd, */int option);
 void	pwd_update_in_env(t_env **env_list);
 
 /*Unset*/
-int		ft_unset(t_element *cmd_list, t_env *env);
+int		ft_unset(t_element *cmd_list, t_env **env);
 void	ft_delete_node(t_env **head, t_env *to_delete);
 
 /*Builtins_errors*/
@@ -317,20 +319,20 @@ bool	ft_atoi_check(char *str);
 /*-----------------EXECUTABLE FOLDER ------------------*/
 
 /*Exec*/
-void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec);
-void	single_command(t_element *cmd, t_env *env, t_pipe *exec);
-void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec);
+void	ft_execute(t_element *cmd, t_env **env, t_pipe *exec);
+void	single_command(t_element *cmd, t_env **env, t_pipe *exec);
+void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec);
 //void	ft_set_exit_status(t_env *env, int status);
 // void	middle_pipes(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec);
 // void	last_pipe(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec);
 
-void	middle_pipes(t_element *cmd, t_env *env, t_pipe *exec);
-void	last_pipe(t_element *cmd, t_env *env, t_pipe *exec);
+void	middle_pipes(t_element *cmd, t_env **env, t_pipe *exec);
+void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec);
 
 /*Exec_continued*/
-void	middle_dup(t_element *cmd, t_env *env, t_pipe *exec);
-void	last_dup(t_element *cmd, t_env *env, t_pipe *exec);
-void	handle_command(t_element *cmd, t_env *env, t_pipe *exec);
+void	middle_dup(t_element *cmd, t_env **env, t_pipe *exec);
+void	last_dup(t_element *cmd, t_env **env, t_pipe *exec);
+void	handle_command(t_element *cmd, t_env **env, t_pipe *exec);
 int		exec_command(t_element *cmd, t_env *env, t_pipe *exec);
 char	*ft_get_command(char **path, char *argument);
 
@@ -366,5 +368,8 @@ int		pipe_wait(int *pid, int amount);
 */
 
 void	handle_sigint(int sig);
+void	ft_delete_node_cmd(t_element **head, t_element *to_delete);
+void	free_cmd_tab(t_pipe *exec);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/14 23:44:52 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/15 15:18:57 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -46,7 +46,7 @@ void	fill_array(t_element *cmd, t_pipe *exec)
 	exec->cmd_tab[i] = NULL;
 }
 
-/* Gets the size of the while command for memory allocation */
+/* Gets the size of the whole command for memory allocation */
 int	get_size_cmd(t_element *cmd)
 {
 	int	i;
@@ -54,7 +54,7 @@ int	get_size_cmd(t_element *cmd)
 	i = 0;
 	while (cmd)
 	{
-		if (cmd->type != PIPE)
+		if (cmd->type != PIPE) // peut etre a changer pour les redir
 			i++;
 		cmd = cmd->next;
 	}

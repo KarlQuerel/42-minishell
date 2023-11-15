@@ -6,7 +6,7 @@
 #    By: karl <karl@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/11/14 23:41:43 by karl             ###   ########.fr        #
+#    Updated: 2023/11/15 14:19:48 by karl             ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -126,4 +126,4 @@ v : minishell
 	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes ./minishell
 
 sv : minishell
-	@valgrind --suppressions=readline.supp ./minishell
+	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell

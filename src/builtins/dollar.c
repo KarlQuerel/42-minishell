@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/01 19:00:46 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/15 11:27:37 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -39,7 +39,8 @@ char	*dollar(char *content, t_env *env_list)
  	if (is_key_in_env(env_list, key_to_find) == false)
 	{
 		free(content);
-		content = ""; //et non \n car deja un \n a la fin de la fonction echo
+		content = NULL;
+		//content = "\0"; //et non \n car deja un \n a la fin de la fonction echo
 	}
 	else
 	{

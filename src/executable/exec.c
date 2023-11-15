@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/14 23:42:39 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/15 16:52:38 by karl             ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -38,7 +38,7 @@ TO DO:
 --- If no pipes are detected, fills cmd_tab and calls single_command function
 --- Else we calls multipe_commands function
 */
-void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
+void	ft_execute(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	int	i;
 	int	size_cmd;
@@ -66,14 +66,14 @@ void	ft_execute(t_element *cmd, t_env *env, t_pipe *exec)
 	from reaching handle_command
 ---	if child pid is detected, handle_command is called
 */
-void	single_command(t_element *cmd, t_env *env, t_pipe *exec)
+void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	int	pid;
 	int	status;
 
-	if (cmd && cmd->builtin == true)
+	if (cmd && cmd->builtin == true && cmd->content)
 	{
-		ft_builtins(cmd, env, PRINT);
+		ft_builtins(cmd, env, exec, PRINT);
 		return ;
 	}
 	pid = fork();
@@ -109,7 +109,7 @@ void	single_command(t_element *cmd, t_env *env, t_pipe *exec)
 (le traduire en anglais pour les commentaires)
 le status s'initialise dans waitpid pour etre reutilise dans les W flags de waitpid
 */
-void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec)
+void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	int	i = 0;
 	int	status;
@@ -162,7 +162,7 @@ void	multiple_commands(t_element *cmd, t_env *env, t_pipe *exec)
 /* Handles all middle pipes behaviour
 --- Calls middle_dup function if child process is created 
 ---	If fd_temp exists, we dup the reading fd and assigns it to fd_temp*/
-void	middle_pipes(t_element *cmd, t_env *env, t_pipe *exec)
+void	middle_pipes(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	int	pid;
 
@@ -185,10 +185,19 @@ void	middle_pipes(t_element *cmd, t_env *env, t_pipe *exec)
 }
 
 /* Handles last pipe behaviour */
-void	last_pipe(t_element *cmd, t_env *env, t_pipe *exec)
+void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	int	pid;
 
+	
+	// //KARL TEST
+	// exit(10);
+	// if (cmd && cmd->builtin == true && cmd->content)
+	// {
+	// 	ft_builtins(cmd, env, exec, PRINT);
+	// 	return ;
+	// }
+	// //FIN
 	pid = fork();
 	if (pid < 0)
 		perror("fork");
