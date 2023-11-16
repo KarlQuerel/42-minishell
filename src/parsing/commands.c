@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/15 13:40:09 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/16 15:34:15 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -33,7 +33,7 @@ modifie line*/
 }
 
 /*Checks if what is written in the command line corresponds to a command.*/
-bool	is_this_command(char *buffer, char* command)
+bool	is_cmd(char *buffer, char *command)
 {
 	if (!buffer || !command)
 		return (false);
@@ -44,7 +44,9 @@ bool	is_this_command(char *buffer, char* command)
 		return (false);
 }
 
-/*Returns the size of a cmd, key, value or str.*/
+/*Returns the size of a cmd, key, value or str.
+Returns size + 1 since this function is called to make
+mallocs so I add a +1 here to count the \0.*/
 int	size_of_command(char *command, int len, int type)
 {
 	int	size;
@@ -56,7 +58,7 @@ int	size_of_command(char *command, int len, int type)
 		size = key_and_value_type(command, len, type);
 	else if (type == STR)
 		size = str_type(command, len);
-	return(size + 1); //car pour mallocs besoin d'un +1 pour \0
+	return (size + 1);
 }
 
 /*Checks if a given commands is in the command line.*/
@@ -86,27 +88,27 @@ bool	is_cmd_in_line(char *line, char *cmd)
 /* Handles builtins redirections */
 void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec, int option)
 {
-	if (is_this_command(cmd->content, "pwd") == true && check_next_node_builtin(cmd, NO_OPTIONS))
+	if (is_cmd(cmd->content, "pwd") == true && check_next(cmd, NONE))
 		pwd(PRINT);
-	else if (is_this_command(cmd->content, "history") == true && check_next_node_builtin(cmd, HISTORY))
+	else if (is_cmd(cmd->content, "history") == true && check_next(cmd, HISTORY))
 	{
 		if (cmd->next && cmd->next->type != PIPE)
 			history(FT_HISTORY, ft_atoi(cmd->next->content)); //avec numero en option
 		else
 			history(FT_HISTORY, -1); //sans option (print totalité de history)
 	}
-	else if (is_this_command(cmd->content, "cd") == true && check_next_node_builtin(cmd, NO_OPTIONS))
+	else if (is_cmd(cmd->content, "cd") == true && check_next(cmd, NONE))
 		cd(cmd, *env_list);
-	else if (is_this_command(cmd->content, "echo") == true && check_next_node_builtin(cmd, ECHO))
+	else if (is_cmd(cmd->content, "echo") == true && check_next(cmd, ECHO))
 		echo(cmd, option);
-	else if (is_this_command(cmd->content, "env") == true && check_next_node_builtin(cmd, ENV))
+	else if (is_cmd(cmd->content, "env") == true && check_next(cmd, ENV))
 		ft_env(*env_list, cmd, 0);
-	else if (is_this_command(cmd->content, "export") == true && check_next_node_builtin(cmd, NO_OPTIONS))
+	else if (is_cmd(cmd->content, "export") == true && check_next(cmd, NONE))
 		ft_export(cmd, env_list);
-	else if (is_this_command(cmd->content, "unset") == true && check_next_node_builtin(cmd, NO_OPTIONS))
-			ft_unset(cmd, env_list);
-	else if (is_this_command(cmd->content, "$?") == true && check_next_node_builtin(cmd, NO_OPTIONS))
+	else if (is_cmd(cmd->content, "unset") == true && check_next(cmd, NONE))
+		ft_unset(cmd, env_list);
+	else if (is_cmd(cmd->content, "$?") == true && check_next(cmd, NONE))
 		ft_dollar_question_mark(*env_list);
-	else if (is_this_command(cmd->content, "exit") == true && check_next_node_builtin(cmd, NO_OPTIONS))
+	else if (is_cmd(cmd->content, "exit") == true && check_next(cmd, NONE))
 		ft_exit(cmd, env_list, exec);
 }

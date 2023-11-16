@@ -1,33 +1,39 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:36:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/15 15:31:15 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/16 21:14:16 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-void	home_path_simplified_loop(char *absolute_path, t_env *user, int *i, int *start, char **path_from_home)
+void	home_path_simplified_loop(char *absolute_path, t_env *user, int *i, \
+char **path_from_home)
 {
-	int		j;
-	char	*temp;
-	
-	if(absolute_path[(*i) + 1] == '/')
+	int				j;
+	char			*temp;
+	static size_t	start;
+
+	if ((*i) == 0)
+		start = 1;
+	if (absolute_path[(*i) + 1] == '/')
 	{
 		temp = NULL;
-		temp = strlcpy_middle(temp, absolute_path, (*start), (*i));
-		(*start) = (*i) + 2;
-		if (ft_strncmp(temp, user->value, ft_strlen(user->value)) == 0 && ft_strlen(user->value) == ft_strlen(temp))
+		temp = strlcpy_middle(temp, absolute_path, start, (*i));
+		start = (*i) + 2;
+		if (ft_strncmp(temp, user->value, ft_strlen(user->value)) == 0 && \
+		ft_strlen(user->value) == ft_strlen(temp))
 		{
 			j = 0;
-			(*i)+=2;
-			(*path_from_home) = malloc(sizeof(char) * (ft_strlen(absolute_path) - (*i) + 2));
+			(*i) += 2;
+			(*path_from_home) = malloc(sizeof(char) * \
+			(ft_strlen(absolute_path) - (*i) + 2));
 			while (absolute_path[(*i)])
 				(*path_from_home)[j++] = absolute_path[(*i)++];
 			(*path_from_home)[j] = '\0';
@@ -51,14 +57,13 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list)
 	char	*result;
 
 	i = 0;
-	start = 1;
 	path_from_home = NULL;
 	if (!is_key_in_env(env_list, "USER"))
 		return (NULL);
 	user = find_value_with_key_env(env_list, "USER");
-	while(absolute_path[i])
+	while (absolute_path[i])
 	{
-		home_path_simplified_loop(absolute_path, user, &i, &start, &path_from_home);
+		home_path_simplified_loop(absolute_path, user, &i, &path_from_home);
 		if (path_from_home != NULL)
 			return (path_from_home);
 		i++;
@@ -70,51 +75,66 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list)
 slash is found : it represents the beggining of the
 last word of the path. We start at ft_strlen(PWD)-2 to skip
 the slash at the end of pwd.*/
-int	get_beggining_of_last_word()
+int	get_beggining_of_last_word(void)
 {
 	int		i;
 	char	*temp;
 
 	temp = pwd(NO_PRINT);
 	i = ft_strlen(temp) - 2;
-	while(i > 0)
+	while (i > 0)
 	{
 		if (temp[i - 1] == '/')
-			break;
+			break ;
 		i--;
 	}
 	free(temp);
 	return (i);
 }
 
+/*Adaptive prompt :
+IF : if we are in the user folder, print nothing (readline will add
+"$ " to it).
+First ELSE IF : if we are in home folder, print only the home folder.
+Second ELSE IF : when path is further than the user folder (inside it),
+print from user folder (excluded) to current folder.
+ELSE : when we are before the home folder, print a slash.*/
 char	*ft_prompt(t_env *env_list, int option)
 {
 	char	*word;
-	t_env	*user;
-	t_env   *home;
-	t_env   *Gpath;
+	char	*prompt;
 	char	*path;
-	char	*temp;
 
-	if (!is_key_in_env(env_list, "USER") || !is_key_in_env(env_list, "HOME") || !is_key_in_env(env_list, "PWD")) // voir ce que ca rend sur bash a 42
+	if (!is_key_in_env(env_list, "USER") || \
+	!is_key_in_env(env_list, "PWD")) // voir ce que ca rend sur bash a 42
 		return ("\0");
-	temp = pwd(NO_PRINT); // changement pour les free
-	user = find_value_with_key_env(env_list, "USER");
-	home = find_value_with_key_env(env_list, "HOME");
-	Gpath = find_value_with_key_env(env_list, "PWD");
-	word = strlcpy_middle(word, temp, get_beggining_of_last_word(), ft_strlen(temp) - 1); //sans le -1 ne change rien mais fait plus de sens!
-	if (ft_strncmp(word, user->value, ft_strlen(user->value)) == 0) //si user juste $
-		path = "";
-	else if (ft_strncmp(word, "homes", ft_strlen(word) - get_beggining_of_last_word() + 1) == 0) //si home on print jusqu a home
-		path = strlcpy_middle(path, Gpath->value, 1, ft_strlen(Gpath->value) - 1);
-	else if (ft_strncmp(word, user->value, ft_strlen(user->value)) != 0 && \
-	is_user_in_path(temp, env_list) == true) //si pas dans home ni dans user et que plus loin que user
-		path = home_path_simplified(temp, env_list);
-	else
-		path = temp;
+	path = pwd(NO_PRINT);
+	word = strlcpy_middle(word, path, get_beggining_of_last_word(), \
+	ft_strlen(path) - 1); //sans le -1 ne change rien mais fait plus de sens!
+	ft_prompt2(&prompt, word, env_list, path);
 	if (option == PRINT)
-		printf("%s", path);
-	free(temp); 
+		printf("%s", prompt);
+	free(path);
 	free(word);
-	return (path); //il faudra le free
+	return (prompt);
+}
+
+void	ft_prompt2(char **prompt, char *word, t_env *env_list, char *path)
+{
+	t_env	*user;
+	t_env	*gpath;
+
+	user = find_value_with_key_env(env_list, "USER");
+	gpath = find_value_with_key_env(env_list, "PWD");
+	if (ft_strncmp(word, user->value, ft_strlen(user->value)) == 0)
+		(*prompt) = "";
+	else if (ft_strncmp(word, "homes", ft_strlen(word) - \
+	get_beggining_of_last_word() + 1) == 0)
+		(*prompt) = strlcpy_middle((*prompt), gpath->value, 1, \
+		ft_strlen(gpath->value) - 1);
+	else if (ft_strncmp(word, user->value, ft_strlen(user->value)) != 0 && \
+	is_user_in_path(path, env_list) == true)
+		(*prompt) = home_path_simplified(path, env_list);
+	else
+		(*prompt) = "/";
 }

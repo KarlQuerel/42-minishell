@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/15 15:20:49 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/16 21:14:40 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 /*Libraries*/
 
@@ -56,7 +56,7 @@
 # define CMD 2
 # define STR 3
 
-# define NO_OPTIONS 0
+# define NONE 0 //no options
 # define ENV 1
 # define ECHO 2
 # define HISTORY 3
@@ -177,29 +177,29 @@ void	ft_welcome(void);
 
 /*Commands*/
 void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec, int option);
-bool	is_this_command(char *buffer, char* command);
+bool	is_cmd(char *buffer, char* command);
 int		size_of_command(char *command, int len, int type);
 bool	is_cmd_in_line(char *line, char *cmd);
 // int 	where_is_cmd_in_line(char *line, char *cmd);
 bool	line_errors_and_fix(char **line);
 
 /*Parsing*/
-int			parsing_str_type(char *line, int i);
-void		printlist_test(t_element   *head); //A EFFACER A LA FIN
-char		*type_of_separator(char *line, int i, int str_type);
-int			determine_command_type(char *line, size_t i, size_t start);
-t_element	*parsing_initialisation(char *line, int *i, int *start);
-void		parsing_fill_content(t_element **current_cmd, char *line, int *i, char *separator);
-void		parsing_initialize_next(t_element **current_cmd, char *line, int *i, int *start);
-t_element	*parsing(char *command, t_env *env_list);
+t_element 	*parsing(char *line, t_env *env_list);
+int 		determine_command_type(char *line, size_t end, size_t start);
 void		type_arg_after_cmd(t_element *current);
-void		dollar_fix(t_element *current, t_env *env_list);
 void		parsing_fix(t_element **cmd_list, t_env *env_list);
 void		builtin_fix(t_element **cmd_list);
 
+/*Parsing2*/
+t_element	*parsing_initialisation(char *line, int *i, int *start);
+void		parsing_fill_content(t_element **current_cmd, char *line, int *i, \
+char *separator);
+void		parsing_advance_to_next_word(char *line, int *start, int *i);
+void		parsing_initialize_next(t_element **current_cmd, char *line, int *i, int *start);
+
 /*Env_list*/
-t_env   *put_env_in_list(char **env);
-t_env   *find_value_with_key_env(t_env *env_list, char *key);
+t_env	*put_env_in_list(char **env);
+t_env	*find_value_with_key_env(t_env *env_list, char *key);
 bool	is_key_in_env(t_env *env_list, char *key);
 
 /*Lstnew*/
@@ -214,7 +214,7 @@ void	exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec);
 void	free_env_list(t_env *env_list);
 
 /*Checks*/
-bool		quotes_can_close(char *line);
+bool		quotes_can_close(char *line, int i);
 bool		is_builtin(char *cmd_content);
 bool		is_user_in_path(char *path, t_env *env_list);
 
@@ -228,15 +228,21 @@ bool	redirecters_error(char *line);
 void	slash_error(char *line);
 void	pipe_error(char *line);
 void	and_error(char *line);
+
+/*Errors2*/
 void	str_error(char *line);
 bool	pipe_double_or_eof(char *line);
 
 /*Utils*/
 char	*ft_joinstr_minishell(char *line, int len, char *str, char type);
 char	*ft_join_pour_cd(char *line_begining, char *path);
+char 	*strlcpy_middle(char *dst, const char *src, size_t start, size_t end);
+char	*type_of_separator(char *line, int i, int str_type);
+int		parsing_str_type(char *line, int i);
+
+/*Erase_spaces*/
 int		erase_spaces_loop(char *line, char **new_line, int *i, int *j);
 char	*erase_spaces(char *line);
-char 	*strlcpy_middle(char *dst, const char *src, size_t start, size_t end);
 
 /*Malloc*/
 int		count_spaces(char *line);
@@ -252,10 +258,11 @@ int		str_type(char *command, int len);
 /*Prompt*/
 // void	prompt(t_env *env_list);
 void	home_path_simplified_loop(char *absolute_path, t_env *user, int *i, \
-int *start, char **path_from_home);
+char **path_from_home);
 char	*home_path_simplified(char *absolute_path, t_env *env_list);
 int		get_beggining_of_last_word();
 char	*ft_prompt(t_env *env_list, int option);
+void	ft_prompt2(char **prompt, char *word, t_env *env_list, char *path);
 
 /*------------------BUILT-INS FOLDER------------------*/
 
@@ -312,7 +319,7 @@ int		ft_unset(t_element *cmd_list, t_env **env);
 void	ft_delete_node(t_env **head, t_env *to_delete);
 
 /*Builtins_errors*/
-bool	check_next_node_builtin(t_element *cmd, int option);
+bool	check_next(t_element *cmd, int option);
 bool	ft_is_num(char *s);
 bool	ft_atoi_check(char *str);
 

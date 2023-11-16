@@ -1,14 +1,14 @@
-#******************************************************************************#
+# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: karl <karl@student.42.fr>                  +#+  +:+       +#+         #
+#    By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/11/15 14:19:48 by karl             ###   ########.fr        #
+#    Updated: 2023/11/16 19:52:27 by octonaute        ###   ########.fr        #
 #                                                                              #
-#******************************************************************************#
+# **************************************************************************** #
 
 #------------------------------------------------#
 #   COLORS                                       #
@@ -54,12 +54,15 @@ SRCS		:=  src/main.c \
 				src/executable/exec_continued.c \
 				src/parsing/commands.c \
 				src/parsing/parsing.c \
+				src/parsing/parsing2.c \
+				src/parsing/erase_spaces.c \
 				src/parsing/checks.c \
 				src/parsing/signal.c \
 				src/parsing/env_list.c \
 				src/parsing/lstnew.c \
 				src/parsing/free.c \
 				src/parsing/errors.c \
+				src/parsing/errors2.c \
 				src/parsing/utils.c \
 				src/parsing/malloc.c \
 				src/parsing/cmd_types.c \

@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:34:22 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/15 14:36:06 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/16 15:29:17 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -53,7 +53,7 @@ char	*split_at_user(char *big_path, char *user)
 
 void	go_backwards_until_user(char *current_path, char *home_value)
 {
-	while (is_this_command(current_path, home_value) == false)
+	while (is_cmd(current_path, home_value) == false)
 	{
 		// -----> cd qd plus haut que user devrait nous faire avancer jusqu'à après le user!!!!
 		if (chdir("..") != 0)
@@ -97,7 +97,7 @@ void	go_forward_until_user(char *current_path, char *home_value)
 		end+=1;
 	start = end;
 	word = ft_calloc(size_of_word(home_value, start) + 1, sizeof(char));
-	while(is_this_command(current_path, home_value) == false)
+	while(is_cmd(current_path, home_value) == false)
 	{
 		while(home_value[end] != '/' && home_value[end])
 			end++;
@@ -131,7 +131,7 @@ void	cd_home(t_env *env_list)
 		return ;
 	}
 	home = find_value_with_key_env(env_list, "HOME");
-	if(is_this_command(current_path, home->value) == false)
+	if(is_cmd(current_path, home->value) == false)
 	{
 		if (is_user_in_path(current_path, env_list) == true)
 			go_backwards_until_user(current_path, home->value);

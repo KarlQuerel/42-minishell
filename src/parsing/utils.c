@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/14 16:15:29 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/16 21:17:07 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ char	*ft_joinstr_minishell(char *line, int len, char *str, char type)
 	int		i;
 	int		j;
 	char	*new_str;
-	
+
 	new_str = joinstr_minishell_malloc(line, len, str, type);
 	if (str == NULL)
 		return (new_str);
 	i = 0;
 	j = 0;
-	while(str[i])
+	while (str[i])
 		new_str[j++] = str[i++];
 	new_str[j] = '\0';
 	free(str);
@@ -49,18 +49,19 @@ char	*ft_join_pour_cd(char *line_begining, char *path)
 	int		i;
 	int		j;
 	char	*new_str;
-	
-	new_str = ft_calloc((ft_strlen(line_begining) + ft_strlen(path) + 1), sizeof(char));
+
+	new_str = ft_calloc((ft_strlen(line_begining) + \
+	ft_strlen(path) + 1), sizeof(char));
 	if (!new_str)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while(line_begining[i])
+	while (line_begining[i])
 	{
 		new_str[j++] = line_begining[i++];
 	}
 	i = 0;
-	while(path[i])
+	while (path[i])
 	{
 		new_str[j++] = path[i++];
 	}
@@ -69,56 +70,45 @@ char	*ft_join_pour_cd(char *line_begining, char *path)
 	return (new_str);
 }
 
-int	erase_spaces_loop(char *line, char **new_line, int *i, int *j)
-{
-	char	separator;
-	
-	if (parsing_str_type(line, (*i)) == STR) //if quotes && quotes can close
-	{
-		separator = type_of_separator(line, (*i), parsing_str_type(line, (*i))); 
-		(*new_line)[(*j)++] = line[(*i)++]; //pour copier/coller le separateur
-		while(line[(*i)] != separator && line[(*i)])
-			(*new_line)[(*j)++] = line[(*i)++];
-		(*new_line)[(*j)++] = line[(*i)++]; //pour copier/coller le separateur
-	}
-	else if((line[(*i)] == ' ' && line[(*i) + 1] == ' ') || (line[(*i)] == ' ' && line[(*i) + 1] == '\0'))
-		(*i)+=1;
-	else
-		(*new_line)[(*j)++] = line[(*i)++];
-}
-
-/*Returns a new_line that is the same as the original command line
-except all the superfulous spaces have been erased.*/
-char	*erase_spaces(char *line)
-{
-	char	*new_line;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-
-	new_line = erase_spaces_malloc(line);
-	while (line[i])
-		erase_spaces_loop(line, &new_line, &i, &j);
-	if (j == 0)
-		return (NULL);
-	new_line[j] = '\0';
-	free(line);
-	return (new_line);
-}
-
 /*Same as the strlcpy function except it takes a start parameter in addition
 to an end parameter.*/
-char *strlcpy_middle(char *dst, const char *src, size_t start, size_t end)
-{	
+char	*strlcpy_middle(char *dst, const char *src, size_t start, size_t end)
+{
 	int	i;
-	
+
 	i = 0;
-	// dst = malloc(sizeof(char) * (end - start + 2));
 	dst = ft_calloc(end - start + 2, sizeof(char));
 	while (src[start] && start <= end)
 		dst[i++] = src[start++];
 	dst[i] = '\0';
 	return (dst);
+}
+
+/*Returns the delimiter to look for depending
+on the type of string.
+The second condition (else) is for strings not within quotes
+as for strings when quotes can't close.*/
+char	*type_of_separator(char *line, int i, int str_type)
+{
+	char	*type;
+
+	if (str_type == STR)
+	{
+		type = calloc(2, sizeof(char));
+		type[0] = line[i];
+		type[1] = '\0';
+	}
+	else
+		type = " |<>";
+	return (type);
+}
+
+/*Returns the type of string to know if quotes have to be skipped*/
+int	parsing_str_type(char *line, int i)
+{
+	if ((line[i] == '\'' || line[i] == '\"') && \
+	quotes_can_close(line, i) == true)
+		return (STR);
+	else
+		return (CMD);
 }

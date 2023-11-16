@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:07:47 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/15 11:28:09 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/16 19:40:57 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -16,12 +16,10 @@
 /*When a quote is found in the command line, this function
 checks if there is another quote of the same type further in
 the command line. If yes, it returns true.*/
-bool	quotes_can_close(char *line)
+bool	quotes_can_close(char *line, int i)
 {
-	size_t		i;
-	char		type;
-	
-	i = 0;
+	char	type;
+
 	while (line[i])
 	{
 		if (line[i] == '\'' || line[i] == '\"')
@@ -35,7 +33,7 @@ bool	quotes_can_close(char *line)
 				return (false);
 			if (line[i] != type)
 			{
-				while(line[i] && line[i] != type)
+				while (line[i] && line[i] != type)
 					i++;
 				if (line[i] == '\0')
 					return (false);
@@ -47,7 +45,7 @@ bool	quotes_can_close(char *line)
 }
 
 /*Checks if the cmd sent to this function is a builtin.*/
-bool		is_builtin(char *cmd_content)
+bool	is_builtin(char *cmd_content)
 {
 	int		i;
 	char	*builtins[9];
@@ -64,9 +62,10 @@ bool		is_builtin(char *cmd_content)
 	builtins[7] = "history";
 	builtins[8] = "$?";
 	i = 0;
-	while(i < 9)
+	while (i < 9)
 	{
-		if (ft_strncmp(cmd_content, builtins[i], ft_strlen(cmd_content)) == 0 && \
+		if (ft_strncmp(cmd_content, builtins[i], \
+		ft_strlen(cmd_content)) == 0 && \
 		ft_strlen(cmd_content) == ft_strlen(builtins[i]))
 			return (true);
 		i++;
@@ -85,12 +84,12 @@ bool	is_user_in_path(char *path, t_env *env_list)
 
 	i = 0;
 	user = find_value_with_key_env(env_list, "USER");
-	while(path[i])
+	while (path[i])
 	{
 		j = 0;
 		if (path[i] == user->value[j])
 		{
-			while(path[i + j] == user->value[j] && user->value[j])
+			while (path[i + j] == user->value[j] && user->value[j])
 				j++;
 			if (user->value[j] == '\0')
 				return (true);

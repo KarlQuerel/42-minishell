@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/15 15:21:43 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/16 19:15:50 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -27,12 +27,13 @@ void	exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec)
 
 void	free_cmd_tab(t_pipe *exec)
 {
-	int	i = 0;
+	int	i;
+
+	i = 0;
 	while (exec->cmd_tab[i])
 		free(exec->cmd_tab[i++]);
 	free(exec->cmd_tab);
 }
-
 
 void	free_cmd_list(t_element *cmd_list)
 {
@@ -42,11 +43,18 @@ void	free_cmd_list(t_element *cmd_list)
 		cmd_list = cmd_list->next;
 	}
 	free(cmd_list);
+
+/* 	while (cmd_list != NULL)
+	{
+		free(cmd_list->content);
+		cmd_list = cmd_list->prev;
+	}
+	free(cmd_list); */
 }
 
 void	free_env_list(t_env *env_list)
 {
-	while(env_list != NULL)
+	while (env_list != NULL)
 	{
 		free(env_list->value);
 		free(env_list->key);

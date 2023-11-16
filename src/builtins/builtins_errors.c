@@ -1,28 +1,30 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   builtins_errors.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:39:41 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/14 23:47:08 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/16 15:33:49 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
 /* Checks if builtins take an option or an argument (for env)
+The variable "cmd" sent to this function is the node following
+the builtin command.
 --- if option 0, checks if env has a next node
 --- if option 1, checks if the built has a next node AND its an option
 */
-bool	check_next_node_builtin(t_element *cmd, int option)
+bool	check_next(t_element *cmd, int option)
 {
 	t_element	*head;
 
 	head = cmd;
-	if (option == NO_OPTIONS)
+	if (option == NONE)
 	{
 		while (cmd && cmd->type != PIPE)
 		{

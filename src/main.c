@@ -1,20 +1,41 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/15 16:23:59 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/16 20:05:07 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 
 #include "../includes/minishell.h"
 #include "../libft/libft.h"
 
 t_global g_signals;
+
+void	printlist_test(t_element *head) // A EFFACER A LA FIN
+{
+	int	i;
+
+	i = 0;
+	while (head)
+	{
+		// if (i != 0)
+		// 	printf("prev cmd = %s\n", head->prev->content);
+		printf("--------------------------------\n");
+		printf("content = ---%s---\n", head->content);
+		printf("type = ---%d---\n", head->type);
+		printf("builtin = ---%d---\n", head->builtin);
+		printf("--------------------------------\n");
+		// if (head->next != NULL)
+		// 	printf("next cmd = %s\n", head->next->content);
+		head = head->next;
+		i++;
+	}
+}
 
 //PROTEGER TOUS MES MALLOCS!! --> avec perror
 //faire perror("Error") plutot que des printf pour toutes les fonctions qui utilisent errno

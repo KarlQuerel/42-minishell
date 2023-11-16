@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:21:09 by karl              #+#    #+#             */
-/*   Updated: 2023/11/15 12:14:54 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/16 15:29:52 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -19,7 +19,7 @@ reproduces export behaviour when used without an argument
 */
 void	ft_env(t_env *env, t_element *cmd, int option)
 {
-	if (!check_next_node_builtin(cmd, 0))
+	if (!check_next(cmd, 0))
 		return ;
 	while (env)
 	{

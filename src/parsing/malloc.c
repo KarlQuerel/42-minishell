@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:08:27 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/14 15:39:37 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/16 19:40:25 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,24 @@
 quotes, since those won't be deleted.*/
 int	count_spaces(char *line)
 {
-	int		i;
-	int		spaces;
+	int	i;
+	int	spaces;
 
 	i = 0;
 	spaces = 0;
 	while (line[i])
 	{
-		if (line[i] == '\'' && quotes_can_close(line) == true)
+		if (line[i] == '\'' && quotes_can_close(line, i) == true)
 		{
-			while(line[i] != '\'')
+			while (line[i] != '\'')
 				i++;
 		}
-		if (line[i] == '\"' && quotes_can_close(line) == true)
+		if (line[i] == '\"' && quotes_can_close(line, i) == true)
 		{
-			while(line[i] != '\"')
+			while (line[i] != '\"')
 				i++;
 		}
-		if(line[i] == ' ' && (line[i + 1] == ' ' || line[i + 1] == '\0'))
+		if (line[i] == ' ' && (line[i + 1] == ' ' || line[i + 1] == '\0'))
 			spaces++;
 		i++;
 	}
