@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_errors.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:39:41 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/17 12:13:11 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 14:27:27 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool	no_option(t_element **cmd, t_element *head)
 
 bool	env_option(t_element **cmd)
 {
-	if ((*cmd)->next && (*cmd)->next->type != PIPE)
+	if ((*cmd)->next && (*cmd)->next->type < 3)
 	{
 		ft_putendl_fd("env cannot take arguments nor options", \
 		STDERR_FILENO);
@@ -41,7 +41,7 @@ bool	env_option(t_element **cmd)
 
 bool	history_option(t_element **cmd)
 {
-	if ((*cmd)->next && (*cmd)->next->type != PIPE && \
+	if ((*cmd)->next && (*cmd)->next->type < 3 && \
 	(!ft_is_num((*cmd)->next->content) || \
 	ft_atoi_check((*cmd)->next->content) == false)) //si history pas tout seul
 	{
@@ -50,7 +50,7 @@ bool	history_option(t_element **cmd)
 		return (false);
 	}
 	if ((*cmd)->next && ft_is_num((*cmd)->next->content) && (*cmd)->next->next && \
-	(*cmd)->next->next->type != PIPE)
+	(*cmd)->next->next->type < 3)
 	{
 		printf("bash: history: too many arguments\n"); // ft_putsrfd et envoyer au pipe suivant
 		return (false);

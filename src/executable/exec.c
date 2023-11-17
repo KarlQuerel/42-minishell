@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/17 12:05:25 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/17 16:58:09 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,11 @@
 #include "../../libft/libft.h"
 
 // extern t_global g_signals;
-
 /*
-KARL A GERER
---> GERER LES FDS -- voir cas Alban
-	"ls -a | wc -l | exit"
-	"ls -a | echo hi | wc -l"
-
---> pour les builtins:
-	" pwd | ls -l" tourne dans le vide, il faut envoyer fd a ft_builtins pour utiliser ft_putstrfd dans tous nos builtins
--- faire en sorte que tous les builtins prennent t_cmd pour check next node builtin
-	--> du coup plus besoin mais peut etre plus tard, je le laisse la dans le doute
 TO DO:
 - gerer open et HEREDOC, en dernier
 - redirections
-- finir export (n'ajoute pas de var a env)
 */
-//---------------------------------------------------------------------------------------------------------
 /* Handles the execution part
 --- Gets size_cmd to alloc memory accordingly
 --- Gets the amount of pipe to detect if we need to create childs.
@@ -70,12 +58,28 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	int	pid;
 	int	status;
+	int	stdin_tmp;
+	int	stdout_tmp;
 
+	stdin_tmp = dup(STDIN_FILENO);
+	stdout_tmp = dup(STDOUT_FILENO);
+	if (!ft_redirect(cmd/*, exec*//* , NO_PRINT */))
+	{
+		// free et on return
+		printf("ft_redirect n'a pas marche\n");
+		return ;
+	}
 	if (cmd && cmd->builtin == true && cmd->content)
 	{
 		ft_builtins(cmd, env, exec, PRINT);
+		dup2(stdin_tmp, STDIN_FILENO);
+		dup2(stdout_tmp, STDOUT_FILENO);
+		close(stdin_tmp);
+		close(stdout_tmp);
 		return ;
 	}
+	close(stdin_tmp);
+	close(stdout_tmp);
 	pid = fork();
 	if (pid < 0)
 	{
@@ -122,6 +126,7 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 			while (cmd->next && cmd->type != PIPE)
 				cmd = cmd->next;
 			cmd = cmd->next;
+			
 		}
 		else
 			last_pipe(cmd, env, exec);
@@ -184,14 +189,6 @@ void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	int	pid;
 
-	// //KARL TEST
-	// exit(10);
-	// if (cmd && cmd->builtin == true && cmd->content)
-	// {
-	// 	ft_builtins(cmd, env, exec, PRINT);
-	// 	return ;
-	// }
-	// //FIN
 	pid = fork();
 	if (pid < 0)
 		perror("fork");

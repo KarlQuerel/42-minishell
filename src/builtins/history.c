@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:38 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/09 17:25:00 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/17 14:40:34 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,11 @@ void	history(int option, int len)
 	{
 		while(i < myhist->length)
 		{
-			printf(" %d  %s\n", i + 1, mylist[i]->line);
+			ft_putstr_fd(ft_itoa(i + 1), STDOUT_FILENO);
+			ft_putstr_fd(" ", STDOUT_FILENO);
+			ft_putendl_fd(mylist[i]->line, STDOUT_FILENO);
+			
+			//printf(" %d  %s\n", i + 1, mylist[i]->line);
 			//free_history_entry(mylist[i]); // FREE AU MOMENT DE EXIT
 			i++;
 		}
@@ -49,7 +53,11 @@ void	history(int option, int len)
 		reverse = myhist->length - len;
 		while(i < len)
 		{
-			printf(" %d  %s\n", reverse, mylist[reverse]->line);
+			ft_putstr_fd(ft_itoa(reverse), STDOUT_FILENO);
+			ft_putstr_fd(" ", STDOUT_FILENO);
+			ft_putendl_fd(mylist[reverse]->line, STDOUT_FILENO);
+			
+			// printf(" %d  %s\n", reverse, mylist[reverse]->line);
 			//free_history_entry(mylist[i]); // FREE AU MOMENT DE EXIT
 			i++;
 			reverse++;

@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/15 15:18:57 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/17 16:24:56 by kquerel          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -35,8 +35,10 @@ void	fill_array(t_element *cmd, t_pipe *exec)
 {
 	int	i;
 
+	if (cmd->prev && cmd->prev->type < 3)
+		free_cmd_arr(exec);
 	i = 0;
-	while (cmd && cmd->type != PIPE)
+	while (cmd && cmd->type < 3)
 	{
 		exec->cmd_tab[i] = ft_calloc(ft_strlen(cmd->content) + 1, sizeof(char));
 		exec->cmd_tab[i] = ft_strcpy(exec->cmd_tab[i], cmd->content);

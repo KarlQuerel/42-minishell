@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/17 11:06:06 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 16:46:00 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,18 @@ int	ft_infile(char *filename)
 {
 	int	fd;
 
-	fd = open(filename, O_RDONLY); // returns -1 on error and errno is set -> utiliser perror
+	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 	{
-		perror("open perror"); // pour tester errno
+		perror("open perror");
 		return (0);
 	}
-	if (fd > 0 && dup2(fd, STDOUT_FILENO) < 0)
+	if (fd > STDERR_FILENO && dup2(fd, STDOUT_FILENO) < 0)
 	{
-		perror("infile dup perror"); //pour tester errno
+		perror("infile dup perror");
 		return (0);
 	}
-	if (fd > 0) //on success
+	if (fd > STDERR_FILENO)
 		close(fd);
 	return(1);
 }
@@ -54,15 +54,17 @@ int	ft_outfile(t_element *cmd)
 		// close(fd);
 		return (0);
 	}
-	// if (fd > 0)
-	close(fd);
+	if (fd > STDERR_FILENO)
+		close(fd);
 	return (1);
 }
 
-/* A FAIRE
+/* 
+A FAIRE
 -rediriger dans le cas ou la commande est un built in a coder nous meme
 - les << a gerer
-*/
+
+Handles redirections depending on cmd->type */
 int	ft_redirect(t_element *cmd/* , int option */)
 {
 	t_element *tmp;
