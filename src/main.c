@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/17 16:53:31 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 17:33:19 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int main (int argc, char **argv, char **env)
 				exec->prompt = &prompt;
 				ft_execute(cmd_list, &env_list, exec);
 				free_cmd_list(cmd_list);
-				//free_cmd_arr(exec);
+				free_cmd_arr(exec);
 			}
 		}
 		free(line);

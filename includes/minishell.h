@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/17 13:28:12 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 17:43:33 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -315,7 +315,7 @@ void	pwd_update_in_env(t_env **env_list);
 
 /*Unset*/
 int		ft_unset(t_element *cmd_list, t_env **env);
-void	ft_delete_node(t_env **head, t_env *to_delete);
+void	ft_delete_node_env(t_env **head, t_env *to_delete);
 void	ft_delete_node_cmd(t_element **head, t_element *to_delete);
 
 /*-----------------EXECUTABLE FOLDER ------------------*/
