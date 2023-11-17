@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/17 17:44:59 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 18:23:59 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ void	exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec)
 	free_cmd_list(cmd_list);
 	history(FREE_HISTORY, 0); // 0 : on s'en fout, on utilise pas len qd on free
 	free_env_list(*env_list);
-	free (exec->line[0]);
-	free (exec->prompt[0]); //a voir
+/* 	free (exec->line[0]);
+	free (exec->prompt[0]); //a voir */
+	free (*exec->line);
+	free (*exec->prompt); //a voir
 	free_cmd_arr(exec);
 	free(exec);
 }

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:08:27 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/17 17:20:41 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 18:24:53 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@ int	count_spaces(char *line)
 	{
 		if (line[i] == '\'' && quotes_can_close(line, i) == true)
 		{
+			i++;
 			while (line[i] != '\'')
 				i++;
 		}
 		if (line[i] == '\"' && quotes_can_close(line, i) == true)
 		{
+			i++;
 			while (line[i] != '\"')
 				i++;
 		}
