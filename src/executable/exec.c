@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/17 16:58:09 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/17 19:12:47 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,16 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	int	stdin_tmp;
 	int	stdout_tmp;
 
-	stdin_tmp = dup(STDIN_FILENO);
-	stdout_tmp = dup(STDOUT_FILENO);
-	if (!ft_redirect(cmd/*, exec*//* , NO_PRINT */))
-	{
-		// free et on return
-		printf("ft_redirect n'a pas marche\n");
-		return ;
-	}
 	if (cmd && cmd->builtin == true && cmd->content)
 	{
+		stdin_tmp = dup(STDIN_FILENO);
+		stdout_tmp = dup(STDOUT_FILENO);
+		if (!ft_redirect(cmd/*, exec*//* , NO_PRINT */))
+		{
+			// free et on return
+			printf("ft_redirect n'a pas marche\n");
+			return ;
+		}
 		ft_builtins(cmd, env, exec, PRINT);
 		dup2(stdin_tmp, STDIN_FILENO);
 		dup2(stdout_tmp, STDOUT_FILENO);
@@ -78,8 +78,6 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 		close(stdout_tmp);
 		return ;
 	}
-	close(stdin_tmp);
-	close(stdout_tmp);
 	pid = fork();
 	if (pid < 0)
 	{
@@ -154,7 +152,6 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 		g_signals.exit_status = WTERMSIG(status) + 128;
 	else if (WIFEXITED(status))
 		g_signals.exit_status = WEXITSTATUS(status);
-	// si un signal interrompt execve
 	else
 		g_signals.exit_status = status;
 }

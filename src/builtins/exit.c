@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/17 14:08:37 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 18:56:44 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,7 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 		return (0);
 	if (cmd->next && (!ft_is_num(cmd->next->content) || \
 	!ft_atoi_check(cmd->next->content) || cmd->next->type != ARGUMENT))
-	{
-		ft_putendl_fd("exit", STDOUT_FILENO);
-		ft_putstr_fd("bash: ", STDERR_FILENO);
-		ft_putstr_fd(cmd->next->content, STDERR_FILENO);
-		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
-		exit_free(head, env, exec);
-		//KARL
-		close(3);
-		close(4);
-		//FIN
-		exit(g_signals.exit_status);
-	}
+		ft_exit_continued(cmd, env, exec, head);
 	if (cmd->next && cmd->next->next)
 	{
 		ft_putendl_fd("exit", STDOUT_FILENO);
@@ -67,20 +56,18 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 			return (0);
 		}
 	}
-	// if (!cmd->next && !cmd->prev)
-	// {
-	// 	ft_putendl_fd("exit", STDOUT_FILENO);
-	// 	exit_free(cmd, env, exec);
-	// 	exit(g_signals.exit_status); // exit(exit_code)
-	// }
-	//exit_free(cmd, env, entries); seg fault double free
-	// on ne devrait pas arriver la normalement
-	//printf("cmd->content 2 = %s\n", cmd->content);
 	exit_free(head, env, exec);
-	//KARL
-	close(3);
-	close(4);
-	//FIN
-	exit(g_signals.exit_status); // exit(exit_code) g.status_exitcode
+	exit(g_signals.exit_status);
 	return (0);
+}
+
+/* exit_continued */
+void	ft_exit_continued(t_element *cmd, t_env **env, t_pipe *exec, t_element *head)
+{
+		ft_putendl_fd("exit", STDOUT_FILENO);
+		ft_putstr_fd("bash: ", STDERR_FILENO);
+		ft_putstr_fd(cmd->next->content, STDERR_FILENO);
+		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+		exit_free(head, env, exec);
+		exit(g_signals.exit_status);
 }

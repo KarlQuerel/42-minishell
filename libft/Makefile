@@ -60,7 +60,7 @@ FILES_BONUS = ft_lstadd_back.c 		\
 
 OBJS_BONUS = $(FILES_BONUS:.c=.o)
 
-CFLAGS = #-Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 all: ${NAME}
 
