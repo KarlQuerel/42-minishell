@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/17 12:04:48 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/17 11:48:57 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*dollar(char *content, t_env *env_list)
 	return (content);
 }
 
-void	ft_dollar_question_mark()
+void	ft_dollar_question_mark(void)
 {
 	
 	printf("---->Exit : %d\n", g_signals.exit_status);

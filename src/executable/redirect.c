@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/17 11:45:17 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/17 11:06:06 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	ft_outfile(t_element *cmd)
 -rediriger dans le cas ou la commande est un built in a coder nous meme
 - les << a gerer
 */
-int	ft_redirect(t_element *cmd, int option)
+int	ft_redirect(t_element *cmd/* , int option */)
 {
 	t_element *tmp;
 

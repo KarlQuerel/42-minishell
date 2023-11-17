@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/17 12:01:44 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/17 11:04:58 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 	t_element	*head;
 
 	head = cmd;
-	if (cmd->next && cmd->next->type != ARGUMENT || cmd->prev)
+	if ((cmd->next && cmd->next->type != ARGUMENT) || cmd->prev)
 		return (0);
 	if (cmd->next && (!ft_is_num(cmd->next->content) || !ft_atoi_check(cmd->next->content) || cmd->next->type != ARGUMENT))
 	{

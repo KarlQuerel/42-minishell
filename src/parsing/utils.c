@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/16 21:17:07 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/17 12:11:08 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,33 +82,4 @@ char	*strlcpy_middle(char *dst, const char *src, size_t start, size_t end)
 		dst[i++] = src[start++];
 	dst[i] = '\0';
 	return (dst);
-}
-
-/*Returns the delimiter to look for depending
-on the type of string.
-The second condition (else) is for strings not within quotes
-as for strings when quotes can't close.*/
-char	*type_of_separator(char *line, int i, int str_type)
-{
-	char	*type;
-
-	if (str_type == STR)
-	{
-		type = calloc(2, sizeof(char));
-		type[0] = line[i];
-		type[1] = '\0';
-	}
-	else
-		type = " |<>";
-	return (type);
-}
-
-/*Returns the type of string to know if quotes have to be skipped*/
-int	parsing_str_type(char *line, int i)
-{
-	if ((line[i] == '\'' || line[i] == '\"') && \
-	quotes_can_close(line, i) == true)
-		return (STR);
-	else
-		return (CMD);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   erase_spaces.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:51:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/16 20:09:15 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/17 11:14:11 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 
 /*The first condition is meant to skip the spaces in between quotes,
 so that they are kept in new_line.*/
-int	erase_spaces_loop(char *line, char **new_line, int *i, int *j)
+void	erase_spaces_loop(char *line, char **new_line, int *i, int *j)
 {
-	char	separator;
+	char	*separator;
 
 	if (parsing_str_type(line, (*i)) == STR) //if quotes && quotes can close
 	{
 		separator = type_of_separator(line, (*i), parsing_str_type(line, (*i)));
 		(*new_line)[(*j)++] = line[(*i)++]; //pour copier/coller le separateur
-		while (line[(*i)] != separator && line[(*i)])
+		while (line[(*i)] != separator[0] && line[(*i)])
 			(*new_line)[(*j)++] = line[(*i)++];
 		(*new_line)[(*j)++] = line[(*i)++]; //pour copier/coller le separateur
 	}

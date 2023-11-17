@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_continued.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/17 12:14:59 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/17 11:06:51 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void last_dup(t_element *cmd, t_env **env, t_pipe *exec)
 void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	// Redirect
-	if (!ft_redirect(cmd/*, exec*/, NO_PRINT))
+	if (!ft_redirect(cmd/*, exec*//* , NO_PRINT */))
 	{
 		// free et on return
 		printf("ft_redirect n'a pas marche\n"); // VOIR AVEC ALBAN

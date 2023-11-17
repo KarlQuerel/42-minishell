@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/17 11:53:52 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/17 11:39:58 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,6 @@ char	**split_var(char *s)
 /* If the variable already exits in env, free the value and replace it */
 void	join_new_var(t_env **env, char *key, char *value)
 {
-	char	*new_var;
-
 	if (value == NULL)
 		value = "\0";
 	if (!is_key_in_env(*env, key))
@@ -103,14 +101,13 @@ void	join_new_var(t_env **env, char *key, char *value)
 /* Replaces the existing var with a new value */
 void	replace_var(t_env **env, char *key, char *value)
 {
-	t_env	**tmp;
+	t_env	*tmp;
 
-	tmp = env;
-	*tmp = find_value_with_key_env(*env, key);
-	free((*tmp)->value);
-	(*tmp)->value = '\0';
-	(*tmp)->value = value;
-	tmp = env;
+	tmp = *env;
+	tmp = find_value_with_key_env(*env, key);
+	free(tmp->value);
+	tmp->value = NULL;
+	tmp->value = value;
 }
 
 /* Puts the new variable at the end of the environment */
