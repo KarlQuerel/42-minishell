@@ -3,34 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/16 15:34:15 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/17 11:22:02 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
-
-/*The first two "if" check if there are errors in the grammar of the command
-line and print the associated error. The last function replaces the $ by its
-associated value so that the executable receives directly the line completed.*/
-bool	line_errors_and_fix(char **line) /*pourquoi double pointeur : 
-avant parce que je modifiais la ligne en même temps que je voulais return
-un bool mais plus besoin non? Vu que Maintenant c'est erase_spaces etc qui 
-modifie line*/
-{
-	if (!*line)
-		return (NULL);
-	// if (redirecters_error(*line) == false)
-	// 	return (false);
-	if (first_character_error(*line) == false)
-		return (false);
-	if (pipe_double_or_eof(*line) == false)
-		return (false);
-	return (true);
-}
 
 /*Checks if what is written in the command line corresponds to a command.*/
 bool	is_cmd(char *buffer, char *command)

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/17 11:05:41 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 11:39:58 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,13 +109,13 @@ void	join_new_var(t_env **env, char *key, char *value)
 /* Replaces the existing var with a new value */
 void	replace_var(t_env **env, char *key, char *value)
 {
-	t_env	**tmp;
+	t_env	*tmp;
 
-	tmp = env;
-	*tmp = find_value_with_key_env(*env, key);
-	free((*tmp)->value);
-	(*tmp)->value = NULL;
-	(*tmp)->value = value;
+	tmp = *env;
+	tmp = find_value_with_key_env(*env, key);
+	free(tmp->value);
+	tmp->value = NULL;
+	tmp->value = value;
 }
 
 /* Puts the new variable at the end of the environment */

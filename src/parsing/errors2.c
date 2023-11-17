@@ -3,15 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   errors2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:40:58 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/16 15:42:19 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/17 11:22:52 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
+
+void	and_error(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] != ' ' && line[i])
+		i++;
+	if (i == 1)
+		printf("bash: syntax error near unexpected token `&'\n");
+	else
+		printf("bash: syntax error near unexpected token `&&'\n");
+}
 
 void	str_error(char *line)
 {

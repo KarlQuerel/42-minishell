@@ -3,15 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:39:52 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/16 15:41:54 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/17 11:22:59 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
+
+/*The first two "if" check if there are errors in the grammar of the command
+line and print the associated error. The last function replaces the $ by its
+associated value so that the executable receives directly the line completed.*/
+bool	line_errors_and_fix(char **line) /*pourquoi double pointeur : 
+avant parce que je modifiais la ligne en même temps que je voulais return
+un bool mais plus besoin non? Vu que Maintenant c'est erase_spaces etc qui 
+modifie line*/
+{
+	if (!*line)
+		return (NULL);
+	// if (redirecters_error(*line) == false)
+	// 	return (false);
+	if (first_character_error(*line) == false)
+		return (false);
+	if (pipe_double_or_eof(*line) == false)
+		return (false);
+	return (true);
+}
 
 bool	first_character_error(char *line)
 {
@@ -107,15 +126,3 @@ void	pipe_error(char *line)
 		printf("bash: syntax error near unexpected token `||'\n");
 }
 
-void	and_error(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i] != ' ' && line[i])
-		i++;
-	if (i == 1)
-		printf("bash: syntax error near unexpected token `&'\n");
-	else
-		printf("bash: syntax error near unexpected token `&&'\n");
-}
