@@ -216,6 +216,7 @@ void	exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec);
 void	free_cmd_tab(t_pipe *exec);
 void	free_cmd_list(t_element *cmd_list);
 void	free_env_list(t_env *env_list);
+void	ctrld_free(char *line, char *prompt, t_env *env, t_pipe *exec);
 
 /*Lstnew*/
 t_element	*lstnew(char *line, int i, int type);
@@ -315,7 +316,7 @@ void	pwd_update_in_env(t_env **env_list);
 
 /*Unset*/
 int		ft_unset(t_element *cmd_list, t_env **env);
-void	ft_delete_node(t_env **head, t_env *to_delete);
+void	ft_delete_node_env(t_env **head, t_env *to_delete);
 void	ft_delete_node_cmd(t_element **head, t_element *to_delete);
 
 /*-----------------EXECUTABLE FOLDER ------------------*/

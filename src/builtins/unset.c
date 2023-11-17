@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/11/15 13:10:25 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/17 17:43:22 by casomarr         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -35,7 +35,7 @@ int	ft_unset(t_element *cmd_list, t_env **env)
 			{
 				tmp = find_value_with_key_env(tmp, cmd_list->next->content);
 				if (tmp)
-					ft_delete_node(env, tmp); // tmp cannot access memory sur gdb
+					ft_delete_node_env(env, tmp); // tmp cannot access memory sur gdb
 			}
 		}
 		cmd_list = cmd_list->next;
@@ -44,7 +44,7 @@ int	ft_unset(t_element *cmd_list, t_env **env)
 }
 
 /* Delete the node passed in parameters */
-void	ft_delete_node(t_env **head, t_env *to_delete)
+void	ft_delete_node_env(t_env **head, t_env *to_delete)
 {
 	if (!to_delete)
 		return ;

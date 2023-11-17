@@ -6,7 +6,7 @@
 #    By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/11/17 12:10:26 by casomarr         ###   ########.fr        #
+#    Updated: 2023/11/17 19:20:32 by casomarr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -128,7 +128,8 @@ fclean: clean
 re: fclean all
 
 v : minishell
-	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes ./minishell
+	@valgrind --suppressions=readline.supp --leak-check=full --trace-children=yes --show-leak-kinds=all --track-fds=yes --track-origins=yes ./minishell
+#--trace-children=yes
 
 sv : minishell
 	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell
