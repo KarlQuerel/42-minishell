@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/17 11:30:27 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 13:22:30 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ t_element	*lstnew(char *line, int i, int type)
 	new = ft_calloc(1, sizeof(t_element));
 	if (!new)
 		return (NULL);
-	/*LIGNE DU DESSOUS : j'ai mis + 100 pour regler les pb de valgrind mais 
-	je ne peux pas le laisser comme ca!!*/
-	new -> content = ft_calloc(size_of_command(line, i, type), sizeof(char));
+	new -> content = ft_calloc(size_of_command(line, i, type) + 1, sizeof(char));
 	new -> type = 0;
 	new -> builtin = false;
 	new->prev = NULL;
@@ -44,9 +42,9 @@ t_env	*lstnew_env(char *line, int i)
 	// new -> key = malloc(sizeof(char) * size_of_command(line, i, KEY));
 	/*LIGNE DU DESSOUS : j'ai mis + 100 pour regler les pb de valgrind mais 
 	je ne peux pas le laisser comme ca!!*/
-	new->key = ft_calloc(size_of_command(line, i, KEY), sizeof(char));
+	new->key = ft_calloc(size_of_command(line, i, KEY) + 1, sizeof(char));
 	// new->value = malloc(sizeof(char) * size_of_command(line, i, VALUE));
-	new->value = ft_calloc(size_of_command(line, i, VALUE), sizeof(char));
+	new->value = ft_calloc(size_of_command(line, i, VALUE) + 1, sizeof(char));
 	new->prev = NULL;
 	new->next = NULL;
 	return (new);

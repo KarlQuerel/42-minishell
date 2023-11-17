@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:51:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/17 11:14:11 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 13:26:14 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	erase_spaces_loop(char *line, char **new_line, int *i, int *j)
 		while (line[(*i)] != separator[0] && line[(*i)])
 			(*new_line)[(*j)++] = line[(*i)++];
 		(*new_line)[(*j)++] = line[(*i)++]; //pour copier/coller le separateur
+		free(separator);
 	}
 	else if ((line[(*i)] == ' ' && line[(*i) + 1] == ' ') || \
 	(line[(*i)] == ' ' && line[(*i) + 1] == '\0'))
@@ -48,7 +49,11 @@ char	*erase_spaces(char *line)
 	while (line[i])
 		erase_spaces_loop(line, &new_line, &i, &j);
 	if (j == 0)
+	{
+		free(line);
+		free(new_line);
 		return (NULL);
+	}
 	new_line[j] = '\0';
 	free(line);
 	return (new_line);

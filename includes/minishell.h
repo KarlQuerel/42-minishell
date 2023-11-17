@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/17 12:10:10 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 13:28:12 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,7 @@ void	erase_spaces_loop(char *line, char **new_line, int *i, int *j);
 char	*erase_spaces(char *line);
 
 /*Errors*/
-bool	line_errors_and_fix(char **line);
+bool	line_errors_and_fix(char *line);
 bool	first_character_error(char *line);
 bool	redirecters_error(char *line);
 void	slash_error(char *line);

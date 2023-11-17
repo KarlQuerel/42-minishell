@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   malloc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:08:27 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/16 19:40:25 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/17 13:38:42 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*erase_spaces_malloc(char *line)
 	int		spaces;
 
 	spaces = count_spaces(line);
-	new_line = ft_calloc(ft_strlen(line) - spaces + 3, sizeof(char)); // +2 au lieu de +1 a regle des pb de valgrind
+	new_line = ft_calloc(ft_strlen(line) - spaces + 2, sizeof(char));
 	if (!new_line)
 	{
 		perror("Error");

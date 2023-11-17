@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/17 11:04:58 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 13:13:15 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ bash: exit: too many arguments
 exit (int n)
 
 return (n % 255)
+*/
 
 /* Reproduces the exit function
 If the first argument is not valid (not numeric or > INT_MAX) the programs ends

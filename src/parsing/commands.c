@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/17 12:06:02 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 13:22:05 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ bool	is_cmd(char *buffer, char *command)
 		return (false);
 }
 
-/*Returns the size of a cmd, key, value or str.
-Returns size + 1 since this function is called to make
-mallocs so I add a +1 here to count the \0.*/
+/*Returns the size of a cmd, key, value or str.*/
 int	size_of_command(char *command, int len, int type)
 {
 	int	size;

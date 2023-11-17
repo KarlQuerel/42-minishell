@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/17 12:13:15 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/17 13:27:38 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int main (int argc, char **argv, char **env)
 		if (line != NULL)
 		{
 			line = erase_spaces(line);
-			if (line_errors_and_fix(&line) == true)
+			if (line_errors_and_fix(line) == true)
 			{
 				cmd_list = parsing(line, env_list);
 				// printlist_test(cmd_list);
