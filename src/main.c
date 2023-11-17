@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/17 15:56:51 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 16:53:31 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int main (int argc, char **argv, char **env)
 	t_pipe				*exec;
 	t_history			*entries;
 	char				*prompt;
-	char				*temp; //ai du le creer pour free ft_prompt correctement
+	char				*path; //ai du le creer pour free ft_prompt correctement
 
 	exec = ft_calloc(1, sizeof(t_pipe));
 	if (!exec)
@@ -87,8 +87,11 @@ int main (int argc, char **argv, char **env)
 	while (1)
 	{
 		g_signals.location = IN_PROMPT;
-		temp = ft_prompt(env_list, NO_PRINT);
-		prompt = ft_strjoin(temp, "$ ");
+		path = ft_prompt(env_list, NO_PRINT);
+		prompt = ft_strjoin(path, "$ ");
+		if (ft_strncmp(path, "/", ft_strlen(path)) != 0 && \
+		ft_strncmp(path, "", ft_strlen(path)) != 0) //if malloc'ed
+			free(path);
 		line = readline(prompt);
 		add_history(line);
 		
@@ -110,7 +113,6 @@ int main (int argc, char **argv, char **env)
 			}
 		}
 		free(line);
-		free(temp);
 		free(prompt);
 		pwd_update_in_env(&env_list);
 		env_list->env = env;

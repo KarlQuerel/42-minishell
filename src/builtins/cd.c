@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:34:22 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/17 11:48:03 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 16:58:35 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void	cd_home(t_env *env_list)
 			go_backwards_until_user(current_path, home->value);
 		else
 			go_forward_until_user(current_path, home->value);
-		free(current_path);
 	}
 	else //already in home
 	{

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 11:47:20 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/17 11:57:19 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 17:01:10 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,12 @@ void	go_forward_until_user(char *current_path, char *home_value)
 	{
 		while(home_value[end] != '/' && home_value[end])
 			end++;
+		free(word);
 		word = strlcpy_middle(word, home_value, start, end - 1);
 		if (chdir(word) != 0)
 		{
-			//free
+			free(word);
+			free(current_path);
 			return ;
 		}
 		if (home_value[end + 1] == '\0')
@@ -58,6 +60,8 @@ void	go_forward_until_user(char *current_path, char *home_value)
 		free(word);
 		word = ft_calloc(size_of_word(home_value, start) + 1, sizeof(char));
 	}
+	free(word);
+	free(current_path);
 }
 
 void	go_backwards_until_user(char *current_path, char *home_value)
@@ -71,9 +75,8 @@ void	go_backwards_until_user(char *current_path, char *home_value)
 			//printf errno
 			return ;
 		}
+		free(current_path);
 		current_path = pwd(NO_PRINT);
-		//user = find_value_with_key_env(env_list, "USER");
-		//path = home_path_simplified(path, user);
 	}
 	free(current_path);
 }
