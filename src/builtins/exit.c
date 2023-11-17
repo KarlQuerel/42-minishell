@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
 /*   Updated: 2023/11/17 14:08:37 by casomarr         ###   ########.fr       */
@@ -52,6 +52,10 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 		ft_putstr_fd(cmd->next->content, STDERR_FILENO);
 		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
 		exit_free(head, env, exec);
+		//KARL
+		close(3);
+		close(4);
+		//FIN
 		exit(g_signals.exit_status);
 	}
 	if (cmd->next && cmd->next->next)
@@ -73,6 +77,10 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 	// on ne devrait pas arriver la normalement
 	//printf("cmd->content 2 = %s\n", cmd->content);
 	exit_free(head, env, exec);
+	//KARL
+	close(3);
+	close(4);
+	//FIN
 	exit(g_signals.exit_status); // exit(exit_code) g.status_exitcode
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_continued.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/17 11:06:51 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 16:52:53 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 /* Being on the middle pipes, both fd are being redirected */
 void	middle_dup(t_element *cmd, t_env **env, t_pipe *exec)
 {
-	if (dup2(*(exec->fd_temp), STDIN_FILENO) < 0)
+	// if (dup2(*(exec->fd_temp), STDIN_FILENO) < 0)
+	if (dup2(exec->fd[0], STDIN_FILENO) < 0)
 	{
 		perror("dup2");
 		exit(0);
@@ -43,20 +44,18 @@ void last_dup(t_element *cmd, t_env **env, t_pipe *exec)
 }
 
 /* Redirects command based on its input
---- if a builtin is detected, ft_builtins is sent
+--- if a redirection is detected, ft_redirect is called
+--- if a builtin is detected, ft_builtins is called
 ---	if the cmd is not empty, exec_command is called
 */
 void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 {
-	// Redirect
 	if (!ft_redirect(cmd/*, exec*//* , NO_PRINT */))
 	{
 		// free et on return
-		printf("ft_redirect n'a pas marche\n"); // VOIR AVEC ALBAN
+		printf("ft_redirect n'a pas marche\n");
 		return ;
 	}
-	//fin
-	
 	if (cmd->builtin == true)
 		return (ft_builtins(cmd, env, exec, PRINT), exit(g_signals.exit_status));
 	if (exec->cmd_tab[0][0] != '\0')
@@ -88,7 +87,6 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 		ft_putstr_fd("bash: ", STDERR_FILENO);
 		ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
 		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
-		// free des trucs
 		free_cmd_arr(exec);
 		return (127);
 	}
@@ -106,14 +104,9 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 		free_cmd_arr(exec);
 		return (127);
 	}
-	//ft_print_array(exec->cmd_tab); // to test what is sent to execve
 	if (execve(cmd->content, exec->cmd_tab, env->env) == -1)
-	{
 		ft_putendl_fd("execve failed", STDERR_FILENO);
-		//perror("bash");
-		//strerror(errno); --> a utiliser, par exemple chmod 000 ./exec
-	}
-	free_cmd_arr(exec);
+	//free_cmd_arr(exec);
 	return (127); //return a exit code, faire une fonction cmd not found
 }
 
