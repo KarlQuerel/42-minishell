@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:35 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/17 11:04:02 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 11:50:06 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,13 @@ void	print_skiping_quotes(char *str,/*t_pipe *exec */ int option)
 	size_t i;
 	
 	i = 1;
-	// while (i < ft_strlen(str) - 1)
-	// 	printf("%c", str[i++]);
-
 	while (i < ft_strlen(str) - 1)
 	{
 		if (option == PRINT)
 			ft_putchar_fd(str[i], STDOUT_FILENO);
-		// else
-		// 	ft_putchar_fd(&str[i], exec->);
 		i++;
 	}
 }
-
-/* int	type_of_str(char *cmd)
-{
-	if (cmd[0] == '\'' && cmd[ft_strlen(cmd) - 1] == '\'')
-		return (STR);
-	else if (cmd[0] == '\"' && cmd[ft_strlen(cmd) - 1] == '\"')
-		return (STR);
-	else
-		return (CMD);
-} */
 
 /*CARACTERES QUI NECESSITENT UN \ POUR ETRE ECHO CORRECTEMENT
 En mettant chaque signe au milieu de ab et en les faisant echo :

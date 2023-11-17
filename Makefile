@@ -6,7 +6,7 @@
 #    By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/11/17 11:02:58 by casomarr         ###   ########.fr        #
+#    Updated: 2023/11/17 12:10:26 by casomarr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ INCLUDE_DIR := includes
 SRCS		:=  src/main.c \
 				src/builtins/builtins_errors.c \
 				src/builtins/cd.c \
+				src/builtins/cd2.c \
 				src/builtins/dollar.c \
 				src/builtins/echo.c \
 				src/builtins/env.c \
@@ -64,6 +65,7 @@ SRCS		:=  src/main.c \
 				src/parsing/errors.c \
 				src/parsing/errors2.c \
 				src/parsing/utils.c \
+				src/parsing/utils2.c \
 				src/parsing/malloc.c \
 				src/parsing/cmd_types.c \
 				src/parsing/prompt.c \

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/17 11:22:02 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 12:06:02 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec, int option)
 	else if (is_cmd(cmd->content, "unset") == true && check_next(cmd, NONE))
 		ft_unset(cmd, env_list);
 	else if (is_cmd(cmd->content, "$?") == true && check_next(cmd, NONE))
-		ft_dollar_question_mark(*env_list);
+		ft_dollar_question_mark();
 	else if (is_cmd(cmd->content, "exit") == true && check_next(cmd, NONE))
 		ft_exit(cmd, env_list, exec);
 }

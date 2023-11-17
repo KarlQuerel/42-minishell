@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/17 11:32:17 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 12:10:10 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,6 @@ void	free_env_list(t_env *env_list);
 t_element	*lstnew(char *line, int i, int type);
 t_env		*lstnew_env(char *line, int i);
 t_history	*lstnew_history(char *line, int size_of_list);
-/* int			ft_lstsize_history(t_history *lst); */
 
 /*Malloc*/
 int		count_spaces(char *line);
@@ -258,30 +257,39 @@ void		signal_handler(int signal);
 char	*ft_joinstr_minishell(char *line, int len, char *str, char type);
 char	*ft_join_pour_cd(char *line_begining, char *path);
 char 	*strlcpy_middle(char *dst, const char *src, size_t start, size_t end);
+
+/*Utils2*/
 char	*type_of_separator(char *line, int i, int str_type);
 int		parsing_str_type(char *line, int i);
+bool	ft_is_num(char *s);
+bool	ft_atoi_check(char *str);
 
 /*------------------BUILT-INS FOLDER------------------*/
 
+/*Builtins_errors*/
+bool	no_option(t_element **cmd, t_element *head);
+bool	env_option(t_element **cmd);
+bool	history_option(t_element **cmd);
+bool	echo_option(t_element **cmd);
+bool	check_next(t_element *cmd, int option);
+
 /*Cd*/
-char	*split_at_user(char *big_path, char *user);
-void	cd_home(t_env *env_list);
 char	*fix_path_if_spaces(char *path);
 void	cd_directory(char *path, t_env *env_list);
+void	cd_home(t_env *env_list);
 void	cd(t_element *current, t_env *env_list);
+
+/*Cd2*/
+size_t	size_of_word(char *path, int i);
 void	go_forward_until_user(char *current_path, char *home_value);
 void	go_backwards_until_user(char *current_path, char *home_value);
-size_t	size_of_word(char *path, int i);
 
 /*Dollar*/
 char	*dollar(char *content, t_env *env_list);
-void	ft_dollar_question_mark();
+void	ft_dollar_question_mark(void);
 
 /*Echo*/
-//int 	skip(char *line, int i, int option);
 void	print_skiping_quotes(char *str,/*t_pipe *exec */ int option);
-// char	type_of_separator(char *line, int i);
-int		type_of_str(char *cmd);
 void	echo(t_element *current, int option);
 
 /*Env*/
@@ -295,30 +303,20 @@ int		ft_export(t_element *cmd_list, t_env **env);
 bool	ft_is_valid_key_var(char *s);
 char 	**split_var(char *s);
 void	join_new_var(t_env **env, char *key, char *value);
-void	put_var_in_env(t_env **env, char* key, char *value);
 void	replace_var(t_env **env, char *key, char *value);
+void	put_var_in_env(t_env **env, char* key, char *value);
 
 /*History*/
-// t_history	*ft_add_history(t_history *entries, char *line);
-// void		history(t_history *current_entry, int len);
-// void		free_history(t_history *current_entry);
-// void		lstadd_back_history(t_history *entries, char *line);
-// t_history	*ft_lstlast_history(t_history *lst);
 void		history(int option, int len);
 
 /*Pwd*/
-char	*pwd(/* t_element *cmd, */int option);
-// t_env	*pwd_update_in_env(/* t_element *cmd, */t_env *env_list);
+char	*pwd(int option);
 void	pwd_update_in_env(t_env **env_list);
 
 /*Unset*/
 int		ft_unset(t_element *cmd_list, t_env **env);
 void	ft_delete_node(t_env **head, t_env *to_delete);
-
-/*Builtins_errors*/
-bool	check_next(t_element *cmd, int option);
-bool	ft_is_num(char *s);
-bool	ft_atoi_check(char *str);
+void	ft_delete_node_cmd(t_element **head, t_element *to_delete);
 
 /*-----------------EXECUTABLE FOLDER ------------------*/
 

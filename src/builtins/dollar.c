@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/15 11:27:37 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/17 11:48:57 by casomarr         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -53,7 +53,7 @@ char	*dollar(char *content, t_env *env_list)
 	return (content);
 }
 
-void	ft_dollar_question_mark()
+void	ft_dollar_question_mark(void)
 {
 	
 	printf("---->Exit : %d\n", g_signals.exit_status);
