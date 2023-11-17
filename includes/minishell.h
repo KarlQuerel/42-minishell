@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/16 21:14:40 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/17 12:13:10 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -376,7 +376,7 @@ int		pipe_wait(int *pid, int amount);
 
 void	handle_sigint(int sig);
 void	ft_delete_node_cmd(t_element **head, t_element *to_delete);
-void	free_cmd_tab(t_pipe *exec);
+void	free_cmd_arr(t_pipe *exec);
 
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/16 19:15:50 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/17 12:14:21 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,28 @@ void	exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec)
 	free_env_list(*env_list);
 	free (exec->line[0]);
 	free (exec->prompt[0]); //a voir
-	free_cmd_tab(exec);
+	free_cmd_arr(exec);
 	free(exec);
 }
 
-void	free_cmd_tab(t_pipe *exec)
+void	free_cmd_arr(t_pipe *exec)
 {
 	int	i;
 
 	i = 0;
-	while (exec->cmd_tab[i])
-		free(exec->cmd_tab[i++]);
-	free(exec->cmd_tab);
+	if (exec->cmd_tab)
+	{	
+		while (exec->cmd_tab[i])
+			free(exec->cmd_tab[i++]);
+		free(exec->cmd_tab);
+	}
+	if (exec->cmd_path)
+	{
+		i = 0;
+		while (exec->cmd_path[i])
+			free(exec->cmd_path[i++]);
+		free(exec->cmd_path);
+	}
 }
 
 void	free_cmd_list(t_element *cmd_list)
