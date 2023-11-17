@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/16 20:05:24 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/17 11:07:45 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_element	*parsing(char *line, t_env *env_list)
 			free(separator);
 		current_cmd->type = determine_command_type(line, i, start);
 		parsing_advance_to_next_word(line, &start, &i);
-		parsing_initialize_next(&current_cmd, line, &i, &start);
+		parsing_initialize_next(&current_cmd, line, &i);
 	}
 	parsing_fix(&head, env_list);
 	builtin_fix(&head);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/16 21:14:40 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/17 11:13:48 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@
 # include <errno.h>
 # include <limits.h>
 #include <sys/ioctl.h>
-
-#include <termios.h>
 
 /*Macros pour signaux*/
 # define IN_PROMPT 0
@@ -195,7 +193,7 @@ t_element	*parsing_initialisation(char *line, int *i, int *start);
 void		parsing_fill_content(t_element **current_cmd, char *line, int *i, \
 char *separator);
 void		parsing_advance_to_next_word(char *line, int *start, int *i);
-void		parsing_initialize_next(t_element **current_cmd, char *line, int *i, int *start);
+void		parsing_initialize_next(t_element **current_cmd, char *line, int *i);
 
 /*Env_list*/
 t_env	*put_env_in_list(char **env);
@@ -241,7 +239,7 @@ char	*type_of_separator(char *line, int i, int str_type);
 int		parsing_str_type(char *line, int i);
 
 /*Erase_spaces*/
-int		erase_spaces_loop(char *line, char **new_line, int *i, int *j);
+void		erase_spaces_loop(char *line, char **new_line, int *i, int *j);
 char	*erase_spaces(char *line);
 
 /*Malloc*/
@@ -354,7 +352,7 @@ int		ft_count_pipes(t_element *cmd);
 char	*ft_strcpy(char *dst, char *src);
 
 /*Redirect*/
-int		ft_redirect(t_element *cmd, int option);
+int		ft_redirect(t_element *cmd/* , int option */);
 int		ft_infile(char *filename);
 int		ft_outfile(t_element *cmd);
 

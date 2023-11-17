@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:36:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/16 21:14:16 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/17 11:15:16 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ char	*home_path_simplified(char *absolute_path, t_env *env_list)
 	char	*path_from_home;
 	t_env	*user;
 	int		i;
-	int		start;
-	char	*result;
 
 	i = 0;
 	path_from_home = NULL;
@@ -105,6 +103,7 @@ char	*ft_prompt(t_env *env_list, int option)
 	char	*prompt;
 	char	*path;
 
+	word = NULL;
 	if (!is_key_in_env(env_list, "USER") || \
 	!is_key_in_env(env_list, "PWD")) // voir ce que ca rend sur bash a 42
 		return ("\0");

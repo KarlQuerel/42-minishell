@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:35 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/14 16:15:23 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/17 11:04:02 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	echo(t_element *current,/* t_pipe *exec */ int option)
 	// si echo CARO -n, on doit print CARO -n
 	int	type;
 	bool newline;
-	char *str;
 
 	newline = true;
 	if (current->next == NULL)

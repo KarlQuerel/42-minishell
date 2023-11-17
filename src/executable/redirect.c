@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/11 00:27:53 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/17 11:06:06 by casomarr         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -63,7 +63,7 @@ int	ft_outfile(t_element *cmd)
 -rediriger dans le cas ou la commande est un built in a coder nous meme
 - les << a gerer
 */
-int	ft_redirect(t_element *cmd, int option)
+int	ft_redirect(t_element *cmd/* , int option */)
 {
 	t_element *tmp;
 

@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/15 16:06:38 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/17 11:05:41 by casomarr         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -93,8 +93,6 @@ char	**split_var(char *s)
 /* If the variable already exits in env, free the value and replace it */
 void	join_new_var(t_env **env, char *key, char *value)
 {
-	char	*new_var;
-
 	if (value == NULL)
 		value = "\0";
 	if (!is_key_in_env(*env, key))
@@ -116,7 +114,7 @@ void	replace_var(t_env **env, char *key, char *value)
 	tmp = env;
 	*tmp = find_value_with_key_env(*env, key);
 	free((*tmp)->value);
-	(*tmp)->value = '\0';
+	(*tmp)->value = NULL;
 	(*tmp)->value = value;
 }
 

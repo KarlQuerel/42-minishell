@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+         #
+#    By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/11/16 19:52:27 by octonaute        ###   ########.fr        #
+#    Updated: 2023/11/17 11:02:58 by casomarr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,7 @@ OBJS 		:= $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))
 OBJS		:= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 		
 CC          := cc
-CFLAGS      := -g3 -gdwarf-4 #-Wall -Wextra -Werror -g3
+CFLAGS      := -Wall -Wextra -Werror -g3
 HFLAGS    	:= -I$(INCLUDE_DIR)
 RFLAGS     	:= -lreadline
 MAKEFLAGS	+= --no-print-directory

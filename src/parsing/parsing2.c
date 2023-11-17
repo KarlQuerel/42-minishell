@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:55:56 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/16 20:06:50 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/17 11:07:32 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char *separator)
 
 /*Sets next to NULL if line is over, otherwise initialises the next command.*/
 void	parsing_initialize_next(t_element **current_cmd, char *line, \
-int *i, int *start)
+int *i)
 {
 	if (line[(*i)] == '\0')
 		(*current_cmd)->next = NULL;
