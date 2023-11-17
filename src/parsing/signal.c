@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/14 11:16:43 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/17 20:04:30 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,6 @@ peu de choses, c'est pour ca qu'on ne l'utilise que pour garder ce num en
 memoire, et non pour en plus gerer les signaux avec les 3 define plus haut
 ----------------------------------------------------------------------------
 */
-
-//Karl
-// --> gerer l'exit code dans une variable globale pour les signaux (exit)
-	// man waitpid, regarder tous les WIF et wstatus
 
 /* void	signal_handler(int signal, \
 siginfo_t *info, void *ucontext) */

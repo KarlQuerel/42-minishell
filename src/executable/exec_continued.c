@@ -6,18 +6,18 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/17 16:52:53 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/17 20:06:26 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-/* Being on the middle pipes, both fd are being redirected */
+/* Being on the middle pipe(s), both fds's are sent to dup2 */
 void	middle_dup(t_element *cmd, t_env **env, t_pipe *exec)
 {
-	// if (dup2(*(exec->fd_temp), STDIN_FILENO) < 0)
-	if (dup2(exec->fd[0], STDIN_FILENO) < 0)
+	// if (dup2(exec->fd[0], STDIN_FILENO) < 0)
+	if (dup2(*(exec->fd_temp), STDIN_FILENO) < 0)
 	{
 		perror("dup2");
 		exit(0);
@@ -33,7 +33,7 @@ void	middle_dup(t_element *cmd, t_env **env, t_pipe *exec)
 	handle_command(cmd, env, exec);
 }
 
-/* Being on the last pipe, only entry fd is being cloned and redirected */
+/* Being on the middle pipe(s), only stdin fd is sent to dup2 */
 void last_dup(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	if (dup2(*(exec->fd_temp), STDIN_FILENO) < 0)
@@ -41,6 +41,31 @@ void last_dup(t_element *cmd, t_env **env, t_pipe *exec)
 	(void)exec->fd;
 	close(*(exec->fd_temp));
 	handle_command(cmd, env, exec);
+}
+
+/* Joins every splitted string from the PATH= env variable with the command
+	then tests its validity with access */
+char	*ft_get_command(char **path, char *argument)
+{
+	char	*to_free;
+	char	*to_return;
+	int		i;
+
+	i = 0;
+	if (argument && path)
+	{
+		while (path[i])
+		{
+			to_free = ft_strjoin(path[i], "/");
+			to_return = ft_strjoin(to_free, argument);
+			free(to_free);
+			if (access(to_return, F_OK) == 0) // rajouter des flags
+				return (to_return);
+			free(to_return);
+			i++;
+		}
+	}
+	return (NULL);
 }
 
 /* Redirects command based on its input
@@ -83,54 +108,35 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 		execve(cmd->content, exec->cmd_tab, env->env);
 	exec->cmd_path = split_path(env);
 	if (!exec->cmd_path)
-	{
-		ft_putstr_fd("bash: ", STDERR_FILENO);
-		ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
-		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
-		free_cmd_arr(exec);
-		return (127);
-	}
+		exec_command_continued(exec, 0);
 	cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
 	if (!cmd->content)
 	{
 		if (!exec->cmd_tab[0])
 			ft_putstr_fd("\n", STDERR_FILENO);
 		else
-		{
-			ft_putstr_fd("bash: ", STDERR_FILENO);
-			ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
-			ft_putendl_fd(": command not found", STDERR_FILENO);
-		}
-		free_cmd_arr(exec);
-		return (127);
+			exec_command_continued(exec, 1);
 	}
-	if (execve(cmd->content, exec->cmd_tab, env->env) == -1)
-		ft_putendl_fd("execve failed", STDERR_FILENO);
+	execve(cmd->content, exec->cmd_tab, env->env);
 	//free_cmd_arr(exec);
 	return (127); //return a exit code, faire une fonction cmd not found
 }
 
-/* Joins every splitted string from the PATH= env variable with the command
-	then tests its validity with access */
-char	*ft_get_command(char **path, char *argument)
+/* exec continued */
+int	exec_command_continued(t_pipe *exec, int option)
 {
-	char	*to_free;
-	char	*to_return;
-	int		i;
-
-	i = 0;
-	if (argument && path)
+	if (option == 0)
 	{
-		while (path[i])
-		{
-			to_free = ft_strjoin(path[i], "/");
-			to_return = ft_strjoin(to_free, argument);
-			free(to_free);
-			if (access(to_return, F_OK) == 0) // rajouter des flags
-				return (to_return);
-			free(to_return);
-			i++;
-		}
+		ft_putstr_fd("bash: ", STDERR_FILENO);
+		ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
+		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
 	}
-	return (NULL);
+	else if (option == 1)
+	{
+		ft_putstr_fd("bash: ", STDERR_FILENO);
+		ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
+		ft_putendl_fd(": command not found", STDERR_FILENO);
+	}
+	free_cmd_arr(exec);
+	return (127);
 }

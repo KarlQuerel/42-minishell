@@ -6,10 +6,9 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/17 18:57:00 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 20:03:34 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../includes/minishell.h"
 #include "../libft/libft.h"
@@ -41,6 +40,7 @@ void	printlist_test(t_element *head) // A EFFACER A LA FIN
 //faire perror("Error") plutot que des printf pour toutes les fonctions qui utilisent errno
 //utiliser ft_putstr_fd au lieu de printf
 
+/* Badass welcome message made with love */
 void	ft_welcome(void)
 {
 	printf("%s%s\n\n", BGRE, PC);
