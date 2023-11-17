@@ -24,7 +24,7 @@ int	ft_infile(char *filename)
 		perror("open perror"); // pour tester errno
 		return (0);
 	}
-	if (fd > 0 && dup2(fd, STDERR_FILENO) < 0)
+	if (fd > 0 && dup2(fd, STDOUT_FILENO) < 0)
 	{
 		perror("infile dup perror"); //pour tester errno
 		return (0);

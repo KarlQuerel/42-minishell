@@ -371,7 +371,7 @@ int		pipe_wait(int *pid, int amount);
 
 void	handle_sigint(int sig);
 void	ft_delete_node_cmd(t_element **head, t_element *to_delete);
-void	free_cmd_tab(t_pipe *exec);
+void	free_cmd_arr(t_pipe *exec);
 
 
 #endif

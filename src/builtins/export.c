@@ -13,14 +13,6 @@
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-/*
-	TO DO -> a regarder sur bash --posix a 42 des le defreeze
-	--> example : variable=hello
-	variable =hello -> ne doit pas marcher
-	varable = hello -> ne doit pas marcher
-	variable= hello -> donne "variable="
-	variable == hello -> ??
-*/
 /* Reproduces the export command */
 int	ft_export(t_element *cmd, t_env **env)
 {
@@ -77,14 +69,14 @@ char	**split_var(char *s)
 	char	**ret;
 	char	*position_equal;
 
-	ret = malloc(sizeof(ret) * 3); // 3 car ca sera toujours 3 string, variable, hello et la string vide
+	ret = malloc(sizeof(ret) * 3);
 	if (!ret)
 	{
 		ft_putendl_fd("Malloc failed", STDERR_FILENO);
 		return (NULL);
 	}
-	position_equal = ft_strchr(s, '='); // on prend la position du egal
-	ret[0] = strlcpy_middle(ret[0], s, 0, position_equal - s - 1); //A VERIFIER POUR DOUBLE EGAL
+	position_equal = ft_strchr(s, '=');
+	ret[0] = strlcpy_middle(ret[0], s, 0, position_equal - s - 1);
 	ret[1] = strlcpy_middle(ret[1], position_equal, 1, ft_strlen(position_equal));
 	ret[2] = NULL;
 	return (ret);

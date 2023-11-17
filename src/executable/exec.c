@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/15 17:00:03 by karl             ###   ########.fr       */
+/*   Updated: 2023/11/17 12:05:25 by kquerel          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
@@ -83,19 +83,14 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 		exit(127);
 	}
 	if (pid == 0)
-	{
-		//signal(SIGQUIT, SIG_DFLG);
 		handle_command(cmd, env, exec);
-	}
 	if (waitpid(pid, &status, 0) == -1)
 	{
 		perror("waitpid");
 		return ;
 	}
-	//si execve marche normalement 
 	if (WIFEXITED(status))
 		g_signals.exit_status = WEXITSTATUS(status);
-	// si un signal interrompt execve
 	else if (WIFSIGNALED(status))
 		g_signals.exit_status = 128 + WTERMSIG(status);
 	else
@@ -179,7 +174,7 @@ void	middle_pipes(t_element *cmd, t_env **env, t_pipe *exec)
 			close(*(exec->fd_temp));
 		*(exec->fd_temp) = dup(exec->fd[0]);
 		close(exec->fd[0]);
-		close(exec->fd[1]); // nouveau
+		close(exec->fd[1]);
 		//waitpid(pid, NULL, 0); // ca change rien avec ou sans
 	}
 }
@@ -189,7 +184,6 @@ void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	int	pid;
 
-	
 	// //KARL TEST
 	// exit(10);
 	// if (cmd && cmd->builtin == true && cmd->content)

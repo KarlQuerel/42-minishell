@@ -33,7 +33,9 @@ exit (int n)
 
 return (n % 255)
 
-*/
+/* Reproduces the exit function
+If the first argument is not valid (not numeric or > INT_MAX) the programs ends
+else if the second argument is not valid, the program keeps running */
 int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	t_element	*head;
@@ -47,12 +49,8 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 		ft_putstr_fd("bash: ", STDERR_FILENO);
 		ft_putstr_fd(cmd->next->content, STDERR_FILENO);
 		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
-		printf("cmd->content 1 = %s\n", cmd->content);
 		exit_free(head, env, exec);
-		close(0);
-		close(1);
-		close(2);
-		exit(0); // envoye exit_code
+		exit(g_signals.exit_status);
 	}
 	if (cmd->next && cmd->next->next)
 	{
@@ -67,18 +65,12 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 	// {
 	// 	ft_putendl_fd("exit", STDOUT_FILENO);
 	// 	exit_free(cmd, env, exec);
-	// 	close(0);
-	// 	close(1);
-	// 	close(2);
-	// 	exit(0); // exit(exit_code)
+	// 	exit(g_signals.exit_status); // exit(exit_code)
 	// }
 	//exit_free(cmd, env, entries); seg fault double free
 	// on ne devrait pas arriver la normalement
-	close(0);
-	close(1);
-	close(2);
-	printf("cmd->content 2 = %s\n", cmd->content);
+	//printf("cmd->content 2 = %s\n", cmd->content);
 	exit_free(head, env, exec);
-	exit(0); // exit(exit_code) g.status_exitcode
+	exit(g_signals.exit_status); // exit(exit_code) g.status_exitcode
 	return (0);
 }
