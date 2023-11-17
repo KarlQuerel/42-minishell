@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/17 16:55:00 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/17 16:53:31 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int main (int argc, char **argv, char **env)
 	t_pipe				*exec;
 	t_history			*entries;
 	char				*prompt;
+	char				*path; //ai du le creer pour free ft_prompt correctement
 
 	exec = ft_calloc(1, sizeof(t_pipe));
 	if (!exec)
@@ -86,7 +87,11 @@ int main (int argc, char **argv, char **env)
 	while (1)
 	{
 		g_signals.location = IN_PROMPT;
-		prompt = ft_strjoin(ft_prompt(env_list, NO_PRINT), "$ ");
+		path = ft_prompt(env_list, NO_PRINT);
+		prompt = ft_strjoin(path, "$ ");
+		if (ft_strncmp(path, "/", ft_strlen(path)) != 0 && \
+		ft_strncmp(path, "", ft_strlen(path)) != 0) //if malloc'ed
+			free(path);
 		line = readline(prompt);
 		add_history(line);
 		
