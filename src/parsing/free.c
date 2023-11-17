@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/17 12:14:21 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/17 15:45:12 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec)
 	free_env_list(*env_list);
 	free (exec->line[0]);
 	free (exec->prompt[0]); //a voir
-	free_cmd_arr(exec);
+	//free_cmd_arr(exec);
 	free(exec);
 }
 
@@ -45,21 +45,21 @@ void	free_cmd_arr(t_pipe *exec)
 	}
 }
 
+/*Goes back to the head of cmd_list if needed and
+frees everything.*/
 void	free_cmd_list(t_element *cmd_list)
 {
+	t_element	**head;
+
+	head = &cmd_list;
+	while (cmd_list->prev != NULL)
+		cmd_list = cmd_list->prev;
 	while (cmd_list != NULL)
 	{
-		free(cmd_list->content);
+		ft_delete_node_cmd(head, cmd_list->prev);
 		cmd_list = cmd_list->next;
 	}
 	free(cmd_list);
-
-/* 	while (cmd_list != NULL)
-	{
-		free(cmd_list->content);
-		cmd_list = cmd_list->prev;
-	}
-	free(cmd_list); */
 }
 
 void	free_env_list(t_env *env_list)

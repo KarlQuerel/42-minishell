@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/17 13:27:38 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 15:56:51 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int main (int argc, char **argv, char **env)
 	t_pipe				*exec;
 	t_history			*entries;
 	char				*prompt;
+	char				*temp; //ai du le creer pour free ft_prompt correctement
 
 	exec = ft_calloc(1, sizeof(t_pipe));
 	if (!exec)
@@ -86,7 +87,8 @@ int main (int argc, char **argv, char **env)
 	while (1)
 	{
 		g_signals.location = IN_PROMPT;
-		prompt = ft_strjoin(ft_prompt(env_list, NO_PRINT), "$ ");
+		temp = ft_prompt(env_list, NO_PRINT);
+		prompt = ft_strjoin(temp, "$ ");
 		line = readline(prompt);
 		add_history(line);
 		
@@ -105,10 +107,10 @@ int main (int argc, char **argv, char **env)
 				ft_execute(cmd_list, &env_list, exec);
 				free_cmd_list(cmd_list);
 				free_cmd_arr(exec);
-
 			}
 		}
 		free(line);
+		free(temp);
 		free(prompt);
 		pwd_update_in_env(&env_list);
 		env_list->env = env;
