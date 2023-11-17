@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/17 18:23:59 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 18:59:54 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,19 @@ void	exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec)
 	free (*exec->prompt); //a voir
 	free_cmd_arr(exec);
 	free(exec);
+}
+
+void	ctrld_free(char *line, char *prompt, t_env *env, t_pipe *exec)
+{
+	int i;
+
+	i = 0;
+	free(line);
+	free(prompt);
+	free_env_list(env);
+	history(FREE_HISTORY, 0);
+	free(exec);
+	exit(0);
 }
 
 void	free_cmd_arr(t_pipe *exec)

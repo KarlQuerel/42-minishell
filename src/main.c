@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/17 17:33:19 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/17 18:57:00 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,20 @@ int main (int argc, char **argv, char **env)
 		
  		/*if (commande en cours)
 			ctrlD(line); */
-		
+		if (line == NULL)
+		{
+			if (g_signals.location == IN_PROMPT)
+				ctrld_free(line, prompt, env_list, exec);
+			else
+			{
+				ft_putchar_fd('\n', STDERR_FILENO);
+				rl_reset_line_state();
+			}
+		}
 		if (line != NULL)
 		{
+			/* if (line[0] == '\0')
+				printf("CTRLD\n"); */
 			line = erase_spaces(line);
 			if (line_errors_and_fix(line) == true)
 			{
