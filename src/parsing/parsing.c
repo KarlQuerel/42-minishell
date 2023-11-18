@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/18 14:17:24 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/18 15:34:51 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,9 @@ int	determine_command_type(char *line, size_t end, size_t start)
 	line[start + 1] == '\"') && ft_isalpha(line[start + 2]) == 1 && \
 	(line[end - 1] == '\'' || line[end - 1] == '\"')))
 		return (OPTION);
-/* 	if ((line[start] == '\'' || line[start] == '\"') && \
-	(line[end - 1] == '\'' || line[end - 1] == '\"'))
-		return (ARGUMENT); */
-	if (line[end + 1] && line[end + 2] && line[end + 1] == '<' && \
-	line[end + 2] == ' ')
+	if (start >= 2 && line[start - 2] == '<' && line[start - 3] == '<')
 		return (INFILE);
-	if (line[end + 1] && line[end + 2] && line[end + 1] == '<' && \
-	line[end + 2] == '<')
+	if (start >= 2 && line[start - 2] == '<')
 		return (INFILE_DELIMITER);
 	if (start >= 2 && line[start - 2] == '>' && line[start - 3] == '>')
 		return (OUTFILE_APPEND);
@@ -136,7 +131,7 @@ void	parsing_fix(t_element **cmd_list, t_env *env_list)
 		return ;
 	while (current != NULL)
 	{
-		if (current->prev == NULL || current->prev->type >= 3)
+		if (current->prev == NULL || (current->prev->type >= 3 && current->type < 3))
 			current->type = COMMAND;
 		if (current->type == COMMAND && current->next)
 			type_arg_after_cmd(current);
