@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/17 16:46:00 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/18 13:24:38 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ int	ft_infile(char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 	{
-		perror("open perror");
+		perror("bash");
 		return (0);
 	}
 	if (fd > STDERR_FILENO && dup2(fd, STDOUT_FILENO) < 0)
 	{
-		perror("infile dup perror");
+		perror("bash");
 		return (0);
 	}
 	if (fd > STDERR_FILENO)
@@ -34,7 +34,9 @@ int	ft_infile(char *filename)
 	return(1);
 }
 
-/* If >> is present, then we create the outfile */
+/* Handles > and >> behavior
+--- if > : create a file and replace it if it already exists
+--- if >> : create a file and writes at the end of if it already exists */
 int	ft_outfile(t_element *cmd)
 {
 	int	fd;
@@ -45,12 +47,12 @@ int	ft_outfile(t_element *cmd)
 		fd = open(cmd->content, O_CREAT | O_RDWR | O_APPEND, 0644);
 	if (fd == -1)
 	{
-		perror("open outfile");
+		perror("bash");
 		return (0);
 	}
 	if (fd > STDERR_FILENO && dup2(fd, STDOUT_FILENO) < 0) //fd >= 0
 	{
-		perror("outfile dup perror");
+		perror("bash");
 		// close(fd);
 		return (0);
 	}
