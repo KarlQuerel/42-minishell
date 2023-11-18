@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/18 14:23:05 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/18 13:42:34 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,24 +58,22 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	int	pid;
 	int	status;
-	int	stdin_tmp;
-	int	stdout_tmp;
 
 	if (cmd && cmd->builtin == true && cmd->content)
 	{
-		stdin_tmp = dup(STDIN_FILENO);
-		stdout_tmp = dup(STDOUT_FILENO);
+		exec->std_in = dup(STDIN_FILENO);
+		exec->std_out = dup(STDOUT_FILENO);
 		if (!ft_redirect(cmd/*, exec*//* , NO_PRINT */))
 		{
 			// free et on return
 			printf("ft_redirect n'a pas marche\n");
 			return ;
 		}
-		ft_builtins(cmd, env, exec);
-		dup2(stdin_tmp, STDIN_FILENO);
-		dup2(stdout_tmp, STDOUT_FILENO);
-		close(stdin_tmp);
-		close(stdout_tmp);
+		ft_builtins(cmd, env, exec, PRINT);
+		dup2(exec->std_in, STDIN_FILENO);
+		dup2(exec->std_out, STDOUT_FILENO);
+		close(exec->std_in);
+		close(exec->std_out);
 		return ;
 	}
 	pid = fork();
@@ -190,11 +188,7 @@ void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec)
 	if (pid < 0)
 		perror("fork");
 	if (pid == 0)
-	{
-		//exec->last_pid = getpid(); //fonction interdite a enlever
-		//printf("exec->last_pid = %d\n", exec->last_pid);
 		last_dup(cmd, env, exec);
-	}
 	else
 	{
 		if (*(exec->fd_temp))
@@ -202,8 +196,4 @@ void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec)
 		close(exec->fd[0]);
 		waitpid(pid, NULL, 0);
 	}
-	// exec->last_pid = pid;
-	// printf("pid dans last pipe = %d\n", pid);
-	//return (0);
-	//return (pid);
 }
