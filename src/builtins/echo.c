@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:35 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/18 14:28:22 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/18 15:07:04 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,6 @@ En mettant chaque signe au milieu de ab et en les faisant echo :
 the next cmd is a pipe or equals NULL.*/
 void	echo(t_element *current)
 {
-	/*Utiliser ft_putstrfd[] avec un fd envoye par Karl a la place 
-	de tous mes printf dans tous mes builtins*/
-
-	// si echo CARO -n, on doit print CARO -n
-	/*"echo" "-n" "hola" --> parsing met type ARG aux 3. Du coup
-	"-n" n'est pas considere une option.
-	*/
 	bool newline;
 
 	newline = true;
