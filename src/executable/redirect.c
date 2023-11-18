@@ -6,14 +6,14 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/18 15:42:55 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/18 20:05:11 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-/* Opens file given in parameters */
+/* Opens file given in parameters */ // utiliser des static pour les fonctions
 int	ft_infile(char *filename)
 {
 	int	fd;
@@ -68,11 +68,17 @@ A FAIRE
 
 Handles redirections depending on cmd->type */
 int	ft_redirect(t_element *cmd/* , int option */)
+
+
+//utiliser const t_element *cmd au lieu des tmps
+// const void *cmd -> ce qui est pointe ne change pas
+// void *const cmd -> le pointeur cmd ne change pas
+// const void *const cmd -> ce qui est pointe et le pointeur cmd ne changent pas
 {
 	t_element *tmp;
 
 	tmp = cmd;
-	while (tmp && tmp->type != PIPE)
+	while (tmp != NULL && tmp->type != PIPE)
 	{
 		if (tmp->type == INFILE)
 		{
@@ -90,7 +96,7 @@ int	ft_redirect(t_element *cmd/* , int option */)
 		}
 		else if (tmp->type == OUTFILE || tmp->type == OUTFILE_APPEND)
 		{
-			if (!ft_outfile(tmp))
+			if (ft_outfile(tmp) == 0)
 				// gerer les free
 				return (0);
 		}
