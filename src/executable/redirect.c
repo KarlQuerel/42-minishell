@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/18 13:24:38 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/18 15:42:55 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ int	ft_outfile(t_element *cmd)
 		perror("bash");
 		return (0);
 	}
-	if (fd > STDERR_FILENO && dup2(fd, STDOUT_FILENO) < 0) //fd >= 0
+	if (fd > STDERR_FILENO && dup2(fd, STDOUT_FILENO) < 0)
 	{
 		perror("bash");
-		// close(fd);
+		close(fd);
 		return (0);
 	}
 	if (fd > STDERR_FILENO)
@@ -72,23 +72,23 @@ int	ft_redirect(t_element *cmd/* , int option */)
 	t_element *tmp;
 
 	tmp = cmd;
-	while (tmp)
+	while (tmp && tmp->type != PIPE)
 	{
-		if (tmp->type == INFILE) // <
+		if (tmp->type == INFILE)
 		{
 			if (!ft_infile(tmp->content))
 				// gerer les free
 				return (0);
 		}
-		else if (tmp->type == INFILE_DELIMITER) //soit <<
+		else if (tmp->type == INFILE_DELIMITER)
 		{
-			// if (!ft_infile_def(tmp->content))
+			if (!ft_heredoc(tmp->content))
 			{
-			// 	//gerer les free
+				//gerer les free
 				return (0);
 			}
 		}
-		else if (tmp->type == OUTFILE || tmp->type == OUTFILE_APPEND) // soit > soit >> on cree le fichier
+		else if (tmp->type == OUTFILE || tmp->type == OUTFILE_APPEND)
 		{
 			if (!ft_outfile(tmp))
 				// gerer les free
@@ -97,5 +97,12 @@ int	ft_redirect(t_element *cmd/* , int option */)
 		tmp = tmp->next;
 	}
 	tmp = cmd;
+	return (1);
+}
+
+/* Handles heredoc behavior */
+int	ft_heredoc(char *heredoc)
+{
+	ft_putstr_fd(heredoc, STDOUT_FILENO);
 	return (1);
 }

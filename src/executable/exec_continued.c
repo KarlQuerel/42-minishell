@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_continued.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/18 14:16:34 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/18 14:52:55 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 /* Being on the middle pipe(s), both fds's are sent to dup2 */
 void	middle_dup(t_element *cmd, t_env **env, t_pipe *exec)
 {
-	if (dup2(exec->fd[0], STDIN_FILENO) < 0)
-	// if (dup2(*(exec->fd_temp), STDIN_FILENO) < 0)
+	// if (dup2(exec->fd[0], STDIN_FILENO) < 0)
+	if (dup2(*(exec->fd_temp), STDIN_FILENO) < 0)
 	{
 		perror("dup2");
 		exit(0);
