@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/17 18:59:54 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/18 18:22:55 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,12 @@ void	exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec)
 	free_env_list(*env_list);
 /* 	free (exec->line[0]);
 	free (exec->prompt[0]); //a voir */
-	free (*exec->line);
-	free (*exec->prompt); //a voir
-	free_cmd_arr(exec);
+/*fAIRE UN BREAK ICI POUR VOIR CE QUI N EST PAS FREE A LA FIN DE AL FONCTION*/
+	free (*exec->line); //NE SE FREE PAS BIEN
+	free (*exec->prompt); //NE SE FREE PAS BIEN
+	free_cmd_arr(exec); //NE SE FREE PAS BIEN
+	close(exec->std_in);
+	close(exec->std_out);
 	free(exec);
 }
 
@@ -58,6 +61,7 @@ void	free_cmd_arr(t_pipe *exec)
 			free(exec->cmd_path[i++]);
 		free(exec->cmd_path);
 	}
+	
 	if (exec->fd_temp)
 		free(exec->fd_temp);
 }

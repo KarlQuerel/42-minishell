@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:39:41 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/18 13:48:08 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/18 15:59:53 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,17 @@ bool	history_option(t_element *cmd)
 {
 	if (cmd->next && cmd->next->type < 3 && \
 	(!ft_is_num(cmd->next->content) || \
-	ft_atoi_check(cmd->next->content) == false)) //si history pas tout seul
+	ft_atoi_check(cmd->next->content) == false))
 	{
 		printf("bash: history: %s numeric agument required\n", \
-		cmd->next->content); // ft_putsrfd et envoyer au pipe suivant
+		cmd->next->content);
+		ft_putstr_fd("", STDERR_FILENO);
 		return (false);
 	}
 	if (cmd->next && ft_is_num(cmd->next->content) && cmd->next->next && \
 	cmd->next->next->type < 3)
 	{
-		printf("bash: history: too many arguments\n"); // ft_putsrfd et envoyer au pipe suivant
+		ft_putendl_fd("bash: history: too many arguments", STDERR_FILENO);
 		return (false);
 	}
 	return (true);
@@ -70,7 +71,7 @@ bool	echo_option(t_element *cmd)
 	if ((cmd->next && cmd->next->type == OPTION && ((cmd->next->next && \
 	cmd->next->next->type != ARGUMENT) || cmd->next->next == NULL)))
 	{
-		ft_putstr_fd("", STDOUT_FILENO); // envoyez au pipe suivant
+		ft_putstr_fd("", STDOUT_FILENO);
 		return (false);
 	}
 	return (true);

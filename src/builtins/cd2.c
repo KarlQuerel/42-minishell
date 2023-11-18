@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 11:47:20 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/17 17:01:10 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/18 16:19:10 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +22,16 @@ size_t	size_of_word(char *path, int i)
 	return (i + 1);
 }
 
-void	go_forward_until_user(char *current_path, char *home_value)
+void	forward_loop(char *current_path, char *home_value, int end)
 {
-	//on retrouve ou est current_path compare a home_path
-	// on fait cd() de chaque word entre slashes jusqu a ce que 
-	// current_path = home_value
-
-	// marche bien sauf qd je fais cd en etant tout en haut (sur /)
-	
-	int 	end;
 	int		start;
 	char	*word;
 
-	end = 0;
-	while(current_path[end] == home_value[end])
-		end++;
-	if (ft_strncmp(current_path, "/", ft_strlen(current_path)) != 0)
-		end+=1;
 	start = end;
 	word = ft_calloc(size_of_word(home_value, start) + 1, sizeof(char));
-	while(is_cmd(current_path, home_value) == false)
+	while (is_cmd(current_path, home_value) == false)
 	{
-		while(home_value[end] != '/' && home_value[end])
+		while (home_value[end] != '/' && home_value[end])
 			end++;
 		free(word);
 		word = strlcpy_middle(word, home_value, start, end - 1);
@@ -54,13 +42,27 @@ void	go_forward_until_user(char *current_path, char *home_value)
 			return ;
 		}
 		if (home_value[end + 1] == '\0')
-			break;
-		end+=1;
+			break ;
+		end += 1;
 		start = end;
 		free(word);
 		word = ft_calloc(size_of_word(home_value, start) + 1, sizeof(char));
 	}
 	free(word);
+}
+
+/*Advances by doing cd(word) (word being what is found in between
+each slashes of the path) until current_path = home_value.*/
+void	go_forward_until_user(char *current_path, char *home_value)
+{
+	int		end;
+
+	end = 0;
+	while (current_path[end] == home_value[end])
+		end++;
+	if (ft_strncmp(current_path, "/", ft_strlen(current_path)) != 0)
+		end += 1;
+	forward_loop(current_path, home_value, end);
 	free(current_path);
 }
 
@@ -68,11 +70,10 @@ void	go_backwards_until_user(char *current_path, char *home_value)
 {
 	while (is_cmd(current_path, home_value) == false)
 	{
-		// -----> cd qd plus haut que user devrait nous faire avancer jusqu'à après le user!!!!
 		if (chdir("..") != 0)
 		{
 			free(current_path);
-			//printf errno
+			//printf errno. Dans fo_forward aussi?
 			return ;
 		}
 		free(current_path);

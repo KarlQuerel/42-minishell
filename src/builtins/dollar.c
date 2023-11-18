@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/17 11:48:57 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/18 16:21:36 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,12 @@ char	*dollar(char *content, t_env *env_list)
 	char	*key_to_find;
 	t_env	*key_in_env;
 
-	key_to_find = ft_calloc(ft_strlen(content) - 1, sizeof(char)); //pq j avais mis -1??
+	key_to_find = ft_calloc(ft_strlen(content), sizeof(char));
 	key_to_find = strlcpy_middle(key_to_find, content, 1, ft_strlen(content));
  	if (is_key_in_env(env_list, key_to_find) == false)
 	{
 		free(content);
 		content = NULL;
-		//content = "\0"; //et non \n car deja un \n a la fin de la fonction echo
 	}
 	else
 	{
