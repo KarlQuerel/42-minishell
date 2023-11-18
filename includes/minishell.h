@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/18 13:41:38 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/18 15:35:06 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,9 +320,7 @@ void	ft_delete_node_cmd(t_element **head, t_element *to_delete);
 void	ft_execute(t_element *cmd, t_env **env, t_pipe *exec);
 void	single_command(t_element *cmd, t_env **env, t_pipe *exec);
 void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec);
-//void	ft_set_exit_status(t_env *env, int status);
-// void	middle_pipes(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec);
-// void	last_pipe(int *fd, int *fd_temp, t_element *cmd, t_env *env, t_pipe *exec);
+
 
 void	middle_pipes(t_element *cmd, t_env **env, t_pipe *exec);
 void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec);
@@ -348,22 +346,8 @@ char	*ft_strcpy(char *dst, char *src);
 int		ft_redirect(t_element *cmd/* , int option */);
 int		ft_infile(char *filename);
 int		ft_outfile(t_element *cmd);
+int		ft_heredoc(char *heredoc);
 
-// void	ft_remove_var(t_element *cmd_list, t_env *env, char *to_remove);
-
-/* NE PAS EFFACER
-void	ft_close(int *fd);
-void	ft_close_pipe(int pip[2]);
-void	ft_close_all_pipes(t_pipe *exec);
-bool	ft_is_a_pipe_after(t_element *cmd);
-bool	ft_is_a_pipe_before(t_element *cmd);
-bool	ft_redir(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int i);
-bool	init_pipes(t_pipe *exec);
-void	ft_fork(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int end[2], int fd_in);
-void	ft_dup(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries, int end[2], int fd_in);
-int		executor(t_element *cmd, t_env *env, t_pipe *exec, t_history *entries);
-int		pipe_wait(int *pid, int amount);
-*/
 
 void	handle_sigint(int sig);
 void	ft_delete_node_cmd(t_element **head, t_element *to_delete);

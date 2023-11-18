@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/18 13:42:34 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/18 15:21:57 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 		if (!ft_redirect(cmd/*, exec*//* , NO_PRINT */))
 		{
 			// free et on return
-			printf("ft_redirect n'a pas marche\n");
+			ft_putstr_fd("Redirect failed\n", STDERR_FILENO); // A EFFACER
 			return ;
 		}
-		ft_builtins(cmd, env, exec, PRINT);
+		ft_builtins(cmd, env, exec);
 		dup2(exec->std_in, STDIN_FILENO);
 		dup2(exec->std_out, STDOUT_FILENO);
 		close(exec->std_in);
