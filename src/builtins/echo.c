@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:35 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/18 14:24:20 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/18 14:28:22 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	echo(t_element *current)
 		return;
 	}
 	current = current->next; 
- 	while(current != NULL && current->type >= 3)
+ 	while(current != NULL && current->type < 3)
 	{
 		if (current->type == OPTION && ft_strncmp(current->content, "-n", ft_strlen(current->content)) == 0 && \
 		current->prev->type == COMMAND)
