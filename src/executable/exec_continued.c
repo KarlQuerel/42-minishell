@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/18 14:52:55 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/18 18:57:08 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,17 @@
 /* Being on the middle pipe(s), both fds's are sent to dup2 */
 void	middle_dup(t_element *cmd, t_env **env, t_pipe *exec)
 {
-	// if (dup2(exec->fd[0], STDIN_FILENO) < 0)
 	if (dup2(*(exec->fd_temp), STDIN_FILENO) < 0)
 	{
 		perror("dup2");
 		exit(0);
 	}
-	close(exec->fd[0]);
+	close(*(exec->fd_temp));
 	if (dup2(exec->fd[1], STDOUT_FILENO) < 0)
 	{
 		perror("dup2");
 		exit(0);
 	}
-	close(*(exec->fd_temp)); //a garder pour le heredoc apparemment
 	close(exec->fd[1]);
 	handle_command(cmd, env, exec);
 }
@@ -37,7 +35,7 @@ void	middle_dup(t_element *cmd, t_env **env, t_pipe *exec)
 void last_dup(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	if (dup2(*(exec->fd_temp), STDIN_FILENO) < 0)
-		perror("dup");
+		perror("dup last");
 	(void)exec->fd;
 	close(*(exec->fd_temp));
 	handle_command(cmd, env, exec);
