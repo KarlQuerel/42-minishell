@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/17 17:33:11 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/18 13:04:51 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ char	**split_path(t_env *env)
 }
 
 /* Fills cmd_tab with the current cmd 
-Stops if it encounters a node with cmd->type PIPE or the end of the list*/
+Stops if it encounters a node with cmd->type different from ARG CMD, OPT,
+or the end of the list*/
 void	fill_array(t_element *cmd, t_pipe *exec)
 {
 	int	i;
@@ -56,7 +57,7 @@ int	get_size_cmd(t_element *cmd)
 	i = 0;
 	while (cmd)
 	{
-		if (cmd->type != PIPE) // peut etre a changer pour les redir
+		if (cmd->type < 3)
 			i++;
 		cmd = cmd->next;
 	}

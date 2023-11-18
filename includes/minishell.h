@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/17 20:02:26 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/18 13:41:38 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,13 +139,7 @@ typedef struct s_env
 	struct s_env *next;
 }	t_env;
 
-/* To handles pipes
---> pid is the id process
---> pipe_end is an array of both ends of a pipe
---> av_nb is the arg number
---> here_doc // handles here_doc creation a faire
--->
-*/
+/* To handles pipes */
 typedef struct s_pipe
 {
 	int		here_doc;
@@ -155,6 +149,8 @@ typedef struct s_pipe
 	int		last_pid;
 	char	**cmd_tab;
 	char	**cmd_path;
+	int		std_in;
+	int		std_out;
 	// int		fd_infile;
 	// int		fd_outfile;
 	int		*fd_temp;
