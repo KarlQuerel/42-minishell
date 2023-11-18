@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:40:58 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/17 11:22:52 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/18 13:11:37 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	and_error(char *line)
 		printf("bash: syntax error near unexpected token `&&'\n");
 }
 
-void	str_error(char *line)
+/* void	str_error(char *line)
 {
 	int		i;
 	int		j;
@@ -48,7 +48,7 @@ void	str_error(char *line)
 	str[j] = '\0';
 	printf("%s : command not found\n", str);
 	free(str);
-}
+} */
 
 bool	pipe_double_or_eof(char *line)
 {

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/17 11:07:45 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/18 14:17:24 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,17 @@ t_element	*parsing(char *line, t_env *env_list)
 /*Determines the type of a given cmd for the parsing function.*/
 int	determine_command_type(char *line, size_t end, size_t start)
 {
+	if(line[start] == '\'' || line[start] == '\"')
+		start = start + 1;
+	
 	if ((line[start] == '-' && ft_isalpha(line[start + 1]) == 1) || \
 	(line[end] >= 4 && line[start] == '-' && (line[start + 1] == '\'' || \
 	line[start + 1] == '\"') && ft_isalpha(line[start + 2]) == 1 && \
 	(line[end - 1] == '\'' || line[end - 1] == '\"')))
 		return (OPTION);
-	if ((line[start] == '\'' || line[start] == '\"') && \
+/* 	if ((line[start] == '\'' || line[start] == '\"') && \
 	(line[end - 1] == '\'' || line[end - 1] == '\"'))
-		return (ARGUMENT);
+		return (ARGUMENT); */
 	if (line[end + 1] && line[end + 2] && line[end + 1] == '<' && \
 	line[end + 2] == ' ')
 		return (INFILE);
@@ -67,6 +70,12 @@ int	determine_command_type(char *line, size_t end, size_t start)
 		return (OUTFILE);
 	if (ft_strncmp(&line[start], "|", 1) == 0)
 		return (PIPE);
+	while(start < end)
+	{
+		if (line[start] == ' ')
+			return (ARGUMENT);
+		start++;
+	}
 	return (COMMAND);
 }
 
@@ -127,6 +136,8 @@ void	parsing_fix(t_element **cmd_list, t_env *env_list)
 		return ;
 	while (current != NULL)
 	{
+		if (current->prev == NULL || current->prev->type >= 3)
+			current->type = COMMAND;
 		if (current->type == COMMAND && current->next)
 			type_arg_after_cmd(current);
 		else if (current->content[0] == '$')

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/17 17:51:17 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/18 14:23:08 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ bool	is_cmd_in_line(char *line, char *cmd)
 }
 
 /* Handles builtins redirections */
-void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec, int option)
+void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec)
 {
 	if (is_cmd(cmd->content, "pwd") == true && check_next(cmd, NONE))
 		pwd(PRINT);
@@ -79,7 +79,7 @@ void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec, int option)
 	else if (is_cmd(cmd->content, "cd") == true && check_next(cmd, NONE))
 		cd(cmd, *env_list);
 	else if (is_cmd(cmd->content, "echo") == true && check_next(cmd, ECHO))
-		echo(cmd, option);
+		echo(cmd);
 	else if (is_cmd(cmd->content, "env") == true && check_next(cmd, ENV))
 		ft_env(*env_list, cmd, 0);
 	else if (is_cmd(cmd->content, "export") == true && check_next(cmd, NONE))

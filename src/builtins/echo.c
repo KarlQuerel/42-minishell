@@ -6,25 +6,12 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:35 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/17 11:50:06 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/18 14:28:22 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
-
-void	print_skiping_quotes(char *str,/*t_pipe *exec */ int option)
-{
-	size_t i;
-	
-	i = 1;
-	while (i < ft_strlen(str) - 1)
-	{
-		if (option == PRINT)
-			ft_putchar_fd(str[i], STDOUT_FILENO);
-		i++;
-	}
-}
 
 /*CARACTERES QUI NECESSITENT UN \ POUR ETRE ECHO CORRECTEMENT
 En mettant chaque signe au milieu de ab et en les faisant echo :
@@ -43,61 +30,38 @@ En mettant chaque signe au milieu de ab et en les faisant echo :
 
 /*Prints the arguments that follow the echo command until
 the next cmd is a pipe or equals NULL.*/
-void	echo(t_element *current,/* t_pipe *exec */ int option)
+void	echo(t_element *current)
 {
 	/*Utiliser ft_putstrfd[] avec un fd envoye par Karl a la place 
 	de tous mes printf dans tous mes builtins*/
 
 	// si echo CARO -n, on doit print CARO -n
-	int	type;
+	/*"echo" "-n" "hola" --> parsing met type ARG aux 3. Du coup
+	"-n" n'est pas considere une option.
+	*/
 	bool newline;
 
 	newline = true;
 	if (current->next == NULL)
 	{
-		if (option == PRINT)
-			ft_putstr_fd("\n", STDOUT_FILENO);
-		// else
-		// 	ft_putstr_fd("\n", exec->fd_temp[]); // a voir
+		ft_putstr_fd("\n", STDOUT_FILENO);
 		return;
 	}
 	current = current->next; 
- 	while(current != NULL && current->type != PIPE && current->type != INFILE && \
-				current->type != INFILE_DELIMITER && \
-				current->type != OUTFILE && current->type != OUTFILE_APPEND)
+ 	while(current != NULL && current->type < 3)
 	{
-		if (current->type == OPTION && ft_strncmp(current->content, "-n", ft_strlen(current->content)) == 0 && current->prev->type == COMMAND)
+		if (current->type == OPTION && ft_strncmp(current->content, "-n", ft_strlen(current->content)) == 0 && \
+		current->prev->type == COMMAND)
 		{
 			newline = false;
 			current = current->next;
 		}
- 		type = parsing_str_type(current->content, 0); //0 car on commence du début
-		if (type == STR)
-			print_skiping_quotes(current->content, option);
-		else
-		{
-			if (option == PRINT)
-				ft_putstr_fd(current->content, STDOUT_FILENO);
-			// else
-			// 	ft_putstr_fd(current->content, exec->fd_temp[]); // a voir
-		}
-			//printf("%s", current->content); //echo 'caro ne print pas l'apostrophe, idem pour "caro
+		ft_putstr_fd(current->content, STDOUT_FILENO);
+		//printf("%s", current->content); //echo 'caro ne print pas l'apostrophe, idem pour "caro
 		if (current->next != NULL)
-		{
-			if (option == PRINT)
 				ft_putstr_fd(" ", STDOUT_FILENO);
-			// else
-			// 	ft_putstr_fd(" ", exec->fd_temp[]); // a voir
-		}
-			//printf(" ");
 		current = current->next;
 	}
 	if (newline == true)
-	{
-		if (option == PRINT)
 			ft_putstr_fd("\n", STDOUT_FILENO);
-		// else
-			// 	ft_putstr_fd("\n", exec->fd_temp[]); // a voir
-	}
-		//printf("\n");
 }

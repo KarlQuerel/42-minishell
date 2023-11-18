@@ -95,8 +95,6 @@ int main (int argc, char **argv, char **env)
 		line = readline(prompt);
 		add_history(line);
 		
- 		/*if (commande en cours)
-			ctrlD(line); */
 		if (line == NULL)
 		{
 			if (g_signals.location == IN_PROMPT)
@@ -109,8 +107,6 @@ int main (int argc, char **argv, char **env)
 		}
 		if (line != NULL)
 		{
-			/* if (line[0] == '\0')
-				printf("CTRLD\n"); */
 			line = erase_spaces(line);
 			if (line_errors_and_fix(line) == true)
 			{

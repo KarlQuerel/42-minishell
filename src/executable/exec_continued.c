@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exec_continued.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
 /*   Updated: 2023/11/18 14:16:34 by kquerel          ###   ########.fr       */
@@ -82,7 +82,7 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 		return ;
 	}
 	if (cmd->builtin == true)
-		return (ft_builtins(cmd, env, exec, PRINT), exit(g_signals.exit_status));
+		return (ft_builtins(cmd, env, exec), exit(g_signals.exit_status));
 	if (exec->cmd_tab[0][0] != '\0')
 		g_signals.exit_status = exec_command(cmd, *env, exec);
 	exit(g_signals.exit_status);
