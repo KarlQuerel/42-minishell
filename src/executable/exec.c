@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/17 19:12:47 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/18 14:23:05 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 			printf("ft_redirect n'a pas marche\n");
 			return ;
 		}
-		ft_builtins(cmd, env, exec, PRINT);
+		ft_builtins(cmd, env, exec);
 		dup2(stdin_tmp, STDIN_FILENO);
 		dup2(stdout_tmp, STDOUT_FILENO);
 		close(stdin_tmp);

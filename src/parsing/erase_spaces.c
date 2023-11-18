@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:51:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/17 13:26:14 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/18 14:03:16 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ char	*erase_spaces(char *line)
 	i = 0;
 	j = 0;
 	new_line = erase_spaces_malloc(line);
+	while (line[i] == ' ')
+		i++;
 	while (line[i])
 		erase_spaces_loop(line, &new_line, &i, &j);
 	if (j == 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/17 20:02:26 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/18 14:22:51 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ int		str_type(char *command, int len);
 bool	is_cmd(char *buffer, char* command);
 int		size_of_command(char *command, int len, int type);
 bool	is_cmd_in_line(char *line, char *cmd);
-void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec, int option);
+void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec);
 
 /*Env_list*/
 int		put_env_in_list_loop(char **env, t_env **current, int line);
@@ -208,7 +208,7 @@ void	pipe_error(char *line);
 
 /*Errors2*/
 void	and_error(char *line);
-void	str_error(char *line);
+// void	str_error(char *line);
 bool	pipe_double_or_eof(char *line);
 
 /*Free*/
@@ -268,10 +268,10 @@ bool	ft_atoi_check(char *str);
 /*------------------BUILT-INS FOLDER------------------*/
 
 /*Builtins_errors*/
-bool	no_option(t_element **cmd, t_element *head);
-bool	env_option(t_element **cmd);
-bool	history_option(t_element **cmd);
-bool	echo_option(t_element **cmd);
+bool	no_option(t_element *cmd, t_element *head);
+bool	env_option(t_element *cmd);
+bool	history_option(t_element *cmd);
+bool	echo_option(t_element *cmd);
 bool	check_next(t_element *cmd, int option);
 
 /*Cd*/
@@ -290,8 +290,7 @@ char	*dollar(char *content, t_env *env_list);
 void	ft_dollar_question_mark(void);
 
 /*Echo*/
-void	print_skiping_quotes(char *str,/*t_pipe *exec */ int option);
-void	echo(t_element *current, int option);
+void	echo(t_element *current);
 
 /*Env*/
 void	ft_env(t_env *env, t_element *cmd, int option);
