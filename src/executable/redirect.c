@@ -6,27 +6,27 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/20 17:43:07 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/20 21:49:05 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-/* Opens file given in parameters */ // utiliser des static pour les fonctions
+/* Opens file given in parameters */
 int	ft_infile(char *filename)
 {
 	int	fd;
 
-	fd = open(filename, O_RDONLY);
+	fd = open(filename, O_RDONLY, 0644);
 	if (fd < 0)
 	{
-		strerror(errno);
-		perror("bash");
-		ft_putendl_fd(filename, STDOUT_FILENO);
+		ft_putstr_fd("bash: ", STDERR_FILENO);
+		ft_putstr_fd(filename, STDERR_FILENO);
+		perror(" ");
 		return (0);
 	}
-	if (fd > STDERR_FILENO && dup2(fd, STDOUT_FILENO) < 0)
+	if (fd > STDERR_FILENO && dup2(fd, STDIN_FILENO) < 0)
 	{
 		perror("bash");
 		return (0);
@@ -43,7 +43,6 @@ int	ft_outfile(t_element *cmd)
 {
 	int	fd;
 
-	// ft_putstr_fd("JE SUIS LA\n", 2);
 	if (cmd->type == OUTFILE)
 		fd = open(cmd->content, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	else
@@ -64,19 +63,8 @@ int	ft_outfile(t_element *cmd)
 	return (1);
 }
 
-/* 
-A FAIRE
--rediriger dans le cas ou la commande est un built in a coder nous meme
-- les << a gerer
-
-Handles redirections depending on cmd->type */
-int	ft_redirect(t_element *cmd/* , int option */)
-
-
-//utiliser const t_element *cmd au lieu des tmps
-// const void *cmd -> ce qui est pointe ne change pas
-// void *const cmd -> le pointeur cmd ne change pas
-// const void *const cmd -> ce qui est pointe et le pointeur cmd ne changent pas
+/* Handles redirections depending on cmd->type */
+int	ft_redirect(t_element *cmd)
 {
 	t_element *tmp;
 
@@ -85,7 +73,6 @@ int	ft_redirect(t_element *cmd/* , int option */)
 		tmp = tmp->next;
 	while (tmp != NULL && tmp->type != PIPE)
 	{
-		// fprintf(stderr, "tmp-type = %d\n", tmp->type);
 		if (tmp->type == INFILE)
 		{
 			if (!ft_infile(tmp->content))
@@ -112,9 +99,42 @@ int	ft_redirect(t_element *cmd/* , int option */)
 	return (1);
 }
 
+
+
+
+// CARO -> rejeter tous les lines qui se finissent avec < << >> >
+// par contre "" est accepte, je sais pas si on le fait
+
+// si control D dans le heredoc, le message 
+// bash: warning: here-document at line 1 delimited by end-of-file (wanted `heredoc')
+
+
 /* Handles heredoc behavior */
 int	ft_heredoc(char *heredoc)
 {
-	ft_putstr_fd(heredoc, STDOUT_FILENO);
+	int	fd[2];
+
+	g_signals.location = IN_HEREDOC; // voir avec caro pas tout compris
+
+	printf("JE SUIS LA\n");
+	if (pipe(fd) < 0)
+	{
+		perror("bash");
+		return (0);
+	}
+	// heredoc = create_heredoc();
+	
+	write(fd[0], heredoc, ft_strlen(heredoc));
 	return (1);
 }
+
+// char	*create_heredoc()
+// {
+// 	char *temp;
+
+	
+// 	while (g_signals.exit_status != 130)
+// 	{
+		
+// 	}
+// }
