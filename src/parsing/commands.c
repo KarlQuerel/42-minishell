@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/18 14:23:08 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/20 15:39:52 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,21 @@ bool	is_cmd_in_line(char *line, char *cmd)
 	return (false);
 }
 
-/* Handles builtins redirections */
+/* Handles builtins redirections.
+For the history builtin : the first If is to handle an option. If
+no option was given, the option is set to -1, so that the totality
+of history is printed.*/
 void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec)
 {
 	if (is_cmd(cmd->content, "pwd") == true && check_next(cmd, NONE))
 		pwd(PRINT);
-	else if (is_cmd(cmd->content, "history") == true && check_next(cmd, HISTORY))
+	else if (is_cmd(cmd->content, "history") == true && \
+	check_next(cmd, HISTORY))
 	{
 		if (cmd->next && cmd->next->type != PIPE)
-			history(FT_HISTORY, ft_atoi(cmd->next->content)); //avec numero en option
+			history(FT_HISTORY, ft_atoi(cmd->next->content));
 		else
-			history(FT_HISTORY, -1); //sans option (print totalité de history)
+			history(FT_HISTORY, -1);
 	}
 	else if (is_cmd(cmd->content, "cd") == true && check_next(cmd, NONE))
 		cd(cmd, *env_list);

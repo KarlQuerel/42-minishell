@@ -12,8 +12,8 @@
 >>>>>>>>>>>>>>>
 <<<<<
 <<<<<<<<<<<<<<<<
-> > > >
->> >> >> >>
+> > > > //entre dans exec : le proteger dans exec ou dans parsing
+>> >> >> >> //entre dans exec : le proteger dans exec ou dans parsing
 >>>> >> >> >>
 /
 //
@@ -30,7 +30,7 @@
 ||
 |||||
 |||||||||||||
->>|><
+>>|>< //entre dans exec : le proteger dans exec ou dans parsing
 &&
 &&&&&
 &&&&&&&&&&&&&&
@@ -72,12 +72,12 @@ echo "         " | cat -e
 echo           | cat -e
 ""''echo hola""'''' que""'' tal""''
 echo -n -n
-echo -n -n Hola Que
+echo -n -n Hola Que //NE MARCHE PAS
 echo -p
 echo -nnnnn
 echo -n -nnn -nnnn
 echo -n-nnn -nnnn
-echo -n -nnn hola -nnnn
+echo -n -nnn hola -nnnn //NE MARCHE PAS
 echo -n -nnn-nnnn
 echo --------n
 echo -nnn --------n
