@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/18 13:04:51 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/20 19:22:32 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	fill_array(t_element *cmd, t_pipe *exec)
 	i = 0;
 	while (cmd && cmd->type < 3)
 	{
+		free(exec->cmd_tab[i]);
 		exec->cmd_tab[i] = ft_calloc(ft_strlen(cmd->content) + 1, sizeof(char));
 		exec->cmd_tab[i] = ft_strcpy(exec->cmd_tab[i], cmd->content);
 		cmd = cmd->next;

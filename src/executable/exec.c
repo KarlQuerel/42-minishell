@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/18 18:56:09 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/20 18:53:17 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,16 +108,15 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 	int	i = 0;
 	int	status;
 
-	exec->fd_temp = ft_calloc(1, sizeof(int));
-	*(exec->fd_temp) = 0;
+	status = 0;
+	exec->fd_temp = dup(STDIN_FILENO);
 	while (i <= exec->pipe_nb)
 	{
 		fill_array(cmd, exec);
-		if ( i < exec->pipe_nb)
+		if (i < exec->pipe_nb)
 		{
 			middle_pipes(cmd, env, exec);
-			// while (cmd->next && cmd->type != PIPE)
-			while (cmd->next && cmd->type < 3)
+			while (cmd->next && cmd->type != PIPE)
 				cmd = cmd->next;
 			cmd = cmd->next;
 			
@@ -168,11 +167,9 @@ void	middle_pipes(t_element *cmd, t_env **env, t_pipe *exec)
 		middle_dup(cmd, env, exec);
 	else
 	{
-		if (*(exec->fd_temp))
-			close(*(exec->fd_temp));
-		*(exec->fd_temp) = dup(exec->fd[0]);
-		close(exec->fd[0]);
 		close(exec->fd[1]);
+		close(exec->fd_temp);
+		exec->fd_temp = exec->fd[0];
 	}
 }
 
@@ -188,9 +185,7 @@ void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec)
 		last_dup(cmd, env, exec);
 	else
 	{
-		if (*(exec->fd_temp))
-			close(*(exec->fd_temp));
-		close(exec->fd[0]);
-		waitpid(pid, NULL, 0);
+		exec->last_pid = pid;
+		close(exec->fd_temp);
 	}
 }

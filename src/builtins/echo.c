@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:35 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/18 15:07:04 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/20 18:44:43 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ En mettant chaque signe au milieu de ab et en les faisant echo :
 ~ a~b
 " (heredoc)
 \ ab
+
+echo caro | rev donne = orac avec un espace
+BACKSLASH PAS A GERE
 */
 
 /*Prints the arguments that follow the echo command until

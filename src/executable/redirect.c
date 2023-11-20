@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/20 11:32:42 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/20 17:43:07 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	ft_outfile(t_element *cmd)
 {
 	int	fd;
 
+	// ft_putstr_fd("JE SUIS LA\n", 2);
 	if (cmd->type == OUTFILE)
 		fd = open(cmd->content, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	else
@@ -80,8 +81,11 @@ int	ft_redirect(t_element *cmd/* , int option */)
 	t_element *tmp;
 
 	tmp = cmd;
+	if (tmp->type == PIPE)
+		tmp = tmp->next;
 	while (tmp != NULL && tmp->type != PIPE)
 	{
+		// fprintf(stderr, "tmp-type = %d\n", tmp->type);
 		if (tmp->type == INFILE)
 		{
 			if (!ft_infile(tmp->content))

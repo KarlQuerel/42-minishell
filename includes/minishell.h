@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/18 15:35:06 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/20 18:01:37 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,6 @@ typedef struct s_pipe
 {
 	int		here_doc;
 	int		pipe_nb;
-	int		cmd_nb;
 	pid_t		*pid;
 	int		last_pid;
 	char	**cmd_tab;
@@ -153,7 +152,7 @@ typedef struct s_pipe
 	int		std_out;
 	// int		fd_infile;
 	// int		fd_outfile;
-	int		*fd_temp;
+	int		fd_temp;
 	int		fd[2];
 	char 	**env;
 	char	**line;

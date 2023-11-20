@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/20 11:21:14 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/20 19:12:58 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 /* Being on the middle pipe(s), both fds's are sent to dup2 */
 void	middle_dup(t_element *cmd, t_env **env, t_pipe *exec)
 {
-	if (dup2(*(exec->fd_temp), STDIN_FILENO) < 0)
+	if (dup2(exec->fd_temp, STDIN_FILENO) < 0)
 	{
 		perror("dup2");
 		exit(0);
 	}
-	close(*(exec->fd_temp));
+	close(exec->fd_temp);
 	if (dup2(exec->fd[1], STDOUT_FILENO) < 0)
 	{
 		perror("dup2");
@@ -34,9 +34,9 @@ void	middle_dup(t_element *cmd, t_env **env, t_pipe *exec)
 /* Being on the middle pipe(s), only stdin fd is sent to dup2 */
 void last_dup(t_element *cmd, t_env **env, t_pipe *exec)
 {
-	if (dup2(*(exec->fd_temp), STDIN_FILENO) < 0)
+	if (dup2(exec->fd_temp, STDIN_FILENO) < 0)
 		perror("dup last");
-	close(*(exec->fd_temp));
+	close(exec->fd_temp);
 	handle_command(cmd, env, exec);
 }
 
@@ -56,7 +56,7 @@ char	*ft_get_command(char **path, char *argument)
 			to_free = ft_strjoin(path[i], "/");
 			to_return = ft_strjoin(to_free, argument);
 			free(to_free);
-			if (access(to_return, F_OK) == 0) // rajouter des flags
+			if (access(to_return, F_OK) == 0)
 				return (to_return);
 			free(to_return);
 			i++;
@@ -101,10 +101,15 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
 	if (ft_strchr(exec->cmd_tab[0], '/'))
+	{
 		execve(cmd->content, exec->cmd_tab, env->env);
+		perror("bash");
+		//free
+		return(127);
+	}
 	exec->cmd_path = split_path(env);
-	if (!exec->cmd_path)
-		exec_command_continued(exec, 0);
+	// if (!exec->cmd_path)
+	// 	exec_command_continued(exec, 0);
 	cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
 	if (!cmd->content)
 	{
@@ -113,7 +118,12 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 		else
 			exec_command_continued(exec, 1);
 	}
-	execve(cmd->content, exec->cmd_tab, env->env);
+	else
+	{
+		execve(cmd->content, exec->cmd_tab, env->env);
+		perror("bash");
+		//perror fonctionne pareil = printf("%s: %s\n", "bash:", strerror(errno));
+	}
 	return (127); //return a exit code, faire une fonction cmd not found
 }
 
