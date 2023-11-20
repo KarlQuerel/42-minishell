@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/18 20:05:11 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/20 11:32:42 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ int	ft_infile(char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 	{
+		strerror(errno);
 		perror("bash");
+		ft_putendl_fd(filename, STDOUT_FILENO);
 		return (0);
 	}
 	if (fd > STDERR_FILENO && dup2(fd, STDOUT_FILENO) < 0)

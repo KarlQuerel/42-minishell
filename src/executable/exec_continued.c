@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/18 18:57:08 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/20 11:21:14 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void last_dup(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	if (dup2(*(exec->fd_temp), STDIN_FILENO) < 0)
 		perror("dup last");
-	(void)exec->fd;
 	close(*(exec->fd_temp));
 	handle_command(cmd, env, exec);
 }
@@ -75,9 +74,8 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	if (!ft_redirect(cmd/*, exec*//* , NO_PRINT */))
 	{
-		// free et on return
-		printf("ft_redirect n'a pas marche\n");
-		return ;
+		// free
+		exit(1);
 	}
 	if (cmd->builtin == true)
 		return (ft_builtins(cmd, env, exec), exit(g_signals.exit_status));
