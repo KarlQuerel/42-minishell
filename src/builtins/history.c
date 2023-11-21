@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:38 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/17 14:40:34 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/20 12:19:06 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,62 +16,71 @@
 /*History : quand on fait cd et qu'on est deja tout en haut
 on ne doit pas remettre cd dans history. Pareil qd on fait deux fois
 de suite ls par exemple. Par contre quand on écrit une commande qui 
-n'existe pas ça s'affiche dans history.*/
+n'existe pas ça s'affiche dans history.
 
+HISTORY_STATE and HISTORY_ENTRY are structures in history.h in
+the readline library.
+
+First if : if we ask to print more entries than there exist,
+print all existing entries.*/
 void	history(int option, int len)
 {
-	int i;
-	int reverse;
+	HISTORY_STATE	*info;
+	HIST_ENTRY		**list;
+
+	info = history_get_history_state();
+	list = history_list();
+	if (len > info->length)
+		len = info->length;
+	if (option == FT_HISTORY && len == -1)
+		print_all_hist(info, list);
+	else if (option == FT_HISTORY && len != -1)
+		print_hist_until_len(info, list, len);
+	else if (option == FREE_HISTORY)
+		free_history(info, list);
+}
+
+void	print_all_hist(HISTORY_STATE *info, HIST_ENTRY **list)
+{
+	int	i;
 
 	i = 0;
+	while (i < info->length)
+	{
+		ft_putstr_fd(ft_itoa(i + 1), STDOUT_FILENO);
+		ft_putstr_fd(" ", STDOUT_FILENO);
+		ft_putendl_fd(list[i]->line, STDOUT_FILENO);
+		i++;
+	}
+}
 
-	/* get the state of your history list (offset, length, size) */
-	HISTORY_STATE *myhist = history_get_history_state ();
-	/* retrieve the history list */
-	HIST_ENTRY **mylist = history_list ();
+void	print_hist_until_len(HISTORY_STATE *info, HIST_ENTRY **list, int len)
+{
+	int	reverse;
+	int	i;
 
-	if (len > myhist->length) /*c'est moi qui l'ai décidé ainsi car sur bash on n epeut pas en donner
-	trop, donc je dis de tout print dans ce cas ci*/
-		len = myhist->length;
-	
-	if (option == FT_HISTORY && len == -1)
+	i = 0;
+	reverse = info->length - len;
+	while (i < len)
 	{
-		while(i < myhist->length)
-		{
-			ft_putstr_fd(ft_itoa(i + 1), STDOUT_FILENO);
-			ft_putstr_fd(" ", STDOUT_FILENO);
-			ft_putendl_fd(mylist[i]->line, STDOUT_FILENO);
-			
-			//printf(" %d  %s\n", i + 1, mylist[i]->line);
-			//free_history_entry(mylist[i]); // FREE AU MOMENT DE EXIT
-			i++;
-		}
-		// putchar ('\n');	
+		ft_putstr_fd(ft_itoa(reverse), STDOUT_FILENO);
+		ft_putstr_fd(" ", STDOUT_FILENO);
+		ft_putendl_fd(list[reverse]->line, STDOUT_FILENO);
+		i++;
+		reverse++;
 	}
-	else if (option == FT_HISTORY && len != -1)
+}
+
+void	free_history(HISTORY_STATE *info, HIST_ENTRY **list)
+{
+	int	i;
+
+	i = 0;
+	while (i < info->length)
 	{
-		reverse = myhist->length - len;
-		while(i < len)
-		{
-			ft_putstr_fd(ft_itoa(reverse), STDOUT_FILENO);
-			ft_putstr_fd(" ", STDOUT_FILENO);
-			ft_putendl_fd(mylist[reverse]->line, STDOUT_FILENO);
-			
-			// printf(" %d  %s\n", reverse, mylist[reverse]->line);
-			//free_history_entry(mylist[i]); // FREE AU MOMENT DE EXIT
-			i++;
-			reverse++;
-		}
-		// putchar ('\n');	
+		free_history_entry(list[i]);
+		i++;
 	}
-	else if (option == FREE_HISTORY)
-	{
-		while(i < myhist->length)
-		{
-			free_history_entry(mylist[i]);
-			i++;
-		}
-		free (myhist);  /* free HIST_ENTRY list */ 
-		free (mylist);  /* free HISTORY_STATE   */ 
-	}
+	free (info);
+	free (list);
 }

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/17 16:07:06 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/20 12:27:06 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ char	*pwd(int option)
 {
 	char *path;
 
-	
 	/*KARL
 	if (!check_next(cmd, 1))
 	{
@@ -28,19 +27,16 @@ char	*pwd(int option)
 	}
 	*/
 
-
-		
 	//on doit envoyer t_element *cmd ici pour check les options cmd->next->type == OPTION
 	path = getcwd(NULL, 0);
 	//if (!path)
 		//printf errno
 	if (option == PRINT)
 	{
-		printf("%s\n", path);
+		ft_putendl_fd(path, STDOUT_FILENO);
 		free(path);
 		return (NULL);
 	}
-		//ft_putstr_fd(path, STDOUT_FILENO/* exec->fd[] */); // doit ecrire dans l'enfant exec->fd[0] pwd | wc -l exec->fd ls -a | wc -l fd[i][1]
 	return (path);
 }
 

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/11/17 17:43:22 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/20 12:28:45 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int	ft_unset(t_element *cmd_list, t_env **env)
 	while (cmd_list && cmd_list->next && cmd_list->next->type != PIPE)
 	{
 		tmp = *env;
-		if (!ft_is_valid_key_var(cmd_list->next->content) || ft_strchr(cmd_list->next->content, '='))
+		if (!ft_is_valid_key_var(cmd_list->next->content) || \
+		ft_strchr(cmd_list->next->content, '='))
 		{
 			ft_putstr_fd("unset: ", STDOUT_FILENO);
 			ft_putstr_fd(cmd_list->next->content, STDOUT_FILENO);
@@ -35,7 +36,7 @@ int	ft_unset(t_element *cmd_list, t_env **env)
 			{
 				tmp = find_value_with_key_env(tmp, cmd_list->next->content);
 				if (tmp)
-					ft_delete_node_env(env, tmp); // tmp cannot access memory sur gdb
+					ft_delete_node_env(env, tmp);
 			}
 		}
 		cmd_list = cmd_list->next;

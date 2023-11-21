@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/17 13:22:30 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/20 12:20:04 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,23 +46,6 @@ t_env	*lstnew_env(char *line, int i)
 	// new->value = malloc(sizeof(char) * size_of_command(line, i, VALUE));
 	new->value = ft_calloc(size_of_command(line, i, VALUE) + 1, sizeof(char));
 	new->prev = NULL;
-	new->next = NULL;
-	return (new);
-}
-
-t_history	*lstnew_history(char *line, int size_of_list)
-{
-	t_history	*new;
-
-	new = NULL;
-	if (!line || size_of_list == 0)
-		return (new);
-	new = (t_history *)ft_calloc(1, sizeof(t_history));
-	if (!new)
-		return (NULL);
-	new->cmd = ft_calloc(ft_strlen(line) + 1, sizeof(char));
-	ft_strlcpy(new->cmd, line, ft_strlen(line) + 1);
-	new->nb = size_of_list;
 	new->next = NULL;
 	return (new);
 }

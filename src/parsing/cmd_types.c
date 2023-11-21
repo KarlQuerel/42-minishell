@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_types.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:58:39 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/16 15:19:34 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/20 14:18:50 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ int	cmd_type(char *command, int len)
 	// KARL -> j'ai ajoute ca pour regler une seg fault
 	if (!command)
 		return (0); //verifier incidence de rendre 0 en size
-		
-	// while (command[len] != ' ' && command[len] != '\0') //LIGNE MODIFIEE POUR PARSING SANS ESPACES!!!!
+	// fin
 	while (command[len] != ' ' && command[len] != '|' && \
 	command[len] != '<' && command[len] != '>' && command[len] != '\0')
 	{
@@ -36,18 +35,17 @@ int	cmd_type(char *command, int len)
 }
 
 /*Returns the size of the environment key or its value,
-depending on the trigger.*/
+depending on the trigger.
+The return at the end of function returns the size of the value.*/
 int	key_and_value_type(char *command, int len, int type)
 {
 	int	size;
 
 	size = 0;
-
 	// KARL -> j'ai ajoute ca pour regler une seg fault
 	if (!command)
 		return (0); //verifier incidence de rendre 0 en size
 	// fin
-	
 	while (command[len] != '=')
 	{
 		size++;
@@ -61,7 +59,7 @@ int	key_and_value_type(char *command, int len, int type)
 		size++;
 		len++;
 	}
-	return (size); //if type == VALUE
+	return (size);
 }
 
 /*Returns the size of a str (= argument in between two quotes).
