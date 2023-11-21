@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/21 17:35:56 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/21 17:50:12 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void	parsing_fix(t_element **cmd_list, t_env *env_list)
 		return ;
 	while (current != NULL)
 	{
-		if ((current->prev == NULL && current->type < 3) || (current->prev->type >= 3 && current->type < 3))
+		if ((current->prev != NULL && current->prev->type >= 3 && current->type < 3) || (current->prev == NULL && current->type < 3))
 			current->type = COMMAND;
 		if (current->type == COMMAND && current->next)
 			type_arg_after_cmd(current);

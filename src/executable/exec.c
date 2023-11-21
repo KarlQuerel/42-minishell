@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/21 18:03:59 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/21 17:03:05 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
+//heredoc avant les pipes
 // extern t_global g_signals;
 /*
 TO DO:
@@ -41,12 +42,36 @@ void	ft_execute(t_element *cmd, t_env **env, t_pipe *exec)
 		return ;
 	if (exec->pipe_nb == 0)
 	{
-		fill_array(cmd, exec);
+		// fill_array(cmd, exec);
 		single_command(cmd, env, exec);
 	}
 	else
 		multiple_commands(cmd, env, exec);
 }
+
+int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec)
+{
+	
+	if (cmd && cmd->builtin == true && cmd->content)
+	{
+		exec->std_in = dup(STDIN_FILENO);
+		exec->std_out = dup(STDOUT_FILENO);
+		if (!ft_redirect(cmd/*, exec*//* , NO_PRINT */))
+		{
+			// free et on return
+			ft_putstr_fd("Redirect failed\n", STDERR_FILENO); // A EFFACER
+			return (0);
+		}
+		ft_builtins(cmd, env, exec);
+		dup2(exec->std_in, STDIN_FILENO);
+		dup2(exec->std_out, STDOUT_FILENO);
+		close(exec->std_in);
+		close(exec->std_out);
+		return (0);
+	}
+	return (1);
+}
+
 
 /* If no pipes are present
 --- If a builtin is detected, ft_builtins is called, preventing
@@ -58,23 +83,9 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	int	pid;
 	int	status;
 
-	if (cmd && cmd->builtin == true && cmd->content)
-	{
-		exec->std_in = dup(STDIN_FILENO);
-		exec->std_out = dup(STDOUT_FILENO);
-		if (!ft_redirect(cmd/*, exec*//* , NO_PRINT */))
-		{
-			// free et on return
-			ft_putstr_fd("Redirect failed\n", STDERR_FILENO); // A EFFACER
-			return ;
-		}
-		ft_builtins(cmd, env, exec);
-		dup2(exec->std_in, STDIN_FILENO);
-		dup2(exec->std_out, STDOUT_FILENO);
-		close(exec->std_in);
-		close(exec->std_out);
+	if (!ft_is_builtin(cmd, env, exec))
 		return ;
-	}
+	fill_array(cmd, exec);
 	pid = fork();
 	g_signals.location = IN_COMMAND; // set_signal_state(IN_COMMAND); si in command SIGIGNORE, sinon ce que jfais deja dans signal
 	set_signals();
@@ -101,8 +112,6 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 /* Separates the pipes according to their number
 --- If we are on the (1 to n -1) range, we call midde_pipes
 ---	If we are on the last pipe we call last_pipe
-(le traduire en anglais pour les commentaires)
-le status s'initialise dans waitpid pour etre reutilise dans les W flags de waitpid
 */
 void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 {
