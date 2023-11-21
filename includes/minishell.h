@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/20 21:48:47 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/21 15:58:25 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -350,6 +350,8 @@ void	ft_delete_node_cmd(t_element **head, t_element *to_delete);
 void	free_cmd_arr(t_pipe *exec);
 void	ft_exit_continued(t_element *cmd, t_env **env, t_pipe *exec, t_element *head);
 int	exec_command_continued(t_pipe *exec, int option);
-char	*create_heredoc();
+void	create_heredoc(char *safeword);
+int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/20 19:22:32 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/21 18:34:23 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ void	fill_array(t_element *cmd, t_pipe *exec)
 {
 	int	i;
 
-	// if (cmd->prev && cmd->prev->type < 3)
-	// 	free_cmd_arr(exec);
 	i = 0;
-	while (cmd && cmd->type < 3)
+	while (cmd && cmd->type != PIPE)
 	{
+		if (cmd->type >= 3 && cmd->next)
+			cmd = cmd->next;
 		free(exec->cmd_tab[i]);
 		exec->cmd_tab[i] = ft_calloc(ft_strlen(cmd->content) + 1, sizeof(char));
 		exec->cmd_tab[i] = ft_strcpy(exec->cmd_tab[i], cmd->content);
@@ -48,6 +48,11 @@ void	fill_array(t_element *cmd, t_pipe *exec)
 		i++;
 	}
 	exec->cmd_tab[i] = NULL;
+	/* if (fd_rd != STDIN)
+		close
+	if (fd_wr != STDOUT)
+		close
+	 */
 }
 
 /* Gets the size of the whole command for memory allocation */

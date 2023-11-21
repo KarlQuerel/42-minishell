@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/20 21:49:05 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/21 15:41:02 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,6 @@ int	ft_redirect(t_element *cmd)
 	return (1);
 }
 
-
-
-
-// CARO -> rejeter tous les lines qui se finissent avec < << >> >
-// par contre "" est accepte, je sais pas si on le fait
-
 // si control D dans le heredoc, le message 
 // bash: warning: here-document at line 1 delimited by end-of-file (wanted `heredoc')
 
@@ -114,27 +108,25 @@ int	ft_heredoc(char *heredoc)
 {
 	int	fd[2];
 
-	g_signals.location = IN_HEREDOC; // voir avec caro pas tout compris
+	g_signals.location = IN_HEREDOC;
 
-	printf("JE SUIS LA\n");
+	//printf("JE SUIS LA\n");
 	if (pipe(fd) < 0)
 	{
 		perror("bash");
 		return (0);
 	}
-	// heredoc = create_heredoc();
-	
-	write(fd[0], heredoc, ft_strlen(heredoc));
+	create_heredoc(heredoc);
 	return (1);
 }
 
-// char	*create_heredoc()
-// {
-// 	char *temp;
+/* Puts minishell in an interactive mode for here_doc */
+void	create_heredoc(char *safe_word)
+{
+	char	*words;
 
-	
-// 	while (g_signals.exit_status != 130)
-// 	{
-		
-// 	}
-// }
+	words = readline("> ");
+	while ((ft_strncmp(words, safe_word, ft_strlen(words)) != 0 || \
+	ft_strlen(words) != ft_strlen(safe_word)))
+		words = readline("> ");
+}
