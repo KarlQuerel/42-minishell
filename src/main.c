@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/20 21:41:41 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/21 16:31:08 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	ft_welcome(void)
 int main (int argc, char **argv, char **env)
 {
 	char				*line;
-	struct sigaction	signal;
+	//struct sigaction	signal;
 	t_env				*env_list;
 	t_element			*cmd_list;
 	t_pipe				*exec;
@@ -65,11 +65,12 @@ int main (int argc, char **argv, char **env)
 		exit(EXIT_FAILURE);
 	}
 
-	memset(&signal, 0, sizeof(signal));
+	/* memset(&signal, 0, sizeof(signal));
+	signal.sa_flags = SA_SIGINFO | SA_RESTART;
 	signal.sa_handler = &signal_handler;
 	if (sigaction(SIGINT, &signal, NULL) == -1 || \
 	sigaction(SIGQUIT, &signal, NULL) == -1)
-		return (EXIT_FAILURE);
+		return (EXIT_FAILURE); */
 
 	(void)argv;
 	if (argc != 1)
@@ -85,6 +86,12 @@ int main (int argc, char **argv, char **env)
 	while (1)
 	{
 		g_signals.location = IN_PROMPT;
+		if (set_signals() == EXIT_FAILURE)
+		{
+			//free
+			return (1);
+		}
+		
 		path = ft_prompt(env_list, NO_PRINT);
 		prompt = ft_strjoin(path, "$ ");
 		if (ft_strncmp(path, "/", ft_strlen(path)) != 0 && \
@@ -99,10 +106,10 @@ int main (int argc, char **argv, char **env)
 				ctrld_free(line, prompt, env_list, exec);
 			else
 			{
-				//close(*(exec->fd_temp));
+				//close un fd
+				//close(exec->fd_temp);
 				ft_putchar_fd('\n', STDERR_FILENO);
 				rl_reset_line_state();
-				//close un fd
 			}
 		}
 		if (line != NULL)
@@ -113,7 +120,7 @@ int main (int argc, char **argv, char **env)
 			if (line_errors_and_fix(line) == true)
 			{
 				cmd_list = parsing(line, env_list);
-				printlist_test(cmd_list);
+				//printlist_test(cmd_list);
 				exec->line = &line;
 				exec->prompt = &prompt;
 				ft_execute(cmd_list, &env_list, exec);

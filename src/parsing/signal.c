@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/17 20:04:30 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/21 17:53:28 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,59 @@ memoire, et non pour en plus gerer les signaux avec les 3 define plus haut
 ----------------------------------------------------------------------------
 */
 
+int	set_signals()
+{
+	struct sigaction	signal;
+
+	memset(&signal, 0, sizeof(signal));
+	//signal.sa_flags = SA_SIGINFO/*  | SA_RESTART */;
+	signal.sa_handler = &signal_handler;
+	if (sigaction(SIGINT, &signal, NULL) == -1)
+		return (EXIT_FAILURE);
+	//signal(SIGINT, sa_handler);
+	if (g_signals.location == IN_PROMPT)
+	{
+/* 		signal.sa_handler = &signal_handler;
+		if (sigaction(SIGINT, &signal, NULL) == -1)
+			return (EXIT_FAILURE); */
+		signal.sa_handler = SIG_IGN;
+		if (sigaction(SIGQUIT, &signal, NULL) == -1)
+			return (EXIT_FAILURE);
+		//signal(SIGQUIT, SIG_IGN);
+	}
+	else
+	{
+/* 		signal.sa_handler = &signal_handler;
+		if (sigaction(SIGINT, &signal, NULL) == -1 || \
+		sigaction(SIGQUIT, &signal, NULL) == -1)
+			return (EXIT_FAILURE); */
+
+/* 		signal.sa_handler = &signal_handler;
+		if (sigaction(SIGINT, &signal, NULL) == -1)
+			return (EXIT_FAILURE); */
+/* 		signal.sa_handler = SIG_DFL;
+		if (sigaction(SIGQUIT, &signal, NULL) == -1)
+			return (EXIT_FAILURE); */
+		//signal(SIGQUIT, SIG_DFL);
+		signal.sa_handler = SIG_DFL;
+		if (sigaction(SIGQUIT, &signal, NULL) == -1)
+			return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
 /* void	signal_handler(int signal, \
 siginfo_t *info, void *ucontext) */
-void	signal_handler(int signal/*, char *line*/)
+void	signal_handler(int signal)
 {
+	//struct sigaction	sig;
+	
 	if (signal == SIGINT) //ctrl + C
 	{
 		if (g_signals.location == IN_PROMPT)
 		{
 			ft_putchar_fd('\n', STDERR_FILENO);
 			rl_on_new_line();
-			// rl_replace_line("", 0); //a réglé le pb de prompt ne s'affiche pas sur ligne suivante
 			rl_redisplay();
 		}
 		else
@@ -70,11 +112,15 @@ void	signal_handler(int signal/*, char *line*/)
 	}
 	else if (signal == SIGQUIT) // ctrl + '\'
 	{
-		if (g_signals.location == IN_PROMPT)
-            rl_replace_line("", 0);
-        else if (g_signals.location == IN_COMMAND)
-            printf("Quit (core dumped)\n");
-		rl_on_new_line();
+		// if (g_signals.location == IN_PROMPT)
+		// {
+		// 	//sig.sa_handler = SIG_IGN;
+        //     //rl_replace_line("", 0);
+		// 	//sigprocmask(SIG_BLOCK, &sig, NULL);
+		// 	//(void)signal;
+		// }
+        if (g_signals.location == IN_COMMAND)
+			ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
         rl_redisplay(); // Redisplay the prompt or cleared line
 	}
 }
