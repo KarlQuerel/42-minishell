@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/20 14:48:03 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/21 11:31:10 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,6 @@ void	pipe_error(char *line);
 
 /*Errors2*/
 void	and_error(char *line);
-// void	str_error(char *line);
 bool	pipe_double_or_eof(char *line);
 
 /*Free*/

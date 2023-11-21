@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:39:52 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/18 13:11:29 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/21 11:32:15 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,11 @@ bool	first_character_error(char *line)
 		status = redirecters_error(line);
 	//KARL j'ai mis ca en commentaire pour tester /usr/bin/ls !
 	// else if (line[0] == '/')
-	// 	slash_error(line);
+	// 	slash_error(line); //du coup je supprimes cette fonction ou pas?
 	else if (line[0] == '|') //autre erreur : si les cmd avant/apres la pip ne sont pas des vrai cmd (erreur ligne 57 du google doc)
 		pipe_error(line);
 	else if (line[0] == '&')
 		and_error(line);
-	// else if (line[0] == '\'' || line[0] == '\"')
-	// 	str_error(line);
 	else if (line[0] == '$' && line[1] != '?')
 		printf("Command not found\n"); //sur bash ca met en plus le nom du user : avant l erreur mais je sais pas si c est necessaire
 	else
