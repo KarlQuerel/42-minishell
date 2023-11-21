@@ -240,7 +240,7 @@ void	ft_prompt2(char **prompt, char *word, t_env *env_list, char *path);
 
 /*Signal*/
 void		signal_handler(int signal);
-// void		ctrlD(char *line);
+int		set_signals(void);
 
 /*Utils*/
 char	*ft_joinstr_minishell(char *line, int len, char *str, char type);

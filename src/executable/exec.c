@@ -32,7 +32,6 @@ void	ft_execute(t_element *cmd, t_env **env, t_pipe *exec)
 	int	i;
 	int	size_cmd;
 
-	g_signals.location = IN_COMMAND;
 	if (!cmd)
 		return ;
 	i = 0;
@@ -88,6 +87,8 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 		return ;
 	fill_array(cmd, exec);
 	pid = fork();
+	g_signals.location = IN_COMMAND; // set_signal_state(IN_COMMAND); si in command SIGIGNORE, sinon ce que jfais deja dans signal
+	set_signals();
 	if (pid < 0)
 	{
 		perror("fork");
@@ -170,6 +171,8 @@ void	middle_pipes(t_element *cmd, t_env **env, t_pipe *exec)
 	if (pipe(exec->fd) < 0)
 		perror("Pipe");
 	pid = fork();
+	g_signals.location = IN_COMMAND; // set_signal_state(IN_COMMAND); si in command SIGIGNORE, sinon ce que jfais deja dans signal
+	set_signals();
 	if (pid < 0)
 		perror("Fork");
 	if (pid == 0)
@@ -188,6 +191,8 @@ void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec)
 	int	pid;
 
 	pid = fork();
+	g_signals.location = IN_COMMAND; // set_signal_state(IN_COMMAND); si in command SIGIGNORE, sinon ce que jfais deja dans signal
+	set_signals();
 	if (pid < 0)
 		perror("fork");
 	if (pid == 0)
