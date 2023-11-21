@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:08:27 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/20 14:55:22 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:30:28 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,6 @@ char	*empty_strings_malloc(char *line)
 			i++;
 		}
 	}
-	new_line = ft_calloc(size, sizeof(char));
+	new_line = ft_calloc(size + 1, sizeof(char));
 	return (new_line);
 }

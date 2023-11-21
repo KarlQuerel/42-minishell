@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/21 16:31:08 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:31:22 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,6 @@ int main (int argc, char **argv, char **env)
 				ctrld_free(line, prompt, env_list, exec);
 			else
 			{
-				//close un fd
-				//close(exec->fd_temp);
 				ft_putchar_fd('\n', STDERR_FILENO);
 				rl_reset_line_state();
 			}
