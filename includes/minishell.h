@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/21 16:31:37 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:09:59 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,8 +240,7 @@ void	ft_prompt2(char **prompt, char *word, t_env *env_list, char *path);
 
 /*Signal*/
 void		signal_handler(int signal);
-// void		ctrlD(char *line);
-int		set_signals();
+int		set_signals(void);
 
 /*Utils*/
 char	*ft_joinstr_minishell(char *line, int len, char *str, char type);

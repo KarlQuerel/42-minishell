@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/21 15:50:41 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:03:59 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	}
 	pid = fork();
 	g_signals.location = IN_COMMAND; // set_signal_state(IN_COMMAND); si in command SIGIGNORE, sinon ce que jfais deja dans signal
-	// set_signals();
+	set_signals();
 	if (pid < 0)
 	{
 		perror("fork");
@@ -163,7 +163,7 @@ void	middle_pipes(t_element *cmd, t_env **env, t_pipe *exec)
 		perror("Pipe");
 	pid = fork();
 	g_signals.location = IN_COMMAND; // set_signal_state(IN_COMMAND); si in command SIGIGNORE, sinon ce que jfais deja dans signal
-	// set_signals();
+	set_signals();
 	if (pid < 0)
 		perror("Fork");
 	if (pid == 0)
@@ -183,7 +183,7 @@ void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec)
 
 	pid = fork();
 	g_signals.location = IN_COMMAND; // set_signal_state(IN_COMMAND); si in command SIGIGNORE, sinon ce que jfais deja dans signal
-	// set_signals();
+	set_signals();
 	if (pid < 0)
 		perror("fork");
 	if (pid == 0)
