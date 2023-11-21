@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/18 13:43:20 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/18 17:56:51 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,21 +57,18 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 		}
 	}
 	exit_free(head, env, exec);
-	close(exec->std_in);
-	close(exec->std_out);
 	exit(g_signals.exit_status);
 	return (0);
 }
 
 /* exit_continued */
-void	ft_exit_continued(t_element *cmd, t_env **env, t_pipe *exec, t_element *head)
+void	ft_exit_continued(t_element *cmd, t_env **env, t_pipe *exec, \
+t_element *head)
 {
-		ft_putendl_fd("exit", STDOUT_FILENO);
-		ft_putstr_fd("bash: ", STDERR_FILENO);
-		ft_putstr_fd(cmd->next->content, STDERR_FILENO);
-		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
-		exit_free(head, env, exec);
-		close(exec->std_in);
-		close(exec->std_out);
-		exit(g_signals.exit_status);
+	ft_putendl_fd("exit", STDOUT_FILENO);
+	ft_putstr_fd("bash: ", STDERR_FILENO);
+	ft_putstr_fd(cmd->next->content, STDERR_FILENO);
+	ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+	exit_free(head, env, exec);
+	exit(g_signals.exit_status);
 }

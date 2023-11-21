@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   erase_spaces.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:51:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/18 14:08:38 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/20 14:54:29 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ char	*erase_spaces(char *line)
 	i = 0;
 	j = 0;
 	new_line = erase_spaces_malloc(line);
+	if (!new_line)
+		return (NULL); //??
 	while (line[i] == ' ')
 		i++;
 	while (line[i])
@@ -55,6 +57,31 @@ char	*erase_spaces(char *line)
 		free(line);
 		free(new_line);
 		return (NULL);
+	}
+	new_line[j] = '\0';
+	free(line);
+	new_line = erase_empty_strings(new_line);
+	return (new_line);
+}
+char	*erase_empty_strings(char *line)
+{
+	char	*new_line;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	new_line = empty_strings_malloc(line);
+	if (!new_line)
+		return (NULL); //??
+	while(line[i])
+	{
+		if (line[i] == '\'' && line[i+1] == '\'')
+			i += 2;
+		else if (line[i] == '\"' && line[i+1] == '\"')
+			i += 2;
+		else
+			new_line[j++] = line[i++];
 	}
 	new_line[j] = '\0';
 	free(line);

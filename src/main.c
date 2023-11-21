@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
 /*   Updated: 2023/11/20 21:41:41 by kquerel          ###   ########.fr       */
@@ -55,7 +55,6 @@ int main (int argc, char **argv, char **env)
 	t_env				*env_list;
 	t_element			*cmd_list;
 	t_pipe				*exec;
-	t_history			*entries;
 	char				*prompt;
 	char				*path; //ai du le creer pour free ft_prompt correctement
 
@@ -83,7 +82,6 @@ int main (int argc, char **argv, char **env)
 	using_history(); // initialisation de l'historique
 	env_list->env = env;
 	line = NULL;
-	entries = NULL;
 	while (1)
 	{
 		g_signals.location = IN_PROMPT;
@@ -101,6 +99,7 @@ int main (int argc, char **argv, char **env)
 				ctrld_free(line, prompt, env_list, exec);
 			else
 			{
+				//close(*(exec->fd_temp));
 				ft_putchar_fd('\n', STDERR_FILENO);
 				rl_reset_line_state();
 				//close un fd
@@ -108,7 +107,9 @@ int main (int argc, char **argv, char **env)
 		}
 		if (line != NULL)
 		{
+			//printf("line AVANT : [%s]\n", line);
 			line = erase_spaces(line);
+			//printf("line APRES : [%s]\n", line);
 			if (line_errors_and_fix(line) == true)
 			{
 				cmd_list = parsing(line, env_list);

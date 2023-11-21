@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:00:17 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/16 15:35:47 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/18 17:24:50 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,18 @@ matching key in **env*/
 bool	is_key_in_env(t_env *env_list, char *key)
 {
 	t_env	*tmp;
+	char	*shorter;
 
 	if (!key || !env_list)
 		return (false);
 	tmp = env_list;
+	if (ft_strlen(key) >= ft_strlen(tmp->key))
+		shorter = tmp->key;
+	else
+		shorter = key;
 	while (tmp)
 	{
-		if (strncmp(key, tmp->key, ft_strlen(key)) == 0 && \
+		if (ft_strncmp(key, tmp->key, ft_strlen(shorter)) == 0 && \
 		ft_strlen(key) == ft_strlen(tmp->key))
 			return (true);
 		tmp = tmp->next;

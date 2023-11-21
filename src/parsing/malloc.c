@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:08:27 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/17 18:24:53 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/20 14:55:22 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,28 @@ char	*joinstr_minishell_malloc(char *line, int len, char *str, char type)
 	if (!new_str)
 		return (NULL);
 	return (new_str);
+}
+
+char	*empty_strings_malloc(char *line)
+{
+	int		i;
+	int		size;
+	char	*new_line;
+
+	i = 0;
+	size = 0;
+	while(line[i])
+	{
+		if (line[i] == '\'' && line[i+1] == '\'')
+			i += 2;
+		else if (line[i] == '\"' && line[i+1] == '\"')
+			i += 2;
+		else
+		{
+			size++;
+			i++;
+		}
+	}
+	new_line = ft_calloc(size, sizeof(char));
+	return (new_line);
 }

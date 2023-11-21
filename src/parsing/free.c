@@ -21,9 +21,12 @@ void	exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec)
 	free_env_list(*env_list);
 /* 	free (exec->line[0]);
 	free (exec->prompt[0]); //a voir */
-	free (*exec->line);
-	free (*exec->prompt); //a voir
-	free_cmd_arr(exec);
+/*fAIRE UN BREAK ICI POUR VOIR CE QUI N EST PAS FREE A LA FIN DE AL FONCTION*/
+	free (*exec->line); //NE SE FREE PAS BIEN
+	free (*exec->prompt); //NE SE FREE PAS BIEN
+	free_cmd_arr(exec); //NE SE FREE PAS BIEN
+	close(exec->std_in);
+	close(exec->std_out);
 	free(exec);
 }
 

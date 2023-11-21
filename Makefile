@@ -6,7 +6,7 @@
 #    By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/11/18 14:40:16 by casomarr         ###   ########.fr        #
+#    Updated: 2023/11/18 17:54:48 by casomarr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,12 +77,16 @@ OBJS 		:= $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))
 OBJS		:= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 		
 CC          := cc
-CFLAGS      := -Wall -Wextra -Werror -g3
+CFLAGS      = -Wall -Wextra -Werror -g3
 HFLAGS    	:= -I$(INCLUDE_DIR)
 RFLAGS     	:= -lreadline
 MAKEFLAGS	+= --no-print-directory
 
 LIBFT       := libft/libft.a
+
+ifeq ($(debug), true)
+	CFLAGS	+= -fsanitize=address,undefined
+endif
 
 .PHONY: all clean fclean re
 

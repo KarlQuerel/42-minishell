@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
 /*   Updated: 2023/11/20 21:48:47 by kquerel          ###   ########.fr       */
@@ -106,13 +106,6 @@ extern t_global	g_signals;
 --> type is the command type
 --> cmd_tab is an array of all commands (type 0)
 */
-typedef struct s_history
-{
-	int nb;
-	char *cmd;
-	struct s_history *next;
-} t_history;
-
 
 typedef struct s_element
 {
@@ -193,6 +186,7 @@ bool	is_key_in_env(t_env *env_list, char *key);
 /*Erase_spaces*/
 void	erase_spaces_loop(char *line, char **new_line, int *i, int *j);
 char	*erase_spaces(char *line);
+char	*erase_empty_strings(char *line);
 
 /*Errors*/
 bool	line_errors_and_fix(char *line);
@@ -203,7 +197,6 @@ void	pipe_error(char *line);
 
 /*Errors2*/
 void	and_error(char *line);
-// void	str_error(char *line);
 bool	pipe_double_or_eof(char *line);
 
 /*Free*/
@@ -216,12 +209,12 @@ void	ctrld_free(char *line, char *prompt, t_env *env, t_pipe *exec);
 /*Lstnew*/
 t_element	*lstnew(char *line, int i, int type);
 t_env		*lstnew_env(char *line, int i);
-t_history	*lstnew_history(char *line, int size_of_list);
 
 /*Malloc*/
 int		count_spaces(char *line);
 char	*erase_spaces_malloc(char *line);
 char	*joinstr_minishell_malloc(char *line, int len, char *str, char type);
+char	*empty_strings_malloc(char *line);
 
 /*Parsing*/
 t_element 	*parsing(char *line, t_env *env_list);
@@ -277,6 +270,7 @@ void	cd(t_element *current, t_env *env_list);
 
 /*Cd2*/
 size_t	size_of_word(char *path, int i);
+void	forward_loop(char *current_path, char *home_value, int end);
 void	go_forward_until_user(char *current_path, char *home_value);
 void	go_backwards_until_user(char *current_path, char *home_value);
 
@@ -302,7 +296,10 @@ void	replace_var(t_env **env, char *key, char *value);
 void	put_var_in_env(t_env **env, char* key, char *value);
 
 /*History*/
-void		history(int option, int len);
+void	history(int option, int len);
+void	print_all_hist(HISTORY_STATE *info, HIST_ENTRY **list);
+void	print_hist_until_len(HISTORY_STATE *info, HIST_ENTRY **list, int len);
+void	free_history(HISTORY_STATE *info, HIST_ENTRY **list);
 
 /*Pwd*/
 char	*pwd(int option);

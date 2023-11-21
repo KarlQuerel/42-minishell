@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/17 11:39:58 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/18 18:14:28 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,7 @@ int	ft_export(t_element *cmd, t_env **env)
 		{
 			new_key_var = split_var(cmd->next->content);
 			join_new_var(env, new_key_var[0], new_key_var[1]);
-			// --> regle les pblms de valgrind mais export prend la value de la prochaine cmd
-			// free(new_key_var[0]);
-			// free(new_key_var[1]);
-			// free (new_key_var);
+			free (new_key_var);
 		}
 		cmd = cmd->next;
 	}
@@ -69,7 +66,7 @@ char	**split_var(char *s)
 	char	**ret;
 	char	*position_equal;
 
-	ret = malloc(sizeof(ret) * 3);
+	ret = ft_calloc(3, sizeof(ret));
 	if (!ret)
 	{
 		ft_putendl_fd("Malloc failed", STDERR_FILENO);
@@ -93,7 +90,7 @@ void	join_new_var(t_env **env, char *key, char *value)
 		return ;
 	}
 	replace_var(env, key, value);
-	// free (key);
+	free (key);
 	// free (value);
 	return ;
 }
