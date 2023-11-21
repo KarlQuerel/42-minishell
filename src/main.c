@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/20 14:56:13 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/20 21:41:41 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int main (int argc, char **argv, char **env)
 				//close(*(exec->fd_temp));
 				ft_putchar_fd('\n', STDERR_FILENO);
 				rl_reset_line_state();
+				//close un fd
 			}
 		}
 		if (line != NULL)
@@ -112,7 +113,7 @@ int main (int argc, char **argv, char **env)
 			if (line_errors_and_fix(line) == true)
 			{
 				cmd_list = parsing(line, env_list);
-				// printlist_test(cmd_list);
+				printlist_test(cmd_list);
 				exec->line = &line;
 				exec->prompt = &prompt;
 				ft_execute(cmd_list, &env_list, exec);

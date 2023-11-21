@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/18 17:46:54 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/20 18:53:17 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 
 /* Separates the pipes according to their number
 --- If we are on the (1 to n -1) range, we call midde_pipes
-	--> when we are on a pipe and the pipe is
 ---	If we are on the last pipe we call last_pipe
 (le traduire en anglais pour les commentaires)
 le status s'initialise dans waitpid pour etre reutilise dans les W flags de waitpid
@@ -108,15 +107,13 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	int	i = 0;
 	int	status;
-	//int	fd_temp; // pour le cas du CTRL+D et heredoc, on gerera apres
-	//int	fd[2]; // exec->fd[2];
-	
-	exec->fd_temp = ft_calloc(1, sizeof(int)); //doit free
-	*(exec->fd_temp) = 0;
+
+	status = 0;
+	exec->fd_temp = dup(STDIN_FILENO);
 	while (i <= exec->pipe_nb)
 	{
 		fill_array(cmd, exec);
-		if ( i < exec->pipe_nb)
+		if (i < exec->pipe_nb)
 		{
 			middle_pipes(cmd, env, exec);
 			while (cmd->next && cmd->type != PIPE)
@@ -170,12 +167,9 @@ void	middle_pipes(t_element *cmd, t_env **env, t_pipe *exec)
 		middle_dup(cmd, env, exec);
 	else
 	{
-		if (*(exec->fd_temp))
-			close(*(exec->fd_temp));
-		*(exec->fd_temp) = dup(exec->fd[0]);
-		close(exec->fd[0]);
 		close(exec->fd[1]);
-		//waitpid(pid, NULL, 0); // ca change rien avec ou sans
+		close(exec->fd_temp);
+		exec->fd_temp = exec->fd[0];
 	}
 }
 
@@ -191,9 +185,7 @@ void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec)
 		last_dup(cmd, env, exec);
 	else
 	{
-		if (*(exec->fd_temp))
-			close(*(exec->fd_temp));
-		close(exec->fd[0]);
-		waitpid(pid, NULL, 0);
+		exec->last_pid = pid;
+		close(exec->fd_temp);
 	}
 }

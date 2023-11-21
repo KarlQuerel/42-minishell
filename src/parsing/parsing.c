@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/18 15:34:51 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/20 11:12:22 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ int	determine_command_type(char *line, size_t end, size_t start)
 	(line[end - 1] == '\'' || line[end - 1] == '\"')))
 		return (OPTION);
 	if (start >= 2 && line[start - 2] == '<' && line[start - 3] == '<')
-		return (INFILE);
-	if (start >= 2 && line[start - 2] == '<')
 		return (INFILE_DELIMITER);
+	if (start >= 2 && line[start - 2] == '<')
+		return (INFILE);
 	if (start >= 2 && line[start - 2] == '>' && line[start - 3] == '>')
 		return (OUTFILE_APPEND);
 	if (start >= 2 && line[start - 2] == '>')

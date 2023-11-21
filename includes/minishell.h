@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/21 11:31:10 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/20 21:48:47 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ typedef struct s_pipe
 	int		std_out;
 	// int		fd_infile;
 	// int		fd_outfile;
-	int		*fd_temp;
+	int		fd_temp;
 	int		fd[2];
 	char 	**env;
 	char	**line;
@@ -350,5 +350,6 @@ void	ft_delete_node_cmd(t_element **head, t_element *to_delete);
 void	free_cmd_arr(t_pipe *exec);
 void	ft_exit_continued(t_element *cmd, t_env **env, t_pipe *exec, t_element *head);
 int	exec_command_continued(t_pipe *exec, int option);
+char	*create_heredoc();
 
 #endif
