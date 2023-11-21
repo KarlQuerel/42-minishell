@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/21 15:41:02 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/21 21:46:28 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	ft_outfile(t_element *cmd)
 }
 
 /* Handles redirections depending on cmd->type */
-int	ft_redirect(t_element *cmd)
+int	ft_redirect(t_element *cmd/* , t_pipe *exec */)
 {
 	t_element *tmp;
 
@@ -81,7 +81,7 @@ int	ft_redirect(t_element *cmd)
 		}
 		else if (tmp->type == INFILE_DELIMITER)
 		{
-			if (!ft_heredoc(tmp->content))
+			if (!ft_heredoc(tmp->content/* , exec */))
 			{
 				//gerer les free
 				return (0);
@@ -104,19 +104,26 @@ int	ft_redirect(t_element *cmd)
 
 
 /* Handles heredoc behavior */
-int	ft_heredoc(char *heredoc)
+int	ft_heredoc(char *heredoc/* , t_pipe *exec */)
 {
-	int	fd[2];
+	// int	fd[2];
 
+
+	int	fd;
 	g_signals.location = IN_HEREDOC;
 
-	//printf("JE SUIS LA\n");
-	if (pipe(fd) < 0)
-	{
-		perror("bash");
-		return (0);
-	}
+	printf("HEREDOC\n");
+	fd = open (heredoc, O_RDONLY | O_CREAT | O_EXCL, 0644);
 	create_heredoc(heredoc);
+	// exec->fd[0] = fd;
+	close(fd);
+	unlink(heredoc);
+	//printf("JE SUIS LA\n");
+	// if (pipe(fd) < 0)
+	// {
+	// 	perror("bash");
+	// 	return (0);
+	// }
 	return (1);
 }
 
