@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/21 18:10:23 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/22 18:27:49 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,9 @@ int	set_signals(void)
 	if (sigaction(SIGINT, &signal, NULL) == -1)
 		return (EXIT_FAILURE);
 	if (g_signals.location == IN_PROMPT)
-	{
 		signal.sa_handler = SIG_IGN;
-		if (sigaction(SIGQUIT, &signal, NULL) == -1)
-			return (EXIT_FAILURE);
-	}
-	else
-	{
-		if (sigaction(SIGQUIT, &signal, NULL) == -1)
-			return (EXIT_FAILURE);
-	}
+	if (sigaction(SIGQUIT, &signal, NULL) == -1)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
@@ -53,9 +46,11 @@ void	signal_handler(int signal)
 			ft_putchar_fd('\n', STDERR_FILENO);
 			rl_reset_line_state();
 		}
+		g_signals.exit_status = 130;
 	}
 	else if (signal == SIGQUIT)
 	{
+		g_signals.exit_status = 131;
 		if (g_signals.location == IN_COMMAND)
 			ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
 		rl_redisplay();

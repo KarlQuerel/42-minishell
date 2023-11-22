@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/20 15:39:52 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/22 17:24:30 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ no option was given, the option is set to -1, so that the totality
 of history is printed.*/
 void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec)
 {
+	if (is_cmd(cmd->content, "$?") == false)
+		g_signals.exit_status = 0;
 	if (is_cmd(cmd->content, "pwd") == true && check_next(cmd, NONE))
 		pwd(PRINT);
 	else if (is_cmd(cmd->content, "history") == true && \
@@ -94,4 +96,6 @@ void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec)
 		ft_dollar_question_mark();
 	else if (is_cmd(cmd->content, "exit") == true && check_next(cmd, NONE))
 		ft_exit(cmd, env_list, exec);
+	else
+		g_signals.exit_status = 127;
 }

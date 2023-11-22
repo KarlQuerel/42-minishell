@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/22 16:10:54 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/22 18:43:59 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,21 +161,19 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 	// }
 	pid_t	wpid;
 	wpid = 0;
-	//DEMANDER A ALBAN POURQUOI LE LAST PID NE MARCHE PAS
 	while (wpid != -1)
 	{
 		wpid = waitpid(-1, &status, 0);
 		//si le wpid matche le pid de la derniere commande, on assigne le exit status de cette commande dans notre g_var
 		if (wpid == exec->last_pid)
 			g_signals.exit_status = status;
-		continue ;
 	}
 	if (WIFSIGNALED(status))
 		g_signals.exit_status = WTERMSIG(status) + 128;
 	else if (WIFEXITED(status))
 		g_signals.exit_status = WEXITSTATUS(status);
-	else
-		g_signals.exit_status = status;
+	// else
+	// 	g_signals.exit_status = status;
 }
 
 /* Handles all middle pipes behaviour
@@ -216,6 +214,8 @@ void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec)
 		last_dup(cmd, env, exec);
 	else
 	{
+		//dans le cas ou ls -la | hello ---> on doit avoir exit_status = 127;
+		printf("EXIT STATUS PARENT : %d\n", g_signals.exit_status);	
 		exec->last_pid = pid;
 		close(exec->fd_temp);
 	}
