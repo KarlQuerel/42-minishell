@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/18 18:14:28 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:26:07 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_export(t_element *cmd, t_env **env)
 		ft_env((*env), cmd, 1);
 		return (0);
 	}
-	while (cmd && cmd->next)
+	while (cmd && cmd->next) // changer la boucle voir fill array
 	{
 		if (!ft_is_valid_key_var(cmd->next->content))
 		{

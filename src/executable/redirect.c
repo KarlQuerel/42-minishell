@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/21 21:46:28 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/22 14:47:46 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	ft_outfile(t_element *cmd)
 }
 
 /* Handles redirections depending on cmd->type */
-int	ft_redirect(t_element *cmd/* , t_pipe *exec */)
+int	ft_redirect(t_element *cmd, t_pipe *exec)
 {
 	t_element *tmp;
 
@@ -79,9 +79,9 @@ int	ft_redirect(t_element *cmd/* , t_pipe *exec */)
 				// gerer les free
 				return (0);
 		}
-		else if (tmp->type == INFILE_DELIMITER)
+		else if (tmp->type == HEREDOC)
 		{
-			if (!ft_heredoc(tmp->content/* , exec */))
+			if (!ft_heredoc(tmp->content, exec))
 			{
 				//gerer les free
 				return (0);
@@ -104,36 +104,40 @@ int	ft_redirect(t_element *cmd/* , t_pipe *exec */)
 
 
 /* Handles heredoc behavior */
-int	ft_heredoc(char *heredoc/* , t_pipe *exec */)
+int	ft_heredoc(char *heredoc, t_pipe *exec)
 {
-	// int	fd[2];
-
-
 	int	fd;
+	
 	g_signals.location = IN_HEREDOC;
-
-	printf("HEREDOC\n");
-	fd = open (heredoc, O_RDONLY | O_CREAT | O_EXCL, 0644);
-	create_heredoc(heredoc);
-	// exec->fd[0] = fd;
-	close(fd);
+	fd = open(heredoc, O_WRONLY | O_CREAT, 0644); // 3
+	if (fd < 0)
+	{
+		perror("bash HEREDOC");
+		return (0);
+	}
+	exec->fd_here_doc = dup(STDIN_FILENO); //4
+	while (g_signals.location == IN_HEREDOC)
+		create_heredoc(heredoc, exec, fd);
+	close(exec->fd_here_doc);  // 4
+	close(fd); // 3
 	unlink(heredoc);
-	//printf("JE SUIS LA\n");
-	// if (pipe(fd) < 0)
-	// {
-	// 	perror("bash");
-	// 	return (0);
-	// }
 	return (1);
 }
 
 /* Puts minishell in an interactive mode for here_doc */
-void	create_heredoc(char *safe_word)
+void	create_heredoc(char *safe_word, t_pipe *exec, int fd)
 {
 	char	*words;
 
+	(void)exec;
 	words = readline("> ");
 	while ((ft_strncmp(words, safe_word, ft_strlen(words)) != 0 || \
 	ft_strlen(words) != ft_strlen(safe_word)))
+	{
+		free (words);
 		words = readline("> ");
+		ft_putendl_fd(words, fd);
+	}
+	free (words);
+	g_signals.location = IN_COMMAND;
 }

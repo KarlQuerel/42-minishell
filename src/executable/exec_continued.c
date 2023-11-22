@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/21 22:00:13 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/22 14:06:03 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*ft_get_command(char **path, char *argument)
 */
 void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 {
-	if (!ft_redirect(cmd/*, exec*//* , NO_PRINT */))
+	if (!ft_redirect(cmd, exec))
 	{
 		// free
 		exit(1);

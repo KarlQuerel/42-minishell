@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/21 17:50:12 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/22 14:48:08 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	determine_command_type(char *line, size_t end, size_t start)
 	(line[end - 1] == '\'' || line[end - 1] == '\"')))
 		return (OPTION);
 	if (start >= 2 && line[start - 2] == '<' && line[start - 3] == '<')
-		return (INFILE_DELIMITER);
+		return (HEREDOC);
 	if (start >= 2 && line[start - 2] == '<')
 		return (INFILE);
 	if (start >= 2 && line[start - 2] == '>' && line[start - 3] == '>')
@@ -84,7 +84,7 @@ void	type_arg_after_cmd(t_element *current)
 		while (temp->type != PIPE && temp != NULL)
 		{
 			if (temp->type != OPTION && temp->type != INFILE && \
-			temp->type != INFILE_DELIMITER && \
+			temp->type != HEREDOC && \
 			temp->type != OUTFILE && temp->type != OUTFILE_APPEND)
 				temp->type = ARGUMENT;
 			if (temp->next != NULL)

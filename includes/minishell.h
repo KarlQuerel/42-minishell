@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/21 21:46:00 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/22 16:06:15 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@
 
 
 /*Macros*/
-# define COMMAND 0
-# define OPTION 1
+# define COMMAND 0 // ls
+# define OPTION 1 // -a
 # define ARGUMENT 2 //argument (str or char inside single or double quotes)
 # define INFILE 3 // < next commands based on infile's contents
 # define OUTFILE 4 // > puts result inside the outfile
-# define INFILE_DELIMITER 5 // << reads from infile until delimiter found
+# define HEREDOC 5 // << reads from infile until delimiter found
 # define OUTFILE_APPEND 6 // >> redirects output in append mode
 # define PIPE 7 //separator
 
@@ -110,6 +110,7 @@ extern t_global	g_signals;
 typedef struct s_element
 {
 	char	*content;
+	char	*hd_filename;
 	int		type;
 	bool	builtin;
 	struct s_element *prev;
@@ -337,10 +338,10 @@ int		ft_count_pipes(t_element *cmd);
 char	*ft_strcpy(char *dst, char *src);
 
 /*Redirect*/
-int		ft_redirect(t_element *cmd/* , int option */);
+int		ft_redirect(t_element *cmd, t_pipe *exec);
 int		ft_infile(char *filename);
 int		ft_outfile(t_element *cmd);
-int		ft_heredoc(char *heredoc);
+int		ft_heredoc(char *heredoc, t_pipe *exec);
 
 
 void	handle_sigint(int sig);
@@ -348,7 +349,7 @@ void	ft_delete_node_cmd(t_element **head, t_element *to_delete);
 void	free_cmd_arr(t_pipe *exec);
 void	ft_exit_continued(t_element *cmd, t_env **env, t_pipe *exec, t_element *head);
 int	exec_command_continued(t_pipe *exec, int option);
-void	create_heredoc(char *safeword);
+void	create_heredoc(char *safeword, t_pipe *exec, int fd);
 int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec);
 
 

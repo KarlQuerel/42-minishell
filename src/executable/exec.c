@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/21 17:03:05 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/22 16:10:54 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 // extern t_global g_signals;
 /*
 TO DO:
-- gerer open et HEREDOC, en dernier
-- redirections
+- HEREDOC
+- ls > caro | cat caro ----> doit s'executer en mm tmps
 */
 /* Handles the execution part
 --- Gets size_cmd to alloc memory accordingly
@@ -40,6 +40,22 @@ void	ft_execute(t_element *cmd, t_env **env, t_pipe *exec)
 	exec->cmd_tab = ft_calloc(size_cmd + 1, sizeof(char *));
 	if (!exec->cmd_tab)
 		return ;
+
+	// etape 1
+	/*
+		si type HEREDOC
+		open heredoc
+		>
+		close
+		stock le nom 
+		check si heredoc 1 existe 
+		
+	
+	*/
+
+
+	//create_heredoc(heredoc, exec, fd); // quand tu trouves un type HEREDOC je create un HEREDOC et ils retournent un fd
+	
 	if (exec->pipe_nb == 0)
 	{
 		// fill_array(cmd, exec);
@@ -56,7 +72,7 @@ int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec)
 	{
 		exec->std_in = dup(STDIN_FILENO);
 		exec->std_out = dup(STDOUT_FILENO);
-		if (!ft_redirect(cmd/*, exec*//* , NO_PRINT */))
+		if (!ft_redirect(cmd, exec))
 		{
 			// free et on return
 			ft_putstr_fd("Redirect failed\n", STDERR_FILENO); // A EFFACER
@@ -135,8 +151,9 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 			last_pipe(cmd, env, exec);
 		i++;
 	}
-	//wait(NULL); // ou waitpid
-	// if (waitpid(exec->last_pid, &status, 0) == -1)
+	// wait(NULL);
+	// //wait(NULL); // ou waitpid
+	// // if (waitpid(exec->last_pid, &status, 0) == -1)
 	// if (waitpid(-1, &status, 0) == -1)
 	// {
 	// 	perror("waitpid MULT_COMMANDS.C");

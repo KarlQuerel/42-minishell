@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/21 18:55:45 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/22 16:14:43 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,19 @@ void	fill_array(t_element *cmd, t_pipe *exec)
 	{
 		if (cmd->type >= 3)
 		{
-			if (cmd->next)
+			if (cmd->next && cmd->next->type != PIPE)
 				cmd = cmd->next;
 			else
 				break;
 		}
-		free(exec->cmd_tab[i]);
-		exec->cmd_tab[i] = ft_calloc(ft_strlen(cmd->content) + 1, sizeof(char));
-		exec->cmd_tab[i] = ft_strcpy(exec->cmd_tab[i], cmd->content);
-		cmd = cmd->next;
-		i++;
+		else
+		{
+			free(exec->cmd_tab[i]);
+			exec->cmd_tab[i] = ft_calloc(ft_strlen(cmd->content) + 1, sizeof(char));
+			exec->cmd_tab[i] = ft_strcpy(exec->cmd_tab[i], cmd->content);
+			cmd = cmd->next;
+			i++;
+		}
 	}
 	exec->cmd_tab[i] = NULL;
 	/* if (fd_rd != STDIN)
@@ -59,7 +62,7 @@ void	fill_array(t_element *cmd, t_pipe *exec)
 		close
 	 */
 	// i = -1;
-	// while (exec->cmd_tab[i++])
+	// while (exec->cmd_tab[++i])
 	// 	printf("exec->cmd_tab[%d] = %s\n", i, exec->cmd_tab[i]);
 }
 
@@ -69,9 +72,16 @@ int	get_size_cmd(t_element *cmd)
 	int	i;
 
 	i = 0;
-	while (cmd)
+	while (cmd && cmd->type != PIPE)
 	{
-		if (cmd->type < 3)
+		if (cmd->type >= 3)
+		{
+			if (cmd->next && cmd->next->type != PIPE)
+				cmd = cmd->next;
+			else
+				break;
+		}
+		else
 			i++;
 		cmd = cmd->next;
 	}
