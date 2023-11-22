@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/21 18:10:53 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/22 18:19:03 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int main (int argc, char **argv, char **env)
 	using_history(); // initialisation de l'historique
 	env_list->env = env;
 	line = NULL;
+	g_signals.exit_status = 0;
 	while (1)
 	{
 		g_signals.location = IN_PROMPT;
@@ -91,7 +92,6 @@ int main (int argc, char **argv, char **env)
 			//free
 			return (1);
 		}
-		
 		path = ft_prompt(env_list, NO_PRINT);
 		prompt = ft_strjoin(path, "$ ");
 		if (ft_strncmp(path, "/", ft_strlen(path)) != 0 && \

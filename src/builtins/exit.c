@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/21 19:17:19 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/22 18:57:03 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,14 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 		}
 	}
 	exit_free(head, env, exec);
-	exit(g_signals.exit_status);
-	return (0);
+	printf("exit code = %d\n", (int) g_signals.exit_status);
+	
+
+
+	// exit(ft_atoi(cmd->next->content) % 256);
+	// dans le cas ou exit ou meme exit 15
+
+	// exit(g_signals.exit_status);
 }
 
 /* exit_continued */

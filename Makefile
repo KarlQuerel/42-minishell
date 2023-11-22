@@ -6,7 +6,7 @@
 #    By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/11/18 17:54:48 by casomarr         ###   ########.fr        #
+#    Updated: 2023/11/22 16:59:57 by casomarr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -137,3 +137,4 @@ v : minishell
 
 sv : minishell
 	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell
+#--show-leak-kinds=all 
