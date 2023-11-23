@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:34:22 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/18 16:06:40 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 13:58:05 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ void	cd_home(t_env *env_list)
 Otherwise, calls the function cd_directory.*/
 void	cd(t_element *current, t_env *env_list)
 {
+	while (current->next && current->next->type >= 3)
+		current = current->next;
 	if (current->next == NULL || current->next->type == PIPE)
 		cd_home(env_list);
 	else

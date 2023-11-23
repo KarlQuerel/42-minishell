@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:35 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/20 18:44:43 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/23 14:25:14 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,23 @@ void	echo(t_element *current)
 		return ;
 	}
 	current = current->next;
-	while (current != NULL && current->type < 3)
+	while (current != NULL && current->type != PIPE)
 	{
-		if (current->type == OPTION && ft_strncmp(current->content, "-n", \
+		while (current && current->type >= 3)
+			current = current->next;
+		if (current && current->type == OPTION && ft_strncmp(current->content, "-n", \
 		ft_strlen(current->content)) == 0 && \
 		current->prev->type == COMMAND)
 		{
 			newline = false;
 			current = current->next;
 		}
-		ft_putstr_fd(current->content, STDOUT_FILENO);
-		if (current->next != NULL)
+		if (current)
+			ft_putstr_fd(current->content, STDOUT_FILENO);
+		if (current && current->next != NULL)
 			ft_putstr_fd(" ", STDOUT_FILENO);
-		current = current->next;
+		if (current)
+			current = current->next;
 	}
 	if (newline == true)
 		ft_putstr_fd("\n", STDOUT_FILENO);
