@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/23 16:24:11 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:04:35 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,14 @@ void	exitstatus_update_in_env(t_env **env)
 	t_element	*tmp;
 
 	tmp = ft_calloc(1, sizeof(t_element));
-	tmp->content = "DOLLAR=";
+	tmp->content = "export"; //pq ft_export commence par la commande
 	tmp->next = ft_calloc(1, sizeof(t_element));
-	tmp->next->content = ft_calloc(2, sizeof(char));
-	tmp->next->content[0] = g_signals.exit_status;
-	tmp->next->content[1] = '\0';
+	tmp->next->content = ft_calloc(13, sizeof(char));
+	tmp->next->content = ft_strjoin("EXIT_STATUS=", ft_itoa(g_signals.exit_status));
+	tmp->next->type = ARGUMENT;
+	//printf("exit status : [%d]\n", g_signals.exit_status); //%d et non %c
+	//tmp->next->next->content = ft_itoa(g_signals.exit_status);
+	//printf("content : [%s]\n",tmp->next->content);
 	tmp->next->next = NULL;
 	ft_export(tmp, env);
  }

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/23 16:25:28 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:08:33 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,24 @@ char	*dollar(char *content, t_env *env_list)
 	char	*key_to_find;
 	t_env	*key_in_env;
 
-	if (ft_strncmp(content, "?", 1) == 0 && ft_strlen(content) == 1)
+	if (ft_strncmp(content, "$?", 2) == 0 && ft_strlen(content) == 2)
 	{
 		free(content);
-		content = "DOLLAR";
+		content = "EXIT_STATUS";
 	}
 	key_to_find = ft_calloc(ft_strlen(content), sizeof(char));
-	key_to_find = strlcpy_middle(key_to_find, content, 1, ft_strlen(content));
+	key_to_find = strlcpy_middle(key_to_find, content, 0, ft_strlen(content));
  	if (is_key_in_env(env_list, key_to_find) == false)
 	{
-		free(content);
+		if (ft_strncmp(content, "EXIT_STATUS", ft_strlen(content)) != 0)
+			free(content);
 		content = NULL;
 	}
 	else
 	{
 		key_in_env = find_value_with_key_env(env_list, key_to_find);
-		free(content);
+		if (ft_strncmp(content, "EXIT_STATUS", ft_strlen(content)) != 0)
+			free(content);
 		content = ft_calloc(ft_strlen(key_in_env->value), sizeof(char));
 		content = strlcpy_middle(content, key_in_env->value, 0, ft_strlen(key_in_env->value));
 	}
