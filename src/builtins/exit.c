@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/23 13:22:42 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/23 16:26:37 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,38 +40,58 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 	t_element	*head;
 	int			exit_code;
 
-	head = cmd;
-	if ((cmd->next && cmd->next->type != ARGUMENT) || cmd->prev)
-		return (0);
-	if (cmd->next && (!ft_is_num(cmd->next->content) || \
-	!ft_atoi_check(cmd->next->content) || cmd->next->type != ARGUMENT))
-		ft_exit_continued(cmd, env, exec, head);
-	if (cmd->next && cmd->next->next)
+	if (!cmd->next && !cmd->prev)
 	{
 		ft_putendl_fd("exit", STDOUT_FILENO);
-		if (ft_is_num(cmd->next->content))
-		{
-			ft_putendl_fd("bash: exit: too many arguments", STDERR_FILENO);
-			return (0);
-		}
+		exit_free(cmd, env, exec);
+		exit(g_signals.exit_status);
 	}
-	if (cmd->next)
+	// pour ne pas executer les pipes
+	if (cmd->prev)
+		return (0);
+
+	head = cmd;
+	cmd = cmd->next;
+	while (cmd && cmd->type != PIPE)
 	{
-		exit_code = ft_atoi(cmd->next->content);
+		while (cmd && cmd->type >= 3)
+			cmd = cmd->next;
+		if (cmd && (!ft_is_num(cmd->content) || \
+		!ft_atoi_check(cmd->content) || cmd->type >= 3))
+			ft_exit_continued(cmd, env, exec, head, 0);
+		if (cmd && cmd->next && cmd->next->type < 3)
+			return (ft_exit_continued(cmd, env, exec, head, 1), 0);
+		if (cmd)
+		{
+			exit_code = ft_atoi(cmd->content);
+			exit_free(head, env, exec);
+			exit(exit_code % 256);
+		}
 		exit_free(head, env, exec);
-		exit(exit_code % 256);
+		exit(g_signals.exit_status);
+		if (cmd)
+			cmd = cmd->next;
 	}
-	exit(g_signals.exit_status);
+	return (0);
 }
 
 /* exit_continued */
 void	ft_exit_continued(t_element *cmd, t_env **env, t_pipe *exec, \
-t_element *head)
+t_element *head, int option)
 {
-	ft_putendl_fd("exit", STDOUT_FILENO);
-	ft_putstr_fd("bash: ", STDERR_FILENO);
-	ft_putstr_fd(cmd->next->content, STDERR_FILENO);
-	ft_putendl_fd(": numeric argument required", STDERR_FILENO);
-	exit_free(head, env, exec);
-	exit(g_signals.exit_status);
+	if (option == 0)
+	{
+		ft_putendl_fd("exit", STDOUT_FILENO);
+		ft_putstr_fd("bash: ", STDERR_FILENO);
+		ft_putstr_fd(cmd->content, STDERR_FILENO);
+		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+		exit_free(head, env, exec);
+		exit(g_signals.exit_status);
+	}
+	else
+	{
+		ft_putendl_fd("exit", STDOUT_FILENO);
+		if (ft_is_num(cmd->content))
+			ft_putendl_fd("bash: exit: too many arguments", STDERR_FILENO);
+	}
 }

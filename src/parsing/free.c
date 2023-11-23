@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/22 16:58:01 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 16:16:12 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ void	exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec)
 /* 	free (exec->line[0]);
 	free (exec->prompt[0]); //a voir */
 /*fAIRE UN BREAK ICI POUR VOIR CE QUI N EST PAS FREE A LA FIN DE AL FONCTION*/
+	close(exec->std_in);
+	close(exec->std_out);
 	free (*exec->line); //NE SE FREE PAS BIEN
 	free (*exec->prompt); //NE SE FREE PAS BIEN
 	free_cmd_arr(exec); //NE SE FREE PAS BIEN
-	close(exec->std_in);
-	close(exec->std_out);
 	free(exec);
 }
 
@@ -40,7 +40,7 @@ void	ctrld_free(char *line, char *prompt, t_env *env, t_pipe *exec)
 	free_env_list(env);
 	history(FREE_HISTORY, 0);
 	free(exec);
-	exit(0);
+	exit(0); // g_signals.exit_status;
 }
 
 void	free_cmd_arr(t_pipe *exec)
@@ -48,12 +48,13 @@ void	free_cmd_arr(t_pipe *exec)
 	int	i;
 
 	i = 0;
-	if (exec->cmd_tab)
-	{	
-		while (exec->cmd_tab[i])
-			free(exec->cmd_tab[i++]);
-		free(exec->cmd_tab);
-	}
+	free(exec->cmd_tab);
+	// if (exec->cmd_tab)
+	// {	
+	// 	while (exec->cmd_tab[i])
+	// 		free(exec->cmd_tab[i++]);
+	// 	free(exec->cmd_tab);
+	// }
 	if (exec->cmd_path)
 	{
 		i = 0;
