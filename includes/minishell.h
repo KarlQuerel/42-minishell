@@ -58,7 +58,7 @@
 # define ENV 1
 # define ECHO 2
 # define HISTORY 3
-//# define les autres 3
+# define CD 4
 
 # define FT_HISTORY 0
 # define FREE_HISTORY 1
@@ -218,9 +218,10 @@ char	*empty_strings_malloc(char *line);
 /*Parsing*/
 t_element 	*parsing(char *line, t_env *env_list);
 int 		determine_command_type(char *line, size_t end, size_t start);
-void		type_arg_after_cmd(t_element *current);
+void		type_arg_after_cmd(t_element **current);
 void		parsing_fix(t_element **cmd_list, t_env *env_list);
 void		builtin_fix(t_element **cmd_list);
+bool	no_cmd_before(t_element *current);
 
 /*Parsing2*/
 t_element	*parsing_initialisation(char *line, int *i, int *start);
@@ -256,6 +257,7 @@ bool	ft_atoi_check(char *str);
 
 /*Builtins_errors*/
 bool	no_option(t_element *cmd, t_element *head);
+bool	cd_option(t_element *cmd, t_element *head);
 bool	env_option(t_element *cmd);
 bool	history_option(t_element *cmd);
 bool	echo_option(t_element *cmd);

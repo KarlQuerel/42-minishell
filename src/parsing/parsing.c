@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/22 14:48:08 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/23 14:27:41 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,19 @@ int	determine_command_type(char *line, size_t end, size_t start)
 	line[start + 1] == '\"') && ft_isalpha(line[start + 2]) == 1 && \
 	(line[end - 1] == '\'' || line[end - 1] == '\"')))
 		return (OPTION);
-	if (start >= 2 && line[start - 2] == '<' && line[start - 3] == '<')
+	if (start >= 2 && ((line[start - 1] == ' ' && line[start - 2] == '<' && \
+	line[start - 3] == '<') || (line[start - 1] == '<' && \
+	line[start - 2] == '<')))
 		return (HEREDOC);
-	if (start >= 2 && line[start - 2] == '<')
+	if (start >= 2 && ((line[start - 1] == ' ' && line[start - 2] == '<') || \
+	line[start - 1] == '<'))
 		return (INFILE);
-	if (start >= 2 && line[start - 2] == '>' && line[start - 3] == '>')
+	if (start >= 2 && ((line[start - 1] == ' ' && line[start - 2] == '>' && \
+	line[start - 3] == '>') || (line[start - 1] == '>' && \
+	line[start - 2] == '>')))
 		return (OUTFILE_APPEND);
-	if (start >= 2 && line[start - 2] == '>')
+	if (start >= 2 && ((line[start - 1] == ' ' && line[start - 2] == '>') || \
+	line[start - 1] == '>'))
 		return (OUTFILE);
 	if (ft_strncmp(&line[start], "|", 1) == 0)
 		return (PIPE);
@@ -74,18 +80,16 @@ int	determine_command_type(char *line, size_t end, size_t start)
 	return (COMMAND);
 }
 
-void	type_arg_after_cmd(t_element *current)
+void	type_arg_after_cmd(t_element **current)
 {
 	t_element	*temp;
 
-	if (current->type == COMMAND && current->next)
+	if ((*current)->type == COMMAND && (*current)->next)
 	{
-		temp = current->next;
+		temp = (*current)->next;
 		while (temp->type != PIPE && temp != NULL)
 		{
-			if (temp->type != OPTION && temp->type != INFILE && \
-			temp->type != HEREDOC && \
-			temp->type != OUTFILE && temp->type != OUTFILE_APPEND)
+			if (temp->type != OPTION && temp->type < 3)
 				temp->type = ARGUMENT;
 			if (temp->next != NULL)
 				temp = temp->next;
@@ -131,10 +135,11 @@ void	parsing_fix(t_element **cmd_list, t_env *env_list)
 		return ;
 	while (current != NULL)
 	{
-		if ((current->prev != NULL && current->prev->type >= 3 && current->type < 3) || (current->prev == NULL && current->type < 3))
+		if ((current->prev != NULL && current->prev->type >= 3 && current->type < 3 \
+		&& no_cmd_before(current) == true) || (current->prev == NULL && current->type < 3))
 			current->type = COMMAND;
 		if (current->type == COMMAND && current->next)
-			type_arg_after_cmd(current);
+			type_arg_after_cmd(&current);
 		else if (current->content[0] == '$')
 		{
 			current->content = dollar(current->content, env_list);
@@ -163,4 +168,15 @@ void	builtin_fix(t_element **cmd_list)
 		current = current->next;
 	}
 	return ;
+}
+
+bool	no_cmd_before(t_element *current)
+{
+	while (current->prev && current->prev->type != PIPE)
+	{
+		if (current->prev->type == COMMAND)
+			return (false);
+		current = current->prev;
+	}
+	return (true);
 }
