@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:21:09 by karl              #+#    #+#             */
-/*   Updated: 2023/11/23 16:20:14 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 16:47:49 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	ft_env(t_env *env, t_element *cmd, int option)
 		return ;
 	while (env)
 	{
-		if (ft_strncmp(env->key, "DOLLAR", 2) == 0 && \
-		ft_strlen(env->key) == 2)
+		if (ft_strncmp(env->key, "EXIT_STATUS=", 7) == 0 && \
+		ft_strlen(env->key) == 7)
 			env = env->next;
 		else
 		{
