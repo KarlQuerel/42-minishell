@@ -3,43 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/11/20 12:28:45 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 15:05:24 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
 
-// --> CARO ->seg fault quand unset USER puis echo $USER
 /* Reproduces the unset command */
-int	ft_unset(t_element *cmd_list, t_env **env)
+int	ft_unset(t_element *cmd, t_env **env)
 {
 	t_env	*tmp;
 
-	while (cmd_list && cmd_list->next && cmd_list->next->type != PIPE)
+	while (cmd && cmd->type != PIPE)
 	{
 		tmp = *env;
-		if (!ft_is_valid_key_var(cmd_list->next->content) || \
-		ft_strchr(cmd_list->next->content, '='))
+		while (cmd && cmd->type >= 3)
+			cmd = cmd->next;
+		if (cmd && is_key_in_env(tmp, cmd->content) == true)
 		{
-			ft_putstr_fd("unset: ", STDOUT_FILENO);
-			ft_putstr_fd(cmd_list->next->content, STDOUT_FILENO);
-			ft_putendl_fd(" not a valid identifier", STDOUT_FILENO);
-			return (0);
+			tmp = find_value_with_key_env(tmp, cmd->content);
+			if (tmp)
+				ft_delete_node_env(env, tmp);
 		}
-		else
-		{
-			if (is_key_in_env(tmp, cmd_list->next->content) == true)
-			{
-				tmp = find_value_with_key_env(tmp, cmd_list->next->content);
-				if (tmp)
-					ft_delete_node_env(env, tmp);
-			}
-		}
-		cmd_list = cmd_list->next;
+		if (cmd)
+			cmd = cmd->next;
 	}
 	return (1);
 }
@@ -74,34 +65,3 @@ void	ft_delete_node_cmd(t_element **head, t_element *to_delete)
 		free(to_delete->content);
 	free(to_delete);
 }
-
-// {	
-// 	t_env	*tmp;
-
-// 	tmp = to_delete;
-// 	if (!to_delete)
-// 		return ;
-// 	if (to_delete->next && to_delete->prev == NULL)
-// 	{
-// 		(*head) = to_delete->next;
-// 		(*head)->prev = NULL;
-// 	}
-// 	else if (to_delete->next && to_delete->prev)
-// 	{
-// 		tmp = to_delete->next;
-// 		tmp->prev = to_delete->prev;
-// 		to_delete->prev->next = to_delete->next;
-// 	}
-// 	else if (to_delete->next == NULL && to_delete->prev)
-// 	{
-// 		tmp = to_delete->prev;
-// 		tmp->next = NULL;
-// 	}
-// 	free(to_delete->key);
-// 	to_delete->key = NULL;
-// 	free(to_delete->value);
-// 	to_delete->value = NULL;
-// 	free(to_delete);
-// 	to_delete = NULL;
-// 	return ;
-// }

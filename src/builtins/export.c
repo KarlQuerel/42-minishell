@@ -6,14 +6,12 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/23 13:24:53 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/23 15:44:22 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
-
-// EXPORT A FINIR
 
 /* Reproduces the export command */
 int	ft_export(t_element *cmd, t_env **env)
@@ -25,24 +23,26 @@ int	ft_export(t_element *cmd, t_env **env)
 		ft_env((*env), cmd, 1);
 		return (0);
 	}
-	while (cmd && cmd->next)
+	cmd = cmd->next;
+	while (cmd && cmd->type != PIPE)
 	{
-		// while (cmd->next && cmd->next->type >= 3)
-		// 	cmd = cmd->next;
-		if (!ft_is_valid_key_var(cmd->next->content))
+		while (cmd && cmd->type >= 3)
+			cmd = cmd->next;
+		if (cmd && !ft_is_valid_key_var(cmd->content))
 		{
 			ft_putstr_fd("export: ", STDOUT_FILENO);
-			ft_putstr_fd(cmd->next->content, STDOUT_FILENO);
+			ft_putstr_fd(cmd->content, STDOUT_FILENO);
 			ft_putendl_fd(": not a valid identifier", STDOUT_FILENO);
 			return (0);
 		}
-		else if (ft_strchr(cmd->next->content, '='))
+		else if (cmd && ft_strchr(cmd->content, '='))
 		{
-			new_key_var = split_var(cmd->next->content);
+			new_key_var = split_var(cmd->content);
 			join_new_var(env, new_key_var[0], new_key_var[1]);
 			free (new_key_var);
 		}
-		cmd = cmd->next;
+		if (cmd)
+			cmd = cmd->next;
 	}
 	return (1);
 }
