@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/23 19:28:48 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 20:56:06 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,11 @@ int main (int argc, char **argv, char **env)
 	g_signals.exit_status = 0;
 	while (1)
 	{
+		/* if (g_signals.location == QUIT_HEREDOC)
+		{
+			printf("HELLO\n");
+			unlink(exec->hd_filename);
+		} */
 		g_signals.location = IN_PROMPT;
 		if (set_signals() == EXIT_FAILURE)
 		{
@@ -119,7 +124,7 @@ int main (int argc, char **argv, char **env)
 			if (line_errors_and_fix(line) == true)
 			{
 				cmd_list = parsing(line, env_list);
-				printlist_test(cmd_list);
+				//printlist_test(cmd_list);
 				exec->line = &line;
 				exec->prompt = &prompt;
 				ft_execute(cmd_list, &env_list, exec);
