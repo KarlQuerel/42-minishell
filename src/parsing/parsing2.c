@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:55:56 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/18 13:59:54 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 19:34:24 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_element	*parsing_initialisation(char *line, int *i, int *start)
 	(*i) = 0;
 	while ((line[(*i)] == '<' || line[(*i)] == '>') && line[(*i)])
 		(*i)++;
-	if ((*i) != 0)
+	if ((*i) != 0 && line[(*i)] == ' ')
 		(*i)++; //pour passer l'espace après le redirecteur
 	(*start) = (*i);
 	typestr = parsing_str_type(line, (*i));

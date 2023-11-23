@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:38 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/20 12:19:06 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 19:18:19 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ First if : if we ask to print more entries than there exist,
 print all existing entries.*/
 void	history(int option, int len)
 {
+	//Demander a Alban s'il considere que ce sont pas des fonctions interdites
+	// history >2 du coup marche pas mais c est pas mes fonctions et history etait
+	// pas a faire donc on s'en fout non?
 	HISTORY_STATE	*info;
 	HIST_ENTRY		**list;
 

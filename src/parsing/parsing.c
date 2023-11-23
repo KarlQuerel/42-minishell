@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/23 14:27:41 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 19:40:28 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,19 +55,19 @@ int	determine_command_type(char *line, size_t end, size_t start)
 	line[start + 1] == '\"') && ft_isalpha(line[start + 2]) == 1 && \
 	(line[end - 1] == '\'' || line[end - 1] == '\"')))
 		return (OPTION);
-	if (start >= 2 && ((line[start - 1] == ' ' && line[start - 2] == '<' && \
-	line[start - 3] == '<') || (line[start - 1] == '<' && \
+	if ((start >= 3 && (line[start - 1] == ' ' && line[start - 2] == '<' && \
+	line[start - 3] == '<')) || (start >= 2 && (line[start - 1] == '<' && \
 	line[start - 2] == '<')))
 		return (HEREDOC);
-	if (start >= 2 && ((line[start - 1] == ' ' && line[start - 2] == '<') || \
-	line[start - 1] == '<'))
+	if ((start >= 2 && (line[start - 1] == ' ' && line[start - 2] == '<')) || \
+	(start >= 1 && line[start - 1] == '<'))
 		return (INFILE);
-	if (start >= 2 && ((line[start - 1] == ' ' && line[start - 2] == '>' && \
-	line[start - 3] == '>') || (line[start - 1] == '>' && \
+	if ((start >= 3 && (line[start - 1] == ' ' && line[start - 2] == '>' && \
+	line[start - 3] == '>')) || (start >= 2 && (line[start - 1] == '>' && \
 	line[start - 2] == '>')))
 		return (OUTFILE_APPEND);
-	if (start >= 2 && ((line[start - 1] == ' ' && line[start - 2] == '>') || \
-	line[start - 1] == '>'))
+	if ((start >= 2 && (line[start - 1] == ' ' && line[start - 2] == '>')) || \
+	(start >= 1 && line[start - 1] == '>'))
 		return (OUTFILE);
 	if (ft_strncmp(&line[start], "|", 1) == 0)
 		return (PIPE);
