@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/23 17:04:35 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:46:32 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	t_element	*head;
 	int			exit_code;
+	int	arg_count;
 
 	if (!cmd->next && !cmd->prev)
 	{
@@ -50,27 +51,55 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 	if (cmd->prev)
 		return (0);
 
+	arg_count = 0;
 	head = cmd;
 	cmd = cmd->next;
 	while (cmd && cmd->type != PIPE)
 	{
-		while (cmd && cmd->type >= 3)
-			cmd = cmd->next;
-		if (cmd && (!ft_is_num(cmd->content) || \
-		!ft_atoi_check(cmd->content) || cmd->type >= 3))
-			ft_exit_continued(cmd, env, exec, head, 0);
-		if (cmd && cmd->next && cmd->next->type < 3)
-			return (ft_exit_continued(cmd, env, exec, head, 1), 0);
-		if (cmd)
+		if (cmd->type == ARGUMENT)
+		{
+			arg_count++;
+			if (arg_count > 1)
+				return (ft_exit_continued(cmd, env, exec, head, 1), 0);
+			if (!ft_is_num(cmd->content) || \
+		!ft_atoi_check(cmd->content))
+				ft_exit_continued(cmd, env, exec, head, 0);
+		}
+		cmd = cmd->next;
+		
+		// while (cmd && cmd->type >= 3)
+		// 	cmd = cmd->next;
+		// if (cmd && (!ft_is_num(cmd->content) || \
+		// !ft_atoi_check(cmd->content) || cmd->type >= 3))
+		// 	ft_exit_continued(cmd, env, exec, head, 0);
+		// if (cmd && cmd->next && cmd->next->type < 3)
+		// 	return (ft_exit_continued(cmd, env, exec, head, 1), 0);
+		// if (cmd)
+		// {
+		// 	exit_code = ft_atoi(cmd->content);
+		// 	exit_free(head, env, exec);
+		// 	ft_putendl_fd("exit", STDERR_FILENO);
+		// 	exit(exit_code % 256);
+		// }
+		// ft_putendl_fd("exit", STDERR_FILENO);
+		// exit_free(head, env, exec);
+		// exit(g_signals.exit_status);
+		// if (cmd)
+		// 	cmd = cmd->next;
+	}
+	if (arg_count > 1)
+		return (ft_exit_continued(cmd, env, exec, head, 1), 0);
+	cmd = head;
+	while (cmd && cmd->type != PIPE)
+	{
+		if (cmd->type == ARGUMENT)
 		{
 			exit_code = ft_atoi(cmd->content);
 			exit_free(head, env, exec);
+			ft_putendl_fd("exit", STDERR_FILENO);
 			exit(exit_code % 256);
 		}
-		exit_free(head, env, exec);
-		exit(g_signals.exit_status);
-		if (cmd)
-			cmd = cmd->next;
+		cmd = cmd->next;
 	}
 	return (0);
 }
@@ -81,18 +110,18 @@ t_element *head, int option)
 {
 		if (option == 0)
 	{
-		ft_putendl_fd("exit", STDOUT_FILENO);
+		ft_putendl_fd("exit", STDERR_FILENO);
 		ft_putstr_fd("bash: ", STDERR_FILENO);
 		ft_putstr_fd(cmd->content, STDERR_FILENO);
 		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
 		exit_free(head, env, exec);
+		g_signals.exit_status = 2;
 		exit(g_signals.exit_status);
 	}
 	else
 	{
 		ft_putendl_fd("exit", STDOUT_FILENO);
-		if (ft_is_num(cmd->content))
-			ft_putendl_fd("bash: exit: too many arguments", STDERR_FILENO);
+		ft_putendl_fd("bash: exit: too many arguments", STDERR_FILENO);
 	}
 }
 
