@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/22 17:35:21 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 16:25:28 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ char	*dollar(char *content, t_env *env_list)
 	char	*key_to_find;
 	t_env	*key_in_env;
 
+	if (ft_strncmp(content, "?", 1) == 0 && ft_strlen(content) == 1)
+	{
+		free(content);
+		content = "DOLLAR";
+	}
 	key_to_find = ft_calloc(ft_strlen(content), sizeof(char));
 	key_to_find = strlcpy_middle(key_to_find, content, 1, ft_strlen(content));
  	if (is_key_in_env(env_list, key_to_find) == false)

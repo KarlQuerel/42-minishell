@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/23 16:26:37 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/23 16:24:11 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 void	ft_exit_continued(t_element *cmd, t_env **env, t_pipe *exec, \
 t_element *head, int option)
 {
-	if (option == 0)
+		if (option == 0)
 	{
 		ft_putendl_fd("exit", STDOUT_FILENO);
 		ft_putstr_fd("bash: ", STDERR_FILENO);
@@ -95,3 +95,17 @@ t_element *head, int option)
 			ft_putendl_fd("bash: exit: too many arguments", STDERR_FILENO);
 	}
 }
+
+void	exitstatus_update_in_env(t_env **env)
+{
+	t_element	*tmp;
+
+	tmp = ft_calloc(1, sizeof(t_element));
+	tmp->content = "DOLLAR=";
+	tmp->next = ft_calloc(1, sizeof(t_element));
+	tmp->next->content = ft_calloc(2, sizeof(char));
+	tmp->next->content[0] = g_signals.exit_status;
+	tmp->next->content[1] = '\0';
+	tmp->next->next = NULL;
+	ft_export(tmp, env);
+ }
