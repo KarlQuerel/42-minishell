@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
 /*   Updated: 2023/11/23 18:46:32 by kquerel          ###   ########.fr       */
@@ -108,7 +108,7 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 void	ft_exit_continued(t_element *cmd, t_env **env, t_pipe *exec, \
 t_element *head, int option)
 {
-	if (option == 0)
+		if (option == 0)
 	{
 		ft_putendl_fd("exit", STDERR_FILENO);
 		ft_putstr_fd("bash: ", STDERR_FILENO);
@@ -124,3 +124,20 @@ t_element *head, int option)
 		ft_putendl_fd("bash: exit: too many arguments", STDERR_FILENO);
 	}
 }
+
+void	exitstatus_update_in_env(t_env **env)
+{
+	t_element	*tmp;
+
+	tmp = ft_calloc(1, sizeof(t_element));
+	tmp->content = "export"; //pq ft_export commence par la commande
+	tmp->next = ft_calloc(1, sizeof(t_element));
+	tmp->next->content = ft_calloc(13, sizeof(char));
+	tmp->next->content = ft_strjoin("EXIT_STATUS=", ft_itoa(g_signals.exit_status));
+	tmp->next->type = ARGUMENT;
+	//printf("exit status : [%d]\n", g_signals.exit_status); //%d et non %c
+	//tmp->next->next->content = ft_itoa(g_signals.exit_status);
+	//printf("content : [%s]\n",tmp->next->content);
+	tmp->next->next = NULL;
+	ft_export(tmp, env);
+ }

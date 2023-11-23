@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/23 14:49:23 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/23 16:53:07 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@
 */
 typedef struct	s_global
 {
-	unsigned char	exit_status;
+	int	exit_status;
 	int				location;
 }	t_global;
 
@@ -280,6 +280,7 @@ char	*dollar(char *content, t_env *env_list);
 void	ft_dollar_question_mark(void);
 
 /*Echo*/
+bool	no_further_args(t_element *cmd);
 void	echo(t_element *current);
 
 /*Env*/
@@ -287,6 +288,7 @@ void	ft_env(t_env *env, t_element *cmd, int option);
 
 /*Exit*/
 int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec);
+void	exitstatus_update_in_env(t_env **env);
 
 /*Export*/
 int		ft_export(t_element *cmd_list, t_env **env);

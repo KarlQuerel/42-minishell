@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/23 16:32:03 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/23 16:40:45 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int main (int argc, char **argv, char **env)
 			//free
 			return (1);
 		}
+		exitstatus_update_in_env(&env_list);
 		path = ft_prompt(env_list, NO_PRINT);
 		prompt = ft_strjoin(path, "$ ");
 		if (ft_strncmp(path, "/", ft_strlen(path)) != 0 && \

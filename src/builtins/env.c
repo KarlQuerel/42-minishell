@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:21:09 by karl              #+#    #+#             */
-/*   Updated: 2023/11/16 15:29:52 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/23 16:47:49 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,17 @@ void	ft_env(t_env *env, t_element *cmd, int option)
 		return ;
 	while (env)
 	{
+		if (ft_strncmp(env->key, "EXIT_STATUS=", 7) == 0 && \
+		ft_strlen(env->key) == 7)
+			env = env->next;
+		else
+		{
 		if (option == 1)
 			ft_putstr_fd("export ", STDOUT_FILENO);
 		ft_putstr_fd(env->key, STDOUT_FILENO);
 		ft_putstr_fd("=", STDOUT_FILENO);
 		ft_putendl_fd(env->value, STDOUT_FILENO);
 		env = env->next;
+		}
 	}
 }
