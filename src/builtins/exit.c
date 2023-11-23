@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/22 18:57:03 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 13:22:42 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ else if the second argument is not valid, the program keeps running */
 int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	t_element	*head;
+	int			exit_code;
 
 	head = cmd;
 	if ((cmd->next && cmd->next->type != ARGUMENT) || cmd->prev)
@@ -54,15 +55,13 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 			return (0);
 		}
 	}
-	exit_free(head, env, exec);
-	printf("exit code = %d\n", (int) g_signals.exit_status);
-	
-
-
-	// exit(ft_atoi(cmd->next->content) % 256);
-	// dans le cas ou exit ou meme exit 15
-
-	// exit(g_signals.exit_status);
+	if (cmd->next)
+	{
+		exit_code = ft_atoi(cmd->next->content);
+		exit_free(head, env, exec);
+		exit(exit_code % 256);
+	}
+	exit(g_signals.exit_status);
 }
 
 /* exit_continued */

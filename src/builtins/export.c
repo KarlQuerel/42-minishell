@@ -6,12 +6,14 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/22 13:26:07 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/23 13:24:53 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../libft/libft.h"
+
+// EXPORT A FINIR
 
 /* Reproduces the export command */
 int	ft_export(t_element *cmd, t_env **env)
@@ -23,8 +25,10 @@ int	ft_export(t_element *cmd, t_env **env)
 		ft_env((*env), cmd, 1);
 		return (0);
 	}
-	while (cmd && cmd->next) // changer la boucle voir fill array
+	while (cmd && cmd->next)
 	{
+		// while (cmd->next && cmd->next->type >= 3)
+		// 	cmd = cmd->next;
 		if (!ft_is_valid_key_var(cmd->next->content))
 		{
 			ft_putstr_fd("export: ", STDOUT_FILENO);

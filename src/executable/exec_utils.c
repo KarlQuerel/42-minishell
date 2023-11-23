@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/22 16:56:03 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 13:22:57 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,7 @@ void	fill_array(t_element *cmd, t_pipe *exec)
 		}
 		else
 		{
-			//free(exec->cmd_tab[i]);
-			exec->cmd_tab[i] = ft_calloc(ft_strlen(cmd->content) + 1, sizeof(char));
-			exec->cmd_tab[i] = ft_strcpy(exec->cmd_tab[i], cmd->content);
+			exec->cmd_tab[i] = cmd->content;
 			cmd = cmd->next;
 			i++;
 		}

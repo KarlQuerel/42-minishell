@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/22 18:43:59 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 13:20:32 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,11 @@ void	ft_execute(t_element *cmd, t_env **env, t_pipe *exec)
 	*/
 
 
+
 	//create_heredoc(heredoc, exec, fd); // quand tu trouves un type HEREDOC je create un HEREDOC et ils retournent un fd
-	
+
+	// ft_parse(t_element *cmd);
+
 	if (exec->pipe_nb == 0)
 	{
 		// fill_array(cmd, exec);
@@ -215,7 +218,7 @@ void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec)
 	else
 	{
 		//dans le cas ou ls -la | hello ---> on doit avoir exit_status = 127;
-		printf("EXIT STATUS PARENT : %d\n", g_signals.exit_status);	
+		// printf("EXIT STATUS PARENT : %d\n", g_signals.exit_status);	
 		exec->last_pid = pid;
 		close(exec->fd_temp);
 	}
