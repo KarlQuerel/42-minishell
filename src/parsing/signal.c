@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/22 18:27:49 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 20:34:30 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int	set_signals(void)
 	signal.sa_handler = &signal_handler;
 	if (sigaction(SIGINT, &signal, NULL) == -1)
 		return (EXIT_FAILURE);
-	if (g_signals.location == IN_PROMPT)
+	if (g_signals.location == IN_PROMPT || \
+	g_signals.location == IN_HEREDOC) //marche pas pour heredoc
 		signal.sa_handler = SIG_IGN;
 	if (sigaction(SIGQUIT, &signal, NULL) == -1)
 		return (EXIT_FAILURE);
@@ -41,10 +42,17 @@ void	signal_handler(int signal)
 			rl_on_new_line();
 			rl_redisplay();
 		}
-		else
+		else if (g_signals.location == IN_COMMAND)
 		{
 			ft_putchar_fd('\n', STDERR_FILENO);
 			rl_reset_line_state();
+		}
+		else
+		{
+			//IN HEREDOC
+			g_signals.exit_status = 130;
+			g_signals.location = QUIT_HEREDOC;
+			exit(130);
 		}
 		g_signals.exit_status = 130;
 	}

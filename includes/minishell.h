@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/23 16:53:07 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 20:17:48 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define IN_PROMPT 0
 # define IN_COMMAND 1
 # define IN_HEREDOC 2
+# define QUIT_HEREDOC 3
 
 
 /*Macros*/
@@ -110,7 +111,6 @@ extern t_global	g_signals;
 typedef struct s_element
 {
 	char	*content;
-	char	*hd_filename;
 	int		type;
 	bool	builtin;
 	struct s_element *prev;
@@ -136,6 +136,8 @@ typedef struct s_env
 /* To handles pipes */
 typedef struct s_pipe
 {
+	int		fd_close_heredoc; //test
+	char	*hd_filename; //test
 	int		fd_here_doc;
 	int		pipe_nb;
 	pid_t		*pid;

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/22 17:56:02 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 20:23:12 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,12 +109,15 @@ int	ft_heredoc(char *heredoc, t_pipe *exec)
 	int	fd;
 	
 	g_signals.location = IN_HEREDOC;
+	set_signals();
 	fd = open(heredoc, O_WRONLY | O_CREAT, 0644); // 3
 	if (fd < 0)
 	{
 		perror("bash HEREDOC");
 		return (0);
 	}
+	exec->fd_close_heredoc = fd;
+	exec->hd_filename = heredoc;
 	exec->fd_here_doc = dup(STDIN_FILENO); //4
 	while (g_signals.location == IN_HEREDOC)
 		create_heredoc(heredoc, exec, fd);
@@ -134,6 +137,12 @@ void	create_heredoc(char *safe_word, t_pipe *exec, int fd)
 	while ((ft_strncmp(words, safe_word, ft_strlen(words)) != 0 || \
 	ft_strlen(words) != ft_strlen(safe_word)))
 	{
+/* 		if (g_signals.location == QUIT_HEREDOC)
+		{
+			printf("HELLO\n");
+			free(words);
+			return ;
+		} */
 		free (words);
 		words = readline("> ");
 		ft_putendl_fd(words, fd);

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/23 18:08:33 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 20:55:51 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,25 @@ char	*dollar(char *content, t_env *env_list)
 	if (ft_strncmp(content, "$?", 2) == 0 && ft_strlen(content) == 2)
 	{
 		free(content);
-		content = "EXIT_STATUS";
-	}
-	key_to_find = ft_calloc(ft_strlen(content), sizeof(char));
-	key_to_find = strlcpy_middle(key_to_find, content, 0, ft_strlen(content));
- 	if (is_key_in_env(env_list, key_to_find) == false)
-	{
-		if (ft_strncmp(content, "EXIT_STATUS", ft_strlen(content)) != 0)
-			free(content);
-		content = NULL;
+		key_to_find = "EXIT_STATUS";
 	}
 	else
 	{
+		key_to_find = ft_calloc(ft_strlen(content), sizeof(char));
+		key_to_find = strlcpy_middle(key_to_find, content, 1, ft_strlen(content));
+	}
+	if (is_key_in_env(env_list, key_to_find) == true)
+	{
 		key_in_env = find_value_with_key_env(env_list, key_to_find);
-		if (ft_strncmp(content, "EXIT_STATUS", ft_strlen(content)) != 0)
-			free(content);
+		// if (ft_strncmp(content, "EXIT_STATUS", ft_strlen(content)) != 0)
+		// 	free(content);
 		content = ft_calloc(ft_strlen(key_in_env->value), sizeof(char));
 		content = strlcpy_middle(content, key_in_env->value, 0, ft_strlen(key_in_env->value));
 	}
-	free(key_to_find);
+	if (ft_strncmp(key_to_find, "EXIT_STATUS", ft_strlen(key_to_find)) && \
+	ft_strlen(key_to_find) == ft_strlen("EXIT_STATUS"))
+		free(key_to_find);
+	printf("content = [%s]\n", content);
 	return (content);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/23 14:02:14 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/23 20:34:13 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,11 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	}
 	if (pid == 0)
 		handle_command(cmd, env, exec);
+/* 	if (g_signals.location == QUIT_HEREDOC)
+	{
+		ft_putendl_fd("HELLO", STDERR_FILENO);
+		unlink(exec->hd_filename);
+	} */
 	if (waitpid(pid, &status, 0) == -1)
 	{
 		perror("waitpid");
