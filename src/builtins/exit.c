@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/23 13:22:42 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/23 16:24:11 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,18 @@ t_element *head)
 	ft_putendl_fd(": numeric argument required", STDERR_FILENO);
 	exit_free(head, env, exec);
 	exit(g_signals.exit_status);
+}
+
+void	exitstatus_update_in_env(t_env **env)
+{
+	t_element	*tmp;
+
+	tmp = ft_calloc(1, sizeof(t_element));
+	tmp->content = "DOLLAR=";
+	tmp->next = ft_calloc(1, sizeof(t_element));
+	tmp->next->content = ft_calloc(2, sizeof(char));
+	tmp->next->content[0] = g_signals.exit_status;
+	tmp->next->content[1] = '\0';
+	tmp->next->next = NULL;
+	ft_export(tmp, env);
 }

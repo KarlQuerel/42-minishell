@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:39:41 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/23 14:29:51 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 15:33:14 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,18 +87,28 @@ bool	history_option(t_element *cmd)
 
 bool	echo_option(t_element *cmd)
 {
-	if (cmd->next && cmd->next->type == OPTION && \
-	(ft_strncmp(cmd->next->content, "-n", 2) != 0 || \
-	ft_strlen(cmd->next->content) != 2))
-	{	
-		ft_putendl_fd("echo only accepts option -n", STDERR_FILENO);
-		return (false);
-	}
-	if ((cmd->next && cmd->next->type == OPTION && ((cmd->next->next && \
-	cmd->next->next->type != ARGUMENT) || cmd->next->next == NULL)))
+	int	args_count;
+
+	args_count = 0;
+	while (cmd && cmd->type != PIPE)
 	{
-		ft_putstr_fd("", STDOUT_FILENO);
-		return (false);
+		if (cmd->type == ARGUMENT)
+			args_count++;
+		if (cmd->type == OPTION && \
+		(ft_strncmp(cmd->content, "-n", 2) != 0 || \
+		ft_strlen(cmd->content) != 2))
+		{	
+			ft_putendl_fd("echo only accepts option -n", STDERR_FILENO);
+			return (false);
+		}
+		if (cmd->type == OPTION && (args_count == 0 && no_further_args(cmd) == true)) /*pas besoin de
+		check si l option est valide car si ce n etait pas le cas aurait return 
+		dans la if precedente*/
+		{
+			ft_putstr_fd("", STDOUT_FILENO);
+			return (false);
+		}
+		cmd = cmd->next;
 	}
 	return (true);
 }
