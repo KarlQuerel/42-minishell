@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/24 19:50:24 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/24 22:25:43 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 /*
 TO DO:
 - HEREDOC
+- CARO -->changer la valeur de EXIT_STATUS dans l'environnement
+			la ou tu fais appel a CTRL D dans le main
+- free le dernier iota dans l'exec
 */
 /* Handles the execution part
 --- Gets size_cmd to alloc memory accordingly
@@ -128,11 +131,20 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
 	//free(exit_status->value);
 	if (WIFEXITED(status))
+	{
+		free(exit_status->value);
 		exit_status->value = ft_itoa(WEXITSTATUS(status));
+	}
 	else if (WIFSIGNALED(status))
+	{
+		free(exit_status->value);
 		exit_status->value = ft_itoa(128 + WTERMSIG(status));
+	}
 	else
+	{
+		free(exit_status->value);
 		exit_status->value = ft_itoa(status);
+	}
 }
 
 /* Separates the pipes according to their number
@@ -144,6 +156,7 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 	int	i = 0;
 	int	status;
 	t_env	*exit_status;
+	pid_t	wpid;
 
 	status = 0;
 	exec->fd_temp = dup(STDIN_FILENO);
@@ -172,22 +185,45 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 	// }
 	// pid_t	wpid;
 	// wpid = 0;
-	while (wait(&status) > 0)
-		;
 	exit_status = *env;
 	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
-	if (WIFSIGNALED(status))
-		exit_status->value = ft_itoa(WTERMSIG(status) + 128);
-	else if (WIFEXITED(status))
-	{
-		//printf("Je suis rentre dans WIFEXITED\n");
-		//g_signals.exit_status = WEXITSTATUS(status);
-		//free(exit_status->value);
-		exit_status->value = ft_itoa(WEXITSTATUS(status));
-	}
-	//printf("le putain de g_signals = %d\n", g_signals.exit_status);
+	// while (wait(&status) > 0)
+	// 	;
+	// if (WIFSIGNALED(status))
+	// 	exit_status->value = ft_itoa(WTERMSIG(status) + 128);
+	// else if (WIFEXITED(status) && )
+	// {
+	// 	printf("Je suis rentre dans WIFEXITED\n");
+	// 	printf("WIFEXITED = %d\n", WEXITSTATUS(status));
+	// 	//g_signals.exit_status = WEXITSTATUS(status);
+	// 	free(exit_status->value);
+	// 	exit_status->value = ft_itoa(WEXITSTATUS(status));
+	// }
+	// //printf("le putain de g_signals = %d\n", g_signals.exit_status);
 	// else
-	// 	g_signals.exit_status = status;
+	// 	exit_status->value = ft_itoa(status);
+
+
+
+
+
+	//ALBAN
+	while (true)
+	{
+		wpid = wait(&status);
+		if (wpid < 0)
+			break ;
+		if (wpid == exec->last_pid)
+		{
+			if (WIFEXITED(status))
+				exit_status->value = ft_itoa(WEXITSTATUS(status));
+			else
+				exit_status->value = ft_itoa(WTERMSIG(status) + 128);
+		}
+	}
+	return ;
+	// return (exit_status->value);
+	//FIN
 }
 
 /* Handles all middle pipes behaviour
@@ -229,7 +265,7 @@ void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec)
 	else
 	{
 		//dans le cas ou ls -la | hello ---> on doit avoir exit_status = 127;
-		printf("EXIT STATUS PARENT : %d\n", g_signals.exit_status);	
+		// printf("EXIT STATUS PARENT : %d\n", g_signals.exit_status);	
 		exec->last_pid = pid;
 		close(exec->fd_temp);
 	}

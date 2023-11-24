@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/24 15:23:18 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/24 22:21:08 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,9 +139,9 @@ typedef struct s_pipe
 	int		fd_close_heredoc; //test
 	char	*hd_filename; //test
 	int		fd_here_doc;
+	int		last_pid;
 	int		pipe_nb;
 	pid_t		*pid;
-	int		last_pid;
 	char	**cmd_tab;
 	char	**cmd_path;
 	int		std_in;
@@ -361,5 +361,10 @@ int	command_not_found(t_pipe *exec);
 void	create_heredoc(char *safeword, t_pipe *exec, int fd);
 int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec);
 void	write_heredoc(char *safe_word, t_pipe *exec, int fd);
+
+
+
+int	ft_heredoc_test(t_pipe *exec, char *heredoc);
+int	ft_open_hd(t_pipe *exec, int iteration_nb);
 
 #endif

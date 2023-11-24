@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/24 19:08:39 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 20:43:59 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,6 @@ int	ft_export(t_element *cmd, t_env **env)
 		if (cmd)
 			cmd = cmd->next;
 	}
-
-	//FAIS CHIER
-/* 	while (*env)
-	{
-		ft_putstr_fd((*env)->key, STDOUT_FILENO);
-		ft_putstr_fd("=", STDOUT_FILENO);
-		ft_putendl_fd((*env)->value, STDOUT_FILENO);
-		(*env) = (*env)->next;
-		} */
-	//FAIS CHIER
 	return (1);
 }
 

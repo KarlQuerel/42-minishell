@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/24 18:19:25 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/24 21:12:51 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ int	ft_redirect(t_element *cmd, t_pipe *exec)
 		}
 		else if (tmp->type == HEREDOC)
 		{
-			if (!ft_heredoc(tmp->content, exec))
+			if (!ft_heredoc_test(exec, tmp->content))
+			// if (!ft_heredoc(tmp->content, exec))
 			{
 				//gerer les free
 				return (0);
@@ -205,4 +206,70 @@ void	create_heredoc(char *safe_word, t_pipe *exec, int fd)
 	free (words);
 	g_signals.location = IN_COMMAND;
 }
+int	ft_open_hd(t_pipe *exec, int iteration_nb)
+{
+	if (exec->hd_filename == NULL)
+	{
+		exec->hd_filename = ft_strjoin("tmp_file", ft_itoa(iteration_nb));
+		exec->fd_temp = open(exec->hd_filename, O_RDWR | O_CREAT | O_EXCL, 0777);
+		if (exec->fd_temp == -1)
+		{
+			perror("perror : can't open the heredoc");
+			close(exec->fd_temp);
+			unlink(exec->hd_filename);
+			return (-1);
+			//return (g_error = 42, -1);
+		}
+		return (1);
+	}
+	else
+	{
+		close(exec->fd_temp);
+		unlink(exec->hd_filename);
+		exec->hd_filename = ft_strjoin("tmp_file", ft_itoa(iteration_nb));
+		exec->fd_temp = open(exec->hd_filename, O_RDWR | O_CREAT | O_EXCL, 0777);
+		if (exec->fd_temp == -1)
+		{
+			perror("\nperror : can't open the heredoc");
+			printf("| Error Code : %d \n", errno);
+			close(exec->fd_temp);
+			unlink(exec->hd_filename);
+			return (-1);
+			// return (g_error = 42, -1);
+		}
+	}
+	return (0);
+}
 
+
+int	ft_heredoc_test(t_pipe *exec, char *heredoc)
+{
+	char		*words;
+	static int	iteration_nb;
+
+	iteration_nb = 0;
+	iteration_nb++; // pourquoi ne pas le set a 1 direct
+	// if(shell->tree->count_pipe > 0)
+	// 	printf("\nPipes Alert. This is the av[0] cmd of this hd : %s\n", red->av);
+	ft_open_hd(exec, iteration_nb);
+	while (1)
+	{
+		// ft_signals_inhd(); a voir avec leila ce que ca fait
+		words = readline("> ");
+		if (!words)
+			return (0);
+		if (ft_strncmp(words, heredoc, ft_strlen(words)) == 0 && \
+			ft_strlen(words) == ft_strlen(heredoc))
+		{
+			//close(fd);
+			close (exec->fd_temp);
+			return (0);
+		}
+		else
+		{
+			ft_putstr_fd(words, exec->fd_temp);
+			ft_putstr_fd("\n", exec->fd_temp);
+		}
+	}
+	return (1);
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_continued.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/24 19:03:49 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 21:19:17 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 	if (!ft_redirect(cmd, exec))
 	{
 		// free
+		//return ; pour tester heredoc
 		exit(1);
 	}
 	exit_status = *env;

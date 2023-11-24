@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/24 19:17:03 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 21:55:20 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void	exitstatus_update_in_env(t_env **env)
 {
 	t_env	*key;
 	t_element *node;
-
+// La value copiee dans l'env est toujours la meme
 	if (is_key_in_env((*env), "EXIT_STATUS"))
 	{
 		//key = *env; //effacer ailleurs
@@ -140,7 +140,7 @@ void	exitstatus_update_in_env(t_env **env)
 		node->content = "export";
 		node->next = ft_calloc(1, sizeof(t_element));
 		key = find_value_with_key_env((*env), "EXIT_STATUS");
-		node->next->content = ft_strjoin("EXIT_STATUS=", key->value);
+		node->next->content = ft_strjoin("EXIT_STATUS=", key->value); //malloc ici
 		node->next->type = ARGUMENT;
 		ft_export(node, env);
 	}
