@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/23 20:23:12 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 14:05:57 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ int	ft_redirect(t_element *cmd, t_pipe *exec)
 	t_element *tmp;
 
 	tmp = cmd;
+	while (tmp->prev && tmp->prev->type != PIPE)//on revient au tout debut de la cmd
+		tmp = tmp->prev;
 	if (tmp->type == PIPE)
 		tmp = tmp->next;
 	while (tmp != NULL && tmp->type != PIPE)

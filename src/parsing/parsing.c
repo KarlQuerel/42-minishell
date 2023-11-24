@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/24 13:02:40 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 13:29:28 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ void	builtin_fix(t_element **cmd_list)
 	current = (*cmd_list);
 	while (current != NULL)
 	{
-		if (is_builtin(current->content) == true)
+		/* if (is_builtin(current->content) == true)
 		{
 			while(current->prev && current->prev->type != PIPE)
 			{
@@ -180,6 +180,10 @@ void	builtin_fix(t_element **cmd_list)
 			if (current->prev->builtin == true && current->type != PIPE)
 				current->builtin = true;
 		}
+		current = current->next; */
+
+		if (is_builtin(current->content) == true)
+			current->builtin = true;
 		current = current->next;
 	}
 	return ;

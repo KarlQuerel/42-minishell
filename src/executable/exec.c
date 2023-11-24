@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/23 20:34:13 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 13:55:58 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,14 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	int	pid;
 	int	status;
 
+	
+	while(cmd)
+	{
+		if (cmd->type == COMMAND)
+			break;
+		cmd = cmd->next;
+	}
+	
 	if (!ft_is_builtin(cmd, env, exec))
 		return ;
 	fill_array(cmd, exec);

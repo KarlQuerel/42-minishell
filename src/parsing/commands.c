@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/23 14:08:15 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 14:24:25 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,6 @@ no option was given, the option is set to -1, so that the totality
 of history is printed.*/
 void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec)
 {
-	//t_element *clean;
-	
-	//clean = cmds_without_redirs(cmd);
 	if (is_cmd(cmd->content, "$?") == false)
 		g_signals.exit_status = 0;
 	if (is_cmd(cmd->content, "pwd") == true && check_next(cmd, NONE))
@@ -101,18 +98,4 @@ void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec)
 		ft_exit(cmd, env_list, exec);
 	else
 		g_signals.exit_status = 127;
-	//free(clean);
 }
-/* 
-t_element	*cmds_without_redirs(t_element *cmd)
-{
-	t_element *clean;
-
-	while (cmd && cmd->type != PIPE)
-	{
-		if (cmd->type >= 3)
-			cmd = cmd->next;
-		
-	}
-	return (clean);
-} */

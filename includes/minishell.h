@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/24 11:24:49 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 13:27:02 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,7 +289,8 @@ void	echo(t_element *current);
 void	ft_env(t_env *env, t_element *cmd, int option);
 
 /*Exit*/
-int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec);
+bool	no_args_or_options(t_element *cmd);
+int		ft_exit(t_element *cmd, t_env **env, t_pipe *exec);
 void	exitstatus_update_in_env(t_env **env);
 
 /*Export*/
