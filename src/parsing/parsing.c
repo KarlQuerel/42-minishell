@@ -142,7 +142,7 @@ void	parsing_fix(t_element **cmd_list, t_env *env_list)
 			type_arg_after_cmd(&current);
 		else if (current->content[0] == '$')
 		{
-			current->content = dollar(current->content, env_list, current);
+			current->content = dollar(current->content, env_list);
 			if (current->content == NULL)
 			{
 				ft_delete_node_cmd(cmd_list, current);
@@ -181,6 +181,27 @@ void	builtin_fix(t_element **cmd_list)
 		// 		current->builtin = true;
 		// }
 		// current = current->next;
+  
+    // KARL --> JE NE SAIS PAS QUELLE VERSION EST LA BONNE DU COUP J'AI LAISSE LES DEUX
+  
+		/* if (is_builtin(current->content) == true)
+		{
+			while(current->prev && current->prev->type != PIPE)
+			{
+				current->builtin = true;
+				current = current->prev;
+			}
+			if (current->next->builtin == true && current->type != PIPE)
+				current->builtin = true;
+			while(current->next && current->next->type != PIPE)
+			{
+				current->builtin = true;
+				current = current->next;
+			}
+			if (current->prev->builtin == true && current->type != PIPE)
+				current->builtin = true;
+		}
+		current = current->next; */
 
 		if (is_builtin(current->content) == true)
 			current->builtin = true;

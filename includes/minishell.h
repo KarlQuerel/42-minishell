@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
 /*   Updated: 2023/11/24 15:23:18 by kquerel          ###   ########.fr       */
@@ -248,6 +248,7 @@ int		set_signals(void);
 char	*ft_joinstr_minishell(char *line, int len, char *str, char type);
 char	*ft_join_pour_cd(char *line_begining, char *path);
 char 	*strlcpy_middle(char *dst, const char *src, size_t start, size_t end);
+char	*ft_strjoin_free(char const *s1, char *s2);
 
 /*Utils2*/
 char	*type_of_separator(char *line, int i, int str_type);
@@ -278,8 +279,8 @@ void	go_forward_until_user(char *current_path, char *home_value);
 void	go_backwards_until_user(char *current_path, char *home_value);
 
 /*Dollar*/
-char	*dollar(char *content, t_env *env_list, t_element *current);
-void	ft_dollar_question_mark(void);
+char	*dollar(char *content, t_env *env_list);
+void	ft_dollar_question_mark(t_env *env);
 
 /*Echo*/
 bool	no_further_args(t_element *cmd);
@@ -289,8 +290,10 @@ void	echo(t_element *current);
 void	ft_env(t_env *env, t_element *cmd, int option);
 
 /*Exit*/
-int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec);
+bool	no_args_or_options(t_element *cmd);
+int		ft_exit(t_element *cmd, t_env **env, t_pipe *exec);
 void	exitstatus_update_in_env(t_env **env);
+void	add_exit_status_in_env(t_env **env);
 
 /*Export*/
 int		ft_export(t_element *cmd_list, t_env **env);
@@ -354,7 +357,7 @@ void	handle_sigint(int sig);
 void	ft_delete_node_cmd(t_element **head, t_element *to_delete);
 void	free_cmd_arr(t_pipe *exec);
 void	ft_exit_continued(t_element *cmd, t_env **env, t_pipe *exec, t_element *head, int option);
-int	exec_command_continued(t_pipe *exec, int option);
+int	command_not_found(t_pipe *exec);
 void	create_heredoc(char *safeword, t_pipe *exec, int fd);
 int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec);
 void	write_heredoc(char *safe_word, t_pipe *exec, int fd);

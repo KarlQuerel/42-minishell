@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/23 15:44:22 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/24 19:08:39 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,23 @@ int	ft_export(t_element *cmd, t_env **env)
 		{
 			new_key_var = split_var(cmd->content);
 			join_new_var(env, new_key_var[0], new_key_var[1]);
+			// free(new_key_var[0]);
+			// free(new_key_var[1]);
 			free (new_key_var);
 		}
 		if (cmd)
 			cmd = cmd->next;
 	}
+
+	//FAIS CHIER
+/* 	while (*env)
+	{
+		ft_putstr_fd((*env)->key, STDOUT_FILENO);
+		ft_putstr_fd("=", STDOUT_FILENO);
+		ft_putendl_fd((*env)->value, STDOUT_FILENO);
+		(*env) = (*env)->next;
+		} */
+	//FAIS CHIER
 	return (1);
 }
 
@@ -90,12 +102,12 @@ void	join_new_var(t_env **env, char *key, char *value)
 		value = "\0";
 	if (!is_key_in_env(*env, key))
 	{
-		put_var_in_env(env, key, value);
+		put_var_in_env(env, key, value);;
 		return ;
 	}
 	replace_var(env, key, value);
-	free (key);
-	// free (value);
+	free(key);
+	//free(value);
 	return ;
 }
 
@@ -130,4 +142,8 @@ void	put_var_in_env(t_env **env, char *key, char *value)
 	(*env)->value = value;
 	(*env)->next = NULL;
 	*env = head;
+	// //A VOIR
+	// free(key);
+	// free(value);
+	// //FIN
 }

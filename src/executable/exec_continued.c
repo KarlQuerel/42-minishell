@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/23 20:09:37 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 19:03:49 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,18 +72,25 @@ char	*ft_get_command(char **path, char *argument)
 */
 void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 {
+	t_env	*exit_status;
+
 	if (!ft_redirect(cmd, exec))
 	{
 		// free
 		exit(1);
 	}
+	exit_status = *env;
+	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
 	if (cmd->builtin == true)
-		return (ft_builtins(cmd, env, exec), close(exec->fd[0]), exit(g_signals.exit_status));
+		return (ft_builtins(cmd, env, exec), close(exec->fd[0]), exit(ft_atoi(exit_status->value)));
 	// if (exec->cmd_tab[0][0] != '\0')
 	if (exec->cmd_tab[0] != NULL)
-		g_signals.exit_status = exec_command(cmd, *env, exec);
-	// printf("EXIT STATUS CHILD: %d\n", g_signals.exit_status);	
-	exit(g_signals.exit_status);
+	{
+		//free(exit_status->value);
+		exit_status->value = ft_itoa(exec_command(cmd, *env, exec));
+	}
+	//printf("EXIT STATUS CHILD: %d\n", exit_status->value);
+	exit(ft_atoi(exit_status->value));
 }
 
 /* Executes the command
@@ -106,7 +113,8 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 	{
 		execve(cmd->content, exec->cmd_tab, env->env);
 		perror("bash");
-		//free
+		//free_cmd_list(cmd);
+		free_cmd_arr(exec);
 		return(127);
 	}
 	exec->cmd_path = split_path(env);
@@ -115,35 +123,29 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 	cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
 	if (!cmd->content)
 	{
+		// free_cmd_list(cmd);
 		if (!exec->cmd_tab[0])
 			ft_putstr_fd("\n", STDERR_FILENO);
 		else
-			exec_command_continued(exec, 1);
+			command_not_found(exec);
 	}
 	else
 	{
 		execve(cmd->content, exec->cmd_tab, env->env);
 		perror("bash");
-		//perror fonctionne pareil = printf("%s: %s\n", "bash:", strerror(errno));
+		// free_cmd_list(cmd);
 	}
-	return (127); //return a exit code, faire une fonction cmd not found
+	return (127);
 }
 
 /* exec continued */
-int	exec_command_continued(t_pipe *exec, int option)
+int	command_not_found(t_pipe *exec)
 {
-	if (option == 0)
-	{
-		ft_putstr_fd("bash: ", STDERR_FILENO);
-		ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
-		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
-	}
-	else if (option == 1)
-	{
-		ft_putstr_fd("bash: ", STDERR_FILENO);
-		ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
-		ft_putendl_fd(": command not found", STDERR_FILENO);
-	}
-	free_cmd_arr(exec);
+	// !!!!!!!! leaks a fix
+	ft_putstr_fd("bash: ", STDERR_FILENO);
+	ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
+	ft_putendl_fd(": command not found", STDERR_FILENO);
+	// free_cmd_arr(exec);
+	// free(exec->cmd_tab[0]);
 	return (127);
 }

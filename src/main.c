@@ -83,7 +83,9 @@ int main (int argc, char **argv, char **env)
 	using_history(); // initialisation de l'historique
 	env_list->env = env;
 	line = NULL;
-	g_signals.exit_status = 0;
+	//g_signals.exit_status = 0;
+	//faire une fonction qui cree exit status dans env puis simplifier update_existatus() comme pour update_pwd()
+	add_exit_status_in_env(&env_list);
 	while (1)
 	{
 		/* if (g_signals.location == QUIT_HEREDOC)
@@ -109,7 +111,10 @@ int main (int argc, char **argv, char **env)
 		if (line == NULL)
 		{
 			if (g_signals.location == IN_PROMPT)
+			{
+				ft_putendl_fd("exit", STDERR_FILENO);
 				ctrld_free(line, prompt, env_list, exec);
+			}
 			else if (g_signals.location == IN_COMMAND)
 			{
 				ft_putchar_fd('\n', STDERR_FILENO);
@@ -117,6 +122,7 @@ int main (int argc, char **argv, char **env)
 			}
 			else //HEREDOC
 			{
+				g_signals.location = QUIT_HEREDOC;
 				//ne rentre pas la dedans
 				ft_putendl_fd("bash: warning: here-document at line 3 delimited by end-of-file", STDERR_FILENO);
 				//printf(" (wanted `%s')", safe_word); --> flemme de trouver comment avoir acces au safe word ici
@@ -137,6 +143,7 @@ int main (int argc, char **argv, char **env)
 				ft_execute(cmd_list, &env_list, exec);
 				free_cmd_list(cmd_list);
 				//free_cmd_arr(exec);
+				free(exec->cmd_tab);
 			}
 		}
 		free(line);

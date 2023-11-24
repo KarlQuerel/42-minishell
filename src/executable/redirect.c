@@ -69,6 +69,8 @@ int	ft_redirect(t_element *cmd, t_pipe *exec)
 	t_element *tmp;
 
 	tmp = cmd;
+	while (tmp->prev && tmp->prev->type != PIPE)//on revient au tout debut de la cmd
+		tmp = tmp->prev;
 	if (tmp->type == PIPE)
 		tmp = tmp->next;
 	while (tmp != NULL && tmp->type != PIPE)
