@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/23 20:23:12 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 18:19:25 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,28 +103,81 @@ int	ft_redirect(t_element *cmd, t_pipe *exec)
 // bash: warning: here-document at line 1 delimited by end-of-file (wanted `heredoc')
 
 
+	// etape 1
+	/*
+		si type HEREDOC
+		open heredoc
+		>
+		close
+		stock le nom 
+		check si heredoc 1 existe 
+		
+	
+	*/
+
+
 /* Handles heredoc behavior */
 int	ft_heredoc(char *heredoc, t_pipe *exec)
 {
-	int	fd;
+	int	fd[2];
+	// int fd_hd;
+
+	// fd_hd = open(heredoc, O_WRONLY | O_CREAT, 0644);
+	// if (fd_hd < 0)
+	// {
+	// 	perror("bash HEREDOC");
+	// 	return (0);
+	// }
 	
 	g_signals.location = IN_HEREDOC;
-	set_signals();
-	fd = open(heredoc, O_WRONLY | O_CREAT, 0644); // 3
-	if (fd < 0)
+	if (pipe(fd) < 0)
 	{
-		perror("bash HEREDOC");
-		return (0);
+		perror("bash");
+		return (-1);
 	}
-	exec->fd_close_heredoc = fd;
-	exec->hd_filename = heredoc;
-	exec->fd_here_doc = dup(STDIN_FILENO); //4
-	while (g_signals.location == IN_HEREDOC)
-		create_heredoc(heredoc, exec, fd);
-	close(exec->fd_here_doc);  // 4
-	close(fd); // 3
-	unlink(heredoc);
-	return (1);
+	write_heredoc(heredoc, exec, fd[1]);
+	close (fd[1]);
+	if (g_signals.exit_status == 130) //pour le CTRL C
+	{
+		close(fd[0]);
+		return (-1);
+	}
+	return (fd[0]);
+
+
+	//int fd;
+// 	g_signals.location = IN_HEREDOC;
+// 	set_signals();
+	// fd_hd = open(heredoc, O_WRONLY | O_CREAT, 0644);
+	// if (fd_hd < 0)
+	// {
+	// 	perror("bash HEREDOC");
+	// 	return (0);
+	// }
+// 	exec->hd_filename = heredoc; // on stock le nom dans notre structure
+// 	// exec->fd_here_doc = dup(STDIN_FILENO);
+// 	while (g_signals.location == IN_HEREDOC)
+// 		create_heredoc(heredoc, exec, fd_hd);
+// 	// close(exec->fd_here_doc);  // 4
+// 	// unlink(heredoc);
+// 	return (0);
+}
+
+void	write_heredoc(char *safe_word, t_pipe *exec, int fd)
+{
+	char *words;
+	(void)exec;
+	words = readline(">");
+
+	while (g_signals.exit_status != 130 && (ft_strncmp(words, safe_word, ft_strlen(words)) != 0 || \
+	ft_strlen(words) != ft_strlen(safe_word)))
+	{
+		free (words);
+		words = readline(">");
+		ft_putendl_fd(words, fd);
+	}
+	free (words);
+	g_signals.location = IN_COMMAND;
 }
 
 /* Puts minishell in an interactive mode for here_doc */
@@ -150,3 +203,4 @@ void	create_heredoc(char *safe_word, t_pipe *exec, int fd)
 	free (words);
 	g_signals.location = IN_COMMAND;
 }
+

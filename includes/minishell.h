@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/24 13:15:57 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/24 15:23:18 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -357,6 +357,6 @@ void	ft_exit_continued(t_element *cmd, t_env **env, t_pipe *exec, t_element *hea
 int	exec_command_continued(t_pipe *exec, int option);
 void	create_heredoc(char *safeword, t_pipe *exec, int fd);
 int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec);
-
+void	write_heredoc(char *safe_word, t_pipe *exec, int fd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/24 13:07:57 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/24 19:50:24 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 /*
 TO DO:
 - HEREDOC
-- ls > caro | cat caro ----> doit s'executer en mm tmps
 */
 /* Handles the execution part
 --- Gets size_cmd to alloc memory accordingly
@@ -41,24 +40,7 @@ void	ft_execute(t_element *cmd, t_env **env, t_pipe *exec)
 	if (!exec->cmd_tab)
 		return ;
 
-	// etape 1
-	/*
-		si type HEREDOC
-		open heredoc
-		>
-		close
-		stock le nom 
-		check si heredoc 1 existe 
-		
-	
-	*/
-
-
-
 	//create_heredoc(heredoc, exec, fd); // quand tu trouves un type HEREDOC je create un HEREDOC et ils retournent un fd
-
-	// ft_parse(t_element *cmd);
-
 	if (exec->pipe_nb == 0)
 	{
 		// fill_array(cmd, exec);
