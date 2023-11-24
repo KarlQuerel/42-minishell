@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/23 20:55:51 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 11:35:12 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 3. Cheks that the key exists in env_list (and key_in_env "takes its rank" if true).
 4. Replaces the content by the key value.
 */
-char	*dollar(char *content, t_env *env_list)
+char	*dollar(char *content, t_env *env_list, t_element *current)
 {
 	/*Il manque à gérer l'option $?*/
 	char	*key_to_find;
@@ -53,10 +53,25 @@ char	*dollar(char *content, t_env *env_list)
 		content = ft_calloc(ft_strlen(key_in_env->value), sizeof(char));
 		content = strlcpy_middle(content, key_in_env->value, 0, ft_strlen(key_in_env->value));
 	}
-	if (ft_strncmp(key_to_find, "EXIT_STATUS", ft_strlen(key_to_find)) && \
-	ft_strlen(key_to_find) == ft_strlen("EXIT_STATUS"))
+	else
+	{
+		//je cherche si avant cmd echo
+		while (current != NULL && current->type != PIPE)
+		{
+			if (current->type == COMMAND && ft_strncmp(current->content, "echo", \
+			ft_strlen(current->content)) == 0 && ft_strlen(current->content) == ft_strlen("echo"))
+				break;
+			else
+			{
+				free(content);
+				content = NULL;
+			}
+			current = current->prev;
+		}
+	}
+	/* if (ft_strncmp(key_to_find, "EXIT_STATUS", ft_strlen(key_to_find)) && \
+	ft_strlen(key_to_find) == ft_strlen("EXIT_STATUS")) */
 		free(key_to_find);
-	printf("content = [%s]\n", content);
 	return (content);
 }
 

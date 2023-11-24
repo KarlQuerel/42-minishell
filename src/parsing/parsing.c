@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/23 20:48:41 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 13:02:40 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void	parsing_fix(t_element **cmd_list, t_env *env_list)
 			type_arg_after_cmd(&current);
 		else if (current->content[0] == '$')
 		{
-			current->content = dollar(current->content, env_list);
+			current->content = dollar(current->content, env_list, current);
 			if (current->content == NULL)
 			{
 				ft_delete_node_cmd(cmd_list, current);
@@ -164,7 +164,22 @@ void	builtin_fix(t_element **cmd_list)
 	while (current != NULL)
 	{
 		if (is_builtin(current->content) == true)
-			current->builtin = true;
+		{
+			while(current->prev && current->prev->type != PIPE)
+			{
+				current->builtin = true;
+				current = current->prev;
+			}
+			if (current->next->builtin == true && current->type != PIPE)
+				current->builtin = true;
+			while(current->next && current->next->type != PIPE)
+			{
+				current->builtin = true;
+				current = current->next;
+			}
+			if (current->prev->builtin == true && current->type != PIPE)
+				current->builtin = true;
+		}
 		current = current->next;
 	}
 	return ;
@@ -180,3 +195,7 @@ bool	no_cmd_before(t_element *current)
 	}
 	return (true);
 }
+
+//void	put_all_to_type_builtin(t_element **cmd)
+
+//ctrl Z?
