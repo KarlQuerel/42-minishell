@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/23 20:56:06 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 13:02:45 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,16 @@ int main (int argc, char **argv, char **env)
 		{
 			if (g_signals.location == IN_PROMPT)
 				ctrld_free(line, prompt, env_list, exec);
-			else
+			else if (g_signals.location == IN_COMMAND)
 			{
 				ft_putchar_fd('\n', STDERR_FILENO);
+				rl_reset_line_state();
+			}
+			else //HEREDOC
+			{
+				//ne rentre pas la dedans
+				ft_putendl_fd("bash: warning: here-document at line 3 delimited by end-of-file", STDERR_FILENO);
+				//printf(" (wanted `%s')", safe_word); --> flemme de trouver comment avoir acces au safe word ici
 				rl_reset_line_state();
 			}
 		}

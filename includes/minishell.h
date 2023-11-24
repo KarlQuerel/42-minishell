@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/23 20:17:48 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 11:24:49 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,7 +278,7 @@ void	go_forward_until_user(char *current_path, char *home_value);
 void	go_backwards_until_user(char *current_path, char *home_value);
 
 /*Dollar*/
-char	*dollar(char *content, t_env *env_list);
+char	*dollar(char *content, t_env *env_list, t_element *current);
 void	ft_dollar_question_mark(void);
 
 /*Echo*/
