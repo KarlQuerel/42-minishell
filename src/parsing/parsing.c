@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/24 13:29:28 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 15:15:07 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void	parsing_fix(t_element **cmd_list, t_env *env_list)
 			type_arg_after_cmd(&current);
 		else if (current->content[0] == '$')
 		{
-			current->content = dollar(current->content, env_list, current);
+			current->content = dollar(current->content, env_list);
 			if (current->content == NULL)
 			{
 				ft_delete_node_cmd(cmd_list, current);

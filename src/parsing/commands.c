@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/24 14:24:25 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 19:04:18 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,13 @@ no option was given, the option is set to -1, so that the totality
 of history is printed.*/
 void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec)
 {
+	t_env	*exit_status;
+	
+	exit_status = *env_list;
+	exit_status = find_value_with_key_env(*env_list, "EXIT_STATUS");
+	//free(exit_status->value);
 	if (is_cmd(cmd->content, "$?") == false)
-		g_signals.exit_status = 0;
+		exit_status->value = ft_itoa(0);
 	if (is_cmd(cmd->content, "pwd") == true && check_next(cmd, NONE))
 		pwd(PRINT);
 	else if (is_cmd(cmd->content, "history") == true && \
@@ -93,9 +98,9 @@ void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec)
 	else if (is_cmd(cmd->content, "unset") == true && check_next(cmd, NONE))
 		ft_unset(cmd, env_list);
 	else if (is_cmd(cmd->content, "$?") == true && check_next(cmd, NONE))
-		ft_dollar_question_mark();
+		ft_dollar_question_mark(*env_list);
 	else if (is_cmd(cmd->content, "exit") == true && check_next(cmd, NONE))
 		ft_exit(cmd, env_list, exec);
 	else
-		g_signals.exit_status = 127;
+		exit_status->value = ft_itoa(127);
 }

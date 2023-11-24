@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/24 13:55:58 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 19:03:02 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	ft_execute(t_element *cmd, t_env **env, t_pipe *exec)
 	exec->cmd_tab = ft_calloc(size_cmd + 1, sizeof(char *));
 	if (!exec->cmd_tab)
 		return ;
-
 	// etape 1
 	/*
 		si type HEREDOC
@@ -49,16 +48,9 @@ void	ft_execute(t_element *cmd, t_env **env, t_pipe *exec)
 		close
 		stock le nom 
 		check si heredoc 1 existe 
-		
-	
 	*/
-
-
-
-	//create_heredoc(heredoc, exec, fd); // quand tu trouves un type HEREDOC je create un HEREDOC et ils retournent un fd
-
-	// ft_parse(t_element *cmd);
-
+	//create_heredoc(heredoc, exec, fd);
+	// quand tu trouves un type HEREDOC je create un HEREDOC et ils retournent un fd
 	if (exec->pipe_nb == 0)
 	{
 		// fill_array(cmd, exec);
@@ -101,7 +93,7 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	int	pid;
 	int	status;
-
+	t_env	*exit_status;
 	
 	while(cmd)
 	{
@@ -133,12 +125,15 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 		perror("waitpid");
 		return ;
 	}
+	exit_status = *env;
+	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
+	//free(exit_status->value);
 	if (WIFEXITED(status))
-		g_signals.exit_status = WEXITSTATUS(status);
+		exit_status->value = ft_itoa(WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
-		g_signals.exit_status = 128 + WTERMSIG(status);
+		exit_status->value = ft_itoa(128 + WTERMSIG(status));
 	else
-		g_signals.exit_status = status;
+		exit_status->value = ft_itoa(status);
 }
 
 /* Separates the pipes according to their number
@@ -149,6 +144,7 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	int	i = 0;
 	int	status;
+	t_env	*exit_status;
 
 	status = 0;
 	exec->fd_temp = dup(STDIN_FILENO);
@@ -175,19 +171,22 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 	// 	perror("waitpid MULT_COMMANDS.C");
 	// 	return ;
 	// }
-	pid_t	wpid;
-	wpid = 0;
-	while (wpid != -1)
-	{
-		wpid = waitpid(-1, &status, 0);
-		//si le wpid matche le pid de la derniere commande, on assigne le exit status de cette commande dans notre g_var
-		if (wpid == exec->last_pid)
-			g_signals.exit_status = status;
-	}
+	// pid_t	wpid;
+	// wpid = 0;
+	while (wait(&status) > 0)
+		;
+	exit_status = *env;
+	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
 	if (WIFSIGNALED(status))
-		g_signals.exit_status = WTERMSIG(status) + 128;
+		exit_status->value = ft_itoa(WTERMSIG(status) + 128);
 	else if (WIFEXITED(status))
-		g_signals.exit_status = WEXITSTATUS(status);
+	{
+		//printf("Je suis rentre dans WIFEXITED\n");
+		//g_signals.exit_status = WEXITSTATUS(status);
+		//free(exit_status->value);
+		exit_status->value = ft_itoa(WEXITSTATUS(status));
+	}
+	//printf("le putain de g_signals = %d\n", g_signals.exit_status);
 	// else
 	// 	g_signals.exit_status = status;
 }
@@ -231,7 +230,7 @@ void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec)
 	else
 	{
 		//dans le cas ou ls -la | hello ---> on doit avoir exit_status = 127;
-		// printf("EXIT STATUS PARENT : %d\n", g_signals.exit_status);	
+		printf("EXIT STATUS PARENT : %d\n", g_signals.exit_status);	
 		exec->last_pid = pid;
 		close(exec->fd_temp);
 	}

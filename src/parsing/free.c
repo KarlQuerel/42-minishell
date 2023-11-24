@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/24 13:15:56 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/24 17:09:01 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ void	free_cmd_arr(t_pipe *exec)
 	int	i;
 
 	i = 0;
-	// free(exec->cmd_tab);
-	if (exec->cmd_tab)
+	free(exec->cmd_tab);
+/* 	if (exec->cmd_tab)
 	{	
 		while (exec->cmd_tab[i])
 			free(exec->cmd_tab[i++]);
 		free(exec->cmd_tab);
-	}
+	} */
 	if (exec->cmd_path)
 	{
 		i = 0;

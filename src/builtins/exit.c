@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/24 14:19:01 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 19:17:03 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,17 +130,34 @@ t_element *head, int option)
 
 void	exitstatus_update_in_env(t_env **env)
 {
-	t_element	*tmp;
+	t_env	*key;
+	t_element *node;
 
-	tmp = ft_calloc(1, sizeof(t_element));
-	tmp->content = "export"; //pq ft_export commence par la commande
-	tmp->next = ft_calloc(1, sizeof(t_element));
-	tmp->next->content = ft_calloc(13, sizeof(char));
-	tmp->next->content = ft_strjoin("EXIT_STATUS=", ft_itoa(g_signals.exit_status));
-	tmp->next->type = ARGUMENT;
-	//printf("exit status : [%d]\n", g_signals.exit_status); //%d et non %c
-	//tmp->next->next->content = ft_itoa(g_signals.exit_status);
-	//printf("content : [%s]\n",tmp->next->content);
-	tmp->next->next = NULL;
-	ft_export(tmp, env);
+	if (is_key_in_env((*env), "EXIT_STATUS"))
+	{
+		//key = *env; //effacer ailleurs
+		node = ft_calloc(1, sizeof(t_element));
+		node->content = "export";
+		node->next = ft_calloc(1, sizeof(t_element));
+		key = find_value_with_key_env((*env), "EXIT_STATUS");
+		node->next->content = ft_strjoin("EXIT_STATUS=", key->value);
+		node->next->type = ARGUMENT;
+		ft_export(node, env);
+	}
  }
+
+void	add_exit_status_in_env(t_env **env)
+{
+	t_element	*node;
+
+	node = ft_calloc(1, sizeof(t_element));
+	node->content = "export"; //pq ft_export commence par la commande
+	node->next = ft_calloc(1, sizeof(t_element));
+	node->next->content = "EXIT_STATUS=0";//initialize to 0
+	node->next->type = ARGUMENT;
+	node->next->next = NULL;
+	ft_export(node, env);
+	// peut etre invalid free
+	free(node->next);
+	free(node);
+}
