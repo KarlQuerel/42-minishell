@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/24 15:15:07 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 13:29:43 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,27 @@ void	builtin_fix(t_element **cmd_list)
 	current = (*cmd_list);
 	while (current != NULL)
 	{
+		// if (is_builtin(current->content) == true)
+		// {
+		// 	while(current->prev && current->prev->type != PIPE)
+		// 	{
+		// 		current->builtin = true;
+		// 		current = current->prev;
+		// 	}
+		// 	if (current->next->builtin == true && current->type != PIPE)
+		// 		current->builtin = true;
+		// 	while(current->next && current->next->type != PIPE)
+		// 	{
+		// 		current->builtin = true;
+		// 		current = current->next;
+		// 	}
+		// 	if (current->prev->builtin == true && current->type != PIPE)
+		// 		current->builtin = true;
+		// }
+		// current = current->next;
+  
+    // KARL --> JE NE SAIS PAS QUELLE VERSION EST LA BONNE DU COUP J'AI LAISSE LES DEUX
+  
 		/* if (is_builtin(current->content) == true)
 		{
 			while(current->prev && current->prev->type != PIPE)

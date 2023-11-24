@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/24 19:03:02 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 19:50:24 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 /*
 TO DO:
 - HEREDOC
-- ls > caro | cat caro ----> doit s'executer en mm tmps
 */
 /* Handles the execution part
 --- Gets size_cmd to alloc memory accordingly

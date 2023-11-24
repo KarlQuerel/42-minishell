@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/24 18:27:06 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/24 13:30:24 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int main (int argc, char **argv, char **env)
 			if (line_errors_and_fix(line) == true)
 			{
 				cmd_list = parsing(line, env_list);
-				//printlist_test(cmd_list);
+				// printlist_test(cmd_list);
 				exec->line = &line;
 				exec->prompt = &prompt;
 				ft_execute(cmd_list, &env_list, exec);
