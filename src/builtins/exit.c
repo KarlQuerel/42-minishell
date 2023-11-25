@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/25 12:41:03 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/25 20:01:11 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void	exitstatus_update_in_env(t_env **env)
 		ft_export(node, env);
 	}
  }
-
+//CELLE QUI MARCHE MAIS QUI FAIT LEAK FT_EXPORT
 void	add_exit_status_in_env(t_env **env)
 {
 	t_element	*node;
@@ -165,3 +165,24 @@ void	add_exit_status_in_env(t_env **env)
 	free(node->next);
 	free(node);
 }
+
+//FAIS DES LEAKS DANS L'EXECUTABLE
+// void    add_exit_status_in_env(t_env **env)
+// {
+//     t_env    *node;
+//     t_env    *current;
+
+//     current = *env;
+//     node = ft_calloc(1, sizeof(t_env));
+//     //node->value = ft_calloc(13, sizeof(char));
+//     node->key = "EXIT_STATUS";
+//     //node->value = ft_calloc(2, sizeof(char));
+//     node->value = "0";
+//     node->next = NULL;
+//     while (current->next)
+//         current = current->next;
+//     current->next = node;
+//     current->next->prev = current;
+//     current = current->next;
+//     current->next = NULL;
+// }
