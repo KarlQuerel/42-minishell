@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/24 22:21:08 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/25 12:29:36 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,15 @@
 --> exit_status gets the exit code of the last process
 --> location gives info to signals about the program location (IN HEREDOC, IN PROMPT, IN COMMAND)
 */
-typedef struct	s_global
-{
-	int	exit_status;
-	int				location;
-}	t_global;
+// typedef struct	s_global
+// {
+// 	int	exit_status;
+// 	int				location;
+// }	t_global;
 
-extern t_global	g_signals;
+// extern t_global	g_signals;
+
+extern int	g_location;
 
 /* Command list
 --> content represents the command

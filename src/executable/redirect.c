@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/24 21:12:51 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/25 12:25:48 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,10 @@ int	ft_redirect(t_element *cmd, t_pipe *exec)
 
 
 /* Handles heredoc behavior */
-int	ft_heredoc(char *heredoc, t_pipe *exec)
+/* int	ft_heredoc(char *heredoc, t_pipe *exec)
 {
 	int	fd[2];
+	
 	// int fd_hd;
 
 	// fd_hd = open(heredoc, O_WRONLY | O_CREAT, 0644);
@@ -132,7 +133,7 @@ int	ft_heredoc(char *heredoc, t_pipe *exec)
 	// 	return (0);
 	// }
 	
-	g_signals.location = IN_HEREDOC;
+	g_location = IN_HEREDOC;
 	if (pipe(fd) < 0)
 	{
 		perror("bash");
@@ -149,7 +150,7 @@ int	ft_heredoc(char *heredoc, t_pipe *exec)
 
 
 	//int fd;
-// 	g_signals.location = IN_HEREDOC;
+// 	g_location = IN_HEREDOC;
 // 	set_signals();
 	// fd_hd = open(heredoc, O_WRONLY | O_CREAT, 0644);
 	// if (fd_hd < 0)
@@ -159,20 +160,22 @@ int	ft_heredoc(char *heredoc, t_pipe *exec)
 	// }
 // 	exec->hd_filename = heredoc; // on stock le nom dans notre structure
 // 	// exec->fd_here_doc = dup(STDIN_FILENO);
-// 	while (g_signals.location == IN_HEREDOC)
+// 	while (g_location == IN_HEREDOC)
 // 		create_heredoc(heredoc, exec, fd_hd);
 // 	// close(exec->fd_here_doc);  // 4
 // 	// unlink(heredoc);
 // 	return (0);
-}
+} */
 
-void	write_heredoc(char *safe_word, t_pipe *exec, int fd)
+/* void	write_heredoc(char *safe_word, t_pipe *exec, int fd, t_env *env)
 {
 	char *words;
 	(void)exec;
-	words = readline(">");
+	t_env	*exit_status;
 
-	while (g_signals.exit_status != 130 && (ft_strncmp(words, safe_word, ft_strlen(words)) != 0 || \
+	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
+	words = readline(">");
+	while (ft_strncmp(exit_status->value, ft_itoa(130), 3) != 0 && (ft_strncmp(words, safe_word, ft_strlen(words)) != 0 || \
 	ft_strlen(words) != ft_strlen(safe_word)))
 	{
 		free (words);
@@ -180,8 +183,8 @@ void	write_heredoc(char *safe_word, t_pipe *exec, int fd)
 		ft_putendl_fd(words, fd);
 	}
 	free (words);
-	g_signals.location = IN_COMMAND;
-}
+	g_location = IN_COMMAND;
+} */
 
 /* Puts minishell in an interactive mode for here_doc */
 void	create_heredoc(char *safe_word, t_pipe *exec, int fd)
@@ -193,7 +196,7 @@ void	create_heredoc(char *safe_word, t_pipe *exec, int fd)
 	while ((ft_strncmp(words, safe_word, ft_strlen(words)) != 0 || \
 	ft_strlen(words) != ft_strlen(safe_word)))
 	{
-/* 		if (g_signals.location == QUIT_HEREDOC)
+/* 		if (g_location == QUIT_HEREDOC)
 		{
 			printf("HELLO\n");
 			free(words);
@@ -204,7 +207,7 @@ void	create_heredoc(char *safe_word, t_pipe *exec, int fd)
 		ft_putendl_fd(words, fd);
 	}
 	free (words);
-	g_signals.location = IN_COMMAND;
+	g_location = IN_COMMAND;
 }
 int	ft_open_hd(t_pipe *exec, int iteration_nb)
 {

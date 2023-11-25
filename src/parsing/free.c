@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/24 22:07:57 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/25 12:28:36 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec)
 void	ctrld_free(char *line, char *prompt, t_env *env, t_pipe *exec)
 {
 	int i;
+	// t_env	*exit_status;
 
 	i = 0;
 	free(line);
@@ -40,7 +41,10 @@ void	ctrld_free(char *line, char *prompt, t_env *env, t_pipe *exec)
 	free_env_list(env);
 	history(FREE_HISTORY, 0);
 	free(exec);
-	exit(0); // g_signals.exit_status;
+	// exit_status = find_value_with_key_env(env, "EXIT_STATUS");
+	// exit_status = 0;
+	// exit(ft_atoi(exit_status->value)); // g_signals.exit_status;
+	exit(0); //pas besoin de le mettre dans exit_status, sinon on pourra pas le free.
 }
 
 void	free_cmd_arr(t_pipe *exec)

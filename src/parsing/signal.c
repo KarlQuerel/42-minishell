@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/24 18:13:53 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/25 12:16:20 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int	set_signals(void)
 	signal.sa_handler = &signal_handler;
 	if (sigaction(SIGINT, &signal, NULL) == -1)
 		return (EXIT_FAILURE);
-	if (g_signals.location == IN_PROMPT || \
-	g_signals.location == IN_HEREDOC) //marche pas pour heredoc
+	if (g_location == IN_PROMPT || \
+	g_location == IN_HEREDOC) //marche pas pour heredoc
 		signal.sa_handler = SIG_IGN;
 	if (sigaction(SIGQUIT, &signal, NULL) == -1)
 		return (EXIT_FAILURE);
@@ -36,14 +36,14 @@ void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		if (g_signals.location == IN_PROMPT)
+		if (g_location == IN_PROMPT)
 		{
 			ft_putchar_fd('\n', STDERR_FILENO);
 			rl_replace_line("", 0);
 			rl_on_new_line();
 			rl_redisplay();
 		}
-		else if (g_signals.location == IN_COMMAND)
+		else if (g_location == IN_COMMAND)
 		{
 			ft_putchar_fd('\n', STDERR_FILENO);
 			rl_reset_line_state();
@@ -52,7 +52,7 @@ void	signal_handler(int signal)
 		{
 			//IN HEREDOC
 			//g_signals.exit_status = 130;
-			g_signals.location = QUIT_HEREDOC;
+			g_location = QUIT_HEREDOC;
 			exit(130);
 		}
 		//g_signals.exit_status = 130;
@@ -60,7 +60,7 @@ void	signal_handler(int signal)
 	else if (signal == SIGQUIT)
 	{
 		//g_signals.exit_status = 131;
-		if (g_signals.location == IN_COMMAND)
+		if (g_location == IN_COMMAND)
 			ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
 		rl_redisplay();
 	}

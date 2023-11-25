@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/24 21:55:20 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/25 12:41:03 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 		if (no_pipes_before(cmd) == true)
 				ft_putendl_fd("exit", STDERR_FILENO);
 		exit_free(cmd, env, exec);
-		exit(g_signals.exit_status);
+		exit(0);
 	}
 	arg_count = 0;
 	head = cmd;
@@ -108,7 +108,11 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 void	ft_exit_continued(t_element *cmd, t_env **env, t_pipe *exec, \
 t_element *head, int option)
 {
-		if (option == 0)
+	t_env	*exit_status;
+	
+	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
+	free(exit_status->value);
+	if (option == 0)
 	{
 		if (no_pipes_before(cmd) == true)
 				ft_putendl_fd("exit", STDERR_FILENO);
@@ -116,15 +120,15 @@ t_element *head, int option)
 		ft_putstr_fd(cmd->content, STDERR_FILENO);
 		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
 		exit_free(head, env, exec);
-		g_signals.exit_status = 2;
-		exit(g_signals.exit_status);
+		exit_status->value = ft_itoa(2);
+		exit(ft_atoi(exit_status->value));
 	}
 	else
 	{
 		if (no_pipes_before(cmd) == true)
 				ft_putendl_fd("exit", STDERR_FILENO);
 		ft_putendl_fd("bash: exit: too many arguments", STDERR_FILENO);
-		g_signals.exit_status = 127;
+		exit_status->value = ft_itoa(127);
 	}
 }
 

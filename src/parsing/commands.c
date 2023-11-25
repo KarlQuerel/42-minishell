@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/24 19:04:18 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/25 12:08:50 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec)
 	
 	exit_status = *env_list;
 	exit_status = find_value_with_key_env(*env_list, "EXIT_STATUS");
-	//free(exit_status->value);
+	free(exit_status->value);
 	if (is_cmd(cmd->content, "$?") == false)
 		exit_status->value = ft_itoa(0);
 	if (is_cmd(cmd->content, "pwd") == true && check_next(cmd, NONE))

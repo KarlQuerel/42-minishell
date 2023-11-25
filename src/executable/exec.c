@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/24 22:25:43 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/25 12:30:50 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 		return ;
 	fill_array(cmd, exec);
 	pid = fork();
-	g_signals.location = IN_COMMAND; // set_signal_state(IN_COMMAND); si in command SIGIGNORE, sinon ce que jfais deja dans signal
+	g_location = IN_COMMAND; // set_signal_state(IN_COMMAND); si in command SIGIGNORE, sinon ce que jfais deja dans signal
 	set_signals();
 	if (pid < 0)
 	{
@@ -117,7 +117,7 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	}
 	if (pid == 0)
 		handle_command(cmd, env, exec);
-/* 	if (g_signals.location == QUIT_HEREDOC)
+/* 	if (g_location == QUIT_HEREDOC)
 	{
 		ft_putendl_fd("HELLO", STDERR_FILENO);
 		unlink(exec->hd_filename);
@@ -127,24 +127,14 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 		perror("waitpid");
 		return ;
 	}
-	exit_status = *env;
 	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
-	//free(exit_status->value);
+	free(exit_status->value);
 	if (WIFEXITED(status))
-	{
-		free(exit_status->value);
 		exit_status->value = ft_itoa(WEXITSTATUS(status));
-	}
 	else if (WIFSIGNALED(status))
-	{
-		free(exit_status->value);
 		exit_status->value = ft_itoa(128 + WTERMSIG(status));
-	}
 	else
-	{
-		free(exit_status->value);
 		exit_status->value = ft_itoa(status);
-	}
 }
 
 /* Separates the pipes according to their number
@@ -185,7 +175,6 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 	// }
 	// pid_t	wpid;
 	// wpid = 0;
-	exit_status = *env;
 	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
 	// while (wait(&status) > 0)
 	// 	;
@@ -236,7 +225,7 @@ void	middle_pipes(t_element *cmd, t_env **env, t_pipe *exec)
 	if (pipe(exec->fd) < 0)
 		perror("Pipe");
 	pid = fork();
-	g_signals.location = IN_COMMAND; // set_signal_state(IN_COMMAND); si in command SIGIGNORE, sinon ce que jfais deja dans signal
+	g_location = IN_COMMAND; // set_signal_state(IN_COMMAND); si in command SIGIGNORE, sinon ce que jfais deja dans signal
 	set_signals();
 	if (pid < 0)
 		perror("Fork");
@@ -256,7 +245,7 @@ void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec)
 	int	pid;
 
 	pid = fork();
-	g_signals.location = IN_COMMAND; // set_signal_state(IN_COMMAND); si in command SIGIGNORE, sinon ce que jfais deja dans signal
+	g_location = IN_COMMAND; // set_signal_state(IN_COMMAND); si in command SIGIGNORE, sinon ce que jfais deja dans signal
 	set_signals();
 	if (pid < 0)
 		perror("fork");
