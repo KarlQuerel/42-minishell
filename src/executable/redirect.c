@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/25 12:25:48 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/25 18:57:57 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,15 @@ int	ft_redirect(t_element *cmd, t_pipe *exec)
 			if (!ft_heredoc_test(exec, tmp->content))
 			// if (!ft_heredoc(tmp->content, exec))
 			{
+				close (exec->fd_temp);
+				unlink(exec->hd_filename);
 				//gerer les free
 				return (0);
 			}
 		}
 		else if (tmp->type == OUTFILE || tmp->type == OUTFILE_APPEND)
 		{
-			if (ft_outfile(tmp) == 0)
+			if (!ft_outfile(tmp))
 				// gerer les free
 				return (0);
 		}
@@ -214,14 +216,15 @@ int	ft_open_hd(t_pipe *exec, int iteration_nb)
 	if (exec->hd_filename == NULL)
 	{
 		exec->hd_filename = ft_strjoin("tmp_file", ft_itoa(iteration_nb));
+		//fd[0];
 		exec->fd_temp = open(exec->hd_filename, O_RDWR | O_CREAT | O_EXCL, 0777);
 		if (exec->fd_temp == -1)
 		{
 			perror("perror : can't open the heredoc");
 			close(exec->fd_temp);
 			unlink(exec->hd_filename);
+			free (exec->hd_filename);
 			return (-1);
-			//return (g_error = 42, -1);
 		}
 		return (1);
 	}
@@ -230,6 +233,7 @@ int	ft_open_hd(t_pipe *exec, int iteration_nb)
 		close(exec->fd_temp);
 		unlink(exec->hd_filename);
 		exec->hd_filename = ft_strjoin("tmp_file", ft_itoa(iteration_nb));
+		//fd[0];
 		exec->fd_temp = open(exec->hd_filename, O_RDWR | O_CREAT | O_EXCL, 0777);
 		if (exec->fd_temp == -1)
 		{
@@ -237,42 +241,73 @@ int	ft_open_hd(t_pipe *exec, int iteration_nb)
 			printf("| Error Code : %d \n", errno);
 			close(exec->fd_temp);
 			unlink(exec->hd_filename);
+			free (exec->hd_filename);
 			return (-1);
-			// return (g_error = 42, -1);
 		}
 	}
 	return (0);
 }
 
+//a faire avant chaque prompt
+//close(fd heredoc)
+//unlink(exec->hd_name)
+//free exec->hd_name;
+
 
 int	ft_heredoc_test(t_pipe *exec, char *heredoc)
 {
+	int	fd;
 	char		*words;
-	static int	iteration_nb;
+	static int	iteration_nb = 1;
+	char *filename;
 
-	iteration_nb = 0;
-	iteration_nb++; // pourquoi ne pas le set a 1 direct
-	// if(shell->tree->count_pipe > 0)
-	// 	printf("\nPipes Alert. This is the av[0] cmd of this hd : %s\n", red->av);
-	ft_open_hd(exec, iteration_nb);
+	g_location = IN_HEREDOC;
+	// ft_open_hd(exec, iteration_nb);
+
 	while (1)
 	{
-		// ft_signals_inhd(); a voir avec leila ce que ca fait
+		filename = ft_strjoin("tmp_file", ft_itoa(iteration_nb)); // le foutre dans le /tmp
+		if (!filename)
+			return (0);
+		if (access(filename, F_OK))
+			break;
+		free(filename);
+		iteration_nb++;
+	}
+	
+	fd = open(filename, O_WRONLY | O_CREAT | O_EXCL, 0774);
+	if (fd < 0)
+	{
+		perror("bash");
+		return (0);
+	}
+	exec->hd_filename = filename;
+	exec->fd_here_doc = dup(STDIN_FILENO);
+
+	while (g_location == IN_HEREDOC)
+	{
 		words = readline("> ");
 		if (!words)
 			return (0);
+		//CAS CTRL + D pour que ca quitte le heredoc
 		if (ft_strncmp(words, heredoc, ft_strlen(words)) == 0 && \
 			ft_strlen(words) == ft_strlen(heredoc))
 		{
-			//close(fd);
-			close (exec->fd_temp);
-			return (0);
+			close (fd);
+			return (1);
 		}
-		else
-		{
-			ft_putstr_fd(words, exec->fd_temp);
-			ft_putstr_fd("\n", exec->fd_temp);
-		}
+		write(fd, words, ft_strlen(words));
+		free(words);
 	}
+	if (g_location == QUIT_HEREDOC)
+	{
+		close(fd);
+		free(filename);
+		g_location = IN_PROMPT;
+		return (0);
+	}
+	close(fd);
+	close(exec->fd_here_doc);
+	g_location = IN_PROMPT;
 	return (1);
 }

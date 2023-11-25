@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/25 12:30:50 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/25 19:02:49 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	ft_execute(t_element *cmd, t_env **env, t_pipe *exec)
 	*/
 	//create_heredoc(heredoc, exec, fd);
 	// quand tu trouves un type HEREDOC je create un HEREDOC et ils retournent un fd
+	//mettre le prompt du heredoc, stocker le nom du fichier
 	if (exec->pipe_nb == 0)
 	{
 		// fill_array(cmd, exec);
@@ -107,6 +108,21 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	if (!ft_is_builtin(cmd, env, exec))
 		return ;
 	fill_array(cmd, exec);
+	
+	
+	
+	//HEREDOC
+	if (exec->hd_filename) // bien le free a chaque fois
+	{
+		int fd = open(exec->hd_filename, O_EXCL | O_RDONLY, 0777);
+		if (fd > STDERR_FILENO && dup2(fd, STDIN_FILENO) < 0)
+		{
+			perror("bash");
+			return ;
+		}
+		close(fd);
+	}
+	//HEREDOC
 	pid = fork();
 	g_location = IN_COMMAND; // set_signal_state(IN_COMMAND); si in command SIGIGNORE, sinon ce que jfais deja dans signal
 	set_signals();
@@ -127,6 +143,12 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 		perror("waitpid");
 		return ;
 	}
+	//HEREDOC
+	if (exec->hd_filename) // bien le free a chaque fois
+		unlink(exec->hd_filename);
+	
+	//HEREDOC
+	
 	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
 	free(exit_status->value);
 	if (WIFEXITED(status))
@@ -204,6 +226,7 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 			break ;
 		if (wpid == exec->last_pid)
 		{
+			free(exit_status->value);
 			if (WIFEXITED(status))
 				exit_status->value = ft_itoa(WEXITSTATUS(status));
 			else
