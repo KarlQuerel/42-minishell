@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/27 14:03:38 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:54:55 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	fill_array(t_element *cmd, t_pipe *exec)
 			if (cmd->next && cmd->next->type != PIPE)
 				cmd = cmd->next;
 			else
-				break;
+				break ;
 		}
 		else
 		{
@@ -53,16 +53,6 @@ void	fill_array(t_element *cmd, t_pipe *exec)
 		}
 	}
 	exec->cmd_tab[i] = NULL;
-	/* if (fd_rd != STDIN)
-		close
-	if (fd_wr != STDOUT)
-		close
-	 */
-	// i = -1;
-	// while (exec->cmd_tab[++i])
-	// 	printf("exec->cmd_tab[%d] = %s\n", i, exec->cmd_tab[i]);
-	// printf("exec->cmd_tab[%d] = %s\n", i, exec->cmd_tab[i]);
-	
 }
 
 /* Gets the size of the whole command for memory allocation */
@@ -78,7 +68,7 @@ int	get_size_cmd(t_element *cmd)
 			if (cmd->next && cmd->next->type != PIPE)
 				cmd = cmd->next;
 			else
-				break;
+				break ;
 		}
 		else
 			i++;
