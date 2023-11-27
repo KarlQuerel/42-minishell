@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/27 14:20:23 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/27 15:29:02 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	ft_infile(char *filename)
 	fd = open(filename, O_RDONLY, 0644);
 	if (fd < 0)
 	{
-		printf("wow, j'ai un pb dans le infile\n");
 		ft_putstr_fd("bash: ", STDERR_FILENO);
 		ft_putstr_fd(filename, STDERR_FILENO);
 		perror(" ");
@@ -141,17 +140,18 @@ char	*create_heredoc(char *name, int i, int *fd)
 	*fd = open(name, O_WRONLY | O_CREAT | O_EXCL, 0777);
 	if (*fd < 0)
 	{
-		perror("bash CREATE HEREDOC");
+		perror("bash");
 		return (NULL);
 	}
-	// if (access(name, F_OK))
-	// {
-	// 	free(name);
-	// 	return (NULL);
-	// }
+	if (access(name, F_OK))
+	{
+		free(name);
+		return (NULL);
+	}
 	return (name);
 }
 
+/* Handles heredoc behavior */
 bool	ft_heredoc(t_element *elem)
 {
 	int			fd;
@@ -163,12 +163,7 @@ bool	ft_heredoc(t_element *elem)
 	g_location = IN_HEREDOC;
 	file_name = create_heredoc(elem->content, iteration_nb, &fd);
 	if (!file_name)
-	{
-		printf("wow j'ai pas trouve de nom pour mon heredoc, il est adopte\n");
 		return (false);
-	}
-	// elem->hd_filename = file_name;
-	// elem->fd_here_doc = dup(STDIN_FILENO);
 	while (g_location == IN_HEREDOC)
 	{
 		ft_putstr_fd("> ", 1);
@@ -197,47 +192,3 @@ bool	ft_heredoc(t_element *elem)
 	g_location = IN_PROMPT;
 	return (true);
 }
-
-/* Handles heredoc behaviour */
-//pantheon des fonctions
-// int	ft_heredoc(t_pipe *exec, char *heredoc)
-// {
-// 	int	fd;
-// 	char		*words;
-// 	char		*file_name;
-// 	static int	iteration_nb = 1;
-	
-// 	fd = 42;
-// 	g_location = IN_HEREDOC;
-// 	file_name = create_heredoc(heredoc, iteration_nb, fd);
-// 	if (!file_name)
-// 		return (0);
-// 	exec->hd_filename = file_name;
-// 	exec->fd_here_doc = dup(STDIN_FILENO);
-// 	while (g_location == IN_HEREDOC)
-// 	{
-// 		words = readline("> ");
-// 		if (!words)
-// 			return (0);
-// 		//CAS CTRL + D pour que ca quitte le heredoc
-// 		if (ft_strncmp(words, heredoc, ft_strlen(words)) == 0 && \
-// 			ft_strlen(words) == ft_strlen(heredoc))
-// 		{
-// 			close (fd);
-// 			return (1);
-// 		}
-// 		write(fd, words, ft_strlen(words));
-// 		free(words);
-// 	}
-// 	if (g_location == QUIT_HEREDOC)
-// 	{
-// 		close(fd);
-// 		free(file_name);
-// 		g_location = IN_PROMPT;
-// 		return (0);
-// 	}
-// 	close(fd);
-// 	close(exec->fd_here_doc);
-// 	g_location = IN_PROMPT;
-// 	return (1);
-// }
