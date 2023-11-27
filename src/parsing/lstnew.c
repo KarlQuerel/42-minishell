@@ -6,12 +6,11 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/20 12:20:04 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:04:09 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 /*To add a new node when creating the cmd_list.*/
 t_element	*lstnew(char *line, int i, int type)

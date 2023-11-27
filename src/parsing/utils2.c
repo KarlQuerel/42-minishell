@@ -6,12 +6,11 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 12:10:49 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/17 12:11:23 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:04:30 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 /*Returns the delimiter to look for depending
 on the type of string.

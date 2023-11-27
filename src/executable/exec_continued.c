@@ -6,12 +6,11 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/27 11:45:48 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:03:32 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 /* Being on the middle pipe(s), both fds's are sent to dup2 */
 void	middle_dup(t_element *cmd, t_env **env, t_pipe *exec)
@@ -108,6 +107,8 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
  */
 int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
+	t_env	*exit_status;
+	
 	if (ft_strchr(exec->cmd_tab[0], '/'))
 	{
 		execve(cmd->content, exec->cmd_tab, env->env);
@@ -126,7 +127,11 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 		if (!exec->cmd_tab[0])
 			ft_putstr_fd("\n", STDERR_FILENO);
 		else
+		{
+			exit_status = find_value_with_key_env(env, "EXIT_STATUS");
+			free(exit_status->value);
 			command_not_found(exec);
+		}
 	}
 	else
 	{

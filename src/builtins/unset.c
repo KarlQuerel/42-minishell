@@ -6,12 +6,11 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/11/27 11:44:58 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:03:29 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 /* Reproduces the unset command */
 int	ft_unset(t_element *cmd, t_env **env)

@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:39:52 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/21 17:28:02 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/27 14:04:01 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 /*The first two "if" check if there are errors in the grammar of the command
 line and print the associated error. The last function replaces the $ by its

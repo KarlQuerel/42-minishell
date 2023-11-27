@@ -6,12 +6,11 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:39:41 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/23 15:33:14 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:02:53 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 bool	no_option(t_element *cmd, t_element *head)
 {

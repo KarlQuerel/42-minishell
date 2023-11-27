@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec_errors.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:24:57 by kquerel           #+#    #+#             */
-/*   Updated: 2023/10/26 20:11:02 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/27 14:03:34 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 /* Redirects msg errors */
 void	msg_error(int err)

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/25 12:29:36 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:04:58 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 # include <errno.h>
 # include <limits.h>
 #include <sys/ioctl.h>
+
+#include "../libft/libft.h"
 
 /*Macros pour signaux*/
 # define IN_PROMPT 0

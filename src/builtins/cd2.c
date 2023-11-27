@@ -6,12 +6,11 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 11:47:20 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/18 16:19:10 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:02:57 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 size_t	size_of_word(char *path, int i)
 {

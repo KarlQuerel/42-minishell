@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/24 20:43:59 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/27 14:03:21 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 /* Reproduces the export command */
 int	ft_export(t_element *cmd, t_env **env)

@@ -6,12 +6,11 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/27 12:28:59 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:03:40 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 //heredoc avant les pipes
 // extern t_global g_signals;
@@ -98,12 +97,24 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	int	status;
 	t_env	*exit_status;
 	
+	
+	//TEST a laisser
+	// 	if (!ft_redirect(cmd, exec))
+	// {
+	// 	// free
+	// 	exit(1);
+	// }
+	//TEST
+	
+	
 	while(cmd)
 	{
 		if (cmd->type == COMMAND)
 			break;
 		cmd = cmd->next;
 	}
+	
+		
 	
 	if (!ft_is_builtin(cmd, env, exec))
 		return ;

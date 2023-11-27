@@ -6,12 +6,11 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:51:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/20 14:54:29 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:03:58 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 /*The first condition is meant to skip the spaces in between quotes,
 so that they are kept in new_line.*/

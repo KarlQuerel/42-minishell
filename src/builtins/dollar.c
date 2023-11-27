@@ -6,12 +6,11 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/24 19:02:31 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:03:14 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 
 // A GERER

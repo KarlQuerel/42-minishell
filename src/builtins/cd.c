@@ -6,12 +6,11 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:34:22 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/23 13:58:05 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:03:10 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 /*Returns the specified path and handles the case where a directory
 contains spaces in its name.

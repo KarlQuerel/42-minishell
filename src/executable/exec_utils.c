@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/24 13:12:37 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/27 14:03:38 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 /* Splits the path
 Get the PATH variable from env list and split it by ':'

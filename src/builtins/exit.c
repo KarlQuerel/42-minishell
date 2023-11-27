@@ -6,12 +6,11 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/27 11:47:30 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:03:17 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 /* exit:
 si le premier argument de exit n'est pas valide:

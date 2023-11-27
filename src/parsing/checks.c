@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:07:47 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/16 19:40:57 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/27 14:03:47 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 /*When a quote is found in the command line, this function
 checks if there is another quote of the same type further in

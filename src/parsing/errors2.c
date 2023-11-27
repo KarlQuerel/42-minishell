@@ -6,12 +6,11 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:40:58 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/21 11:31:07 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:04:04 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 void	and_error(char *line)
 {

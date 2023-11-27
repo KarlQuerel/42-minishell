@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/24 13:29:43 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/27 14:04:14 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 /*Separates each argument in the command line in a t_element list.
 Only the redirectors and spaces that separate each command are not

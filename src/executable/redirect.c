@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/25 18:57:57 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/27 14:03:43 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 /* Opens file given in parameters */
 int	ft_infile(char *filename)
@@ -68,6 +67,8 @@ int	ft_redirect(t_element *cmd, t_pipe *exec)
 {
 	t_element *tmp;
 
+	if (!cmd)
+		return (0);
 	tmp = cmd;
 	while (tmp->prev && tmp->prev->type != PIPE)//on revient au tout debut de la cmd
 		tmp = tmp->prev;
