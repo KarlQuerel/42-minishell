@@ -6,7 +6,7 @@
 #    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/11/27 13:58:09 by kquerel          ###   ########.fr        #
+#    Updated: 2023/11/27 16:43:41 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,7 +69,6 @@ SRCS		:=  src/main.c \
 				src/parsing/malloc.c \
 				src/parsing/cmd_types.c \
 				src/parsing/prompt.c \
-				get_next_line/get_next_line_bonus.c \
 				
 
 OBJS 		:= $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))

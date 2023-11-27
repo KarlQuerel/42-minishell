@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/27 14:02:00 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/27 16:42:35 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@
 # include <errno.h>
 # include <limits.h>
 #include <sys/ioctl.h>
-
-#include "../libft/libft.h"
 
 /*Macros pour signaux*/
 # define IN_PROMPT 0
@@ -376,7 +374,5 @@ void	write_heredoc(char *safe_word, t_pipe *exec, int fd);
 
 bool	ft_heredoc(t_element *elem);
 int	ft_open_hd(t_pipe *exec, int iteration_nb);
-
-char	*get_next_line(int fd);
 
 #endif
