@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/27 16:22:48 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 20:11:14 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	int	status;
 	t_env	*exit_status;
 	
+	// if (g_location == QUIT_HEREDOC)
 	if (ft_all_redir(cmd) == true)
 	{
 		ft_only_create(cmd);

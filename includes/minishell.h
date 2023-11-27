@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/27 16:42:35 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/27 19:17:48 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ typedef struct s_env
 	char	*key;
 	char	*value;
 	char	**env;
+	// int		fd_heredoc;
 	struct s_env *prev;
 	struct s_env *next;
 }	t_env;
@@ -283,7 +284,7 @@ void	cd(t_element *current, t_env *env_list);
 
 /*Cd2*/
 size_t	size_of_word(char *path, int i);
-void	forward_loop(char *current_path, char *home_value, int end);
+int		forward_loop(char *current_path, char *home_value, int end);
 void	go_forward_until_user(char *current_path, char *home_value);
 void	go_backwards_until_user(char *current_path, char *home_value);
 
