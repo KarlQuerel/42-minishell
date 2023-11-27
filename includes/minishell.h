@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/27 14:04:58 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:16:46 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ typedef struct s_element
 	char	*content;
 	int		type;
 	bool	builtin;
+	bool	change;
 	struct s_element *prev;
 	struct s_element *next;
 	struct s_pipe *exec;

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/27 14:04:14 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:21:01 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ t_element	*parsing(char *line, t_env *env_list)
 	{
 		separator = type_of_separator(line, start, \
 		parsing_str_type(line, start));
+		if (separator[0] == '\'')
+			current_cmd->change=false;
 		parsing_fill_content(&current_cmd, line, &i, separator);
 		if (parsing_str_type(line, start) == STR)
 			free(separator);
@@ -48,7 +50,6 @@ int	determine_command_type(char *line, size_t end, size_t start)
 {
 	if(line[start] == '\'' || line[start] == '\"')
 		start = start + 1;
-	
 	if ((line[start] == '-' && ft_isalpha(line[start + 1]) == 1) || \
 	(line[end] >= 4 && line[start] == '-' && (line[start + 1] == '\'' || \
 	line[start + 1] == '\"') && ft_isalpha(line[start + 2]) == 1 && \
@@ -139,7 +140,7 @@ void	parsing_fix(t_element **cmd_list, t_env *env_list)
 			current->type = COMMAND;
 		if (current->type == COMMAND && current->next)
 			type_arg_after_cmd(&current);
-		else if (current->content[0] == '$')
+		else if (current->content[0] == '$' && current->change == true)
 		{
 			current->content = dollar(current->content, env_list);
 			if (current->content == NULL)
