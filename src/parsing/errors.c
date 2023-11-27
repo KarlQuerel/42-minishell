@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:39:52 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/27 14:04:01 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 15:41:49 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ modifie line*/
 {
 	if (!line)
 		return (NULL);
-	// if (redirecters_error(*line) == false)
-	// 	return (false);
+	if (redirecters_error(line) == false)
+		return (false);
 	if (first_character_error(line) == false)
 		return (false);
 	if (pipe_double_or_eof(line) == false)
@@ -57,33 +57,45 @@ bool	redirecters_error(char *line)
 	int	i;
 
 	i = 0;
-	if (ft_strlen(line) <= 2 && (is_cmd_in_line(line, "<") || is_cmd_in_line(line, ">")))
+	// if (ft_strlen(line) <= 2 && (is_cmd_in_line(line, "<") || is_cmd_in_line(line, ">")))
+	// {
+	// 	printf("bash: syntax error near unexpected token `newline'\n");
+	// 	return (false);
+	// }
+	// else if (ft_strlen(line) > 2)
+	// {
+	// 	// if (line[0] == '>' && line[1] == '>')
+	// 	// {
+	// 	// 	printf("bash: syntax error near unexpected token `>>'\n");
+	// 	// 	return (false);
+	// 	// }	
+	// 	/* else */if (line[0] == '<' && line[1] == '<')
+	// 	{
+	// 		printf("bash: syntax error near unexpected token `<<'\n");
+	// 		return (false);
+	// 	}
+	// 	// else if (line[0] == '>')
+	// 	// {
+	// 	// 	printf("bash: syntax error near unexpected token `>'\n");
+	// 	// 	return (false);
+	// 	// }
+	// 	else if (line[0] == '<')
+	// 	{
+	// 		printf("bash: syntax error near unexpected token `<'\n");
+	// 		return (false);
+	// 	}
+	// }
+
+	while (line[i])
 	{
-		printf("bash: syntax error near unexpected token `newline'\n");
-		return (false);
-	}
-	else if (ft_strlen(line) > 2)
-	{
-		// if (line[0] == '>' && line[1] == '>')
-		// {
-		// 	printf("bash: syntax error near unexpected token `>>'\n");
-		// 	return (false);
-		// }	
-		/* else */if (line[0] == '<' && line[1] == '<')
+		if ((line[i] == '<' || line[i] == '>') &&\
+		(line[i + 1] == '<' || line[i + 1] == '>') &&\
+		(line[i + 2] == '<' || line[i + 2] == '>'))
 		{
-			printf("bash: syntax error near unexpected token `<<'\n");
+			printf("KARL MESSAGE ERREUR\n");
 			return (false);
 		}
-		// else if (line[0] == '>')
-		// {
-		// 	printf("bash: syntax error near unexpected token `>'\n");
-		// 	return (false);
-		// }
-		else if (line[0] == '<')
-		{
-			printf("bash: syntax error near unexpected token `<'\n");
-			return (false);
-		}
+		i++;
 	}
 	return (true);
 }

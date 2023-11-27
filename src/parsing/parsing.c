@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/27 15:17:39 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 15:49:23 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_element	*parsing(char *line, t_env *env_list)
 	return (head);
 }
 
-bool	nothing_before(int start, int n, char *line)
+/* bool	nothing_before(int start, int n, char *line)
 {
 	if (start - (n + 1) > -1)
 	{
@@ -53,7 +53,7 @@ bool	nothing_before(int start, int n, char *line)
 			return false;
 	}
 	return (true);
-}
+} */
 
 /*Determines the type of a given cmd for the parsing function.*/
 int	determine_command_type(char *line, size_t end, size_t start)
@@ -65,25 +65,25 @@ int	determine_command_type(char *line, size_t end, size_t start)
 	line[start + 1] == '\"') && ft_isalpha(line[start + 2]) == 1 && \
 	(line[end - 1] == '\'' || line[end - 1] == '\"')))
 		return (OPTION);
-	if ((start >= 3 && (line[start - 1] == ' ' && line[start - 2] == '<' && line[start - 3] == '<'/*  && line[start - 4] == ' ' */) && nothing_before(start, 3, line) == true) || \
-	(start >= 4 && (line[start - 1] == '<' && line[start - 2] == '<' && line[start - 3] == ' ') && nothing_before(start, 4, line) == true) || \
-	(start >= 3 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == '<' && line[start - 3] == '<'/*  && line[start - 4] == ' ' */) && nothing_before(start, 3, line) == true) || \
-	(start >= 4 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == ' ' && line[start - 3] == '<' && line[start - 4] == '<'/*  && line[start - 5] == ' ' */) && nothing_before(start, 4, line) == true))
+	if ((start >= 3 && (line[start - 1] == ' ' && line[start - 2] == '<' && line[start - 3] == '<'/*  && line[start - 4] == ' ' */)/*  && nothing_before(start, 3, line) == true */) || \
+	(start >= 3 && (line[start - 1] == '<' && line[start - 2] == '<'/*  && line[start - 3] == ' ' */)/*  && nothing_before(start, 4, line) == true */) || \
+	(start >= 3 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == '<' && line[start - 3] == '<'/*  && line[start - 4] == ' ' */)/*  && nothing_before(start, 3, line) == true */) || \
+	(start >= 4 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == ' ' && line[start - 3] == '<' && line[start - 4] == '<'/*  && line[start - 5] == ' ' */)/*  && nothing_before(start, 4, line) == true */))
 		return (HEREDOC);
-	if ((start >= 2 && (line[start - 1] == ' ' && line[start - 2] == '<'/*  && line[start - 3] == ' ' */) && nothing_before(start, 2, line) == true) || \
-	(start >= 1 && line[start - 1] == '<'/*  && line[start - 2] == ' ' */ && nothing_before(start, 1, line) == true) || \
-	(start >= 2 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == '<'/*  && line[start - 3] == ' ' */) && nothing_before(start, 2, line) == true) || \
-	(start >= 3 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == ' ' && line[start - 3] == '<'/*  && line[start - 4] == ' ' */) && nothing_before(start, 3, line) == true))
+	if ((start >= 2 && (line[start - 1] == ' ' && line[start - 2] == '<'/*  && line[start - 3] == ' ' */)/*  && nothing_before(start, 2, line) == true */) || \
+	(start >= 1 && line[start - 1] == '<'/*  && line[start - 2] == ' ' *//*  && nothing_before(start, 1, line) == true */) || \
+	(start >= 2 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == '<'/*  && line[start - 3] == ' ' */)/*  && nothing_before(start, 2, line) == true */) || \
+	(start >= 3 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == ' ' && line[start - 3] == '<'/*  && line[start - 4] == ' ' */)/*  && nothing_before(start, 3, line) == true */))
 		return (INFILE);
-	if ((start >= 3 && (line[start - 1] == ' ' && line[start - 2] == '>' && line[start - 3] == '>'/*  && line[start - 4] == ' ' */) && nothing_before(start, 3, line) == true) || \
-	(start >= 2 && (line[start - 1] == '>' && line[start - 2] == '>'/*  && line[start - 3] == ' ' */) && nothing_before(start, 2, line) == true) || \
-	(start >= 3 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == '>' && line[start - 3] == '>'/*  && line[start - 4] == ' ' */) && nothing_before(start, 3, line) == true) || \
-	(start >= 4 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == ' ' && line[start - 3] == '>' && line[start - 4] == '>'/*  && line[start - 5] == ' ' */) && nothing_before(start, 4, line) == true))
+	if ((start >= 3 && (line[start - 1] == ' ' && line[start - 2] == '>' && line[start - 3] == '>'/*  && line[start - 4] == ' ' */)/*  && nothing_before(start, 3, line) == true */) || \
+	(start >= 2 && (line[start - 1] == '>' && line[start - 2] == '>'/*  && line[start - 3] == ' ' */)/*  && nothing_before(start, 2, line) == true */) || \
+	(start >= 3 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == '>' && line[start - 3] == '>'/*  && line[start - 4] == ' ' */)/*  && nothing_before(start, 3, line) == true */) || \
+	(start >= 4 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == ' ' && line[start - 3] == '>' && line[start - 4] == '>'/*  && line[start - 5] == ' ' */)/*  && nothing_before(start, 4, line) == true */))
 		return (OUTFILE_APPEND);
-	if ((start >= 2 && (line[start - 1] == ' ' && line[start - 2] == '>'/*  && line[start - 3] == ' ' */) && nothing_before(start, 2, line) == true) || \
-	(start >= 1 && line[start - 1] == '>'/*  && line[start - 1] == ' ' */ && nothing_before(start, 1, line) == true) || \
-	(start >= 2 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == '>'/*  && line[start - 3] == ' ' */) && nothing_before(start, 2, line) == true) || \
-	(start >= 3 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == ' ' && line[start - 3] == '>'/*  && line[start - 4] == ' ' */) && nothing_before(start, 3, line) == true))
+	if ((start >= 2 && (line[start - 1] == ' ' && line[start - 2] == '>'/*  && line[start - 3] == ' ' */)/*  && nothing_before(start, 2, line) == true */) || \
+	(start >= 1 && line[start - 1] == '>'/*  && line[start - 1] == ' ' *//*  && nothing_before(start, 1, line) == true */) || \
+	(start >= 2 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == '>'/*  && line[start - 3] == ' ' */)/*  && nothing_before(start, 2, line) == true */) || \
+	(start >= 3 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == ' ' && line[start - 3] == '>'/*  && line[start - 4] == ' ' */)/*  && nothing_before(start, 3, line) == true */))
 		return (OUTFILE);
 	if (ft_strncmp(&line[start], "|", 1) == 0)
 		return (PIPE);
