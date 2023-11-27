@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/11/23 15:05:24 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/27 11:44:58 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,11 @@ void	ft_delete_node_env(t_env **head, t_env *to_delete)
 		*head = to_delete->next;
 	if (to_delete->next)
 		to_delete->next->prev = to_delete->prev;
-	free(to_delete->key);
-	free(to_delete->value);
+	if (ft_strncmp(to_delete->key, "EXIT_STATUS", ft_strlen(to_delete->key)) != 0)
+	{
+		free(to_delete->key);
+		free(to_delete->value);
+	}
 	free(to_delete);
 }
 

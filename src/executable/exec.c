@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/25 19:02:49 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/27 12:28:59 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	//HEREDOC
 	
 	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
-	free(exit_status->value);
+	//free(exit_status->value);
 	if (WIFEXITED(status))
 		exit_status->value = ft_itoa(WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
@@ -226,7 +226,7 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 			break ;
 		if (wpid == exec->last_pid)
 		{
-			free(exit_status->value);
+			//free(exit_status->value);
 			if (WIFEXITED(status))
 				exit_status->value = ft_itoa(WEXITSTATUS(status));
 			else

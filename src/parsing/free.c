@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/25 18:50:11 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/27 11:51:04 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,17 @@ void	ctrld_free(char *line, char *prompt, t_env *env, t_pipe *exec)
 {
 	int i;
 	t_env	*exit_status;
+	int	temp;
 
 	i = 0;
 	free(line);
 	free(prompt);
-	free_env_list(env);
 	history(FREE_HISTORY, 0);
 	free(exec);
 	exit_status = find_value_with_key_env(env, "EXIT_STATUS");
-	exit(ft_atoi(exit_status->value)); // comment le free? reprend la valeur de la derniere commande
+	temp = ft_atoi(exit_status->value);
+	free_env_list(env);
+	exit(temp);
 
 }
 

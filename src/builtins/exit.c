@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/25 20:01:11 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/27 11:47:30 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ t_element *head, int option)
 	t_env	*exit_status;
 	
 	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
-	free(exit_status->value);
+	//free(exit_status->value);
 	if (option == 0)
 	{
 		if (no_pipes_before(cmd) == true)
@@ -150,7 +150,7 @@ void	exitstatus_update_in_env(t_env **env)
 	}
  }
 //CELLE QUI MARCHE MAIS QUI FAIT LEAK FT_EXPORT
-void	add_exit_status_in_env(t_env **env)
+/* void	add_exit_status_in_env(t_env **env)
 {
 	t_element	*node;
 
@@ -164,25 +164,25 @@ void	add_exit_status_in_env(t_env **env)
 	// peut etre invalid free
 	free(node->next);
 	free(node);
-}
+} */
 
 //FAIS DES LEAKS DANS L'EXECUTABLE
-// void    add_exit_status_in_env(t_env **env)
-// {
-//     t_env    *node;
-//     t_env    *current;
+void	add_exit_status_in_env(t_env **env)
+{
+	t_env	*node;
+	t_env	*current;
 
-//     current = *env;
-//     node = ft_calloc(1, sizeof(t_env));
-//     //node->value = ft_calloc(13, sizeof(char));
-//     node->key = "EXIT_STATUS";
-//     //node->value = ft_calloc(2, sizeof(char));
-//     node->value = "0";
-//     node->next = NULL;
-//     while (current->next)
-//         current = current->next;
-//     current->next = node;
-//     current->next->prev = current;
-//     current = current->next;
-//     current->next = NULL;
-// }
+	node = ft_calloc(1, sizeof(t_env));
+	//node->value = ft_calloc(13, sizeof(char));
+	node->key = "EXIT_STATUS";
+	//node->value = ft_calloc(2, sizeof(char));
+	node->value = "0";
+	node->prev = NULL;
+	node->next = NULL;
+	current = *env;
+	while (current->next)
+		current = current->next;
+	current->next = node;
+	current->next->prev = current;
+	current->next->next = NULL;
+}
