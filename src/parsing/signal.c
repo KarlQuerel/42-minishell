@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/27 14:04:22 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 16:10:08 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	signal_handler(int signal)
 		else if (g_location == IN_COMMAND)
 		{
 			ft_putchar_fd('\n', STDERR_FILENO);
-			rl_reset_line_state();
+			rl_replace_line("", 0);
+			rl_on_new_line();
 		}
 		else
 		{

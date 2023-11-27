@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/27 15:53:40 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/27 16:22:48 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	{
 		ft_only_create(cmd);
 		//free
-		free(exec->cmd_tab);
+		//free(exec->cmd_tab);
 		return ;
 	}
 	//TEST a laisser

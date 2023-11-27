@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/27 14:26:06 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/27 16:25:26 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	determine_command_type(char *line, size_t end, size_t start)
 	(line[end - 1] == '\'' || line[end - 1] == '\"')))
 		return (OPTION);
 	if ((start >= 3 && (line[start - 1] == ' ' && line[start - 2] == '<' && line[start - 3] == '<'/*  && line[start - 4] == ' ' */)/*  && nothing_before(start, 3, line) == true */) || \
-	(start >= 3 && (line[start - 1] == '<' && line[start - 2] == '<'/*  && line[start - 3] == ' ' */)/*  && nothing_before(start, 4, line) == true */) || \
+	(start >= 2 && (line[start - 1] == '<' && line[start - 2] == '<'/*  && line[start - 3] == ' ' */)/*  && nothing_before(start, 4, line) == true */) || \
 	(start >= 3 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == '<' && line[start - 3] == '<'/*  && line[start - 4] == ' ' */)/*  && nothing_before(start, 3, line) == true */) || \
 	(start >= 4 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == ' ' && line[start - 3] == '<' && line[start - 4] == '<'/*  && line[start - 5] == ' ' */)/*  && nothing_before(start, 4, line) == true */))
 		return (HEREDOC);
