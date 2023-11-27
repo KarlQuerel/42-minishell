@@ -6,12 +6,11 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:55:56 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/23 19:34:24 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:04:17 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 /*Initializes the element_list by returning the first node.*/
 t_element	*parsing_initialisation(char *line, int *i, int *start)

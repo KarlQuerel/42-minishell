@@ -6,12 +6,11 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:38 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/23 19:18:19 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:03:23 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 /*History : quand on fait cd et qu'on est deja tout en haut
 on ne doit pas remettre cd dans history. Pareil qd on fait deux fois

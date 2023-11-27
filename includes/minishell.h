@@ -39,6 +39,8 @@
 # include <limits.h>
 #include <sys/ioctl.h>
 
+#include "../libft/libft.h"
+
 /*Macros pour signaux*/
 # define IN_PROMPT 0
 # define IN_COMMAND 1
@@ -121,6 +123,7 @@ typedef struct s_element
 	char	*content;
 	int		type;
 	bool	builtin;
+	bool	change;
 	struct s_element *prev;
 	struct s_element *next;
 	struct s_pipe *exec;

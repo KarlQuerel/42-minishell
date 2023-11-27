@@ -9,3 +9,47 @@ cd fichier
 
 
 Faire tests avec et sans espaces pour la fonction erase_spaces
+
+
+//INFILE
+<1 echo hi
+< 2 echo hi
+< '3' echo hi
+< "4" echo hi
+ls | <1 echo hi
+ls | < 2 echo hi
+ls | < '3' echo hi
+ls | < "4" echo hi
+
+<<<1 echo hi
+ls | <<<1 echo hi
+
+//OUTFILE
+>1 echo hi
+> 2 echo hi
+> '3' echo hi
+> "4" echo hi
+ls | >1 echo hi
+ls | > 2 echo hi
+ls | > '3' echo hi
+ls | > "4" echo hi
+
+HEREDOC
+<<1 echo hi
+<< 2 echo hi
+<< '3' echo hi
+<< "4" echo hi
+ls | <<1 echo hi
+ls | << 2 echo hi
+ls | << '3' echo hi
+ls | << "4" echo hi
+
+OUTFILE APPEND
+>>1 echo hi
+>> 2 echo hi
+>> '3' echo hi
+>> "4" echo hi
+ls | >>1 echo hi
+ls | >> 2 echo hi
+ls | >> '3' echo hi
+ls | >> "4" echo hi

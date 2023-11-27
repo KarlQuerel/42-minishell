@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 
 //heredoc avant les pipes
 /*
@@ -127,13 +126,13 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 		free(exec->cmd_tab);
 		return ;
 	}
-	
-	// if (!ft_redirect(cmd, exec))
+	//TEST a laisser
+	// 	if (!ft_redirect(cmd, exec))
 	// {
 	// 	// free
 	// 	exit(1);
 	// }
-
+	//TEST
 	while(cmd)
 	{
 		if (cmd->type == COMMAND)
@@ -201,38 +200,7 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 			last_pipe(cmd, env, exec);
 		i++;
 	}
-	// wait(NULL);
-	// //wait(NULL); // ou waitpid
-	// // if (waitpid(exec->last_pid, &status, 0) == -1)
-	// if (waitpid(-1, &status, 0) == -1)
-	// {
-	// 	perror("waitpid MULT_COMMANDS.C");
-	// 	return ;
-	// }
-	// pid_t	wpid;
-	// wpid = 0;
 	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
-	// while (wait(&status) > 0)
-	// 	;
-	// if (WIFSIGNALED(status))
-	// 	exit_status->value = ft_itoa(WTERMSIG(status) + 128);
-	// else if (WIFEXITED(status) && )
-	// {
-	// 	printf("Je suis rentre dans WIFEXITED\n");
-	// 	printf("WIFEXITED = %d\n", WEXITSTATUS(status));
-	// 	//g_signals.exit_status = WEXITSTATUS(status);
-	// 	free(exit_status->value);
-	// 	exit_status->value = ft_itoa(WEXITSTATUS(status));
-	// }
-	// //printf("le putain de g_signals = %d\n", g_signals.exit_status);
-	// else
-	// 	exit_status->value = ft_itoa(status);
-
-
-
-
-
-	//ALBAN
 	while (true)
 	{
 		wpid = wait(&status);
@@ -248,8 +216,6 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 		}
 	}
 	return ;
-	// return (exit_status->value);
-	//FIN
 }
 
 /* Handles all middle pipes behaviour
