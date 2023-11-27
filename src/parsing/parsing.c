@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/24 13:29:43 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/27 14:26:06 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ t_element	*parsing(char *line, t_env *env_list)
 		if (parsing_str_type(line, start) == STR)
 			free(separator);
 		current_cmd->type = determine_command_type(line, i, start);
+		if (current_cmd->type == HEREDOC)
+			ft_heredoc(current_cmd); //protege le return
 		parsing_advance_to_next_word(line, &start, &i);
 		parsing_initialize_next(&current_cmd, line, &i);
 	}

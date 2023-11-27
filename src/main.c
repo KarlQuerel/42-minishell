@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/25 12:51:16 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:25:03 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../libft/libft.h"
 
 //t_global g_signals;
 int	g_location;
@@ -138,9 +137,13 @@ int main (int argc, char **argv, char **env)
 			if (line_errors_and_fix(line) == true)
 			{
 				cmd_list = parsing(line, env_list);
-				// printlist_test(cmd_list);
+				printlist_test(cmd_list);
 				exec->line = &line;
 				exec->prompt = &prompt;
+				//TEST HEREDOC
+				
+
+				//TEST HEREDOC
 				ft_execute(cmd_list, &env_list, exec);
 				free_cmd_list(cmd_list);
 				//free_cmd_arr(exec);

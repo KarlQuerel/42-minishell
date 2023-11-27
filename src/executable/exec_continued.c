@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_continued.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/27 11:45:48 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:05:23 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 	else
 	{
 		execve(cmd->content, exec->cmd_tab, env->env);
+		// printf("wtf je passe par ici\n");
 		perror("bash");
 		// free_cmd_list(cmd);
 	}
