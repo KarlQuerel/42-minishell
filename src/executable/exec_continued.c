@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_continued.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/27 14:03:32 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:47:21 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,11 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
 	if (cmd->builtin == true)
 		return (ft_builtins(cmd, env, exec), close(exec->fd[0]), exit(ft_atoi(exit_status->value)));
-	// if (exec->cmd_tab[0][0] != '\0')
 	if (exec->cmd_tab[0] != NULL)
 	{
 		//free(exit_status->value);
 		exit_status->value = ft_itoa(exec_command(cmd, *env, exec));
 	}
-	//printf("EXIT STATUS CHILD: %d\n", exit_status->value);
 	exit(ft_atoi(exit_status->value));
 }
 
@@ -136,6 +134,7 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 	else
 	{
 		execve(cmd->content, exec->cmd_tab, env->env);
+		// printf("wtf je passe par ici\n");
 		perror("bash");
 		// free_cmd_list(cmd);
 	}

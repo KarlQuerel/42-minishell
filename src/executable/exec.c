@@ -3,20 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/27 14:03:40 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 15:53:40 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 //heredoc avant les pipes
-// extern t_global g_signals;
 /*
-TO DO:
-- HEREDOC
 - CARO -->changer la valeur de EXIT_STATUS dans l'environnement
 			la ou tu fais appel a CTRL D dans le main
 - free le dernier iota dans l'exec
@@ -41,23 +38,8 @@ void	ft_execute(t_element *cmd, t_env **env, t_pipe *exec)
 	exec->cmd_tab = ft_calloc(size_cmd + 1, sizeof(char *));
 	if (!exec->cmd_tab)
 		return ;
-	// etape 1
-	/*
-		si type HEREDOC
-		open heredoc
-		>
-		close
-		stock le nom 
-		check si heredoc 1 existe 
-	*/
-	//create_heredoc(heredoc, exec, fd);
-	// quand tu trouves un type HEREDOC je create un HEREDOC et ils retournent un fd
-	//mettre le prompt du heredoc, stocker le nom du fichier
 	if (exec->pipe_nb == 0)
-	{
-		// fill_array(cmd, exec);
 		single_command(cmd, env, exec);
-	}
 	else
 		multiple_commands(cmd, env, exec);
 }
@@ -72,7 +54,6 @@ int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec)
 		if (!ft_redirect(cmd, exec))
 		{
 			// free et on return
-			ft_putstr_fd("Redirect failed\n", STDERR_FILENO); // A EFFACER
 			return (0);
 		}
 		ft_builtins(cmd, env, exec);
@@ -83,6 +64,47 @@ int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec)
 		return (0);
 	}
 	return (1);
+}
+
+
+bool	ft_all_redir(t_element *cmd)
+{
+	while (cmd)
+	{
+		if (cmd->type < 3 && cmd->type != PIPE)
+			return (false);
+		cmd = cmd->next;
+	}
+	return (true);
+}
+
+bool	ft_only_create(t_element *cmd)
+{
+	while (cmd)
+	{
+		if (cmd->type == OUTFILE)
+		{
+			if (open(cmd->content, O_CREAT | O_RDWR | O_TRUNC, 0644) < 0)
+				return (perror("bash"), true);
+		}
+		else if (cmd->type == OUTFILE_APPEND)
+		{
+			if (open(cmd->content, O_CREAT | O_RDWR | O_APPEND, 0644) < 0)
+				return (perror("bash"), true);
+		}
+		else if (cmd->type == INFILE)
+		{
+			if (open (cmd->content, O_RDONLY, 0644) < 0)
+			{
+				ft_putstr_fd("bash: ", STDERR_FILENO);
+				ft_putstr_fd(cmd->content, STDERR_FILENO);
+				perror(" ");
+				return (true);
+			}
+		}
+		cmd = cmd->next;
+	}
+	return (true);
 }
 
 
@@ -97,7 +119,13 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	int	status;
 	t_env	*exit_status;
 	
-	
+	if (ft_all_redir(cmd) == true)
+	{
+		ft_only_create(cmd);
+		//free
+		free(exec->cmd_tab);
+		return ;
+	}
 	//TEST a laisser
 	// 	if (!ft_redirect(cmd, exec))
 	// {
@@ -105,35 +133,15 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	// 	exit(1);
 	// }
 	//TEST
-	
-	
 	while(cmd)
 	{
 		if (cmd->type == COMMAND)
 			break;
 		cmd = cmd->next;
 	}
-	
-		
-	
 	if (!ft_is_builtin(cmd, env, exec))
 		return ;
 	fill_array(cmd, exec);
-	
-	
-	
-	//HEREDOC
-	if (exec->hd_filename) // bien le free a chaque fois
-	{
-		int fd = open(exec->hd_filename, O_EXCL | O_RDONLY, 0777);
-		if (fd > STDERR_FILENO && dup2(fd, STDIN_FILENO) < 0)
-		{
-			perror("bash");
-			return ;
-		}
-		close(fd);
-	}
-	//HEREDOC
 	pid = fork();
 	g_location = IN_COMMAND; // set_signal_state(IN_COMMAND); si in command SIGIGNORE, sinon ce que jfais deja dans signal
 	set_signals();
@@ -154,12 +162,6 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 		perror("waitpid");
 		return ;
 	}
-	//HEREDOC
-	if (exec->hd_filename) // bien le free a chaque fois
-		unlink(exec->hd_filename);
-	
-	//HEREDOC
-	
 	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
 	//free(exit_status->value);
 	if (WIFEXITED(status))
@@ -198,38 +200,7 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 			last_pipe(cmd, env, exec);
 		i++;
 	}
-	// wait(NULL);
-	// //wait(NULL); // ou waitpid
-	// // if (waitpid(exec->last_pid, &status, 0) == -1)
-	// if (waitpid(-1, &status, 0) == -1)
-	// {
-	// 	perror("waitpid MULT_COMMANDS.C");
-	// 	return ;
-	// }
-	// pid_t	wpid;
-	// wpid = 0;
 	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
-	// while (wait(&status) > 0)
-	// 	;
-	// if (WIFSIGNALED(status))
-	// 	exit_status->value = ft_itoa(WTERMSIG(status) + 128);
-	// else if (WIFEXITED(status) && )
-	// {
-	// 	printf("Je suis rentre dans WIFEXITED\n");
-	// 	printf("WIFEXITED = %d\n", WEXITSTATUS(status));
-	// 	//g_signals.exit_status = WEXITSTATUS(status);
-	// 	free(exit_status->value);
-	// 	exit_status->value = ft_itoa(WEXITSTATUS(status));
-	// }
-	// //printf("le putain de g_signals = %d\n", g_signals.exit_status);
-	// else
-	// 	exit_status->value = ft_itoa(status);
-
-
-
-
-
-	//ALBAN
 	while (true)
 	{
 		wpid = wait(&status);
@@ -245,8 +216,6 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 		}
 	}
 	return ;
-	// return (exit_status->value);
-	//FIN
 }
 
 /* Handles all middle pipes behaviour
