@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/27 18:14:36 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/28 17:02:43 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,9 @@ bool	no_pipes_before(t_element *cmd)
 /* Reproduces the exit function
 If the first argument is not valid (not numeric or > INT_MAX) the programs ends
 else if the second argument is not valid, the program keeps running */
-int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
+void	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	t_element	*head;
-	int			exit_code;
 	int	arg_count;
 	
 	if (no_args_or_options(cmd) == true)
@@ -61,7 +60,7 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 		{
 			arg_count++;
 			if (arg_count > 1)
-				return (ft_exit_continued(cmd, env, exec, head, 1), 0);
+				return (ft_exit_continued(cmd, env, exec, head, 1));
 			if (!ft_is_num(cmd->content) || \
 		!ft_atoi_check(cmd->content))
 				ft_exit_continued(cmd, env, exec, head, 0);
@@ -69,8 +68,17 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 		cmd = cmd->next;
 	}
 	if (arg_count > 1)
-		return (ft_exit_continued(cmd, env, exec, head, 1), 0);
+		return (ft_exit_continued(cmd, env, exec, head, 1));
 	cmd = head;
+	ft_exit_continued_2(cmd, env, exec, head);
+}
+
+/* exit_continued_2 */
+void	ft_exit_continued_2(t_element *cmd, t_env **env, t_pipe *exec, t_element *head)
+{
+	int exit_code;
+	
+	exit_code = 0;
 	while (cmd && cmd->type != PIPE)
 	{
 		if (cmd->type == ARGUMENT)
@@ -83,7 +91,6 @@ int	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 		}
 		cmd = cmd->next;
 	}
-	return (0);
 }
 
 /* exit_continued */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/28 13:15:13 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 17:37:24 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ typedef struct s_pipe
 	char 	**env;
 	char	**line;
 	char	**prompt;
+	char	**env_execve;
 	struct s_element *cmd;
 	struct s_env *env_s;
 }	t_pipe;
@@ -301,7 +302,7 @@ void	ft_env(t_env *env, t_element *cmd, int option);
 
 /*Exit*/
 bool	no_args_or_options(t_element *cmd);
-int		ft_exit(t_element *cmd, t_env **env, t_pipe *exec);
+void	ft_exit(t_element *cmd, t_env **env, t_pipe *exec);
 void	exitstatus_update_in_env(t_env **env);
 void	add_exit_status_in_env(t_env **env);
 
@@ -366,7 +367,6 @@ void	handle_sigint(int sig);
 void	ft_delete_node_cmd(t_element **head, t_element *to_delete);
 void	free_cmd_arr(t_pipe *exec);
 void	ft_exit_continued(t_element *cmd, t_env **env, t_pipe *exec, t_element *head, int option);
-int	command_not_found(t_pipe *exec);
 char	*create_heredoc(char *safeword, int i, int *fd);
 int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec);
 void	write_heredoc(char *safe_word, t_pipe *exec, int fd);
@@ -375,5 +375,15 @@ void	write_heredoc(char *safe_word, t_pipe *exec, int fd);
 
 bool	ft_heredoc(t_element *elem, t_env *env);
 int	ft_open_hd(t_pipe *exec, int iteration_nb);
+char	*ft_strjoin_env(char const *s1, char const *s2);
+char **ft_transform_env(t_env *env);
+bool	ft_all_redir(t_element *cmd);
+bool	ft_only_create(t_element *cmd);
+void	ft_exit_status(t_element **env);
+int	ft_exec_slash(t_element *cmd, t_pipe *exec);
+int	command_not_found(t_element *cmd, t_env *env, t_pipe *exec);
+void	ft_exit_continued_2(t_element *cmd, t_env **env, t_pipe *exec, t_element *head);
+void	ft_export_continued(t_element *cmd, t_env **env);
+int	ft_strchr_int(char *s, char c);
 
 #endif

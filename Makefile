@@ -6,7 +6,7 @@
 #    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/11/27 16:43:41 by kquerel          ###   ########.fr        #
+#    Updated: 2023/11/28 17:05:23 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,14 +45,17 @@ SRCS		:=  src/main.c \
 				src/builtins/env.c \
 				src/builtins/exit.c \
 				src/builtins/export.c \
+				src/builtins/export_2.c \
 				src/builtins/history.c \
 				src/builtins/pwd.c \
 				src/builtins/unset.c \
 				src/executable/exec.c \
+				src/executable/exec_2.c \
+				src/executable/exec_3.c \
 				src/executable/exec_utils.c \
+				src/executable/exec_utils_2.c \
 				src/executable/exec_errors.c \
 				src/executable/redirect.c \
-				src/executable/exec_continued.c \
 				src/parsing/commands.c \
 				src/parsing/parsing.c \
 				src/parsing/parsing2.c \
