@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
 /*   Updated: 2023/11/28 22:13:55 by kquerel          ###   ########.fr       */
@@ -205,7 +205,6 @@ char	*erase_empty_strings(char *line);
 bool	line_errors_and_fix(char *line);
 bool	first_character_error(char *line);
 bool	redirecters_error(char *line);
-void	slash_error(char *line);
 void	pipe_error(char *line);
 
 /*Errors2*/
@@ -229,9 +228,11 @@ char	*erase_spaces_malloc(char *line);
 char	*joinstr_minishell_malloc(char *line, int len, char *str, char type);
 char	*empty_strings_malloc(char *line);
 
+/*Determine_cmd*/
+int 	determine_command_type(char *line, size_t end, size_t start);
+
 /*Parsing*/
 t_element 	*parsing(char *line, t_env *env_list);
-int 		determine_command_type(char *line, size_t end, size_t start);
 void		type_arg_after_cmd(t_element **current);
 void		parsing_fix(t_element **cmd_list, t_env *env_list);
 void		builtin_fix(t_element **cmd_list);
@@ -381,8 +382,8 @@ char	*ft_strjoin_env(char const *s1, char const *s2);
 char **ft_transform_env(t_env *env);
 bool	ft_all_redir(t_element *cmd);
 bool	ft_only_create(t_element *cmd);
-void	ft_exit_status(t_element **env);
-int	ft_exec_slash(t_element *cmd, t_pipe *exec);
+//void	ft_exit_status(t_element **env);
+int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env);
 int	command_not_found(t_element *cmd, t_env *env, t_pipe *exec);
 void	ft_exit_continued_2(t_element *cmd, t_env **env, t_pipe *exec, t_element *head);
 void	ft_export_continued(t_element *cmd, t_env **env);

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 15:20:59 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 22:18:13 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /* Checks if they are no arg or opt type in the list */
 bool	no_args_or_options(t_element *cmd)
 {
-	while(cmd)
+	while (cmd)
 	{
 		if (cmd->type == ARGUMENT || cmd->type == OPTION)
 			return (false);
@@ -27,7 +27,7 @@ bool	no_args_or_options(t_element *cmd)
 /* Checks if pipes are present in the list */
 bool	no_pipes_before(t_element *cmd)
 {
-	while(cmd)
+	while (cmd)
 	{
 		if (cmd->type == PIPE)
 			return (false);
@@ -42,12 +42,12 @@ else if the second argument is not valid, the program keeps running */
 void	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	t_element	*head;
-	int	arg_count;
-	
+	int			arg_count;
+
 	if (no_args_or_options(cmd) == true)
 	{
 		if (no_pipes_before(cmd) == true)
-				ft_putendl_fd("exit", STDERR_FILENO);
+			ft_putendl_fd("exit", STDERR_FILENO);
 		exit_free(cmd, env, exec);
 		exit(0);
 	}
@@ -74,10 +74,11 @@ void	ft_exit(t_element *cmd, t_env **env, t_pipe *exec)
 }
 
 /* exit_continued_2 */
-void	ft_exit_continued_2(t_element *cmd, t_env **env, t_pipe *exec, t_element *head)
+void	ft_exit_continued_2(t_element *cmd, t_env **env, \
+t_pipe *exec, t_element *head)
 {
-	int exit_code;
-	
+	int	exit_code;
+
 	exit_code = 0;
 	while (cmd && cmd->type != PIPE)
 	{
@@ -100,12 +101,12 @@ t_element *head, int option)
 	if (option == 0)
 	{
 		if (no_pipes_before(cmd) == true)
-				ft_putendl_fd("exit", STDERR_FILENO);
+			ft_putendl_fd("exit", STDERR_FILENO);
 		ft_putstr_fd("bash: ", STDERR_FILENO);
 		ft_putstr_fd(cmd->content, STDERR_FILENO);
 		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
 		exit_free(head, env, exec);
-		exit(add_exit_status_in_env(env, 2));
+		exit(2);
 	}
 	else
 	{
@@ -138,5 +139,5 @@ int	add_exit_status_in_env(t_env **env, int n)
 		free(node->value);
 		node->value = ft_itoa(n);
 	}
-	return(ft_atoi(node->value));
+	return (ft_atoi(node->value));
 }

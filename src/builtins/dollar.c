@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/27 14:03:14 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:48:08 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	ft_dollar_question_mark(t_env *env)
 {
 	t_env	*exit_status;
 	
-	exit_status = env;
 	exit_status = find_value_with_key_env(env, "EXIT_STATUS");
 	//printf("---->Exit : %d\n", g_signals.exit_status);	
 	ft_putstr_fd("bash: ", STDOUT_FILENO);

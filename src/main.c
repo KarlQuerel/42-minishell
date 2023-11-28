@@ -110,13 +110,11 @@ int main (int argc, char **argv, char **env)
 		}
 		if (line != NULL)
 		{
-			//printf("line AVANT : [%s]\n", line);
 			line = erase_spaces(line);
-			// printf("line APRES : [%s]\n", line);
 			if (line_errors_and_fix(line) == true)
 			{
 				cmd_list = parsing(line, env_list);
-				// printlist_test(cmd_list);
+				//printlist_test(cmd_list);
 				exec->line = &line;
 				exec->prompt = &prompt;
 				ft_execute(cmd_list, &env_list, exec);

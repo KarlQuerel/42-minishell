@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:36:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/27 14:04:19 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 20:31:11 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ char **path_from_home)
 		{
 			j = 0;
 			(*i) += 2;
-			(*path_from_home) = malloc(sizeof(char) * \
-			(ft_strlen(absolute_path) - (*i) + 2));
+			(*path_from_home) = malloc(sizeof(char) * (ft_strlen(absolute_path) \
+			- (*i) + 2));
 			while (absolute_path[(*i)])
 				(*path_from_home)[j++] = absolute_path[(*i)++];
 			(*path_from_home)[j] = '\0';

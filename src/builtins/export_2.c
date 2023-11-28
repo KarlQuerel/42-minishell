@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 17:04:29 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 17:39:52 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/28 19:41:27 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	ft_export_continued(t_element *cmd, t_env **env)
 	{
 		new_key_var = split_var(cmd->content);
 		join_new_var(env, new_key_var[0], new_key_var[1]);
-		// free(new_key_var[0]);
-		// free(new_key_var[1]);
+		//free(new_key_var[0]);
+		//free(new_key_var[1]);
 		free (new_key_var);
 	}
 }

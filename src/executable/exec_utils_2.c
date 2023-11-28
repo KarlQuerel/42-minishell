@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:54:48 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 16:29:52 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/28 19:40:32 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ char	*ft_strjoin_env(char const *s1, char const *s2)
 
 	if (s1 == NULL || s2 == NULL)
 		return (NULL);
-	ft_strlen_total = ft_strlen(s1) + ft_strlen(s2) + 1;
-	new_str = ft_calloc(ft_strlen_total + 1, sizeof(char));
+	ft_strlen_total = ft_strlen(s1) + ft_strlen(s2) + 1 + 1;
+	new_str = ft_calloc(ft_strlen_total, sizeof(char));
 	if (new_str == NULL)
 		return (NULL);
 	i = 0;

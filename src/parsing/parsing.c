@@ -32,7 +32,7 @@ t_element	*parsing(char *line, t_env *env_list)
 		separator = type_of_separator(line, start, \
 		parsing_str_type(line, start));
 		if (separator[0] == '\'')
-			current_cmd->change=false;
+			current_cmd->change = false;
 		parsing_fill_content(&current_cmd, line, &i, separator);
 		if (parsing_str_type(line, start) == STR)
 			free(separator);
@@ -59,47 +59,6 @@ t_element	*parsing(char *line, t_env *env_list)
 	}
 	return (true);
 } */
-
-/*Determines the type of a given cmd for the parsing function.*/
-int	determine_command_type(char *line, size_t end, size_t start)
-{
-	if(line[start] == '\'' || line[start] == '\"')
-		start = start + 1;
-	if ((line[start] == '-' && ft_isalpha(line[start + 1]) == 1) || \
-	(line[end] >= 4 && line[start] == '-' && (line[start + 1] == '\'' || \
-	line[start + 1] == '\"') && ft_isalpha(line[start + 2]) == 1 && \
-	(line[end - 1] == '\'' || line[end - 1] == '\"')))
-		return (OPTION);
-	if ((start >= 3 && (line[start - 1] == ' ' && line[start - 2] == '<' && line[start - 3] == '<'/*  && line[start - 4] == ' ' */)/*  && nothing_before(start, 3, line) == true */) || \
-	(start >= 2 && (line[start - 1] == '<' && line[start - 2] == '<'/*  && line[start - 3] == ' ' */)/*  && nothing_before(start, 4, line) == true */) || \
-	(start >= 3 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == '<' && line[start - 3] == '<'/*  && line[start - 4] == ' ' */)/*  && nothing_before(start, 3, line) == true */) || \
-	(start >= 4 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == ' ' && line[start - 3] == '<' && line[start - 4] == '<'/*  && line[start - 5] == ' ' */)/*  && nothing_before(start, 4, line) == true */))
-		return (HEREDOC);
-	if ((start >= 2 && (line[start - 1] == ' ' && line[start - 2] == '<'/*  && line[start - 3] == ' ' */)/*  && nothing_before(start, 2, line) == true */) || \
-	(start >= 1 && line[start - 1] == '<'/*  && line[start - 2] == ' ' *//*  && nothing_before(start, 1, line) == true */) || \
-	(start >= 2 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == '<'/*  && line[start - 3] == ' ' */)/*  && nothing_before(start, 2, line) == true */) || \
-	(start >= 3 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == ' ' && line[start - 3] == '<'/*  && line[start - 4] == ' ' */)/*  && nothing_before(start, 3, line) == true */))
-		return (INFILE);
-	if ((start >= 3 && (line[start - 1] == ' ' && line[start - 2] == '>' && line[start - 3] == '>'/*  && line[start - 4] == ' ' */)/*  && nothing_before(start, 3, line) == true */) || \
-	(start >= 2 && (line[start - 1] == '>' && line[start - 2] == '>'/*  && line[start - 3] == ' ' */)/*  && nothing_before(start, 2, line) == true */) || \
-	(start >= 3 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == '>' && line[start - 3] == '>'/*  && line[start - 4] == ' ' */)/*  && nothing_before(start, 3, line) == true */) || \
-	(start >= 4 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == ' ' && line[start - 3] == '>' && line[start - 4] == '>'/*  && line[start - 5] == ' ' */)/*  && nothing_before(start, 4, line) == true */))
-		return (OUTFILE_APPEND);
-	if ((start >= 2 && (line[start - 1] == ' ' && line[start - 2] == '>'/*  && line[start - 3] == ' ' */)/*  && nothing_before(start, 2, line) == true */) || \
-	(start >= 1 && line[start - 1] == '>'/*  && line[start - 1] == ' ' *//*  && nothing_before(start, 1, line) == true */) || \
-	(start >= 2 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == '>'/*  && line[start - 3] == ' ' */)/*  && nothing_before(start, 2, line) == true */) || \
-	(start >= 3 && ((line[start - 1] == '\"' || line[start - 1] == '\'') && line[start - 2] == ' ' && line[start - 3] == '>'/*  && line[start - 4] == ' ' */)/*  && nothing_before(start, 3, line) == true */))
-		return (OUTFILE);
-	if (ft_strncmp(&line[start], "|", 1) == 0)
-		return (PIPE);
-	while(start < end)
-	{
-		if (line[start] == ' ')
-			return (ARGUMENT);
-		start++;
-	}
-	return (COMMAND);
-}
 
 void	type_arg_after_cmd(t_element **current)
 {
@@ -130,16 +89,15 @@ void	parsing_fix(t_element **cmd_list, t_env *env_list)
 	t_element	*current;
 
 	current = (*cmd_list);
-	if (current->next == NULL || current->next->type == PIPE)
-		return ;
 	while (current != NULL)
 	{
-		if ((current->prev != NULL && current->prev->type >= 3 && current->type < 3 \
-		&& no_cmd_before(current) == true) || (current->prev == NULL && current->type < 3))
+		if ((current->prev != NULL && current->prev->type >= 3 && \
+		current->type < 3 && no_cmd_before(current) == true) || \
+		(current->prev == NULL && current->type < 3))
 			current->type = COMMAND;
 		if (current->type == COMMAND && current->next)
 			type_arg_after_cmd(&current);
-		else if (current->content[0] == '$' && current->change == true)
+		if (current->content[0] == '$' && current->change == true)
 		{
 			current->content = dollar(current->content, env_list);
 			if (current->content == NULL)
