@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 15:20:59 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 20:12:19 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ t_element *head, int option)
 		ft_putstr_fd(cmd->content, STDERR_FILENO);
 		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
 		exit_free(head, env, exec);
-		exit(add_exit_status_in_env(env, 2));
+		exit(2);
 	}
 	else
 	{

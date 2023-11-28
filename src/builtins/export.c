@@ -6,27 +6,11 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/28 19:28:13 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:41:47 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-
-/*
-		if (s[i] == '\"' && quotes_can_close(s, i))
-		{
-			i++;
-			while(s[i] && s[i] != '\"')
-				i++;
-		}
-		if (s[i] == '\'' && quotes_can_close(s, i))
-		{
-			i++;
-			while(s[i] && s[i] != '\'')
-				i++;
-		}
-*/
 
 /* Reproduces the export command */
 int	ft_export(t_element *cmd, t_env **env)
@@ -83,13 +67,13 @@ char	**split_var(char *s)
 		if (s[i] == '\"' && s[ft_strlen(s) - 1] == '\"')
 		{
 			ret[0] = strlcpy_middle(ret[0], s, 0, i - 2);
-			ret[1] = strlcpy_middle(ret[1], s, i + 1, ft_strlen(s) - 2);
+			ret[1] = strlcpy_middle(ret[1], s, i + 1, ft_strlen(s) - 1);
 			ret[2] = NULL;
 		}
 		else if (s[i] == '\'' && s[ft_strlen(s) - 1] == '\'')
 		{
 			ret[0] = strlcpy_middle(ret[0], s, 0, i - 2);
-			ret[1] = strlcpy_middle(ret[1], s, i + 1, ft_strlen(s) - 2);
+			ret[1] = strlcpy_middle(ret[1], s, i + 1, ft_strlen(s) - 1);
 			ret[2] = NULL;
 		}
 		else

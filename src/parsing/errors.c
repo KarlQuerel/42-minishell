@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:39:52 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/28 18:44:13 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 20:28:11 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ bool	first_character_error(char *line)
 	bool	status;
 
 	status = false;
-	if (line[0] == '|') //autre erreur : si les cmd avant/apres la pip ne sont pas des vrai cmd (erreur ligne 57 du google doc)
+	if (line[0] == '|')
 		pipe_error(line);
 	else if (line[0] == '&')
 		and_error(line);
@@ -49,8 +49,8 @@ bool	redirecters_error(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if ((line[i] == '<' || line[i] == '>') &&\
-		(line[i + 1] == '<' || line[i + 1] == '>') &&\
+		if ((line[i] == '<' || line[i] == '>') && \
+		(line[i + 1] == '<' || line[i + 1] == '>') && \
 		(line[i + 2] == '<' || line[i + 2] == '>'))
 		{
 			printf("KARL MESSAGE ERREUR\n");

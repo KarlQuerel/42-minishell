@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/28 14:59:05 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 20:12:47 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,13 @@
 void	exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec)
 {
 	free_cmd_list(cmd_list);
-	history(FREE_HISTORY, 0); // 0 : on s'en fout, on utilise pas len qd on free
+	history(FREE_HISTORY, 0);
 	free_env_list(*env_list);
-/* 	free (exec->line[0]);
-	free (exec->prompt[0]); //a voir */
-/*fAIRE UN BREAK ICI POUR VOIR CE QUI N EST PAS FREE A LA FIN DE AL FONCTION*/
 	close(exec->std_in);
 	close(exec->std_out);
-	free (*exec->line); //NE SE FREE PAS BIEN
-	free (*exec->prompt); //NE SE FREE PAS BIEN
-	free_cmd_arr(exec); //NE SE FREE PAS BIEN
+	free (*exec->line);
+	free (*exec->prompt);
+	free_cmd_arr(exec);
 	free(exec);
 }
 

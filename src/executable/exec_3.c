@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 18:36:58 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:51:24 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@
  */
 int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
-	// t_env	*exit_status;
-	
 	exec->env_execve = ft_transform_env(env);
 	if (ft_exec_slash(cmd, exec, env))
 		return (127);
@@ -75,11 +73,7 @@ int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 // int	command_not_found(t_pipe *exec)
 int	command_not_found(t_element *cmd, t_env *env, t_pipe *exec)
 {
-	//t_env	*exit_status;
-	
 	// !!!!!!!! leaks a fix
-	//exit_status = find_value_with_key_env(env, "EXIT_STATUS");
-	//free(exit_status->value);
 	ft_putstr_fd("bash: ", STDERR_FILENO);
 	ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
 	ft_putendl_fd(": command not found", STDERR_FILENO);

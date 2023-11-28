@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:08:27 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/27 14:04:12 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 20:27:13 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,11 @@ char	*empty_strings_malloc(char *line)
 
 	i = 0;
 	size = 0;
-	while(line[i])
+	while (line[i])
 	{
-		if (line[i] == '\'' && line[i+1] == '\'')
+		if (line[i] == '\'' && line[i + 1] == '\'')
 			i += 2;
-		else if (line[i] == '\"' && line[i+1] == '\"')
+		else if (line[i] == '\"' && line[i + 1] == '\"')
 			i += 2;
 		else
 		{
