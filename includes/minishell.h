@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/28 20:36:15 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 22:13:55 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ extern int	g_location;
 typedef struct s_element
 {
 	char	*content;
+	char	*hd_filename;
 	int		type;
 	bool	builtin;
 	bool	change;
@@ -139,7 +140,7 @@ typedef struct s_env
 	char	*key;
 	char	*value;
 	char	**env;
-	// int		fd_heredoc;
+	int		fd_heredoc;
 	struct s_env *prev;
 	struct s_env *next;
 }	t_env;
@@ -147,8 +148,6 @@ typedef struct s_env
 /* To handles pipes */
 typedef struct s_pipe
 {
-	int		fd_close_heredoc; //test
-	char	*hd_filename; //test
 	int		fd_here_doc;
 	int		last_pid;
 	int		pipe_nb;
@@ -372,12 +371,12 @@ void	ft_delete_node_cmd(t_element **head, t_element *to_delete);
 void	free_cmd_arr(t_pipe *exec);
 void	ft_exit_continued(t_element *cmd, t_env **env, t_pipe *exec, t_element *head, int option);
 char	*create_heredoc(char *safeword, int i, int *fd);
-int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec);
+int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec, int option);
 void	write_heredoc(char *safe_word, t_pipe *exec, int fd);
 
 
 
-bool	ft_heredoc(t_element *elem, t_env *env);
+bool	ft_heredoc(t_element *cmd, t_env *env);
 int	ft_open_hd(t_pipe *exec, int iteration_nb);
 char	*ft_strjoin_env(char const *s1, char const *s2);
 char **ft_transform_env(t_env *env);
@@ -389,5 +388,6 @@ int	command_not_found(t_element *cmd, t_env *env, t_pipe *exec);
 void	ft_exit_continued_2(t_element *cmd, t_env **env, t_pipe *exec, t_element *head);
 void	ft_export_continued(t_element *cmd, t_env **env);
 int	ft_strchr_int(char *s, char c);
+void	ft_alban(t_element *cmd);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 20:07:02 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 21:57:03 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 			break;
 		cmd = cmd->next;
 	}
-	if (!ft_is_builtin(cmd, env, exec))
+	if (!ft_is_builtin(cmd, env, exec, 0))
 		return ;
 	pid = fork();
 	g_location = IN_COMMAND;
@@ -131,12 +131,12 @@ void	middle_pipes(t_element *cmd, t_env **env, t_pipe *exec)
 	int	pid;
 
 	if (pipe(exec->fd) < 0)
-		perror("Pipe");
+		perror("pipe");
 	pid = fork();
 	g_location = IN_COMMAND;
 	set_signals();
 	if (pid < 0)
-		perror("Fork");
+		perror("fork");
 	if (pid == 0)
 		middle_dup(cmd, env, exec);
 	else
