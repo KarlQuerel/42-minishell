@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/28 18:58:38 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/28 22:37:03 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,6 @@ char	**split_var(char *s)
 		{
 			ret[0] = strlcpy_middle(ret[0], s, 0, i - 2);
 			ret[1] = strlcpy_middle(ret[1], s, i + 1, ft_strlen(s) - 1);
-			ret[2] = NULL;
-		}
-		else
-		{
-			ret[0] = strlcpy_middle(ret[0], s, 0, i - 2);
-			ret[1] = strlcpy_middle(ret[1], s, i, ft_strlen(s));
 			ret[2] = NULL;
 		}
 		else

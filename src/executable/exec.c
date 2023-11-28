@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 21:57:03 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/29 00:05:46 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,10 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 			if (WIFEXITED(status))
 				add_exit_status_in_env(env, WEXITSTATUS(status));
 			else
-				add_exit_status_in_env(env, 128 + WTERMSIG(status));
+				// add_exit_status_in_env(env, 128 + WTERMSIG(status));
+				add_exit_status_in_env(env, 116 + WTERMSIG(status));
+				//pourquoi les signaux impactent le command not found $?
+
 		}
 	}
 	return ;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 19:51:24 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 23:59:55 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,30 +42,24 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 		else
 			command_not_found(cmd, env, exec);
 	}
-	else
-	{
-		execve(cmd->content, exec->cmd_tab, exec->env_execve);
-		perror("bash");
-		// free_cmd_list(cmd);
-	}
-	add_exit_status_in_env(&env, 127);
+	execve(cmd->content, exec->cmd_tab, exec->env_execve);
 	return (127);
 }
 
 /* Execve if a "/" is found in the cmd */
 int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 {
-	add_exit_status_in_env(&env, 127);
 	if (ft_strchr(exec->cmd_tab[0], '/'))
 	{
 		execve(cmd->content, exec->cmd_tab, exec->env_execve);
 		perror("bash: ");
 		ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
 		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
-		//free_cmd_list(cmd);
-		free_cmd_arr(exec);
+		free_child(cmd, &env, exec);
+		add_exit_status_in_env(&env, 127);
 		return(127);
 	}
+	add_exit_status_in_env(&env, 0);
 	return (0);
 }
 
@@ -73,17 +67,44 @@ int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 // int	command_not_found(t_pipe *exec)
 int	command_not_found(t_element *cmd, t_env *env, t_pipe *exec)
 {
+	t_env *exit_status;
 	// !!!!!!!! leaks a fix
 	ft_putstr_fd("bash: ", STDERR_FILENO);
 	ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
 	ft_putendl_fd(": command not found", STDERR_FILENO);
 		
 	
-	free_cmd_arr(exec);
-	free_cmd_list(cmd); // moins de leaks mais plus d'erreurs
+	// free_cmd_arr(exec);
+	// free_cmd_list(cmd); // moins de leaks mais plus d'erreurs
+	// free_env_list(env);
 
 	//pourquoi pas free_cmd_list, on l'appelle dans le main
 	// free(exec->cmd_tab[0]);
-	add_exit_status_in_env(&env, 127);
+	free_child(cmd, &env, exec);
+	exit_status = find_value_with_key_env(env, "EXIT_STATUS");
+	add_exit_status_in_env(&env, 127); // ne sert peut etre a rien
+	free(exit_status->value);
 	return (127);
+}
+
+void	free_child(t_element *cmd, t_env **env, t_pipe *exec)
+{
+	// (void)cmd;
+	// (void)env;
+	// (void)exec;
+
+	free_cmd_list(cmd);
+	// history(FREE_HISTORY, 0);
+	free_env_list(*env);
+	// 80 errors mais bcp de still reachable
+	// t_env *exit_status;
+	// exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
+	// free(exit_status->value);
+	close(exec->std_in);
+	close(exec->std_out);
+	free (*exec->line);
+	free (*exec->prompt);
+	free_cmd_arr(exec);
+	//un peu mois derreurs mais bcp de def lost
+	free(exec);
 }
