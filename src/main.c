@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/27 18:35:13 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/28 13:23:07 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,14 +120,6 @@ int main (int argc, char **argv, char **env)
 				ft_putchar_fd('\n', STDERR_FILENO);
 				rl_reset_line_state();
 			}
-/* 			else //HEREDOC
-			{
-				g_location = QUIT_HEREDOC;
-				ft_putendl_fd("bash: warning: here-document at line 3 delimited by end-of-file", STDERR_FILENO);
-				//ne rentre pas la dedans
-				//printf(" (wanted `%s')", safe_word); --> flemme de trouver comment avoir acces au safe word ici
-				rl_reset_line_state();
-			} */
 		}
 		if (line != NULL)
 		{
@@ -141,12 +133,9 @@ int main (int argc, char **argv, char **env)
 				exec->line = &line;
 				exec->prompt = &prompt;
 				ft_execute(cmd_list, &env_list, exec);
-				//free_cmd_arr(exec);
-				// if (g_location != QUIT_HEREDOC)
-				// {
-				// 	//free(exec->cmd_tab);
-				// 	//free_cmd_list(cmd_list);
-				// }
+				//free_cmd_arr(exec); //double free qd heredoc
+				free(exec->cmd_tab);
+				free_cmd_list(cmd_list);
 			}
 		}
 		free(line);
