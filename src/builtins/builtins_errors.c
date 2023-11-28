@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:39:41 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 21:53:04 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 22:22:54 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ bool	env_option(t_element *cmd)
 
 bool	history_option(t_element *cmd)
 {
-	if (cmd->next && cmd->next->type < 3 && \
-	(!ft_is_num(cmd->next->content) || \
-	ft_atoi_check(cmd->next->content) == false))
+	if (cmd->next && (cmd->next->type < 3 || \
+	(ft_is_num(cmd->next->content) == false || \
+	ft_atoi_check(cmd->next->content) == false)))
 	{
 		printf("bash: history: %s numeric agument required\n", \
 		cmd->next->content);

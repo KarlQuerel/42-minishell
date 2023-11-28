@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 22:06:51 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 22:18:13 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ t_element *head, int option)
 	if (option == 0)
 	{
 		if (no_pipes_before(cmd) == true)
-				ft_putendl_fd("exit", STDERR_FILENO);
+			ft_putendl_fd("exit", STDERR_FILENO);
 		ft_putstr_fd("bash: ", STDERR_FILENO);
 		ft_putstr_fd(cmd->content, STDERR_FILENO);
 		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
@@ -139,5 +139,5 @@ int	add_exit_status_in_env(t_env **env, int n)
 		free(node->value);
 		node->value = ft_itoa(n);
 	}
-	return(ft_atoi(node->value));
+	return (ft_atoi(node->value));
 }
