@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/27 20:15:24 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:55:37 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,25 +102,6 @@ int	ft_redirect(t_element *cmd, t_pipe *exec)
 
 // si control D dans le heredoc, le message 
 // bash: warning: here-document at line 1 delimited by end-of-file (wanted `heredoc')
-
-
-// etape 1
-/*
-	si type HEREDOC
-	open heredoc
-	>
-	close
-	stock le nom 
-	check si heredoc 1 existe 
-		
-	
-*/
-
-//a faire avant chaque prompt
-//close(fd heredoc)
-//unlink(exec->hd_name)
-//free exec->hd_name;
-
 
 /* Creates heredoc */
 char	*create_heredoc(char *name, int i, int *fd)

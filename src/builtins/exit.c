@@ -3,34 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/27 14:03:17 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:14:36 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/* exit:
-si le premier argument de exit n'est pas valide:
-- soit pas numerique
-- soit superieur a INT_MAX 
-meme si il y en a deux
-"exit abc def" OR "exit 999999999999"
-bash: exit: abc: numeric argument required
---> ON EXIT
-
-si le premier arg marche( >= 0 && < INT_MAX) mais que le 2eme ne marche pas
-"exit 57 df"
-bash: exit: too many arguments
---> ON EXIT PAS
-
-exit (int n)
-
-return (n % 255)
-*/
-
+/* Checks if they are no arg or opt type in the list */
 bool	no_args_or_options(t_element *cmd)
 {
 	while(cmd)
@@ -42,6 +24,7 @@ bool	no_args_or_options(t_element *cmd)
 	return (true);
 }
 
+/* Checks if pipes are present in the list */
 bool	no_pipes_before(t_element *cmd)
 {
 	while(cmd)
