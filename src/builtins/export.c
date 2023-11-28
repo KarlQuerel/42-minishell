@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/28 17:45:03 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/28 19:28:13 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+
+/*
+		if (s[i] == '\"' && quotes_can_close(s, i))
+		{
+			i++;
+			while(s[i] && s[i] != '\"')
+				i++;
+		}
+		if (s[i] == '\'' && quotes_can_close(s, i))
+		{
+			i++;
+			while(s[i] && s[i] != '\'')
+				i++;
+		}
+*/
 
 /* Reproduces the export command */
 int	ft_export(t_element *cmd, t_env **env)
@@ -38,7 +54,7 @@ bool	ft_is_valid_key_var(char *s)
 	int	i;
 
 	i = 0;
-	if (!ft_isalpha(s[i]) && s[i] != '_')
+	if (!ft_isalpha(s[i]) && s[i] != '_' )
 		return (false);
 	while (s[i] && s[i] != '=')
 	{
@@ -64,10 +80,22 @@ char	**split_var(char *s)
 	i = ft_strchr_int(s, '=') + 1;
 	if (i != -1)
 	{
-		if ((s[i] == '\"' || s[i] == '\'') && quotes_can_close(s, i) == true)
+		if (s[i] == '\"' && s[ft_strlen(s) - 1] == '\"')
 		{
 			ret[0] = strlcpy_middle(ret[0], s, 0, i - 2);
 			ret[1] = strlcpy_middle(ret[1], s, i + 1, ft_strlen(s) - 2);
+			ret[2] = NULL;
+		}
+		else if (s[i] == '\'' && s[ft_strlen(s) - 1] == '\'')
+		{
+			ret[0] = strlcpy_middle(ret[0], s, 0, i - 2);
+			ret[1] = strlcpy_middle(ret[1], s, i + 1, ft_strlen(s) - 2);
+			ret[2] = NULL;
+		}
+		else
+		{
+			ret[0] = strlcpy_middle(ret[0], s, 0, i - 2);
+			ret[1] = strlcpy_middle(ret[1], s, i, ft_strlen(s));
 			ret[2] = NULL;
 		}
 	}

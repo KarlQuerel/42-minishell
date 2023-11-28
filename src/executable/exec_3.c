@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 16:42:42 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/28 18:36:58 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 	// t_env	*exit_status;
 	
 	exec->env_execve = ft_transform_env(env);
-	if (ft_exec_slash(cmd, exec))
+	if (ft_exec_slash(cmd, exec, env))
 		return (127);
 	exec->cmd_path = split_path(env);
 	cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
@@ -50,12 +50,14 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 		perror("bash");
 		// free_cmd_list(cmd);
 	}
+	add_exit_status_in_env(&env, 127);
 	return (127);
 }
 
 /* Execve if a "/" is found in the cmd */
-int	ft_exec_slash(t_element *cmd, t_pipe *exec)
+int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 {
+	add_exit_status_in_env(&env, 127);
 	if (ft_strchr(exec->cmd_tab[0], '/'))
 	{
 		execve(cmd->content, exec->cmd_tab, exec->env_execve);
@@ -73,11 +75,10 @@ int	ft_exec_slash(t_element *cmd, t_pipe *exec)
 // int	command_not_found(t_pipe *exec)
 int	command_not_found(t_element *cmd, t_env *env, t_pipe *exec)
 {
-	t_env	*exit_status;
-	
+	//t_env	*exit_status;
 	
 	// !!!!!!!! leaks a fix
-	exit_status = find_value_with_key_env(env, "EXIT_STATUS");
+	//exit_status = find_value_with_key_env(env, "EXIT_STATUS");
 	//free(exit_status->value);
 	ft_putstr_fd("bash: ", STDERR_FILENO);
 	ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
@@ -89,5 +90,6 @@ int	command_not_found(t_element *cmd, t_env *env, t_pipe *exec)
 
 	//pourquoi pas free_cmd_list, on l'appelle dans le main
 	// free(exec->cmd_tab[0]);
+	add_exit_status_in_env(&env, 127);
 	return (127);
 }

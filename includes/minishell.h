@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/28 17:39:22 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 18:44:23 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,6 @@ char	*erase_empty_strings(char *line);
 bool	line_errors_and_fix(char *line);
 bool	first_character_error(char *line);
 bool	redirecters_error(char *line);
-void	slash_error(char *line);
 void	pipe_error(char *line);
 
 /*Errors2*/
@@ -383,7 +382,7 @@ char **ft_transform_env(t_env *env);
 bool	ft_all_redir(t_element *cmd);
 bool	ft_only_create(t_element *cmd);
 void	ft_exit_status(t_element **env);
-int	ft_exec_slash(t_element *cmd, t_pipe *exec);
+int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env);
 int	command_not_found(t_element *cmd, t_env *env, t_pipe *exec);
 void	ft_exit_continued_2(t_element *cmd, t_env **env, t_pipe *exec, t_element *head);
 void	ft_export_continued(t_element *cmd, t_env **env);

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/28 17:54:31 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:17:15 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ t_element	*parsing(char *line, t_env *env_list)
 			if (ft_heredoc(current_cmd, env_list) == false)
 				return (NULL);
 		}
+/* 		if (current_cmd->type == COMMAND && (ft_strncmp(current_cmd->content, "export", \
+		ft_strlen("export") == 0 && ft_strlen(current_cmd->content) == ft_strlen("export"))))
+		{
+			//export test="a   b"
+		} */
 		parsing_advance_to_next_word(line, &start, &i);
 		parsing_initialize_next(&current_cmd, line, &i);
 	}
@@ -139,7 +144,7 @@ void	parsing_fix(t_element **cmd_list, t_env *env_list)
 			current->type = COMMAND;
 		if (current->type == COMMAND && current->next)
 			type_arg_after_cmd(&current);
-		else if (current->content[0] == '$' && current->change == true)
+		if (current->content[0] == '$' && current->change == true)
 		{
 			current->content = dollar(current->content, env_list);
 			if (current->content == NULL)

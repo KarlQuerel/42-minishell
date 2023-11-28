@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 15:27:45 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/28 18:31:43 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ void last_dup(t_element *cmd, t_env **env, t_pipe *exec)
 void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	t_env	*exit_status;
+	int	exit_nb;
 
+	exit_nb = 0;
 	if (!ft_redirect(cmd, exec))
 	{
 		// free
@@ -79,9 +81,6 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 	if (cmd->builtin == true)
 		return (ft_builtins(cmd, env, exec), close(exec->fd[0]), exit(ft_atoi(exit_status->value)));
 	if (exec->cmd_tab[0] != NULL)
-	{
-		//free(exit_status->value);
-		exit_status->value = ft_itoa(exec_command(cmd, *env, exec));
-	}
-	exit(ft_atoi(exit_status->value));
+		exit_nb = add_exit_status_in_env(env, exec_command(cmd, *env, exec));
+	exit(exit_nb);
 }
