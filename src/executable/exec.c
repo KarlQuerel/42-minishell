@@ -3,21 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/27 20:11:14 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:53:10 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-//heredoc avant les pipes
-/*
-- CARO -->changer la valeur de EXIT_STATUS dans l'environnement
-			la ou tu fais appel a CTRL D dans le main
-- free le dernier iota dans l'exec
-*/
 /* Handles the execution part
 --- Gets size_cmd to alloc memory accordingly
 --- Gets the amount of pipe to detect if we need to create childs.
@@ -44,16 +38,16 @@ void	ft_execute(t_element *cmd, t_env **env, t_pipe *exec)
 		multiple_commands(cmd, env, exec);
 }
 
+/* Restore I/O's in case of builtins */
 int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec)
 {
-	
 	if (cmd && cmd->builtin == true && cmd->content)
 	{
 		exec->std_in = dup(STDIN_FILENO);
 		exec->std_out = dup(STDOUT_FILENO);
 		if (!ft_redirect(cmd, exec))
 		{
-			// free et on return
+			//free ?
 			return (0);
 		}
 		ft_builtins(cmd, env, exec);
@@ -66,7 +60,7 @@ int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec)
 	return (1);
 }
 
-
+/* Checks if only redirections are present in the linked list */
 bool	ft_all_redir(t_element *cmd)
 {
 	while (cmd)
@@ -78,6 +72,7 @@ bool	ft_all_redir(t_element *cmd)
 	return (true);
 }
 
+/* Only creates files in the case of all_redir */
 bool	ft_only_create(t_element *cmd)
 {
 	while (cmd)
@@ -107,7 +102,6 @@ bool	ft_only_create(t_element *cmd)
 	return (true);
 }
 
-
 /* If no pipes are present
 --- If a builtin is detected, ft_builtins is called, preventing
 	from reaching handle_command
@@ -127,13 +121,6 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 		//free(exec->cmd_tab);
 		return ;
 	}
-	//TEST a laisser
-	// 	if (!ft_redirect(cmd, exec))
-	// {
-	// 	// free
-	// 	exit(1);
-	// }
-	//TEST
 	while(cmd)
 	{
 		if (cmd->type == COMMAND)
@@ -257,8 +244,6 @@ void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec)
 		last_dup(cmd, env, exec);
 	else
 	{
-		//dans le cas ou ls -la | hello ---> on doit avoir exit_status = 127;
-		// printf("EXIT STATUS PARENT : %d\n", g_signals.exit_status);	
 		exec->last_pid = pid;
 		close(exec->fd_temp);
 	}
