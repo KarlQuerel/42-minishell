@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/27 16:25:26 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:17:51 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ t_element	*parsing(char *line, t_env *env_list)
 			free(separator);
 		current_cmd->type = determine_command_type(line, i, start);
 		if (current_cmd->type == HEREDOC)
-			ft_heredoc(current_cmd); //protege le return
+		{
+			if (ft_heredoc(current_cmd/* , env_list */) == false) //protege le return
+				return (NULL);
+		}
 		parsing_advance_to_next_word(line, &start, &i);
 		parsing_initialize_next(&current_cmd, line, &i);
 	}

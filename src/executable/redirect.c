@@ -80,12 +80,13 @@ int	ft_redirect(t_element *cmd, t_pipe *exec)
 		if (tmp->type == INFILE || tmp->type == HEREDOC)
 		{
 			if (!ft_infile(tmp->content))
+			{
 				// gerer les free
-				// gere les unlink
+				// gerer les unlink
 				return (0);
+			}
 			if (tmp->type == HEREDOC)
 				unlink(tmp->content);
-			
 		}
 		else if (tmp->type == OUTFILE || tmp->type == OUTFILE_APPEND)
 		{
@@ -130,36 +131,43 @@ bool	ft_heredoc(t_element *elem)
 	char		*file_name;
 	static int	iteration_nb = 1;
 	
+	words = NULL;
 	iteration_nb++;
 	g_location = IN_HEREDOC;
+	set_signals();
 	file_name = create_heredoc(elem->content, iteration_nb, &fd);
 	if (!file_name)
 		return (false);
-	while (g_location == IN_HEREDOC)
+
+	int test_fd = dup(STDIN_FILENO);
+
+	while (1)
 	{
-		ft_putstr_fd("> ", 1);
-		words = get_next_line(0);
-		if (!words)
-			return (false);
-		//CAS CTRL + D pour que ca quitte le heredoc
-		if (ft_strncmp(words, elem->content, ft_strlen(words) - 1) == 0 && words[ft_strlen(words) - 1] == '\n')
-		{
-			free(elem->content);
-			elem->content = file_name;
-			close (fd);
-			return (true);
-		}
-		write(fd, words, ft_strlen(words));
+		words = readline("> ");
+		if (words && *words)
+			ft_putendl_fd(words, fd);
 		free(words);
-	}
-	if (g_location == QUIT_HEREDOC)
-	{
-		close(fd);
-		free(file_name);
-		g_location = IN_PROMPT;
-		return (false);
+		if (g_location == QUIT_HEREDOC)
+		{
+			dup2(test_fd, STDIN_FILENO);
+			close(fd);
+			unlink(file_name);
+			/*soit changer ici la valeur de $? a 130,
+			soit tu preferes eviter d'envoyer env a cette fonction
+			et dans ce cas return false au lieu de break et dans la
+			fonction plus haut tu fais un si ca return false
+			changer la valeur de EXIT_STATUS dans env. Je te changerai
+			la valeur moi-meme, juste dis-moi ou tu preferes que je le fasse.*/
+			break;
+		}
+		if (words == NULL)
+		{
+			ft_putendl_fd("bash: warning: here-document at line 3 delimited by end-of-file", STDERR_FILENO);
+			break; //soit return false (je ne sais pas ce que ca change dans tes fonctions)
+		}
+		if (ft_strncmp(words, elem->content, ft_strlen(words)) == 0 && ft_strlen(words) == ft_strlen(elem->content))
+			break; //soit return false (je ne sais pas ce que ca change dans tes fonctions)
 	}
 	close(fd);
-	g_location = IN_PROMPT;
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/27 16:10:08 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 20:13:19 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,10 @@ void	signal_handler(int signal)
 			rl_on_new_line();
 		}
 		else
-		{
-			//IN HEREDOC
-			//g_signals.exit_status = 130;
+		{;
 			g_location = QUIT_HEREDOC;
-			exit(130);
+			ft_putchar_fd('\n', STDERR_FILENO);
+			close(STDIN_FILENO);
 		}
 		//g_signals.exit_status = 130;
 	}

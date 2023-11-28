@@ -113,6 +113,7 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	int	status;
 	t_env	*exit_status;
 	
+	// if (g_location == QUIT_HEREDOC)
 	if (ft_all_redir(cmd) == true)
 	{
 		ft_only_create(cmd);
