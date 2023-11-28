@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/27 19:17:48 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 13:15:13 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -373,7 +373,7 @@ void	write_heredoc(char *safe_word, t_pipe *exec, int fd);
 
 
 
-bool	ft_heredoc(t_element *elem);
+bool	ft_heredoc(t_element *elem, t_env *env);
 int	ft_open_hd(t_pipe *exec, int iteration_nb);
 
 #endif

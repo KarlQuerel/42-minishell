@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/27 20:15:24 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 13:20:48 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,21 +143,21 @@ char	*create_heredoc(char *name, int i, int *fd)
 }
 
 /* Handles heredoc behavior */
-bool	ft_heredoc(t_element *elem)
+bool	ft_heredoc(t_element *elem, t_env *env)
 {
 	int			fd;
 	char		*words;
 	char		*file_name;
 	static int	iteration_nb = 1;
+	t_env	*exit_status;
 	
-	words = NULL;
 	iteration_nb++;
 	g_location = IN_HEREDOC;
 	set_signals();
 	file_name = create_heredoc(elem->content, iteration_nb, &fd);
 	if (!file_name)
 		return (false);
-
+	exit_status = find_value_with_key_env(env, "EXIT_STATUS");
 	int test_fd = dup(STDIN_FILENO);
 
 	while (1)
@@ -165,28 +165,29 @@ bool	ft_heredoc(t_element *elem)
 		words = readline("> ");
 		if (words && *words)
 			ft_putendl_fd(words, fd);
-		free(words);
 		if (g_location == QUIT_HEREDOC)
 		{
-			dup2(test_fd, STDIN_FILENO);
-			close(fd);
-			unlink(file_name);
-			/*soit changer ici la valeur de $? a 130,
-			soit tu preferes eviter d'envoyer env a cette fonction
-			et dans ce cas return false au lieu de break et dans la
-			fonction plus haut tu fais un si ca return false
-			changer la valeur de EXIT_STATUS dans env. Je te changerai
-			la valeur moi-meme, juste dis-moi ou tu preferes que je le fasse.*/
+			exit_status->value = ft_itoa(130);
 			break;
 		}
 		if (words == NULL)
 		{
 			ft_putendl_fd("bash: warning: here-document at line 3 delimited by end-of-file", STDERR_FILENO);
-			break; //soit return false (je ne sais pas ce que ca change dans tes fonctions)
+			exit_status->value = ft_itoa(0);
+			break;
 		}
 		if (ft_strncmp(words, elem->content, ft_strlen(words)) == 0 && ft_strlen(words) == ft_strlen(elem->content))
-			break; //soit return false (je ne sais pas ce que ca change dans tes fonctions)
+		{
+			exit_status->value = ft_itoa(0);
+			break;
+		}
+		free(words);
+		words = NULL;
 	}
+	free(words);
+	words = NULL;
+	dup2(test_fd, STDIN_FILENO);
 	close(fd);
+	unlink(file_name);
 	return (true);
 }
