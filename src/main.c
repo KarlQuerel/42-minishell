@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/28 21:52:03 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 22:15:57 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,7 @@ int main (int argc, char **argv, char **env)
 		}
 		if (line != NULL)
 		{
-			//printf("line AVANT : [%s]\n", line);
 			line = erase_spaces(line);
-			// printf("line APRES : [%s]\n", line);
 			if (line_errors_and_fix(line) == true)
 			{
 				cmd_list = parsing(line, env_list);

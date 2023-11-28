@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/28 21:48:40 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 22:13:57 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,6 @@ void	parsing_fix(t_element **cmd_list, t_env *env_list)
 	t_element	*current;
 
 	current = (*cmd_list);
-	if (current->next == NULL || current->next->type == PIPE)
-		return ;
 	while (current != NULL)
 	{
 		if ((current->prev != NULL && current->prev->type >= 3 && \
