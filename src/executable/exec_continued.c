@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/27 18:13:17 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/28 15:22:59 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,9 @@ char	*ft_get_command(char **path, char *argument)
 void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	t_env	*exit_status;
+	int	exit_nb;
 
+	exit_nb = 0;
 	if (!ft_redirect(cmd, exec))
 	{
 		// free
@@ -82,11 +84,8 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 	if (cmd->builtin == true)
 		return (ft_builtins(cmd, env, exec), close(exec->fd[0]), exit(ft_atoi(exit_status->value)));
 	if (exec->cmd_tab[0] != NULL)
-	{
-		//free(exit_status->value);
-		exit_status->value = ft_itoa(exec_command(cmd, *env, exec));
-	}
-	exit(ft_atoi(exit_status->value));
+		exit_nb = add_exit_status_in_env(env, exec_command(cmd, *env, exec));
+	exit(exit_nb);
 }
 
 /* Executes the command
@@ -105,14 +104,13 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
  */
 int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
-	t_env	*exit_status;
-	
 	if (ft_strchr(exec->cmd_tab[0], '/'))
 	{
 		execve(cmd->content, exec->cmd_tab, env->env);
 		perror("bash");
 		//free_cmd_list(cmd);
 		free_cmd_arr(exec);
+		add_exit_status_in_env(&env, 127);
 		return(127);
 	}
 	exec->cmd_path = split_path(env);
@@ -126,8 +124,10 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 			ft_putstr_fd("\n", STDERR_FILENO);
 		else
 		{
-			exit_status = find_value_with_key_env(env, "EXIT_STATUS");
-			free(exit_status->value);
+			//free(exec->cmd_path); //caro
+			//free(exec->cmd_tab); //caro
+			//free(env->env); //caro
+			add_exit_status_in_env(&env, 127);
 			command_not_found(exec);
 		}
 	}
@@ -138,6 +138,7 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 		perror("bash");
 		// free_cmd_list(cmd);
 	}
+	add_exit_status_in_env(&env, 127);
 	return (127);
 }
 

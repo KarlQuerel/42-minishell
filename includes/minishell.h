@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/28 13:15:13 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 17:39:22 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@
 # define IN_COMMAND 1
 # define IN_HEREDOC 2
 # define QUIT_HEREDOC 3
+# define QUIT 4
 
 
 /*Macros*/
@@ -186,6 +187,7 @@ int		str_type(char *command, int len);
 bool	is_cmd(char *buffer, char* command);
 int		size_of_command(char *command, int len, int type);
 bool	is_cmd_in_line(char *line, char *cmd);
+void	ft_builtins_history(t_element *cmd);
 void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec);
 
 /*Env_list*/
@@ -251,7 +253,8 @@ char	*ft_prompt(t_env *env_list, int option);
 void	ft_prompt2(char **prompt, char *word, t_env *env_list, char *path);
 
 /*Signal*/
-void		signal_handler(int signal);
+void	sigint_handler(int signal);
+void	sigquit_handler(int signal);
 int		set_signals(void);
 
 /*Utils*/
@@ -303,7 +306,7 @@ void	ft_env(t_env *env, t_element *cmd, int option);
 bool	no_args_or_options(t_element *cmd);
 int		ft_exit(t_element *cmd, t_env **env, t_pipe *exec);
 void	exitstatus_update_in_env(t_env **env);
-void	add_exit_status_in_env(t_env **env);
+int		add_exit_status_in_env(t_env **env, int n);
 
 /*Export*/
 int		ft_export(t_element *cmd_list, t_env **env);

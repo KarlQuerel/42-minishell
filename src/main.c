@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/28 13:23:07 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 17:24:59 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	ft_welcome(void)
 int main (int argc, char **argv, char **env)
 {
 	char				*line;
-	//struct sigaction	signal;
 	t_env				*env_list;
 	t_element			*cmd_list;
 	t_pipe				*exec;
@@ -64,14 +63,6 @@ int main (int argc, char **argv, char **env)
 		perror("exec");
 		exit(EXIT_FAILURE);
 	}
-
-	/* memset(&signal, 0, sizeof(signal));
-	signal.sa_flags = SA_SIGINFO | SA_RESTART;
-	signal.sa_handler = &signal_handler;
-	if (sigaction(SIGINT, &signal, NULL) == -1 || \
-	sigaction(SIGQUIT, &signal, NULL) == -1)
-		return (EXIT_FAILURE); */
-
 	(void)argv;
 	if (argc != 1)
 	{
@@ -83,31 +74,27 @@ int main (int argc, char **argv, char **env)
 	using_history(); // initialisation de l'historique
 	env_list->env = env;
 	line = NULL;
-	//g_signals.exit_status = 0;
-	//faire une fonction qui cree exit status dans env puis simplifier update_existatus() comme pour update_pwd()
-	add_exit_status_in_env(&env_list);
+	add_exit_status_in_env(&env_list, 0);
 	while (1)
 	{
-		/* if (g_location == QUIT_HEREDOC)
-		{
-			printf("HELLO\n");
-			unlink(exec->hd_filename);
-		} */
 		g_location = IN_PROMPT;
 		if (set_signals() == EXIT_FAILURE)
 		{
 			//free
+			printf("FAILURE\n");
 			return (1);
 		}
-		//exitstatus_update_in_env(&env_list);
+		if (is_key_in_env(env_list, "EXIT_STATUS") == false)
+			add_exit_status_in_env(&env_list, 0);
 		path = ft_prompt(env_list, NO_PRINT);
 		prompt = ft_strjoin(path, "$ ");
 		if (ft_strncmp(path, "/", ft_strlen(path)) != 0 && \
 		ft_strncmp(path, "", ft_strlen(path)) != 0) //if malloc'ed
 			free(path);
 		line = readline(prompt);
+		if (g_location == QUIT)
+			add_exit_status_in_env(&env_list, 130);
 		add_history(line);
-		
 		if (line == NULL)
 		{
 			if (g_location == IN_PROMPT)
@@ -133,8 +120,8 @@ int main (int argc, char **argv, char **env)
 				exec->line = &line;
 				exec->prompt = &prompt;
 				ft_execute(cmd_list, &env_list, exec);
-				//free_cmd_arr(exec); //double free qd heredoc
-				free(exec->cmd_tab);
+				free_cmd_arr(exec); //double free qd heredoc
+				//free(exec->cmd_tab);
 				free_cmd_list(cmd_list);
 			}
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 13:20:48 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 15:23:26 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ bool	ft_heredoc(t_element *elem, t_env *env)
 	char		*words;
 	char		*file_name;
 	static int	iteration_nb = 1;
-	t_env	*exit_status;
 	
 	iteration_nb++;
 	g_location = IN_HEREDOC;
@@ -138,7 +137,6 @@ bool	ft_heredoc(t_element *elem, t_env *env)
 	file_name = create_heredoc(elem->content, iteration_nb, &fd);
 	if (!file_name)
 		return (false);
-	exit_status = find_value_with_key_env(env, "EXIT_STATUS");
 	int test_fd = dup(STDIN_FILENO);
 
 	while (1)
@@ -148,18 +146,18 @@ bool	ft_heredoc(t_element *elem, t_env *env)
 			ft_putendl_fd(words, fd);
 		if (g_location == QUIT_HEREDOC)
 		{
-			exit_status->value = ft_itoa(130);
+			add_exit_status_in_env(&env, 130);
 			break;
 		}
 		if (words == NULL)
 		{
 			ft_putendl_fd("bash: warning: here-document at line 3 delimited by end-of-file", STDERR_FILENO);
-			exit_status->value = ft_itoa(0);
+			add_exit_status_in_env(&env, 0);
 			break;
 		}
 		if (ft_strncmp(words, elem->content, ft_strlen(words)) == 0 && ft_strlen(words) == ft_strlen(elem->content))
 		{
-			exit_status->value = ft_itoa(0);
+			add_exit_status_in_env(&env, 0);
 			break;
 		}
 		free(words);

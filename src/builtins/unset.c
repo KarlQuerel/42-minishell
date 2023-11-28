@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/11/27 14:03:29 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 14:51:02 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	ft_delete_node_env(t_env **head, t_env *to_delete)
 		free(to_delete->key);
 		free(to_delete->value);
 	}
+	else
+		free(to_delete->value); //test
 	free(to_delete);
 }
 

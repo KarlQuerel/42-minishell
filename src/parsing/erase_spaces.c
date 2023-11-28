@@ -6,25 +6,26 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:51:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/27 14:03:58 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 17:47:33 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/*The first condition is meant to skip the spaces in between quotes,
-so that they are kept in new_line.*/
+/*The first condition checks if there are quotes and quotes
+can close. It is meant to skip the spaces in between quotes,
+so that they are kept in new_line. It keeps the separators.*/
 void	erase_spaces_loop(char *line, char **new_line, int *i, int *j)
 {
 	char	*separator;
 
-	if (parsing_str_type(line, (*i)) == STR) //if quotes && quotes can close
+	if (parsing_str_type(line, (*i)) == STR)
 	{
 		separator = type_of_separator(line, (*i), parsing_str_type(line, (*i)));
-		(*new_line)[(*j)++] = line[(*i)++]; //pour copier/coller le separateur
+		(*new_line)[(*j)++] = line[(*i)++];
 		while (line[(*i)] != separator[0] && line[(*i)])
 			(*new_line)[(*j)++] = line[(*i)++];
-		(*new_line)[(*j)++] = line[(*i)++]; //pour copier/coller le separateur
+		(*new_line)[(*j)++] = line[(*i)++];
 		free(separator);
 	}
 	else if ((line[(*i)] == ' ' && line[(*i) + 1] == ' ') || \
@@ -62,6 +63,7 @@ char	*erase_spaces(char *line)
 	new_line = erase_empty_strings(new_line);
 	return (new_line);
 }
+
 char	*erase_empty_strings(char *line)
 {
 	char	*new_line;
@@ -73,16 +75,16 @@ char	*erase_empty_strings(char *line)
 	new_line = empty_strings_malloc(line);
 	if (!new_line)
 		return (NULL); //??
-	while(line[i])
+	while (line[i])
 	{
-		if (line[i] == '\'' && line[i+1] == '\'')
+		if (line[i] == '\'' && line[i + 1] == '\'')
 			i += 2;
-		else if (line[i] == '\"' && line[i+1] == '\"')
+		else if (line[i] == '\"' && line[i + 1] == '\"')
 			i += 2;
 		else
 			new_line[j++] = line[i++];
 	}
 	new_line[j] = '\0';
-	free(line);
+	free (line);
 	return (new_line);
 }
