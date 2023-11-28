@@ -77,7 +77,7 @@ int	ft_redirect(t_element *cmd, t_pipe *exec)
 		tmp = tmp->next;
 	while (tmp != NULL && tmp->type != PIPE)
 	{
-		if (tmp->type == INFILE || tmp->type == HEREDOC)
+		if (tmp->type == INFILE/*  || tmp->type == HEREDOC */)
 		{
 			if (!ft_infile(tmp->content))
 			{
@@ -85,9 +85,11 @@ int	ft_redirect(t_element *cmd, t_pipe *exec)
 				// gerer les unlink
 				return (0);
 			}
-			if (tmp->type == HEREDOC)
-				unlink(tmp->content);
+			// if (tmp->type == HEREDOC)
+			// 	unlink(tmp->content);
 		}
+		else if(tmp->type == HEREDOC)
+			unlink(tmp->content);
 		else if (tmp->type == OUTFILE || tmp->type == OUTFILE_APPEND)
 		{
 			if (!ft_outfile(tmp))

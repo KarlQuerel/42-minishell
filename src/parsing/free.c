@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
 /*   Updated: 2023/11/28 14:59:05 by casomarr         ###   ########.fr       */
@@ -53,6 +53,7 @@ void	free_cmd_arr(t_pipe *exec)
 
 	i = 0;
 	free(exec->cmd_tab);
+	free(exec->env_execve);
 /* 	if (exec->cmd_tab)
 	{	
 		while (exec->cmd_tab[i])
