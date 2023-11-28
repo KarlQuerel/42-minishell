@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 17:02:43 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/28 15:20:59 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,6 @@ void	ft_exit_continued_2(t_element *cmd, t_env **env, t_pipe *exec, t_element *h
 void	ft_exit_continued(t_element *cmd, t_env **env, t_pipe *exec, \
 t_element *head, int option)
 {
-	t_env	*exit_status;
-	
-	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
-	//free(exit_status->value);
 	if (option == 0)
 	{
 		if (no_pipes_before(cmd) == true)
@@ -109,69 +105,38 @@ t_element *head, int option)
 		ft_putstr_fd(cmd->content, STDERR_FILENO);
 		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
 		exit_free(head, env, exec);
-		exit_status->value = ft_itoa(2);
-		exit(ft_atoi(exit_status->value));
+		exit(add_exit_status_in_env(env, 2));
 	}
 	else
 	{
 		if (no_pipes_before(cmd) == true)
 				ft_putendl_fd("exit", STDERR_FILENO);
 		ft_putendl_fd("bash: exit: too many arguments", STDERR_FILENO);
-		exit_status->value = ft_itoa(127);
+		add_exit_status_in_env(env, 127);
 	}
 }
 
-void	exitstatus_update_in_env(t_env **env)
-{
-	t_env	*key;
-	t_element *node;
-// La value copiee dans l'env est toujours la meme
-	if (is_key_in_env((*env), "EXIT_STATUS"))
-	{
-		//key = *env; //effacer ailleurs
-		node = ft_calloc(1, sizeof(t_element));
-		node->content = "export";
-		node->next = ft_calloc(1, sizeof(t_element));
-		key = find_value_with_key_env((*env), "EXIT_STATUS");
-		node->next->content = ft_strjoin("EXIT_STATUS=", key->value); //malloc ici
-		node->next->type = ARGUMENT;
-		ft_export(node, env);
-	}
- }
-//CELLE QUI MARCHE MAIS QUI FAIT LEAK FT_EXPORT
-/* void	add_exit_status_in_env(t_env **env)
-{
-	t_element	*node;
-
-	node = ft_calloc(1, sizeof(t_element));
-	node->content = "export"; //pq ft_export commence par la commande
-	node->next = ft_calloc(1, sizeof(t_element));
-	node->next->content = "EXIT_STATUS=0";//initialize to 0
-	node->next->type = ARGUMENT;
-	node->next->next = NULL;
-	ft_export(node, env);
-	// peut etre invalid free
-	free(node->next);
-	free(node);
-} */
-
 //FAIS DES LEAKS DANS L'EXECUTABLE
-void	add_exit_status_in_env(t_env **env)
+int	add_exit_status_in_env(t_env **env, int n)
 {
-	t_env	*node;
-	t_env	*current;
+	static t_env	*node;
 
-	node = ft_calloc(1, sizeof(t_env));
-	//node->value = ft_calloc(13, sizeof(char));
-	node->key = "EXIT_STATUS";
-	//node->value = ft_calloc(2, sizeof(char));
-	node->value = "0";
-	node->prev = NULL;
-	node->next = NULL;
-	current = *env;
-	while (current->next)
-		current = current->next;
-	current->next = node;
-	current->next->prev = current;
-	current->next->next = NULL;
+	if (is_key_in_env(*env, "EXIT_STATUS") == false)
+	{
+		node = *env;
+		while (node->next)
+			node = node->next;
+		node->next = ft_calloc(1, sizeof(t_env));
+		node->next->key = "EXIT_STATUS";
+		node->next->value = ft_itoa(n);
+		node->next->prev = node;
+		node->next->next = NULL;
+	}
+	else
+	{
+		node = find_value_with_key_env(*env, "EXIT_STATUS");
+		free(node->value);
+		node->value = ft_itoa(n);
+	}
+	return(ft_atoi(node->value));
 }

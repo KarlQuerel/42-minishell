@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/28 13:17:42 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 17:54:31 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,28 +120,6 @@ void	type_arg_after_cmd(t_element **current)
 	}
 }
 
-/*J'AI MIS CETTE FONCTION EN COMMENTAIRE CAR JE NE ME SOUVIENS PAS DE POURQUOI
-J'AVAIS LA PREMIÈRE IF ET QUE ÇA A L'AIR DE MARCHER PAREIL SANS*/
-/* void	dollar_fix(t_element *current, t_env *env_list)
-{
-	t_element	*temp;
-
-	// manque a gerer le cas "$?"
-	if (ft_isalpha(current->content[1]) == 0)
-	{
-		temp = current->prev;
-		while (temp->type != COMMAND && temp != NULL)
-			temp = temp->prev;
-		if (strncmp(temp->content, "echo", ft_strlen(temp->content)) == 0)
-		{
-			free(current->content);
-			current->content = ""; //et non \n car deja un \n a la fin de la fonction echo
-		}
-	}
-	else
-		current->content = dollar(current->content, env_list);
-} */
-
 /* To fix the type of the arguments that are not in between quotes
 and are therefore considered as a COMMAND instead of an ARGUMENT
 in the parsing function. This functions sets all arguments that are
@@ -169,7 +147,6 @@ void	parsing_fix(t_element **cmd_list, t_env *env_list)
 				ft_delete_node_cmd(cmd_list, current);
 			}
 		}
-			// dollar_fix(current, env_list);
 		current = current->next;
 	}
 	return ;
@@ -182,53 +159,9 @@ void	builtin_fix(t_element **cmd_list)
 	t_element	*current;
 
 	current = (*cmd_list);
-	while (current != NULL)
-	{
-		// if (is_builtin(current->content) == true)
-		// {
-		// 	while(current->prev && current->prev->type != PIPE)
-		// 	{
-		// 		current->builtin = true;
-		// 		current = current->prev;
-		// 	}
-		// 	if (current->next->builtin == true && current->type != PIPE)
-		// 		current->builtin = true;
-		// 	while(current->next && current->next->type != PIPE)
-		// 	{
-		// 		current->builtin = true;
-		// 		current = current->next;
-		// 	}
-		// 	if (current->prev->builtin == true && current->type != PIPE)
-		// 		current->builtin = true;
-		// }
-		// current = current->next;
-  
-    // KARL --> JE NE SAIS PAS QUELLE VERSION EST LA BONNE DU COUP J'AI LAISSE LES DEUX
-  
-		/* if (is_builtin(current->content) == true)
-		{
-			while(current->prev && current->prev->type != PIPE)
-			{
-				current->builtin = true;
-				current = current->prev;
-			}
-			if (current->next->builtin == true && current->type != PIPE)
-				current->builtin = true;
-			while(current->next && current->next->type != PIPE)
-			{
-				current->builtin = true;
-				current = current->next;
-			}
-			if (current->prev->builtin == true && current->type != PIPE)
-				current->builtin = true;
-		}
-		current = current->next; */
-
-		if (is_builtin(current->content) == true)
-			current->builtin = true;
-		current = current->next;
-	}
-	return ;
+	if (is_builtin(current->content) == true)
+		current->builtin = true;
+	current = current->next;
 }
 
 bool	no_cmd_before(t_element *current)
@@ -241,7 +174,3 @@ bool	no_cmd_before(t_element *current)
 	}
 	return (true);
 }
-
-//void	put_all_to_type_builtin(t_element **cmd)
-
-//ctrl Z?

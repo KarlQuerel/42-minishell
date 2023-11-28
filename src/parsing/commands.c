@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/27 14:03:52 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 17:38:54 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,29 +63,27 @@ bool	is_cmd_in_line(char *line, char *cmd)
 	return (false);
 }
 
+void	ft_builtins_history(t_element *cmd)
+{
+	if (cmd->next && cmd->next->type != PIPE)
+		history(FT_HISTORY, ft_atoi(cmd->next->content));
+	else
+		history(FT_HISTORY, -1);
+}
+
 /* Handles builtins redirections.
 For the history builtin : the first If is to handle an option. If
 no option was given, the option is set to -1, so that the totality
 of history is printed.*/
 void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec)
 {
-	t_env	*exit_status;
-	
-	exit_status = *env_list;
-	exit_status = find_value_with_key_env(*env_list, "EXIT_STATUS");
-	//free(exit_status->value);
 	if (is_cmd(cmd->content, "$?") == false)
-		exit_status->value = ft_itoa(0);
+		add_exit_status_in_env(env_list, 0);
 	if (is_cmd(cmd->content, "pwd") == true && check_next(cmd, NONE))
 		pwd(PRINT);
 	else if (is_cmd(cmd->content, "history") == true && \
 	check_next(cmd, HISTORY))
-	{
-		if (cmd->next && cmd->next->type != PIPE)
-			history(FT_HISTORY, ft_atoi(cmd->next->content));
-		else
-			history(FT_HISTORY, -1);
-	}
+		ft_builtins_history(cmd);
 	else if (is_cmd(cmd->content, "cd") == true && check_next(cmd, CD))
 		cd(cmd, *env_list);
 	else if (is_cmd(cmd->content, "echo") == true && check_next(cmd, ECHO))
@@ -101,5 +99,5 @@ void	ft_builtins(t_element *cmd, t_env **env_list, t_pipe *exec)
 	else if (is_cmd(cmd->content, "exit") == true && check_next(cmd, NONE))
 		ft_exit(cmd, env_list, exec);
 	else
-		exit_status->value = ft_itoa(127);
+		add_exit_status_in_env(env_list, 127);
 }

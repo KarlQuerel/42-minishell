@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:39:52 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/27 15:41:49 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 17:50:07 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,7 @@
 /*The first two "if" check if there are errors in the grammar of the command
 line and print the associated error. The last function replaces the $ by its
 associated value so that the executable receives directly the line completed.*/
-bool	line_errors_and_fix(char *line) /*pourquoi double pointeur : 
-avant parce que je modifiais la ligne en même temps que je voulais return
-un bool mais plus besoin non? Vu que Maintenant c'est erase_spaces etc qui 
-modifie line*/
+bool	line_errors_and_fix(char *line)
 {
 	if (!line)
 		return (NULL);
@@ -57,35 +54,6 @@ bool	redirecters_error(char *line)
 	int	i;
 
 	i = 0;
-	// if (ft_strlen(line) <= 2 && (is_cmd_in_line(line, "<") || is_cmd_in_line(line, ">")))
-	// {
-	// 	printf("bash: syntax error near unexpected token `newline'\n");
-	// 	return (false);
-	// }
-	// else if (ft_strlen(line) > 2)
-	// {
-	// 	// if (line[0] == '>' && line[1] == '>')
-	// 	// {
-	// 	// 	printf("bash: syntax error near unexpected token `>>'\n");
-	// 	// 	return (false);
-	// 	// }	
-	// 	/* else */if (line[0] == '<' && line[1] == '<')
-	// 	{
-	// 		printf("bash: syntax error near unexpected token `<<'\n");
-	// 		return (false);
-	// 	}
-	// 	// else if (line[0] == '>')
-	// 	// {
-	// 	// 	printf("bash: syntax error near unexpected token `>'\n");
-	// 	// 	return (false);
-	// 	// }
-	// 	else if (line[0] == '<')
-	// 	{
-	// 		printf("bash: syntax error near unexpected token `<'\n");
-	// 		return (false);
-	// 	}
-	// }
-
 	while (line[i])
 	{
 		if ((line[i] == '<' || line[i] == '>') &&\
