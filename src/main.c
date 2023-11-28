@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/28 22:20:32 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/29 00:16:49 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ int main (int argc, char **argv, char **env)
 	ft_welcome();
 	env_list = put_env_in_list(env);
 	using_history(); // initialisation de l'historique
-	env_list->env = env;
 	line = NULL;
 	add_exit_status_in_env(&env_list, 0);
 	while (1)
@@ -114,19 +113,18 @@ int main (int argc, char **argv, char **env)
 			if (line_errors_and_fix(line) == true)
 			{
 				cmd_list = parsing(line, env_list);
-				//printlist_test(cmd_list);
+				// printlist_test(cmd_list);
 				exec->line = &line;
 				exec->prompt = &prompt;
 				ft_execute(cmd_list, &env_list, exec);
+				if (exec)
 				free_cmd_arr(exec); //double free qd heredoc
-				//free(exec->cmd_tab);
 				free_cmd_list(cmd_list);
 			}
 		}
 		free(line);
 		free(prompt);
 		pwd_update_in_env(&env_list);
-		env_list->env = env;
 	}
 	return (EXIT_SUCCESS);
 }

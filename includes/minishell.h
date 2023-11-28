@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/28 22:13:55 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/28 23:42:02 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,6 @@ typedef struct s_env
 {
 	char	*key;
 	char	*value;
-	char	**env;
 	int		fd_heredoc;
 	struct s_env *prev;
 	struct s_env *next;
@@ -389,5 +388,6 @@ void	ft_exit_continued_2(t_element *cmd, t_env **env, t_pipe *exec, t_element *h
 void	ft_export_continued(t_element *cmd, t_env **env);
 int	ft_strchr_int(char *s, char c);
 void	ft_alban(t_element *cmd);
+void	free_child(t_element *cmd, t_env **env, t_pipe *exec);
 
 #endif

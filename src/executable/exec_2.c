@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 22:04:24 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/28 23:52:27 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec, int option)
 	if (cmd && cmd->builtin == true && cmd->content)
 	{
 		
-		printf("cmd content = %s\ncmd builtin = %d\n", cmd->content, cmd->builtin);
+		// printf("cmd content = %s\ncmd builtin = %d\n", cmd->content, cmd->builtin);
 		exec->std_in = dup(STDIN_FILENO);
 		exec->std_out = dup(STDOUT_FILENO);
 		if (!ft_redirect(cmd, exec))
