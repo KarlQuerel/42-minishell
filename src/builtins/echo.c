@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:35 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/27 14:03:01 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 22:06:26 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	echo(t_element *current)
 			newline = false;
 		else if (current->type == ARGUMENT)
 		{
+			printf("CONTENT = %s\n", current->content);
 			ft_putstr_fd(current->content, STDOUT_FILENO);
 			if (no_further_args(current) == false)
 				ft_putstr_fd(" ", STDOUT_FILENO);

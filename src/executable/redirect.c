@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 15:23:26 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 22:24:57 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,30 @@ int	ft_outfile(t_element *cmd)
 	return (1);
 }
 
+/* Dieu */
+// void	ft_alban(t_element *cmd)
+// {
+// 	t_element *head;
+
+// 	head = cmd;
+// 	while (cmd)
+// 	{
+// 		if (cmd->prev)
+// 			cmd = cmd->prev;
+// 	}
+// 	while (cmd)
+// 	{
+// 		if (cmd->type == COMMAND)
+// 			cmd->hd_filename = 
+// 		cmd = cmd->next;
+// 	}
+// 	cmd = head;
+// 	while (cmd)
+// 	{
+// 		if (cmd->type)
+// 	}
+// }
+
 /* Handles redirections depending on cmd->type */
 int	ft_redirect(t_element *cmd, t_pipe *exec)
 {
@@ -77,7 +101,7 @@ int	ft_redirect(t_element *cmd, t_pipe *exec)
 		tmp = tmp->next;
 	while (tmp != NULL && tmp->type != PIPE)
 	{
-		if (tmp->type == INFILE/*  || tmp->type == HEREDOC */)
+		if (tmp->type == INFILE)
 		{
 			if (!ft_infile(tmp->content))
 			{
@@ -85,11 +109,15 @@ int	ft_redirect(t_element *cmd, t_pipe *exec)
 				// gerer les unlink
 				return (0);
 			}
-			// if (tmp->type == HEREDOC)
-			// 	unlink(tmp->content);
 		}
 		else if(tmp->type == HEREDOC)
-			unlink(tmp->content);
+		{
+			printf("filename = %s\n", cmd->hd_filename);
+			//ft_alban(cmd);
+			if (!ft_infile(cmd->hd_filename))
+				printf("failed\n");
+			// unlink(tmp->content);
+		}
 		else if (tmp->type == OUTFILE || tmp->type == OUTFILE_APPEND)
 		{
 			if (!ft_outfile(tmp))
@@ -126,7 +154,7 @@ char	*create_heredoc(char *name, int i, int *fd)
 }
 
 /* Handles heredoc behavior */
-bool	ft_heredoc(t_element *elem, t_env *env)
+bool	ft_heredoc(t_element *cmd, t_env *env)
 {
 	int			fd;
 	char		*words;
@@ -136,11 +164,14 @@ bool	ft_heredoc(t_element *elem, t_env *env)
 	iteration_nb++;
 	g_location = IN_HEREDOC;
 	set_signals();
-	file_name = create_heredoc(elem->content, iteration_nb, &fd);
+	file_name = create_heredoc(cmd->content, iteration_nb, &fd);
 	if (!file_name)
 		return (false);
+	cmd->hd_filename = ft_strdup(file_name); // peut etre leak
+
 	int test_fd = dup(STDIN_FILENO);
 
+	// env->fd_heredoc = dup(STDIN_FILENO);
 	while (1)
 	{
 		words = readline("> ");
@@ -157,7 +188,7 @@ bool	ft_heredoc(t_element *elem, t_env *env)
 			add_exit_status_in_env(&env, 0);
 			break;
 		}
-		if (ft_strncmp(words, elem->content, ft_strlen(words)) == 0 && ft_strlen(words) == ft_strlen(elem->content))
+		if (ft_strncmp(words, cmd->content, ft_strlen(words)) == 0 && ft_strlen(words) == ft_strlen(cmd->content))
 		{
 			add_exit_status_in_env(&env, 0);
 			break;
@@ -167,8 +198,10 @@ bool	ft_heredoc(t_element *elem, t_env *env)
 	}
 	free(words);
 	words = NULL;
+	// dup2(env->fd_heredoc, STDIN_FILENO);
 	dup2(test_fd, STDIN_FILENO);
 	close(fd);
+	// close(env->fd_heredoc);
 	unlink(file_name);
 	return (true);
 }

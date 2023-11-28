@@ -6,17 +6,19 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 15:27:45 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/28 22:04:24 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /* Restore I/O's in case of builtins */
-int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec)
+int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec, int option)
 {
 	if (cmd && cmd->builtin == true && cmd->content)
 	{
+		
+		printf("cmd content = %s\ncmd builtin = %d\n", cmd->content, cmd->builtin);
 		exec->std_in = dup(STDIN_FILENO);
 		exec->std_out = dup(STDOUT_FILENO);
 		if (!ft_redirect(cmd, exec))
@@ -29,7 +31,9 @@ int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec)
 		dup2(exec->std_out, STDOUT_FILENO);
 		close(exec->std_in);
 		close(exec->std_out);
-		return (0);
+		if (option == 0)
+			return (0);
+		exit (0);
 	}
 	return (1);
 }
@@ -49,6 +53,8 @@ void	middle_dup(t_element *cmd, t_env **env, t_pipe *exec)
 		exit(0);
 	}
 	close(exec->fd[1]);
+	if (!ft_is_builtin(cmd, env, exec, 1))
+		return ;
 	handle_command(cmd, env, exec);
 }
 
@@ -58,6 +64,8 @@ void last_dup(t_element *cmd, t_env **env, t_pipe *exec)
 	if (dup2(exec->fd_temp, STDIN_FILENO) < 0)
 		perror("dup last");
 	close(exec->fd_temp);
+	if (!ft_is_builtin(cmd, env, exec, 1))
+		return ;
 	handle_command(cmd, env, exec);
 }
 

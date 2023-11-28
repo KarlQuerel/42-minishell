@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 17:23:56 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 21:57:03 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 			break;
 		cmd = cmd->next;
 	}
-	if (!ft_is_builtin(cmd, env, exec))
+	if (!ft_is_builtin(cmd, env, exec, 0))
 		return ;
 	pid = fork();
 	g_location = IN_COMMAND;
@@ -75,20 +75,12 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 		return (perror("waitpid"));
 	// ft_exit_status(env);
 	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
-	// if (exit_status->value)
-	// 	free(exit_status->value);
 	if (WIFEXITED(status))
 		add_exit_status_in_env(env, WEXITSTATUS(status));
-		//exit_status->value = ft_itoa(WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
-	{
-		//printf("sig = %d\n", add_exit_status_in_env(env, 128 + WTERMSIG(status)));		
 		add_exit_status_in_env(env, 128 + WTERMSIG(status));
-		//exit_status->value = ft_itoa(128 + WTERMSIG(status));
-	}
 	else
 		add_exit_status_in_env(env, status);
-		//exit_status->value = ft_itoa(status);
 }
 
 // void	ft_exit_status(t_element **env)
@@ -135,7 +127,6 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 			last_pipe(cmd, env, exec);
 		i++;
 	}
-	//exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
 	while (true)
 	{
 		wpid = wait(&status);
@@ -143,13 +134,10 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 			break ;
 		if (wpid == exec->last_pid)
 		{
-			//free(exit_status->value);
 			if (WIFEXITED(status))
 				add_exit_status_in_env(env, WEXITSTATUS(status));
-				//exit_status->value = ft_itoa(WEXITSTATUS(status));
 			else
 				add_exit_status_in_env(env, 128 + WTERMSIG(status));
-				//exit_status->value = ft_itoa(WTERMSIG(status) + 128);
 		}
 	}
 	return ;
@@ -163,12 +151,12 @@ void	middle_pipes(t_element *cmd, t_env **env, t_pipe *exec)
 	int	pid;
 
 	if (pipe(exec->fd) < 0)
-		perror("Pipe");
+		perror("pipe");
 	pid = fork();
 	g_location = IN_COMMAND;
 	set_signals();
 	if (pid < 0)
-		perror("Fork");
+		perror("fork");
 	if (pid == 0)
 		middle_dup(cmd, env, exec);
 	else

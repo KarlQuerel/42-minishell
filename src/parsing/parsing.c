@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/28 17:54:31 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 21:48:42 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,9 +159,12 @@ void	builtin_fix(t_element **cmd_list)
 	t_element	*current;
 
 	current = (*cmd_list);
-	if (is_builtin(current->content) == true)
-		current->builtin = true;
-	current = current->next;
+	while (current)
+	{
+		if (is_builtin(current->content) == true)
+			current->builtin = true;
+		current = current->next;
+	}
 }
 
 bool	no_cmd_before(t_element *current)
