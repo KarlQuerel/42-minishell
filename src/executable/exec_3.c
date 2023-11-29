@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 23:59:55 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/29 14:33:37 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 		perror("bash: ");
 		ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
 		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
-		free_child(cmd, &env, exec);
+		// free_child(cmd, &env, exec);
 		add_exit_status_in_env(&env, 127);
 		return(127);
 	}
@@ -80,10 +80,10 @@ int	command_not_found(t_element *cmd, t_env *env, t_pipe *exec)
 
 	//pourquoi pas free_cmd_list, on l'appelle dans le main
 	// free(exec->cmd_tab[0]);
-	free_child(cmd, &env, exec);
+	// free_child(cmd, &env, exec);
 	exit_status = find_value_with_key_env(env, "EXIT_STATUS");
 	add_exit_status_in_env(&env, 127); // ne sert peut etre a rien
-	free(exit_status->value);
+	// free(exit_status->value);
 	return (127);
 }
 
