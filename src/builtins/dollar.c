@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/29 13:58:33 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/29 14:02:13 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	new_key(size_t *i, char **key_to_find, char *content)
 	// 	free(*key_to_find);
 	*key_to_find = NULL;
 	*key_to_find = ft_calloc((*i) + 1, sizeof(char));
-	*key_to_find = strlcpy_middle(*key_to_find, content, start, *i);
+	*key_to_find = strlcpy_middle(*key_to_find, content, start, *i - 1);
 	
 }
 
