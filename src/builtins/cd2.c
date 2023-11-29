@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 11:47:20 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/27 18:41:49 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/29 14:20:51 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ int	forward_loop(char *current_path, char *home_value, int end)
 	char	*word;
 
 	start = end;
-	word = ft_calloc(size_of_word(home_value, start) + 1, sizeof(char));
+	//word = ft_calloc(size_of_word(home_value, start) + 1, sizeof(char));
 	while (is_cmd(current_path, home_value) == false)
 	{
 		while (home_value[end] != '/' && home_value[end])
 			end++;
-		free(word);
+		// free(word);
 		word = strlcpy_middle(word, home_value, start, end - 1);
 		if (chdir(word) != 0)
 		{
@@ -45,9 +45,9 @@ int	forward_loop(char *current_path, char *home_value, int end)
 		end += 1;
 		start = end;
 		free(word);
-		word = ft_calloc(size_of_word(home_value, start) + 1, sizeof(char));
+		//word = ft_calloc(size_of_word(home_value, start) + 1, sizeof(char));
 	}
-	free(word);
+	// free(word);
 	return 0;
 }
 

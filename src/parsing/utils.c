@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/29 13:55:47 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/29 14:22:14 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,11 @@ char	*strlcpy_middle(char *dst, const char *src, size_t start, size_t end)
 	int	i;
 
 	i = 0;
+	// if (src == NULL) //test pour régler invalid free qd cd cd .. cd..
+	// {
+	// 	dst = ft_calloc(1, sizeof(char));
+	// 	return (dst);
+	// }
 	dst = ft_calloc(end - start + 2, sizeof(char));
 	while (src[start] && start <= end)
 		dst[i++] = src[start++];

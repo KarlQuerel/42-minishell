@@ -6,7 +6,7 @@
 #    By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/11/29 13:03:28 by octonaute        ###   ########.fr        #
+#    Updated: 2023/11/29 14:25:56 by octonaute        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -136,9 +136,10 @@ re: fclean all
 v : minishell
 	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes ./minishell
 #--trace-children=yes
+#--show-leak-kinds=indirect,reachable
 
 sv : minishell
-	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell
+	@valgrind --suppressions=readline.supp --leak-check=full ./minishell
 #--show-leak-kinds=all 
 
 #make fclean se repete

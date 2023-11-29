@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/29 14:02:13 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/29 14:22:29 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,10 +123,9 @@ void	new_key(size_t *i, char **key_to_find, char *content)
 			break;
 		(*i)++;
 	}
-	// if (*key_to_find)
-	// 	free(*key_to_find);
+	if (*key_to_find)
+		free(*key_to_find);
 	*key_to_find = NULL;
-	*key_to_find = ft_calloc((*i) + 1, sizeof(char));
 	*key_to_find = strlcpy_middle(*key_to_find, content, start, *i - 1);
 	
 }
@@ -152,7 +151,6 @@ char	*dollar(char *content, t_env *env_list)
 	}
 	if (i != ft_strlen(content)) //if multiple $
 	{
-		key_to_find = ft_calloc(i, sizeof(char));
 		key_to_find = strlcpy_middle(key_to_find, content, 1, i - 1);
 		while (i < ft_strlen(content)) //recursive
 		{
@@ -163,17 +161,15 @@ char	*dollar(char *content, t_env *env_list)
 	}
 	else
 	{
-	// 	if (key_to_find != NULL && (ft_strncmp(key_to_find, "EXIT_STATUS", ft_strlen(key_to_find)) != 0 || \
-	// ft_strlen(key_to_find) != ft_strlen("EXIT_STATUS")))
 		if (key_to_find == NULL)
-		{
-			key_to_find = ft_calloc(ft_strlen(content) + 1, sizeof(char));
 			key_to_find = strlcpy_middle(key_to_find, content, 1, ft_strlen(content) - 1);
-		}
 		//ret = ft_calloc(4, sizeof(char)); //pour que ce soit rjes calloc pour free cmd list
 		ret = replace_dollar(content, key_to_find, env_list);
 	}
-	//free (content)
+	free (content);
+	if (key_to_find != NULL && (ft_strncmp(key_to_find, "EXIT_STATUS", ft_strlen(key_to_find)) != 0 || \
+	ft_strlen(key_to_find) != ft_strlen("EXIT_STATUS")))
+		free(key_to_find);
 	return (ret);
 }
 

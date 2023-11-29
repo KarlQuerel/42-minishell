@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:36:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/28 20:31:11 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/29 14:19:07 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,4 +135,6 @@ void	ft_prompt2(char **prompt, char *word, t_env *env_list, char *path)
 		(*prompt) = home_path_simplified(path, env_list);
 	else
 		(*prompt) = "/";
+		// (*prompt) = strlcpy_middle((*prompt), "/", 0, \
+		// 1); //si besoin pour invalid free
 }
