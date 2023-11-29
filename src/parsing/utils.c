@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/28 17:55:57 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/29 13:55:47 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,22 +90,28 @@ char	*ft_strjoin_free(char const *s1, char *s2)
 	int		ft_strlen_total;
 	char	*new_str;
 
-	if (s1 == NULL || s2 == NULL)
-		return (NULL);
-	ft_strlen_total = ft_strlen(s1) + ft_strlen(s2);
+	if (s2 == NULL)
+		return (s1);
+	if (s1 == NULL)
+		ft_strlen_total = ft_strlen(s2);
+	else
+		ft_strlen_total = ft_strlen(s1) + ft_strlen(s2);
 	new_str = malloc((sizeof(char)) * (ft_strlen_total + 1));
 	if (new_str == NULL)
 		return (NULL);
 	i = 0;
-	while (s1[i])
+	if (s1 != NULL)
 	{
-		new_str[i] = s1[i];
-		i++;
+		while (s1[i])
+		{
+			new_str[i] = s1[i];
+			i++;
+		}
 	}
 	j = 0;
 	while (s2[j])
 		new_str[i++] = s2[j++];
 	new_str[i] = '\0';
-	free(s2);
+	free(s1);
 	return (new_str);
 }

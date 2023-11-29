@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/28 19:48:08 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/29 13:58:33 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,7 @@
 
 // A GERER
 /*
-
-	echo $? est pareil que echo $USER, (les expands)
-	bash:
 	--> si $? utilise deux fois (ou plus) de suite -> exit code de 127
-
 */
 
 /*
@@ -28,42 +24,157 @@
 3. Cheks that the key exists in env_list (and key_in_env "takes its rank" if true).
 4. Replaces the content by the key value.
 */
-char	*dollar(char *content, t_env *env_list)
-{
-	/*Il manque à gérer l'option $?*/
-	char	*key_to_find;
-	t_env	*key_in_env;
+// char	*dollar(char *content, t_env *env_list)
+// {
+// 	/*Il manque à gérer l'option $?*/
+// 	char	*key_to_find;
+// 	t_env	*key_in_env;
 
-	if (ft_strncmp(content, "$?", 2) == 0 && ft_strlen(content) == 2)
-	{
-		free(content);
-		key_to_find = "EXIT_STATUS";
-	}
-	else
-	{
-		key_to_find = ft_calloc(ft_strlen(content), sizeof(char));
-		key_to_find = strlcpy_middle(key_to_find, content, 1, ft_strlen(content));
-	}
+// 	if (ft_strncmp(content, "$?", 2) == 0 && ft_strlen(content) == 2)
+// 	{
+// 		free(content);
+// 		key_to_find = "EXIT_STATUS";
+// 	}
+// 	else
+// 	{
+// 		key_to_find = ft_calloc(ft_strlen(content), sizeof(char));
+// 		key_to_find = strlcpy_middle(key_to_find, content, 1, ft_strlen(content));
+// 	}
+// 	if (is_key_in_env(env_list, key_to_find) == true)
+// 	{
+// 		key_in_env = find_value_with_key_env(env_list, key_to_find);
+// 		// if (ft_strncmp(content, "EXIT_STATUS", ft_strlen(content)) != 0)
+// 		// 	free(content);
+// 		content = ft_calloc(ft_strlen(key_in_env->value), sizeof(char));
+// 		content = strlcpy_middle(content, key_in_env->value, 0, ft_strlen(key_in_env->value));
+// 	}
+// 	else
+// 	{
+// 		if (ft_strncmp(content, "$.", 2) != 0)
+// 		{
+// 			free(content);
+// 			content = NULL;
+// 		}
+// 	}
+// 	if (ft_strncmp(key_to_find, "EXIT_STATUS", ft_strlen(key_to_find)) != 0 || \
+// 	ft_strlen(key_to_find) != ft_strlen("EXIT_STATUS"))
+// 		free(key_to_find); //pourquoi faut pas le free????
+// 	return (content);
+// }
+
+// void	ft_dollar_question_mark(t_env *env)
+// {
+// 	t_env	*exit_status;
+	
+// 	exit_status = find_value_with_key_env(env, "EXIT_STATUS");
+// 	//printf("---->Exit : %d\n", g_signals.exit_status);	
+// 	ft_putstr_fd("bash: ", STDOUT_FILENO);
+// 	ft_putstr_fd(exit_status->value, STDOUT_FILENO);
+// 	ft_putendl_fd(": command not found", STDOUT_FILENO);
+// 	// FREE ITOA
+
+// 	// 	si c'est $?, cas special
+// 	// les signaux prennent 125 + l'int que rend le signal
+// 	// CTRL + C = 5 + 125 = 130
+// 	// 127 command not found (+2)
+// }
+
+
+
+char	*replace_dollar(char *content, char *key_to_find, t_env *env_list)
+{
+	t_env	*key_in_env;
+	char *ret;
+
+	ret = NULL;
+	//ne peux pas laisser la ligne usivante comme ca
+	//ret = ft_calloc(1000, sizeof(char)); //pour que ce soit rjes calloc pour free cmd list
 	if (is_key_in_env(env_list, key_to_find) == true)
 	{
 		key_in_env = find_value_with_key_env(env_list, key_to_find);
-		// if (ft_strncmp(content, "EXIT_STATUS", ft_strlen(content)) != 0)
-		// 	free(content);
-		content = ft_calloc(ft_strlen(key_in_env->value), sizeof(char));
-		content = strlcpy_middle(content, key_in_env->value, 0, ft_strlen(key_in_env->value));
+		ret = key_in_env->value;
+		//content = ft_calloc(ft_strlen(key_in_env->value), sizeof(char));
+		//content = strlcpy_middle(content, key_in_env->value, 0, ft_strlen(key_in_env->value));
 	}
 	else
 	{
-		if (ft_strncmp(content, "$.", 2) != 0)
+		if (ret && ft_strncmp(ret, "$.", 2) != 0 && ft_strlen(ret) == 2) //?
 		{
-			free(content);
+			//free(content);
 			content = NULL;
 		}
 	}
-	if (ft_strncmp(key_to_find, "EXIT_STATUS", ft_strlen(key_to_find)) != 0 || \
-	ft_strlen(key_to_find) != ft_strlen("EXIT_STATUS"))
-		free(key_to_find); //pourquoi faut pas le free????
-	return (content);
+
+/* 	if (key_to_find != NULL && (ft_strncmp(key_to_find, "EXIT_STATUS", ft_strlen(key_to_find)) != 0 || \
+	ft_strlen(key_to_find) != ft_strlen("EXIT_STATUS")))
+		free(key_to_find); //pourquoi faut pas tjrs le free???? */
+	return (ret);
+}
+
+void	new_key(size_t *i, char **key_to_find, char *content)
+{
+	int	start;
+	
+	(*i)++;
+	start = *i;
+	while (content[(*i)])
+	{
+		if (content[(*i)] == '$')
+			break;
+		(*i)++;
+	}
+	// if (*key_to_find)
+	// 	free(*key_to_find);
+	*key_to_find = NULL;
+	*key_to_find = ft_calloc((*i) + 1, sizeof(char));
+	*key_to_find = strlcpy_middle(*key_to_find, content, start, *i);
+	
+}
+
+char	*dollar(char *content, t_env *env_list)
+{
+	char	*key_to_find;
+	char *ret;
+	size_t i;
+	
+	ret = NULL;
+	key_to_find = NULL;
+	if (ft_strncmp(content, "$?", 2) == 0 && ft_strlen(content) == 2)
+		key_to_find = "EXIT_STATUS";
+	if (ft_strncmp(content, "$.", 2) == 0 && ft_strlen(content) == 2)
+		return (ret);
+	i = 1;
+	while (content[i])
+	{
+		if (content[i] == '$')
+			break;
+		i++;
+	}
+	if (i != ft_strlen(content)) //if multiple $
+	{
+		key_to_find = ft_calloc(i, sizeof(char));
+		key_to_find = strlcpy_middle(key_to_find, content, 1, i - 1);
+		while (i < ft_strlen(content)) //recursive
+		{
+			ret = ft_strjoin_free(ret, replace_dollar(content, key_to_find, env_list));
+			new_key(&i, &key_to_find, content);
+		}
+		ret = ft_strjoin_free(ret, replace_dollar(content, key_to_find, env_list));	
+	}
+	else
+	{
+	// 	if (key_to_find != NULL && (ft_strncmp(key_to_find, "EXIT_STATUS", ft_strlen(key_to_find)) != 0 || \
+	// ft_strlen(key_to_find) != ft_strlen("EXIT_STATUS")))
+		if (key_to_find == NULL)
+		{
+			key_to_find = ft_calloc(ft_strlen(content) + 1, sizeof(char));
+			key_to_find = strlcpy_middle(key_to_find, content, 1, ft_strlen(content) - 1);
+		}
+		//ret = ft_calloc(4, sizeof(char)); //pour que ce soit rjes calloc pour free cmd list
+		ret = replace_dollar(content, key_to_find, env_list);
+	}
+	//free (content)
+	return (ret);
 }
 
 void	ft_dollar_question_mark(t_env *env)

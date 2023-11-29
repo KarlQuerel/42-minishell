@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/28 21:48:42 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/29 13:32:16 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,10 @@ void	parsing_fix(t_element **cmd_list, t_env *env_list)
 		{
 			current->content = dollar(current->content, env_list);
 			if (current->content == NULL)
-			{
 				ft_delete_node_cmd(cmd_list, current);
-			}
 		}
-		current = current->next;
+		if (current)
+			current = current->next;
 	}
 	return ;
 }
