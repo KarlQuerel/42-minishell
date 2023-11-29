@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/29 14:22:14 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/29 16:04:52 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ char	*ft_strjoin_free(char const *s1, char *s2)
 	char	*new_str;
 
 	if (s2 == NULL)
-		return (s1);
+		return ((char *)s1); // changement karl pour les flags
 	if (s1 == NULL)
 		ft_strlen_total = ft_strlen(s2);
 	else
@@ -117,6 +117,6 @@ char	*ft_strjoin_free(char const *s1, char *s2)
 	while (s2[j])
 		new_str[i++] = s2[j++];
 	new_str[i] = '\0';
-	free(s1);
+	free((char *)s1); // changement karl pour les flags
 	return (new_str);
 }

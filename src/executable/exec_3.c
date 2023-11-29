@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec_3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/29 14:33:37 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/29 21:43:17 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
 
 /* Executes the command
 ---	split_path returns the "PATH=" variable from env, split the string by :
@@ -52,12 +51,11 @@ int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 	if (ft_strchr(exec->cmd_tab[0], '/'))
 	{
 		execve(cmd->content, exec->cmd_tab, exec->env_execve);
-		perror("bash: ");
-		ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
-		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+		msg_error(2, exec->cmd_tab[0]);
+		perror(" ");
 		// free_child(cmd, &env, exec);
 		add_exit_status_in_env(&env, 127);
-		return(127);
+		return (127);
 	}
 	add_exit_status_in_env(&env, 0);
 	return (0);
@@ -67,12 +65,11 @@ int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 // int	command_not_found(t_pipe *exec)
 int	command_not_found(t_element *cmd, t_env *env, t_pipe *exec)
 {
-	t_env *exit_status;
+	t_env	*exit_status;
+	(void)cmd;
 	// !!!!!!!! leaks a fix
-	ft_putstr_fd("bash: ", STDERR_FILENO);
-	ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
-	ft_putendl_fd(": command not found", STDERR_FILENO);
-		
+
+	msg_error(3, exec->cmd_tab[0]);
 	
 	// free_cmd_arr(exec);
 	// free_cmd_list(cmd); // moins de leaks mais plus d'erreurs
@@ -92,7 +89,6 @@ void	free_child(t_element *cmd, t_env **env, t_pipe *exec)
 	// (void)cmd;
 	// (void)env;
 	// (void)exec;
-
 	free_cmd_list(cmd);
 	// history(FREE_HISTORY, 0);
 	free_env_list(*env);

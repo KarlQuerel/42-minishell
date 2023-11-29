@@ -3,68 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:54:48 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 19:40:32 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/29 21:11:39 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/* Checks if only redirections are present in the linked list */
-bool	ft_all_redir(t_element *cmd)
-{
-	t_element *head;
-	
-	head = cmd;
-	while (cmd)
-	{
-		if (cmd->type < 3 && cmd->type != PIPE)
-			return (false);
-		cmd = cmd->next;
-	}
-	cmd = head;
-	ft_only_create(cmd);
-	return (true);
-}
-
-/* Only creates files in the case of all_redir */
-bool	ft_only_create(t_element *cmd)
-{
-	int	fd;
-
-	while (cmd)
-	{
-		if (cmd->type == OUTFILE || cmd->type == OUTFILE_APPEND)
-		{
-			if (cmd->type == OUTFILE)
-				fd = open(cmd->content, O_CREAT | O_RDWR | O_TRUNC, 0644);
-			else
-				fd = open(cmd->content, O_CREAT | O_RDWR | O_APPEND, 0644);
-			if (fd < 0)
-				return (perror("bash"), false);
-		}
-		else if (cmd->type == INFILE)
-		{
-			fd = open (cmd->content, O_RDONLY, 0644);
-			if (fd < 0)
-			{
-				ft_putstr_fd("bash: ", 2), ft_putstr_fd(cmd->content, 2);
-				return (perror(" "), false);
-			}
-		}
-		cmd = cmd->next, close (fd);
-	}
-	return (true);
-}
-
 /* Transforms a t_env list in an array of strings */
-char **ft_transform_env(t_env *env)
+char	**ft_transform_env(t_env *env)
 {
-	int	i;
-	char **new;
-	t_env *head;
+	int		i;
+	char	**new;
+	t_env	*head;
 
 	head = env;
 	i = 0;

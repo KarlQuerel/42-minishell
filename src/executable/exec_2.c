@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/29 14:32:15 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/29 21:11:54 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec, int option)
 {
 	if (cmd && cmd->builtin == true && cmd->content)
 	{
-		
 		// printf("cmd content = %s\ncmd builtin = %d\n", cmd->content, cmd->builtin);
 		exec->std_in = dup(STDIN_FILENO);
 		exec->std_out = dup(STDOUT_FILENO);
@@ -38,37 +37,6 @@ int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec, int option)
 	return (1);
 }
 
-/* Being on the middle pipe(s), both fds's are sent to dup2 */
-void	middle_dup(t_element *cmd, t_env **env, t_pipe *exec)
-{
-	if (dup2(exec->fd_temp, STDIN_FILENO) < 0)
-	{
-		perror("dup2");
-		exit(0);
-	}
-	close(exec->fd_temp);
-	if (dup2(exec->fd[1], STDOUT_FILENO) < 0)
-	{
-		perror("dup2");
-		exit(0);
-	}
-	close(exec->fd[1]);
-	if (!ft_is_builtin(cmd, env, exec, 1))
-		return ;
-	handle_command(cmd, env, exec);
-}
-
-/* Being on the middle pipe(s), only stdin fd is sent to dup2 */
-void last_dup(t_element *cmd, t_env **env, t_pipe *exec)
-{
-	if (dup2(exec->fd_temp, STDIN_FILENO) < 0)
-		perror("dup last");
-	close(exec->fd_temp);
-	if (!ft_is_builtin(cmd, env, exec, 1))
-		return ;
-	handle_command(cmd, env, exec);
-}
-
 /* Redirects command based on its input
 --- if a redirection is detected, ft_redirect is called
 --- if a builtin is detected, ft_builtins is called
@@ -77,7 +45,7 @@ void last_dup(t_element *cmd, t_env **env, t_pipe *exec)
 void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	t_env	*exit_status;
-	int	exit_nb;
+	int		exit_nb;
 
 	exit_nb = 0;
 	if (!ft_redirect(cmd, exec))
@@ -87,7 +55,12 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 	}
 	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
 	if (cmd->builtin == true)
-		return (ft_builtins(cmd, env, exec), close(exec->fd[0]), exit(ft_atoi(exit_status->value)));
+	{
+		ft_builtins(cmd, env, exec);
+		close(exec->fd[0]);
+		exit(ft_atoi(exit_status->value));
+		return ;
+	}
 	if (exec->cmd_tab[0] != NULL)
 		exit_nb = add_exit_status_in_env(env, exec_command(cmd, *env, exec));
 	exit(exit_nb);

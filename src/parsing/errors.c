@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:39:52 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/28 20:28:11 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/29 21:08:39 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,5 @@ void	pipe_error(char *line)
 	if (i == 1)
 		printf("bash: syntax error near unexpected token `|'\n");
 	else
-		printf("bash: syntax error near unexpected token `||'\n");
+		printf("bash: syntax error near HERE HERE unexpected token `||'\n");
 }

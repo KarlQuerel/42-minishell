@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/29 00:05:46 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/29 21:11:28 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,13 @@ void	ft_execute(t_element *cmd, t_env **env, t_pipe *exec)
 void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	int	pid;
-	int	status;
 
 	if (ft_all_redir(cmd) == true)
 		return ;
-		// return (free(exec->cmd_tab));
-		// double free pourtant exec->cmd_tab a ete malloce dans ft_execute
-	while(cmd)
+	while (cmd)
 	{
 		if (cmd->type == COMMAND)
-			break;
+			break ;
 		cmd = cmd->next;
 	}
 	if (!ft_is_builtin(cmd, env, exec, 0))
@@ -67,17 +64,39 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	g_location = IN_COMMAND;
 	set_signals();
 	if (pid < 0)
-		perror("fork"), exit(127);
+		(perror("fork"), exit(127));
 	if (pid == 0)
 		handle_command(cmd, env, exec);
+	if (!ft_exit_status_single(env, pid))
+		return ;
+}
+
+	// int	status;
+	// status = 0;
+// 	if (waitpid(pid, &status, 0) == -1)
+// 		return (perror("waitpid"));
+// 	if (WIFEXITED(status))
+// 		add_exit_status_in_env(env, WEXITSTATUS(status));
+// 	else if (WIFSIGNALED(status))
+// 		add_exit_status_in_env(env, 128 + WTERMSIG(status));
+// 	else
+// 		add_exit_status_in_env(env, status);
+// }
+
+/* Wait for child PID and handle $? exit status */
+int	ft_exit_status_single(t_env **env, int pid)
+{
+	int	status;
+
 	if (waitpid(pid, &status, 0) == -1)
-		return (perror("waitpid"));
+		return (perror("waitpid"), 0);
 	if (WIFEXITED(status))
 		add_exit_status_in_env(env, WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
 		add_exit_status_in_env(env, 128 + WTERMSIG(status));
 	else
 		add_exit_status_in_env(env, status);
+	return (1);
 }
 
 /* Separates the pipes according to their number
@@ -86,11 +105,9 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 */
 void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 {
-	int	i = 0;
-	int	status;
-	pid_t	wpid;
+	int	i;
 
-	status = 0;
+	i = 0;
 	exec->fd_temp = dup(STDIN_FILENO);
 	while (i <= exec->pipe_nb)
 	{
@@ -101,70 +118,53 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 			while (cmd->next && cmd->type != PIPE)
 				cmd = cmd->next;
 			cmd = cmd->next;
-			
 		}
 		else
 			last_pipe(cmd, env, exec);
 		i++;
 	}
-	while (true)
+	if (!ft_exit_status_multiple(env, exec))
+		return ;
+}
+	// while (true)
+	// {
+	// 	wpid = wait(&status);
+	// 	if (wpid < 0)
+	// 		break ;
+	// 	if (wpid == exec->last_pid)
+	// 	{
+	// 		if (WIFEXITED(status))
+	// 			add_exit_status_in_env(env, WEXITSTATUS(status));
+	// 		else
+	// 			// add_exit_status_in_env(env, 128 + WTERMSIG(status));
+	// 			add_exit_status_in_env(env, 116 + WTERMSIG(status));
+	// 			//pourquoi les signaux impactent le command not found $?
+
+	// 	}
+	// }
+	// return ;
+// }
+
+/* Wait for child PID and handle $? exit status  for mult commands */
+int	ft_exit_status_multiple(t_env **env, t_pipe *exec)
+{
+	int		status;
+	pid_t	wait_pid;
+
+	while (1)
 	{
-		wpid = wait(&status);
-		if (wpid < 0)
-			break ;
-		if (wpid == exec->last_pid)
+		wait_pid = wait(&status);
+		if (wait_pid < 0)
+			return (0);
+		if (wait_pid == exec->last_pid)
 		{
 			if (WIFEXITED(status))
 				add_exit_status_in_env(env, WEXITSTATUS(status));
 			else
-				// add_exit_status_in_env(env, 128 + WTERMSIG(status));
 				add_exit_status_in_env(env, 116 + WTERMSIG(status));
-				//pourquoi les signaux impactent le command not found $?
-
+				// add_exit_status_in_env(env, 128 + WTERMSIG(status));
+				//pourquoi les signaux impactent le command not found $
 		}
 	}
-	return ;
-}
-
-/* Handles all middle pipes behaviour
---- Calls middle_dup function if child process is created 
----	If fd_temp exists, we dup the reading fd and assigns it to fd_temp*/
-void	middle_pipes(t_element *cmd, t_env **env, t_pipe *exec)
-{
-	int	pid;
-
-	if (pipe(exec->fd) < 0)
-		perror("pipe");
-	pid = fork();
-	g_location = IN_COMMAND;
-	set_signals();
-	if (pid < 0)
-		perror("fork");
-	if (pid == 0)
-		middle_dup(cmd, env, exec);
-	else
-	{
-		close(exec->fd[1]);
-		close(exec->fd_temp);
-		exec->fd_temp = exec->fd[0];
-	}
-}
-
-/* Handles last pipe behaviour */
-void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec)
-{
-	int	pid;
-
-	pid = fork();
-	g_location = IN_COMMAND;
-	set_signals();
-	if (pid < 0)
-		perror("fork");
-	if (pid == 0)
-		last_dup(cmd, env, exec);
-	else
-	{
-		exec->last_pid = pid;
-		close(exec->fd_temp);
-	}
+	return (1);
 }
