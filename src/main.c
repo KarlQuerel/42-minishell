@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/29 13:57:26 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/29 19:26:06 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,13 +113,27 @@ int main (int argc, char **argv, char **env)
 			if (line_errors_and_fix(line) == true)
 			{
 				cmd_list = parsing(line, env_list);
-				//printlist_test(cmd_list);
-				exec->line = &line;
-				exec->prompt = &prompt;
-				ft_execute(cmd_list, &env_list, exec);
-				if (exec)
-				free_cmd_arr(exec); //double free qd heredoc
-				free_cmd_list(cmd_list);
+				// printlist_test(cmd_list);
+				if (cmd_list != NULL)
+				{
+					exec->line = &line;
+					exec->prompt = &prompt;
+
+//////////////////////////////////////
+/* 					t_env *test;
+					test = find_value_with_key_env(env_list, "EXIT_STATUS");
+					printf("exit status AVANT EXEC = %d\n", ft_atoi(test->value)); */
+					
+					ft_execute(cmd_list, &env_list, exec);
+
+/* 					test = find_value_with_key_env(env_list, "EXIT_STATUS");
+					printf("exit status APRES EXEC = %d\n", ft_atoi(test->value)); */
+
+//////////////////////////////////////					
+					if (exec)
+					free_cmd_arr(exec); //double free qd heredoc
+					free_cmd_list(cmd_list);
+				}
 			}
 		}
 		free(line);

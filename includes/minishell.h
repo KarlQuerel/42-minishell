@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/28 23:42:02 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/29 19:30:03 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -329,7 +329,7 @@ void	pwd_update_in_env(t_env **env_list);
 /*Unset*/
 int		ft_unset(t_element *cmd, t_env **env);
 void	ft_delete_node_env(t_env **head, t_env *to_delete);
-void	ft_delete_node_cmd(t_element **head, t_element *to_delete);
+int		ft_delete_node_cmd(t_element **head, t_element *to_delete);
 
 /*-----------------EXECUTABLE FOLDER ------------------*/
 
@@ -366,7 +366,6 @@ int		ft_outfile(t_element *cmd);
 
 
 void	handle_sigint(int sig);
-void	ft_delete_node_cmd(t_element **head, t_element *to_delete);
 void	free_cmd_arr(t_pipe *exec);
 void	ft_exit_continued(t_element *cmd, t_env **env, t_pipe *exec, t_element *head, int option);
 char	*create_heredoc(char *safeword, int i, int *fd);

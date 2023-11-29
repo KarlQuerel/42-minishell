@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/29 14:33:37 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/29 19:25:46 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,30 @@
  */
 int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
+/* 	t_env *test;
+	test = find_value_with_key_env(env, "EXIT_STATUS");
+	printf("exit status AVANT TRANSFORM ENV = %d\n", ft_atoi(test->value)); */
+
 	exec->env_execve = ft_transform_env(env);
+
+/* 	test = find_value_with_key_env(env, "EXIT_STATUS");
+	printf("exit status APRÈS TRANSFORM ENV = %d\n", ft_atoi(test->value)); */
+
+
 	if (ft_exec_slash(cmd, exec, env))
 		return (127);
 	exec->cmd_path = split_path(env);
+	
+/* 	test = find_value_with_key_env(env, "EXIT_STATUS");
+	printf("exit status APRÈS SPLIT PATH = %d\n", ft_atoi(test->value)); */
+	
 	cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
 	if (!cmd->content)
 	{
+		
+/* 		test = find_value_with_key_env(env, "EXIT_STATUS");
+		printf("exit status AVANT CMD_NOT_FOUND = %d\n", ft_atoi(test->value)); */
+		
 		// free_cmd_list(cmd);
 		if (!exec->cmd_tab[0])
 			ft_putstr_fd("\n", STDERR_FILENO);
@@ -67,22 +84,29 @@ int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 // int	command_not_found(t_pipe *exec)
 int	command_not_found(t_element *cmd, t_env *env, t_pipe *exec)
 {
-	t_env *exit_status;
+	// t_env *exit_status;
 	// !!!!!!!! leaks a fix
+
+
+
+/* 	t_env *test;
+	test = find_value_with_key_env(env, "EXIT_STATUS");
+	printf("exit status DANS CMD_NOT_FOUND = %d\n", ft_atoi(test->value)); */
+
+
 	ft_putstr_fd("bash: ", STDERR_FILENO);
-	ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO);
+	ft_putstr_fd(exec->cmd_tab[0], STDERR_FILENO); //$? print l'ancien exit_status
 	ft_putendl_fd(": command not found", STDERR_FILENO);
-		
 	
 	// free_cmd_arr(exec);
 	// free_cmd_list(cmd); // moins de leaks mais plus d'erreurs
 	// free_env_list(env);
 
+	// exit_status = find_value_with_key_env(env, "EXIT_STATUS");
+	add_exit_status_in_env(&env, 127); // ne sert peut etre a rien
 	//pourquoi pas free_cmd_list, on l'appelle dans le main
 	// free(exec->cmd_tab[0]);
 	// free_child(cmd, &env, exec);
-	exit_status = find_value_with_key_env(env, "EXIT_STATUS");
-	add_exit_status_in_env(&env, 127); // ne sert peut etre a rien
 	// free(exit_status->value);
 	return (127);
 }

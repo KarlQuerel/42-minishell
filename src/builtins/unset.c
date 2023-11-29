@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/11/28 22:05:36 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/29 19:49:27 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_unset(t_element *cmd, t_env **env)
 void	ft_delete_node_env(t_env **head, t_env *to_delete)
 {
 	if (!to_delete)
-		return ;
+		return;
 	if (to_delete->prev)
 		to_delete->prev->next = to_delete->next;
 	else
@@ -57,10 +57,21 @@ void	ft_delete_node_env(t_env **head, t_env *to_delete)
 	free(to_delete);
 }
 
-void	ft_delete_node_cmd(t_element **head, t_element *to_delete)
+int	ft_delete_node_cmd(t_element **head, t_element *to_delete)
 {
 	if (!to_delete)
-		return ;
+		return (2);
+	if(!to_delete->prev && !to_delete->next)
+	{
+		if (to_delete->content)
+		{
+			free(to_delete->content);
+			to_delete->content = NULL;
+		}
+		free(to_delete); //ne se free pas bien!! faire test $$$$$
+		to_delete = NULL;
+		return (1);
+	}
 	if (to_delete->prev)
 		to_delete->prev->next = to_delete->next;
 	else
@@ -68,6 +79,11 @@ void	ft_delete_node_cmd(t_element **head, t_element *to_delete)
 	if (to_delete->next)
 		to_delete->next->prev = to_delete->prev;
 	if (to_delete->content)
+	{
 		free(to_delete->content);
+		to_delete->content = NULL;
+	}
 	free(to_delete);
+	to_delete = NULL;
+	return (0);
 }
