@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
+#    By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
 #    Updated: 2023/11/30 13:03:22 by kquerel          ###   ########.fr        #
@@ -80,16 +80,16 @@ SRCS		:=  src/main.c \
 				src/parsing/determine_cmd.c \
 				
 
-OBJS 		= $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))
-OBJS		= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
-		
-CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -g3
+OBJS 		  = $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))
+OBJS		  = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
+
+CC			  = cc
+CFLAGS		= -Wall -Wextra -Werror -g3 #-fsanitize=address,undefined
 HFLAGS		= -I$(INCLUDE_DIR)
 RFLAGS		= -lreadline
 MAKEFLAGS	+= --no-print-directory
 
-LIBFT		= libft/libft.a
+LIBFT		 = libft/libft.a
 
 ifeq ($(debug), true)
 	CFLAGS	+= -fsanitize=address,undefined
@@ -144,7 +144,7 @@ v : minishell
 #--show-leak-kinds=indirect,reachable
 
 sv : minishell
-	@valgrind --suppressions=readline.supp --leak-check=full ./minishell
-#--show-leak-kinds=all 
+	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell
+#--show-leak-kinds=all
 
 #make fclean se repete

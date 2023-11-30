@@ -51,8 +51,7 @@ int main (int argc, char **argv, char **env)
 	if (argc != 1)
 		return (msg_error(0, ""), EXIT_FAILURE);
 	ft_welcome();
-	(void)argv; // caro t'en as besoin ?
-	//si pas besoin on peut direct le supprimer des parametres de main
+	(void)argv;
 	env_list = put_env_in_list(env);
 	using_history(); // initialisation de l'historique
 	line = NULL;
@@ -92,6 +91,7 @@ int main (int argc, char **argv, char **env)
 				printf("line = %s\n", line);
 				//DANS LE CAS DES REDIRS, LINE EST NULLE
 				printf("ca quitte le zigouigoui\n"); 
+				//printf("cas line = NULL ou control D\n"); 
 				//CARO --> dans le cas de juste des redirections ca rentre dans cette while
 				// par exemple --> '> a > b > c'
 				//PAREIL pour ligne avec juste heredoc --> '<< heredoc'
@@ -115,20 +115,12 @@ int main (int argc, char **argv, char **env)
 				{
 					exec->line = &line;
 					exec->prompt = &prompt;
-//////////////////////////////////////
-/* 					t_env *test;
-					test = find_value_with_key_env(env_list, "EXIT_STATUS");
-					printf("exit status AVANT EXEC = %d\n", ft_atoi(test->value)); */
-					
 					ft_execute(cmd_list, &env_list, exec);
-
-/* 					test = find_value_with_key_env(env_list, "EXIT_STATUS");
-					printf("exit status APRES EXEC = %d\n", ft_atoi(test->value)); */
-
-//////////////////////////////////////	
 					free_cmd_arr(exec); //double free qd heredoc
-					ft_unlink(cmd_list);
-					free_cmd_list(cmd_list);
+					free(cmd_list->hd_filename);
+					if (ft_strncmp(line, "$?", 2) != 0) //condition strlen
+						free_cmd_list(cmd_list); //free A REGARDER AVEC KARL
+					//ft_unlink(cmd_list);
 				}
 			}
 		}

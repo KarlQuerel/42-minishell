@@ -35,13 +35,16 @@ void	history(int option, int len)
 void	print_all_hist(HISTORY_STATE *info, HIST_ENTRY **list)
 {
 	int	i;
+	char	*nb;
 
 	i = 0;
 	while (i < info->length)
 	{
-		ft_putstr_fd(ft_itoa(i + 1), STDOUT_FILENO);
+		nb = ft_itoa(i + 1);
+		ft_putstr_fd(nb, STDOUT_FILENO);
 		ft_putstr_fd(" ", STDOUT_FILENO);
 		ft_putendl_fd(list[i]->line, STDOUT_FILENO);
+		free(nb);
 		i++;
 	}
 }
@@ -50,14 +53,17 @@ void	print_hist_until_len(HISTORY_STATE *info, HIST_ENTRY **list, int len)
 {
 	int	reverse;
 	int	i;
+	char	*nb;
 
 	i = 0;
 	reverse = info->length - len;
 	while (i < len)
 	{
-		ft_putstr_fd(ft_itoa(reverse), STDOUT_FILENO);
+		nb = ft_itoa(i + 1);
+		ft_putstr_fd(nb, STDOUT_FILENO);
 		ft_putstr_fd(" ", STDOUT_FILENO);
 		ft_putendl_fd(list[reverse]->line, STDOUT_FILENO);
+		free(nb);
 		i++;
 		reverse++;
 	}

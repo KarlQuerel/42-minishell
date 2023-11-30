@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/28 23:26:12 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 18:57:46 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ctrld_free(char *line, char *prompt, t_env *env, t_pipe *exec)
 {
 	int i;
 	t_env	*exit_status;
-	int	temp;
+	int	nb;
 
 	i = 0;
 	free(line);
@@ -38,9 +38,9 @@ void	ctrld_free(char *line, char *prompt, t_env *env, t_pipe *exec)
 	history(FREE_HISTORY, 0);
 	free(exec);
 	exit_status = find_value_with_key_env(env, "EXIT_STATUS");
-	temp = ft_atoi(exit_status->value);
+	nb = ft_atoi(exit_status->value);
 	free_env_list(env);
-	exit(temp);
+	exit(nb);
 
 }
 
@@ -76,8 +76,15 @@ void	free_cmd_list(t_element *cmd_list)
 	while (cmd_list->prev != NULL)
 		cmd_list = cmd_list->prev;
 	while (cmd_list != NULL)
-		ft_delete_node_cmd(head, cmd_list); //ca fait cmd = cmd->next
+	{
+		if (ft_delete_node_cmd(head, cmd_list) == 1) //ca fait cmd = cmd->next
+		{
+			cmd_list = NULL;
+			return ;
+		}
+	}
 	free(cmd_list);
+	cmd_list = NULL;
 }
 
 void	free_env_list(t_env *env_list)
@@ -90,9 +97,14 @@ void	free_env_list(t_env *env_list)
 		// free(env_list->value);
 		// free(env_list->key);
 		// env_list = env_list->next;
-		ft_delete_node_env(head, env_list);
+		if (ft_delete_node_env(head, env_list) == 1)
+		{
+			env_list = NULL;
+			return ;
+		}
 	}
 	free(env_list);
+	env_list = NULL;
 }
 
 //free(exec->hd_filename);

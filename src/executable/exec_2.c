@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exec_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
 /*   Updated: 2023/11/30 12:11:09 by kquerel          ###   ########.fr       */
@@ -25,10 +25,21 @@ int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec, int option)
 			return (0);
 		}
 		ft_builtins(cmd, env, exec);
+		
 		dup2(exec->std_in, STDIN_FILENO);
 		dup2(exec->std_out, STDOUT_FILENO);
 		close(exec->std_in);
 		close(exec->std_out);
+		
+		if (option == 1)
+		{
+			free_cmd_list(cmd);
+			free_env_list(*env);
+			free (*exec->line);
+			free (*exec->prompt);
+			free_cmd_arr(exec);
+			free(exec);
+		}
 		if (option == 0)
 			return (0);
 		exit (0);
@@ -62,8 +73,17 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 		return ;
 	}
 	if (exec->cmd_tab[0] != NULL)
-		exit_nb = add_exit_status_in_env(env, exec_command(cmd, *env, exec));
+	{
+		// exit_nb = add_exit_status_in_env(env, exec_command(cmd, *env, exec));
+		exit_nb = exec_command(cmd, *env, exec);
+		add_exit_status_in_env(env, exit_nb);
+	}
 	// printf("exit_nb = %d\n", exit_nb); //comme initialisé à 0, si return 0 alors = 0
 	// printf("exit status A LA FIN DE HANDLE CMD = %d\n", ft_atoi(exit_status->value));
+	//if (free_child(cmd, env, exec) == 1)
+		//cmd = NULL;
+	free_child(cmd, env, exec);
+/* 	if (free_child(cmd, env, exec) == 3)
+		*env = NULL; */
 	exit(exit_nb);
 }

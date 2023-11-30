@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:55:56 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/28 20:35:10 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/30 12:06:31 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_element	*parsing_initialisation(char *line, int *i, int *start)
 		(*i)++;
 	(*start) = (*i);
 	typestr = parsing_str_type(line, (*i));
-	return (lstnew(line, (*start), typestr));
+	return (lstnew(line, (*start), typestr)); //lol
 }
 
 /*Advances the i and start variables until the beginning of the next word*/

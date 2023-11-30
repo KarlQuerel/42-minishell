@@ -64,6 +64,26 @@ bool	env_option(t_element *cmd)
 	return (true);
 }
 
+bool	history_option(t_element *cmd)
+{
+	if (cmd->next && (cmd->next->type < 2 || \
+	(ft_is_num(cmd->next->content) == false || \
+	ft_atoi_check(cmd->next->content) == false)))
+	{
+		printf("bash: history: %s numeric agument required\n", \
+		cmd->next->content);
+		ft_putstr_fd("", STDERR_FILENO);
+		return (false);
+	}
+	if (cmd->next && ft_is_num(cmd->next->content) && cmd->next->next && \
+	cmd->next->next->type < 3)
+	{
+		ft_putendl_fd("bash: history: too many arguments", STDERR_FILENO);
+		return (false);
+	}
+	return (true);
+}
+
 bool	echo_option(t_element *cmd)
 {
 	int	args_count;

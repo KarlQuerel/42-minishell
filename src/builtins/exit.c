@@ -89,11 +89,14 @@ int	add_exit_status_in_env(t_env **env, int n)
 {
 	static t_env	*node;
 
-	if (is_key_in_env(*env, "EXIT_STATUS") == false)
+	if ((*env && is_key_in_env(*env, "EXIT_STATUS") == false) || !(*env))
 	{
-		node = *env;
-		while (node->next)
-			node = node->next;
+		if (*env)
+		{
+			node = *env;
+			while (node->next)
+				node = node->next;
+		}
 		node->next = ft_calloc(1, sizeof(t_env));
 		node->next->key = "EXIT_STATUS";
 		node->next->value = ft_itoa(n);
