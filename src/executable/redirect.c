@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 22:24:57 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/29 21:13:13 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_infile(char *filename)
 	fd = open(filename, O_RDONLY, 0644);
 	if (fd < 0)
 	{
-		ft_putstr_fd("bash: ", STDERR_FILENO);
+		ft_putstr_fd("bash : ", STDERR_FILENO);
 		ft_putstr_fd(filename, STDERR_FILENO);
 		perror(" ");
 		return (0);
@@ -32,7 +32,7 @@ int	ft_infile(char *filename)
 	}
 	if (fd > STDERR_FILENO)
 		close(fd);
-	return(1);
+	return (1);
 }
 
 /* Handles > and >> behavior
@@ -48,7 +48,7 @@ int	ft_outfile(t_element *cmd)
 		fd = open(cmd->content, O_CREAT | O_RDWR | O_APPEND, 0644);
 	if (fd == -1)
 	{
-		perror("bash");
+		perror("bash outfile");
 		return (0);
 	}
 	if (fd > STDERR_FILENO && dup2(fd, STDOUT_FILENO) < 0)
@@ -62,43 +62,16 @@ int	ft_outfile(t_element *cmd)
 	return (1);
 }
 
-/* Dieu */
-// void	ft_alban(t_element *cmd)
-// {
-// 	t_element *head;
-
-// 	head = cmd;
-// 	while (cmd)
-// 	{
-// 		if (cmd->prev)
-// 			cmd = cmd->prev;
-// 	}
-// 	while (cmd)
-// 	{
-// 		if (cmd->type == COMMAND)
-// 			cmd->hd_filename = 
-// 		cmd = cmd->next;
-// 	}
-// 	cmd = head;
-// 	while (cmd)
-// 	{
-// 		if (cmd->type)
-// 	}
-// }
-
 /* Handles redirections depending on cmd->type */
 int	ft_redirect(t_element *cmd, t_pipe *exec)
 {
-	t_element *tmp;
+	t_element	*tmp;
 
-	(void)exec;
+	(void)exec; // peut etre besoin pour les free
 	if (!cmd)
 		return (0);
 	tmp = cmd;
-	while (tmp->prev && tmp->prev->type != PIPE)//on revient au tout debut de la cmd
-		tmp = tmp->prev;
-	if (tmp->type == PIPE)
-		tmp = tmp->next;
+	ft_top_of_list(tmp);
 	while (tmp != NULL && tmp->type != PIPE)
 	{
 		if (tmp->type == INFILE)
@@ -110,13 +83,11 @@ int	ft_redirect(t_element *cmd, t_pipe *exec)
 				return (0);
 			}
 		}
-		else if(tmp->type == HEREDOC)
+		else if (tmp->type == HEREDOC)
 		{
-			printf("filename = %s\n", cmd->hd_filename);
-			//ft_alban(cmd);
-			if (!ft_infile(cmd->hd_filename))
-				printf("failed\n");
-			// unlink(tmp->content);
+			if (!ft_infile(ft_alban(cmd)))
+				return (0);
+			unlink(tmp->content);
 		}
 		else if (tmp->type == OUTFILE || tmp->type == OUTFILE_APPEND)
 		{
@@ -130,78 +101,11 @@ int	ft_redirect(t_element *cmd, t_pipe *exec)
 	return (1);
 }
 
-// si control D dans le heredoc, le message 
-// bash: warning: here-document at line 1 delimited by end-of-file (wanted `heredoc')
-
-/* Creates heredoc */
-char	*create_heredoc(char *name, int i, int *fd)
+/* Goes at the start of a list */
+void	ft_top_of_list(t_element *cmd)
 {
-	name = ft_strjoin("tmp_file", ft_itoa(i));
-	if (!name)
-		return (NULL);
-	*fd = open(name, O_WRONLY | O_CREAT | O_EXCL, 0777);
-	if (*fd < 0)
-	{
-		perror("bash");
-		return (NULL);
-	}
-	if (access(name, F_OK))
-	{
-		free(name);
-		return (NULL);
-	}
-	return (name);
-}
-
-/* Handles heredoc behavior */
-bool	ft_heredoc(t_element *cmd, t_env *env)
-{
-	int			fd;
-	char		*words;
-	char		*file_name;
-	static int	iteration_nb = 1;
-	
-	iteration_nb++;
-	g_location = IN_HEREDOC;
-	set_signals();
-	file_name = create_heredoc(cmd->content, iteration_nb, &fd);
-	if (!file_name)
-		return (false);
-	cmd->hd_filename = ft_strdup(file_name); // peut etre leak
-
-	int test_fd = dup(STDIN_FILENO);
-
-	// env->fd_heredoc = dup(STDIN_FILENO);
-	while (1)
-	{
-		words = readline("> ");
-		if (words && *words)
-			ft_putendl_fd(words, fd);
-		if (g_location == QUIT_HEREDOC)
-		{
-			add_exit_status_in_env(&env, 130);
-			break;
-		}
-		if (words == NULL)
-		{
-			ft_putendl_fd("bash: warning: here-document at line 3 delimited by end-of-file", STDERR_FILENO);
-			add_exit_status_in_env(&env, 0);
-			break;
-		}
-		if (ft_strncmp(words, cmd->content, ft_strlen(words)) == 0 && ft_strlen(words) == ft_strlen(cmd->content))
-		{
-			add_exit_status_in_env(&env, 0);
-			break;
-		}
-		free(words);
-		words = NULL;
-	}
-	free(words);
-	words = NULL;
-	// dup2(env->fd_heredoc, STDIN_FILENO);
-	dup2(test_fd, STDIN_FILENO);
-	close(fd);
-	// close(env->fd_heredoc);
-	unlink(file_name);
-	return (true);
+	while (cmd->prev && cmd->prev->type != PIPE)
+		cmd = cmd->prev;
+	if (cmd->type == PIPE)
+		cmd = cmd->next;
 }

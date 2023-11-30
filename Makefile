@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+         #
+#    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/11/29 14:36:30 by octonaute        ###   ########.fr        #
+#    Updated: 2023/11/29 21:22:14 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,11 @@ SRCS		:=  src/main.c \
 				src/executable/exec_utils.c \
 				src/executable/exec_utils_2.c \
 				src/executable/exec_errors.c \
+				src/executable/init_and_utils.c \
+				src/executable/heredoc.c \
+				src/executable/pipe_and_dup.c \
 				src/executable/redirect.c \
+				src/executable/redirect_utils.c \
 				src/parsing/commands.c \
 				src/parsing/parsing.c \
 				src/parsing/parsing2.c \

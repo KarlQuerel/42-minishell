@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/29 19:26:06 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/29 21:36:28 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-//t_global g_signals;
 int	g_location;
+//PROTEGER TOUS MES MALLOCS!! --> avec perror
+//faire perror("Error") plutot que des printf pour toutes les fonctions qui utilisent errno
+//utiliser ft_putstr_fd au lieu de printf
 
 void	printlist_test(t_element *head) // A EFFACER A LA FIN
 {
@@ -36,17 +38,6 @@ void	printlist_test(t_element *head) // A EFFACER A LA FIN
 	}
 }
 
-//PROTEGER TOUS MES MALLOCS!! --> avec perror
-//faire perror("Error") plutot que des printf pour toutes les fonctions qui utilisent errno
-//utiliser ft_putstr_fd au lieu de printf
-
-/* Badass welcome message made with love */
-void	ft_welcome(void)
-{
-	printf("%s%s\n\n", BGRE, PC);
-	printf("%s", WHT);
-}
-
 
 int main (int argc, char **argv, char **env)
 {
@@ -57,30 +48,30 @@ int main (int argc, char **argv, char **env)
 	char				*prompt;
 	char				*path; //ai du le creer pour free ft_prompt correctement
 
-	exec = ft_calloc(1, sizeof(t_pipe));
-	if (!exec)
-	{
-		perror("exec");
-		exit(EXIT_FAILURE);
-	}
-	(void)argv;
 	if (argc != 1)
-	{
-		printf("Error\nNo arguments accepted: run again with ./minishell\n"); //putsr
-		return (EXIT_FAILURE);
-	}
+		return (msg_error(0, ""), EXIT_FAILURE);
 	ft_welcome();
+	(void)argv; // caro t'en as besoin ?
+	//si pas besoin on peut direct le supprimer des parametres de main
 	env_list = put_env_in_list(env);
 	using_history(); // initialisation de l'historique
 	line = NULL;
 	add_exit_status_in_env(&env_list, 0);
+
+	exec = ft_calloc(1, sizeof(t_pipe));
+	if (!exec)
+	{
+		msg_error(1, "");
+		exit(EXIT_FAILURE);
+	}
+	
 	while (1)
 	{
 		g_location = IN_PROMPT;
 		if (set_signals() == EXIT_FAILURE)
 		{
 			//free
-			printf("FAILURE\n");
+			ft_putendl_fd("FAILURE", STDERR_FILENO);
 			return (1);
 		}
 		if (is_key_in_env(env_list, "EXIT_STATUS") == false)
@@ -98,6 +89,10 @@ int main (int argc, char **argv, char **env)
 		{
 			if (g_location == IN_PROMPT)
 			{
+				printf("ca quitte le zigouigoui\n"); 
+				//CARO --> dans le cas de juste des redirections ca rentre dans cette while
+				// par exemple --> '> a > b > c'
+				//PAREIL pour ligne avec juste heredoc --> '<< heredoc'
 				ft_putendl_fd("exit", STDERR_FILENO);
 				ctrld_free(line, prompt, env_list, exec);
 			}
@@ -112,13 +107,10 @@ int main (int argc, char **argv, char **env)
 			line = erase_spaces(line);
 			if (line_errors_and_fix(line) == true)
 			{
-				cmd_list = parsing(line, env_list);
-				// printlist_test(cmd_list);
 				if (cmd_list != NULL)
 				{
 					exec->line = &line;
 					exec->prompt = &prompt;
-
 //////////////////////////////////////
 /* 					t_env *test;
 					test = find_value_with_key_env(env_list, "EXIT_STATUS");
@@ -129,10 +121,10 @@ int main (int argc, char **argv, char **env)
 /* 					test = find_value_with_key_env(env_list, "EXIT_STATUS");
 					printf("exit status APRES EXEC = %d\n", ft_atoi(test->value)); */
 
-//////////////////////////////////////					
-					if (exec)
+//////////////////////////////////////	
 					free_cmd_arr(exec); //double free qd heredoc
 					free_cmd_list(cmd_list);
+          ft_unlink(cmd_list);
 				}
 			}
 		}

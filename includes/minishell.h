@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/29 19:30:03 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/29 21:37:02 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,11 +164,6 @@ typedef struct s_pipe
 	struct s_element *cmd;
 	struct s_env *env_s;
 }	t_pipe;
-
-/*-------------------MAIN FOLDER-------------------*/
-
-/*Main*/
-void	ft_welcome(void);
 
 /*------------------PARSING FOLDER------------------*/
 
@@ -350,7 +345,7 @@ int		exec_command(t_element *cmd, t_env *env, t_pipe *exec);
 char	*ft_get_command(char **path, char *argument);
 
 /*Exec_errors*/
-void	msg_error(int err);
+void	msg_error(int err, char *s);
 
 /*Exec_utils*/
 char	**split_path(t_env *env_list);
@@ -379,14 +374,33 @@ int	ft_open_hd(t_pipe *exec, int iteration_nb);
 char	*ft_strjoin_env(char const *s1, char const *s2);
 char **ft_transform_env(t_env *env);
 bool	ft_all_redir(t_element *cmd);
-bool	ft_only_create(t_element *cmd);
-//void	ft_exit_status(t_element **env);
 int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env);
 int	command_not_found(t_element *cmd, t_env *env, t_pipe *exec);
 void	ft_exit_continued_2(t_element *cmd, t_env **env, t_pipe *exec, t_element *head);
 void	ft_export_continued(t_element *cmd, t_env **env);
 int	ft_strchr_int(char *s, char c);
-void	ft_alban(t_element *cmd);
 void	free_child(t_element *cmd, t_env **env, t_pipe *exec);
+int	ft_exit_status_single(t_env **env, int pid);
+int	ft_exit_status_multiple(t_env **env, t_pipe *exec);
+
+
+
+
+char	*ft_alban(t_element *cmd);
+int	only_create_outfile_or_append(t_element *cmd, int fd);
+void	ft_only_create(t_element *cmd);
+void	ft_unlink(t_element *cmd);
+void	ft_top_of_list(t_element *cmd);
+
+
+
+
+void	ft_welcome(void);
+
+t_pipe	*init_exec();
+
+
+
+
 
 #endif

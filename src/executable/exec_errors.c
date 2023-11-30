@@ -3,27 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   exec_errors.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 16:24:57 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/27 14:03:34 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/29 21:43:04 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /* Redirects msg errors */
-void	msg_error(int err)
+void	msg_error(int err, char *s)
 {
-	ft_putstr_fd("bash: ", STDERR_FILENO);
 	if (err == 0)
-		ft_putendl_fd("error 0", STDERR_FILENO);
+		ft_putendl_fd("No arguments accepted: run again with ./minishell", \
+		STDERR_FILENO);
 	if (err == 1)
-		ft_putendl_fd("error 1", STDERR_FILENO);
+		ft_putendl_fd("Allocation failed", STDERR_FILENO);
 	if (err == 2)
-		ft_putendl_fd("error 2", STDERR_FILENO);
+	{
+		ft_putstr_fd("bash: ", STDERR_FILENO);
+		ft_putstr_fd(s, STDERR_FILENO);
+	}
 	if (err == 3)
-		ft_putendl_fd("error 3", STDERR_FILENO);
+	{
+		ft_putstr_fd("bash: ", STDERR_FILENO);
+		ft_putstr_fd(s, STDERR_FILENO);
+		ft_putendl_fd(": command not found", STDERR_FILENO);
+	}
 	if (err == 4)
 		ft_putendl_fd("error 4", STDERR_FILENO);
 	if (err == 5)

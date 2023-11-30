@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 14:50:03 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/29 17:56:56 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ char	**split_path(t_env *env)
 	}
 	return (res_split);
 }
-
 
 /* Strcpy */
 char	*ft_strcpy(char *dst, char *src)
