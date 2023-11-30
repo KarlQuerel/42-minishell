@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/29 21:11:28 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 19:40:42 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,18 +71,6 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 		return ;
 }
 
-	// int	status;
-	// status = 0;
-// 	if (waitpid(pid, &status, 0) == -1)
-// 		return (perror("waitpid"));
-// 	if (WIFEXITED(status))
-// 		add_exit_status_in_env(env, WEXITSTATUS(status));
-// 	else if (WIFSIGNALED(status))
-// 		add_exit_status_in_env(env, 128 + WTERMSIG(status));
-// 	else
-// 		add_exit_status_in_env(env, status);
-// }
-
 /* Wait for child PID and handle $? exit status */
 int	ft_exit_status_single(t_env **env, int pid)
 {
@@ -126,24 +114,6 @@ void	multiple_commands(t_element *cmd, t_env **env, t_pipe *exec)
 	if (!ft_exit_status_multiple(env, exec))
 		return ;
 }
-	// while (true)
-	// {
-	// 	wpid = wait(&status);
-	// 	if (wpid < 0)
-	// 		break ;
-	// 	if (wpid == exec->last_pid)
-	// 	{
-	// 		if (WIFEXITED(status))
-	// 			add_exit_status_in_env(env, WEXITSTATUS(status));
-	// 		else
-	// 			// add_exit_status_in_env(env, 128 + WTERMSIG(status));
-	// 			add_exit_status_in_env(env, 116 + WTERMSIG(status));
-	// 			//pourquoi les signaux impactent le command not found $?
-
-	// 	}
-	// }
-	// return ;
-// }
 
 /* Wait for child PID and handle $? exit status  for mult commands */
 int	ft_exit_status_multiple(t_env **env, t_pipe *exec)
@@ -162,8 +132,6 @@ int	ft_exit_status_multiple(t_env **env, t_pipe *exec)
 				add_exit_status_in_env(env, WEXITSTATUS(status));
 			else
 				add_exit_status_in_env(env, 116 + WTERMSIG(status));
-				// add_exit_status_in_env(env, 128 + WTERMSIG(status));
-				//pourquoi les signaux impactent le command not found $
 		}
 	}
 	return (1);

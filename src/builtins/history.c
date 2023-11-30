@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:38 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/30 14:44:45 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 19:39:34 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,22 +81,4 @@ void	free_history(HISTORY_STATE *info, HIST_ENTRY **list)
 	}
 	free (info);
 	free (list);
-}
-
-bool	history_option(t_element *cmd)
-{
-	if (cmd->next && (cmd->next->type < 2 || \
-	(ft_is_num(cmd->next->content) == false || \
-	ft_atoi_check(cmd->next->content) == false)))
-	{
-		msg_error_bash(3, cmd->next->content);
-		return (false);
-	}
-	if (cmd->next && ft_is_num(cmd->next->content) && cmd->next->next && \
-	cmd->next->next->type < 3)
-	{
-		ft_putendl_fd("bash: history: too many arguments", STDERR_FILENO);
-		return (false);
-	}
-	return (true);
 }

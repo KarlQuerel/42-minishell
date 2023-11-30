@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/30 12:07:52 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 19:42:37 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,36 +28,18 @@
  */
 int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
-	// t_env *test;
-	// test = find_value_with_key_env(env, "EXIT_STATUS");
-	// printf("exit status AVANT TRANSFORM ENV = %d\n", ft_atoi(test->value));
-
 	exec->env_execve = ft_transform_env(env);
-
-	// test = find_value_with_key_env(env, "EXIT_STATUS");
-	// printf("exit status APRÈS TRANSFORM ENV = %d\n", ft_atoi(test->value));
-
-
 	if (ft_exec_slash(cmd, exec, env))
 		return (127);
 	exec->cmd_path = split_path(env);
-	
-	// test = find_value_with_key_env(env, "EXIT_STATUS");
-	// printf("exit status APRÈS SPLIT PATH = %d\n", ft_atoi(test->value));
-	
 	cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
 	if (!cmd->content)
 	{
-		
-		// test = find_value_with_key_env(env, "EXIT_STATUS");
-		// printf("exit status AVANT CMD_NOT_FOUND = %d\n", ft_atoi(test->value));
-		
 		// free_cmd_list(cmd);
 		if (!exec->cmd_tab[0])
 			ft_putstr_fd("\n", STDERR_FILENO);
 		else
-			return (msg_error(3, exec->cmd_tab[0])/* , free(exec->cmd_tab[0]) */, 127); //msg_error_bash(1, exec->cmd_tab[0]); msg_error(3, exec->cmd_tab[0])
-			//command_not_found(cmd, env, exec);
+			return (msg_error_bash(1, exec->cmd_tab[0])/* , free(exec->cmd_tab[0]) */, 127);
 	}
 	else
 		execve(cmd->content, exec->cmd_tab, exec->env_execve);

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:39:41 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/30 12:55:04 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 19:39:24 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,7 @@ bool	history_option(t_element *cmd)
 	(ft_is_num(cmd->next->content) == false || \
 	ft_atoi_check(cmd->next->content) == false)))
 	{
-		printf("bash: history: %s numeric agument required\n", \
-		cmd->next->content);
-		ft_putstr_fd("", STDERR_FILENO);
+		msg_error_bash(3, cmd->next->content);
 		return (false);
 	}
 	if (cmd->next && ft_is_num(cmd->next->content) && cmd->next->next && \
@@ -83,6 +81,7 @@ bool	history_option(t_element *cmd)
 	}
 	return (true);
 }
+
 
 bool	echo_option(t_element *cmd)
 {
