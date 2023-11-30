@@ -3,30 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:38 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/27 14:03:23 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/30 14:44:45 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/*History : quand on fait cd et qu'on est deja tout en haut
-on ne doit pas remettre cd dans history. Pareil qd on fait deux fois
-de suite ls par exemple. Par contre quand on écrit une commande qui 
-n'existe pas ça s'affiche dans history.
-
-HISTORY_STATE and HISTORY_ENTRY are structures in history.h in
-the readline library.
-
+/* Reproduces the history command
 First if : if we ask to print more entries than there exist,
 print all existing entries.*/
 void	history(int option, int len)
 {
-	//Demander a Alban s'il considere que ce sont pas des fonctions interdites
-	// history >2 du coup marche pas mais c est pas mes fonctions et history etait
-	// pas a faire donc on s'en fout non?
 	HISTORY_STATE	*info;
 	HIST_ENTRY		**list;
 
@@ -85,4 +75,22 @@ void	free_history(HISTORY_STATE *info, HIST_ENTRY **list)
 	}
 	free (info);
 	free (list);
+}
+
+bool	history_option(t_element *cmd)
+{
+	if (cmd->next && (cmd->next->type < 2 || \
+	(ft_is_num(cmd->next->content) == false || \
+	ft_atoi_check(cmd->next->content) == false)))
+	{
+		msg_error_bash(3, cmd->next->content);
+		return (false);
+	}
+	if (cmd->next && ft_is_num(cmd->next->content) && cmd->next->next && \
+	cmd->next->next->type < 3)
+	{
+		ft_putendl_fd("bash: history: too many arguments", STDERR_FILENO);
+		return (false);
+	}
+	return (true);
 }

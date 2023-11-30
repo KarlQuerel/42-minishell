@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/29 21:37:02 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 13:21:56 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,10 +298,16 @@ void	echo(t_element *current);
 void	ft_env(t_env *env, t_element *cmd, int option);
 
 /*Exit*/
-bool	no_args_or_options(t_element *cmd);
 void	ft_exit(t_element *cmd, t_env **env, t_pipe *exec);
-void	exitstatus_update_in_env(t_env **env);
+void	ft_num_arg(t_element *cmd, t_env **env, t_pipe *exec, t_element *head);
+void	ft_too_many_arg(t_element *cmd, t_env **env);
+void	exit_cont(t_element *cmd, t_env **env, t_pipe *exec, t_element *head);
 int		add_exit_status_in_env(t_env **env, int n);
+
+/*Exit_2*/
+bool	no_args_or_options(t_element *cmd);
+bool	no_pipes_before(t_element *cmd);
+void	exit_check_all(t_element *cmd, t_env **env, t_pipe *exec);
 
 /*Export*/
 int		ft_export(t_element *cmd_list, t_env **env);
@@ -346,6 +352,7 @@ char	*ft_get_command(char **path, char *argument);
 
 /*Exec_errors*/
 void	msg_error(int err, char *s);
+void	msg_error_bash(int err, char *s);
 
 /*Exec_utils*/
 char	**split_path(t_env *env_list);
@@ -398,6 +405,8 @@ void	ft_top_of_list(t_element *cmd);
 void	ft_welcome(void);
 
 t_pipe	*init_exec();
+
+void	exit_check_all(t_element *cmd, t_env **env, t_pipe *exec);
 
 
 

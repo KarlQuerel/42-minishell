@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/30 11:42:00 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/30 12:29:58 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ int main (int argc, char **argv, char **env)
 		{
 			if (g_location == IN_PROMPT)
 			{
+				printf("line = %s\n", line);
+				//DANS LE CAS DES REDIRS, LINE EST NULLE
 				printf("ca quitte le zigouigoui\n"); 
 				//CARO --> dans le cas de juste des redirections ca rentre dans cette while
 				// par exemple --> '> a > b > c'
@@ -125,12 +127,13 @@ int main (int argc, char **argv, char **env)
 
 //////////////////////////////////////	
 					free_cmd_arr(exec); //double free qd heredoc
+					ft_unlink(cmd_list);
 					free_cmd_list(cmd_list);
-					//ft_unlink(cmd_list);
 				}
 			}
 		}
 		free(line);
+		line = NULL;
 		free(prompt);
 		pwd_update_in_env(&env_list);
 	}

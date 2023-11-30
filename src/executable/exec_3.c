@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/29 21:43:17 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 12:07:52 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 	if (ft_strchr(exec->cmd_tab[0], '/'))
 	{
 		execve(cmd->content, exec->cmd_tab, exec->env_execve);
-		msg_error(2, exec->cmd_tab[0]);
+		msg_error_bash(0, exec->cmd_tab[0]);
 		perror(" ");
 		// free_child(cmd, &env, exec);
 		add_exit_status_in_env(&env, 127);
@@ -89,7 +89,7 @@ int	command_not_found(t_element *cmd, t_env *env, t_pipe *exec)
 /* 	t_env *test;
 	test = find_value_with_key_env(env, "EXIT_STATUS");
 	printf("exit status DANS CMD_NOT_FOUND = %d\n", ft_atoi(test->value)); */
-	msg_error(3, exec->cmd_tab[0]);
+	msg_error_bash(1, exec->cmd_tab[0]);
 	// free_cmd_arr(exec);
 	// free_cmd_list(cmd); // moins de leaks mais plus d'erreurs
 	// free_env_list(env);

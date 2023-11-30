@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_errors.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:39:41 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/28 22:22:54 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/30 12:55:04 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool	no_option(t_element *cmd, t_element *head)
 bool	cd_option(t_element *cmd, t_element *head)
 {
 	int	arg_count;
-	
+
 	arg_count = 0;
 	while (cmd && cmd->type != PIPE)
 	{
@@ -64,26 +64,6 @@ bool	env_option(t_element *cmd)
 	return (true);
 }
 
-bool	history_option(t_element *cmd)
-{
-	if (cmd->next && (cmd->next->type < 3 || \
-	(ft_is_num(cmd->next->content) == false || \
-	ft_atoi_check(cmd->next->content) == false)))
-	{
-		printf("bash: history: %s numeric agument required\n", \
-		cmd->next->content);
-		ft_putstr_fd("", STDERR_FILENO);
-		return (false);
-	}
-	if (cmd->next && ft_is_num(cmd->next->content) && cmd->next->next && \
-	cmd->next->next->type < 3)
-	{
-		ft_putendl_fd("bash: history: too many arguments", STDERR_FILENO);
-		return (false);
-	}
-	return (true);
-}
-
 bool	echo_option(t_element *cmd)
 {
 	int	args_count;
@@ -100,7 +80,8 @@ bool	echo_option(t_element *cmd)
 			ft_putendl_fd("echo only accepts option -n", STDERR_FILENO);
 			return (false);
 		}
-		if (cmd->type == OPTION && (args_count == 0 && no_further_args(cmd) == true))
+		if (cmd->type == OPTION && (args_count == 0 && \
+		no_further_args(cmd) == true))
 		{
 			ft_putstr_fd("", STDOUT_FILENO);
 			return (false);
