@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/29 21:36:28 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 11:42:00 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ int main (int argc, char **argv, char **env)
 			line = erase_spaces(line);
 			if (line_errors_and_fix(line) == true)
 			{
+				cmd_list = parsing(line, env_list);
+				//printlist(cmd_list);
 				if (cmd_list != NULL)
 				{
 					exec->line = &line;
@@ -124,7 +126,7 @@ int main (int argc, char **argv, char **env)
 //////////////////////////////////////	
 					free_cmd_arr(exec); //double free qd heredoc
 					free_cmd_list(cmd_list);
-          ft_unlink(cmd_list);
+					//ft_unlink(cmd_list);
 				}
 			}
 		}
