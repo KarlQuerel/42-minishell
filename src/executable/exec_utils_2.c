@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:54:48 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/29 21:11:39 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 15:44:46 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,11 @@ char	*ft_get_command(char **path, char *argument)
 			to_free = ft_strjoin(path[i], "/");
 			to_return = ft_strjoin(to_free, argument);
 			free(to_free);
+			to_free = NULL;
 			if (access(to_return, F_OK) == 0)
 				return (to_return);
 			free(to_return);
+			to_return = NULL;
 			i++;
 		}
 	}

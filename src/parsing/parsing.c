@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/29 19:39:33 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/30 18:36:14 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,13 @@ t_element	*parsing(char *line, t_env *env_list)
 		parsing_advance_to_next_word(line, &start, &i);
 		parsing_initialize_next(&current_cmd, line, &i);
 	}
-	if (head)
-		parsing_fix(&head, env_list);
-	if (head != NULL) /*--> comme pas bien freed dans parsing_fix avec delete_node 
-	ça entre dans cette condition et fait une segfault*/
-		builtin_fix(&head);
-	if (head)
-		return (head);
-	else
+	if (parsing_fix(&head, env_list) == 1)
+	{
+		head = NULL; //test
 		return (NULL);
+	}
+	builtin_fix(&head);
+		return (head);
 }
 
 /* bool	nothing_before(int start, int n, char *line)
@@ -90,7 +88,7 @@ and are therefore considered as a COMMAND instead of an ARGUMENT
 in the parsing function. This functions sets all arguments that are
 not of type OPTION or redirecter after a cmd to ARGUMENT until a 
 type PIPE is found.*/
-void	parsing_fix(t_element **cmd_list, t_env *env_list)
+int	parsing_fix(t_element **cmd_list, t_env *env_list)
 {
 	t_element	*current;
 
@@ -105,17 +103,17 @@ void	parsing_fix(t_element **cmd_list, t_env *env_list)
 			type_arg_after_cmd(&current);
 		if (current->content[0] == '$' && current->change == true)
 		{
-			current->content = dollar(current->content, env_list);
+			current->content = dollar(current->content, env_list); //NULL ?
 			if (current->content == NULL)
 			{
-				if (ft_delete_node_cmd(cmd_list, current) == 1)
-					return ;
+				if (ft_delete_node_cmd(cmd_list, current) == 1) //scotch temp
+					return (1); //scoth return 1 put head to NULL with condition
 			}
 		}
 		if (current)
 			current = current->next; //segfault qd $$$$ : current ne se free pas bien (gdb) donc pas NULL donc entre dans la condition
 	}
-	return ;
+	return (0);
 }
 
 /*Sets all arguments encountered between a cmd that is a builtin and

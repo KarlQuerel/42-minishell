@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/29 14:33:07 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/30 15:23:06 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,11 +122,14 @@ int	add_exit_status_in_env(t_env **env, int n)
 {
 	static t_env	*node;
 
-	if (is_key_in_env(*env, "EXIT_STATUS") == false)
+	if ((*env && is_key_in_env(*env, "EXIT_STATUS") == false) || !(*env))
 	{
-		node = *env;
-		while (node->next)
-			node = node->next;
+		if (*env)
+		{
+			node = *env;
+			while (node->next)
+				node = node->next;
+		}
 		node->next = ft_calloc(1, sizeof(t_env));
 		node->next->key = "EXIT_STATUS";
 		node->next->value = ft_itoa(n);

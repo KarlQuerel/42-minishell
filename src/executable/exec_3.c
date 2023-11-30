@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/29 21:43:17 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 18:30:15 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,29 +28,29 @@
  */
 int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
-/* 	t_env *test;
-	test = find_value_with_key_env(env, "EXIT_STATUS");
-	printf("exit status AVANT TRANSFORM ENV = %d\n", ft_atoi(test->value)); */
+	// t_env *test;
+	// test = find_value_with_key_env(env, "EXIT_STATUS");
+	// printf("exit status AVANT TRANSFORM ENV = %d\n", ft_atoi(test->value));
 
 	exec->env_execve = ft_transform_env(env);
 
-/* 	test = find_value_with_key_env(env, "EXIT_STATUS");
-	printf("exit status APRÈS TRANSFORM ENV = %d\n", ft_atoi(test->value)); */
+	// test = find_value_with_key_env(env, "EXIT_STATUS");
+	// printf("exit status APRÈS TRANSFORM ENV = %d\n", ft_atoi(test->value));
 
 
 	if (ft_exec_slash(cmd, exec, env))
 		return (127);
 	exec->cmd_path = split_path(env);
 	
-/* 	test = find_value_with_key_env(env, "EXIT_STATUS");
-	printf("exit status APRÈS SPLIT PATH = %d\n", ft_atoi(test->value)); */
+	// test = find_value_with_key_env(env, "EXIT_STATUS");
+	// printf("exit status APRÈS SPLIT PATH = %d\n", ft_atoi(test->value));
 	
 	cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
 	if (!cmd->content)
 	{
 		
-/* 		test = find_value_with_key_env(env, "EXIT_STATUS");
-		printf("exit status AVANT CMD_NOT_FOUND = %d\n", ft_atoi(test->value)); */
+		// test = find_value_with_key_env(env, "EXIT_STATUS");
+		// printf("exit status AVANT CMD_NOT_FOUND = %d\n", ft_atoi(test->value));
 		
 		// free_cmd_list(cmd);
 		if (!exec->cmd_tab[0])
@@ -58,23 +58,27 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 		else
 			command_not_found(cmd, env, exec);
 	}
-	execve(cmd->content, exec->cmd_tab, exec->env_execve);
+	else
+		execve(cmd->content, exec->cmd_tab, exec->env_execve);
 	return (127);
 }
 
 /* Execve if a "/" is found in the cmd */
 int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 {
+	(void)env;
+	
 	if (ft_strchr(exec->cmd_tab[0], '/'))
 	{
 		execve(cmd->content, exec->cmd_tab, exec->env_execve);
+		// printf("KARL\n");
 		msg_error(2, exec->cmd_tab[0]);
 		perror(" ");
-		// free_child(cmd, &env, exec);
-		add_exit_status_in_env(&env, 127);
+		//free_child(cmd, &env, exec);
+		// add_exit_status_in_env(&env, 127);
 		return (127);
 	}
-	add_exit_status_in_env(&env, 0);
+	// add_exit_status_in_env(&env, 0);
 	return (0);
 }
 
@@ -82,23 +86,26 @@ int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 // int	command_not_found(t_pipe *exec)
 int	command_not_found(t_element *cmd, t_env *env, t_pipe *exec)
 {
-	//t_env	*exit_status;
+	// t_env	*exit_status;
 	(void)cmd;
+	(void)env;
+
 	// !!!!!!!! leaks a fix
 
-/* 	t_env *test;
-	test = find_value_with_key_env(env, "EXIT_STATUS");
-	printf("exit status DANS CMD_NOT_FOUND = %d\n", ft_atoi(test->value)); */
+	// t_env *test;
+	// test = find_value_with_key_env(env, "EXIT_STATUS");
+	// printf("exit status DANS CMD_NOT_FOUND = %d\n", ft_atoi(test->value));
+	// printf("JE SUIS LA\n");
 	msg_error(3, exec->cmd_tab[0]);
 	// free_cmd_arr(exec);
 	// free_cmd_list(cmd); // moins de leaks mais plus d'erreurs
 	// free_env_list(env);
 
 	// exit_status = find_value_with_key_env(env, "EXIT_STATUS");
-	add_exit_status_in_env(&env, 127); // ne sert peut etre a rien
+	//add_exit_status_in_env(&env, 127); // ne sert peut etre a rien
 	//pourquoi pas free_cmd_list, on l'appelle dans le main
 	// free(exec->cmd_tab[0]);
-	// free_child(cmd, &env, exec);
+	//free_child(cmd, &env, exec);
 	// free(exit_status->value);
 	return (127);
 }
@@ -106,11 +113,17 @@ int	command_not_found(t_element *cmd, t_env *env, t_pipe *exec)
 void	free_child(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	// (void)cmd;
-	// (void)env;
+	(void)env;
 	// (void)exec;
+	// if (free_cmd_list(cmd) == 1)
+	// 	cmd = NULL;
 	free_cmd_list(cmd);
-	// history(FREE_HISTORY, 0);
-	free_env_list(*env);
+/* 	if (free_env_list(*env) == 3)
+	{
+		*env = NULL;
+		return (3);
+	} */
+	//history(FREE_HISTORY, 0);
 	// 80 errors mais bcp de still reachable
 	// t_env *exit_status;
 	// exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
@@ -122,4 +135,5 @@ void	free_child(t_element *cmd, t_env **env, t_pipe *exec)
 	free_cmd_arr(exec);
 	//un peu mois derreurs mais bcp de def lost
 	free(exec);
+	free_env_list(*env); //execve ne free pas env lui
 }

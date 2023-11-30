@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/29 21:37:02 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 18:32:10 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ typedef struct s_element
 	bool	change;
 	struct s_element *prev;
 	struct s_element *next;
-	struct s_pipe *exec;
-	struct s_env *env;
+	// struct s_pipe *exec;
+	// struct s_env *env;
 }	t_element;
 
 /* Environment
@@ -161,8 +161,8 @@ typedef struct s_pipe
 	char	**line;
 	char	**prompt;
 	char	**env_execve;
-	struct s_element *cmd;
-	struct s_env *env_s;
+	// struct s_element *cmd;
+	// struct s_env *env_s;
 }	t_pipe;
 
 /*------------------PARSING FOLDER------------------*/
@@ -208,8 +208,8 @@ bool	pipe_double_or_eof(char *line);
 /*Free*/
 void	exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec);
 void	free_cmd_tab(t_pipe *exec);
-void	free_cmd_list(t_element *cmd_list);
-void	free_env_list(t_env *env_list);
+void		free_cmd_list(t_element *cmd_list);
+void		free_env_list(t_env *env_list);
 void	ctrld_free(char *line, char *prompt, t_env *env, t_pipe *exec);
 
 /*Lstnew*/
@@ -228,7 +228,7 @@ int 	determine_command_type(char *line, size_t end, size_t start);
 /*Parsing*/
 t_element 	*parsing(char *line, t_env *env_list);
 void		type_arg_after_cmd(t_element **current);
-void		parsing_fix(t_element **cmd_list, t_env *env_list);
+int			parsing_fix(t_element **cmd_list, t_env *env_list);
 void		builtin_fix(t_element **cmd_list);
 bool	no_cmd_before(t_element *current);
 
@@ -288,7 +288,6 @@ void	go_backwards_until_user(char *current_path, char *home_value);
 
 /*Dollar*/
 char	*dollar(char *content, t_env *env_list);
-void	ft_dollar_question_mark(t_env *env);
 
 /*Echo*/
 bool	no_further_args(t_element *cmd);
@@ -323,7 +322,7 @@ void	pwd_update_in_env(t_env **env_list);
 
 /*Unset*/
 int		ft_unset(t_element *cmd, t_env **env);
-void	ft_delete_node_env(t_env **head, t_env *to_delete);
+int	ft_delete_node_env(t_env **head, t_env *to_delete);
 int		ft_delete_node_cmd(t_element **head, t_element *to_delete);
 
 /*-----------------EXECUTABLE FOLDER ------------------*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/29 18:04:40 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/30 18:15:00 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,29 +203,14 @@ char	*dollar(char *content, t_env *env_list)
 		else
 		{
 			free(content);
+			content = NULL;
 			return (NULL);
 		}
 	}
 	free (content);
+	content = NULL;
 	if (key_to_find != NULL && (ft_strncmp(key_to_find, "EXIT_STATUS", ft_strlen(key_to_find)) != 0 || \
 	ft_strlen(key_to_find) != ft_strlen("EXIT_STATUS")))
 		free(key_to_find);
 	return (ret);
-}
-
-void	ft_dollar_question_mark(t_env *env)
-{
-	t_env	*exit_status;
-	
-	exit_status = find_value_with_key_env(env, "EXIT_STATUS");
-	//printf("---->Exit : %d\n", g_signals.exit_status);	
-	ft_putstr_fd("bash: ", STDOUT_FILENO);
-	ft_putstr_fd(exit_status->value, STDOUT_FILENO);
-	ft_putendl_fd(": command not found", STDOUT_FILENO);
-	// FREE ITOA
-
-	// 	si c'est $?, cas special
-	// les signaux prennent 125 + l'int que rend le signal
-	// CTRL + C = 5 + 125 = 130
-	// 127 command not found (+2)
 }

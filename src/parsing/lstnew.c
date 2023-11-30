@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/28 17:50:45 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/30 17:05:37 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ t_element	*lstnew(char *line, int i, int type)
 	if (!new)
 		return (NULL);
 	new->content = ft_calloc(size_of_command(line, i, type) + 1, sizeof(char));
+	if (!new->content)
+		return (NULL);
 	new->type = 0;
 	new->builtin = false;
 	new->change = true;
@@ -41,7 +43,11 @@ t_env	*lstnew_env(char *line, int i)
 	/*LIGNE DU DESSOUS : j'ai mis + 100 pour regler les pb de valgrind mais 
 	je ne peux pas le laisser comme ca!!*/
 	new->key = ft_calloc(size_of_command(line, i, KEY) + 1, sizeof(char));
+	if (!new->key)
+		return (NULL);
 	new->value = ft_calloc(size_of_command(line, i, VALUE) + 1, sizeof(char));
+	if (!new->value)
+		return (NULL);
 	new->prev = NULL;
 	new->next = NULL;
 	return (new);

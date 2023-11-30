@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:07:47 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/27 14:03:47 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/30 18:16:59 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ bool	quotes_can_close(char *line, int i)
 bool	is_builtin(char *cmd_content)
 {
 	int		i;
-	char	*builtins[9];
+	char	*builtins[8];
 
 	if (!cmd_content)
 		return (false);
@@ -59,9 +59,8 @@ bool	is_builtin(char *cmd_content)
 	builtins[5] = "env";
 	builtins[6] = "exit";
 	builtins[7] = "history";
-	builtins[8] = "$?";
 	i = 0;
-	while (i < 9)
+	while (i < 8)
 	{
 		if (ft_strncmp(cmd_content, builtins[i], \
 		ft_strlen(cmd_content)) == 0 && \
