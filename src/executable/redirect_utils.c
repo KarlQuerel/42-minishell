@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 18:13:47 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/30 19:17:51 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 21:37:46 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,10 @@ void	ft_unlink(t_element *cmd)
 	while (cmd)
 	{
 		if (cmd->type == HEREDOC)
+		{
 			unlink(cmd->hd_filename);
+			free(cmd->hd_filename);
+		}
 		cmd = cmd->next;
 	}
 }

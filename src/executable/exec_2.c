@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/30 20:26:59 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 20:41:44 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,6 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 	// printf("exit status A LA FIN DE HANDLE CMD = %d\n", ft_atoi(exit_status->value));
 	//if (free_child(cmd, env, exec) == 1)
 		//cmd = NULL;
-	if (exec->cmd_tab[0])
-	{
-		printf("JE SUIS LA\n");
-		// free(exec->cmd_tab[0]);
-	}
 	free_child(cmd, env, exec);
 /* 	if (free_child(cmd, env, exec) == 3)
 		*env = NULL; */

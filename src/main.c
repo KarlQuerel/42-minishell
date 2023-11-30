@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/30 20:30:27 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 21:27:03 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,10 +117,14 @@ int main (int argc, char **argv, char **env)
 					exec->prompt = &prompt;
 					ft_execute(cmd_list, &env_list, exec);
 					free_cmd_arr(exec); //double free qd heredoc
+					// if (ft_strncmp(line, "$?", 2) != 0) //condition strlen
+					// 	free_cmd_list(cmd_list); //free A REGARDER AVEC KARL
+
+					ft_unlink(cmd_list);
 					free(cmd_list->hd_filename);
-					if (ft_strncmp(line, "$?", 2) != 0) //condition strlen
-						free_cmd_list(cmd_list); //free A REGARDER AVEC KARL
-					//ft_unlink(cmd_list);
+					if (cmd_list && (ft_strncmp(line, "$?", 2) != 0 || \
+                    (ft_strncmp(line, "$?", 2) == 0 && ft_strlen(line) != 2)))
+                        free_cmd_list(cmd_list);
 				}
 			}
 		}
