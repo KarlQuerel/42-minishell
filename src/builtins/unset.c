@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/11/29 19:49:27 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/30 11:25:35 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	ft_delete_node_cmd(t_element **head, t_element *to_delete)
 {
 	if (!to_delete)
 		return (2);
-	if(!to_delete->prev && !to_delete->next)
+/* 	if(!to_delete->prev && !to_delete->next)
 	{
 		if (to_delete->content)
 		{
@@ -71,7 +71,7 @@ int	ft_delete_node_cmd(t_element **head, t_element *to_delete)
 		free(to_delete); //ne se free pas bien!! faire test $$$$$
 		to_delete = NULL;
 		return (1);
-	}
+	} */
 	if (to_delete->prev)
 		to_delete->prev->next = to_delete->next;
 	else
