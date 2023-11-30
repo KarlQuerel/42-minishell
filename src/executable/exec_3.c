@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/30 19:42:37 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 21:03:32 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,27 +67,16 @@ int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 void	free_child(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	// (void)cmd;
-	(void)env;
+	//(void)env;
 	// (void)exec;
-	// if (free_cmd_list(cmd) == 1)
-	// 	cmd = NULL;
+
 	free_cmd_list(cmd);
-/* 	if (free_env_list(*env) == 3)
-	{
-		*env = NULL;
-		return (3);
-	} */
-	//history(FREE_HISTORY, 0);
-	// 80 errors mais bcp de still reachable
-	// t_env *exit_status;
-	// exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
-	// free(exit_status->value);
+
 	close(exec->std_in);
 	close(exec->std_out);
 	free (*exec->line);
 	free (*exec->prompt);
 	free_cmd_arr(exec);
-	//un peu mois derreurs mais bcp de def lost
 	free(exec);
 	free_env_list(*env); //execve ne free pas env lui
 }

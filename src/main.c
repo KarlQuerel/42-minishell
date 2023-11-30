@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/30 12:29:58 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 21:37:29 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,9 +118,25 @@ int main (int argc, char **argv, char **env)
 					ft_execute(cmd_list, &env_list, exec);
 					free_cmd_arr(exec); //double free qd heredoc
 					free(cmd_list->hd_filename);
-					if (ft_strncmp(line, "$?", 2) != 0) //condition strlen
-						free_cmd_list(cmd_list); //free A REGARDER AVEC KARL
-					//ft_unlink(cmd_list);
+					ft_unlink(cmd_list);
+
+
+/* 					t_env	*exit;
+					exit = NULL;
+					if (is_key_in_env(env_list, "EXIT_STATUS") == true)
+						exit = find_value_with_key_env(env_list, "EXIT_STATUS");
+						
+					if (exit && ft_atoi(exit->value) != 127)
+					{
+						free_cmd_list(cmd_list);
+						cmd_list = NULL;
+					} */
+
+					//cette condition ne semble rien changer
+					if (cmd_list && (ft_strncmp(line, "$?", 2) != 0 || \
+					(ft_strncmp(line, "$?", 2) == 0 && ft_strlen(line) != 2)))
+						free_cmd_list(cmd_list);
+					
 				}
 			}
 		}
