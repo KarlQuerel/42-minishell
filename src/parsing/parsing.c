@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/30 18:36:14 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/30 18:38:34 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,7 @@ t_element	*parsing(char *line, t_env *env_list)
 		parsing_initialize_next(&current_cmd, line, &i);
 	}
 	if (parsing_fix(&head, env_list) == 1)
-	{
-		head = NULL; //test
 		return (NULL);
-	}
 	builtin_fix(&head);
 		return (head);
 }
@@ -111,7 +108,7 @@ int	parsing_fix(t_element **cmd_list, t_env *env_list)
 			}
 		}
 		if (current)
-			current = current->next; //segfault qd $$$$ : current ne se free pas bien (gdb) donc pas NULL donc entre dans la condition
+			current = current->next;
 	}
 	return (0);
 }

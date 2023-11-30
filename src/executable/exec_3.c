@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/30 18:30:15 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/30 19:11:12 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 		if (!exec->cmd_tab[0])
 			ft_putstr_fd("\n", STDERR_FILENO);
 		else
-			command_not_found(cmd, env, exec);
+			return (msg_error(3, exec->cmd_tab[0])/* , free(exec->cmd_tab[0]) */, 127);
+			//command_not_found(cmd, env, exec);
 	}
 	else
 		execve(cmd->content, exec->cmd_tab, exec->env_execve);
@@ -84,31 +85,24 @@ int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 
 /* exec continued */
 // int	command_not_found(t_pipe *exec)
-int	command_not_found(t_element *cmd, t_env *env, t_pipe *exec)
-{
-	// t_env	*exit_status;
-	(void)cmd;
-	(void)env;
+// int	command_not_found(t_element *cmd, t_env *env, t_pipe *exec)
+// {
+// 	// t_env	*exit_status;
+// 	(void)cmd;
+// 	(void)env;
 
-	// !!!!!!!! leaks a fix
+// 	// !!!!!!!! leaks a fix
 
-	// t_env *test;
-	// test = find_value_with_key_env(env, "EXIT_STATUS");
-	// printf("exit status DANS CMD_NOT_FOUND = %d\n", ft_atoi(test->value));
-	// printf("JE SUIS LA\n");
-	msg_error(3, exec->cmd_tab[0]);
-	// free_cmd_arr(exec);
-	// free_cmd_list(cmd); // moins de leaks mais plus d'erreurs
-	// free_env_list(env);
-
-	// exit_status = find_value_with_key_env(env, "EXIT_STATUS");
-	//add_exit_status_in_env(&env, 127); // ne sert peut etre a rien
-	//pourquoi pas free_cmd_list, on l'appelle dans le main
-	// free(exec->cmd_tab[0]);
-	//free_child(cmd, &env, exec);
-	// free(exit_status->value);
-	return (127);
-}
+// 	// t_env *test;
+// 	// test = find_value_with_key_env(env, "EXIT_STATUS");
+// 	// printf("exit status DANS CMD_NOT_FOUND = %d\n", ft_atoi(test->value));
+// 	// printf("JE SUIS LA\n");
+// 	printf(" AVANT exec->cmd_tab[0] = %s\n", exec->cmd_tab[0]);
+	
+// 	msg_error(3, exec->cmd_tab[0]);
+// 	printf(" APRES exec->cmd_tab[0] = %s\n", exec->cmd_tab[0]);
+// 	return (127);
+// }
 
 void	free_child(t_element *cmd, t_env **env, t_pipe *exec)
 {

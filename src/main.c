@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/30 18:04:25 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/30 18:43:44 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,31 +112,13 @@ int main (int argc, char **argv, char **env)
 				{
 					exec->line = &line;
 					exec->prompt = &prompt;
-//////////////////////////////////////
- 					// t_env *test;
-					// test = find_value_with_key_env(env_list, "EXIT_STATUS");
-					// printf("exit status AVANT EXEC = %d\n", ft_atoi(test->value));
-					
 					ft_execute(cmd_list, &env_list, exec);
-
-					// test = find_value_with_key_env(env_list, "EXIT_STATUS");
-					// printf("exit status APRES EXEC = %d\n", ft_atoi(test->value));
-
-//////////////////////////////////////
 					free_cmd_arr(exec); //double free qd heredoc
 					free(cmd_list->hd_filename);
 					if (ft_strncmp(line, "$?", 2) != 0) //condition strlen
-						free_cmd_list(cmd_list);
+						free_cmd_list(cmd_list); //free A REGARDER AVEC KARL
 					//ft_unlink(cmd_list);
 
-					// test = find_value_with_key_env(env_list, "EXIT_STATUS");
-					// printf("exit status AVANT FREE = %d\n", ft_atoi(test->value));
-/* 					if (cmd_list != NULL)
-						if (free_cmd_list(cmd_list) == 1) //le $? ne s'affiche plus alors qu'il est dans l'env
-							cmd_list = NULL; */
-					// test = find_value_with_key_env(env_list, "EXIT_STATUS");
-					// printf("exit status APRES FREE = %d\n", ft_atoi(test->value));
-					
 				}
 			}
 		}
