@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/30 19:42:37 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 20:35:37 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,26 @@
  */
 int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
+	char *new;
+	
 	exec->env_execve = ft_transform_env(env);
 	if (ft_exec_slash(cmd, exec, env))
 		return (127);
 	exec->cmd_path = split_path(env);
-	cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
-	if (!cmd->content)
+	new = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
+	// cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
+	// if (!cmd->content)
+	if (!new)
 	{
 		// free_cmd_list(cmd);
 		if (!exec->cmd_tab[0])
 			ft_putstr_fd("\n", STDERR_FILENO);
 		else
-			return (msg_error_bash(1, exec->cmd_tab[0])/* , free(exec->cmd_tab[0]) */, 127);
+			return (msg_error_bash(1, exec->cmd_tab[0])/* , free(exec->cmd_tab[0])*/,  127);
 	}
 	else
-		execve(cmd->content, exec->cmd_tab, exec->env_execve);
+		execve(new, exec->cmd_tab, exec->env_execve);
+		// execve(cmd->content, exec->cmd_tab, exec->env_execve);
 	return (127);
 }
 
@@ -51,9 +56,11 @@ int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 {
 	(void)env;
 	
+	char *new = cmd->content;
+	
 	if (ft_strchr(exec->cmd_tab[0], '/'))
 	{
-		execve(cmd->content, exec->cmd_tab, exec->env_execve);
+		execve(new, exec->cmd_tab, exec->env_execve);
 		msg_error_bash(0, exec->cmd_tab[0]);
 		perror(" ");
 		//free_child(cmd, &env, exec);
