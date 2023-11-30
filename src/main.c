@@ -107,15 +107,25 @@ int main (int argc, char **argv, char **env)
 			line = erase_spaces(line);
 			if (line_errors_and_fix(line) == true)
 			{
-				cmd_list = parsing(line, env_list);
-				//printlist_test(cmd_list);
-				exec->line = &line;
-				exec->prompt = &prompt;
-				ft_execute(cmd_list, &env_list, exec);
-				if (exec)
-				free_cmd_arr(exec); //double free qd heredoc
-				// free_cmd_list(cmd_list); seg fault avec $/
-				ft_unlink(cmd_list);
+				if (cmd_list != NULL)
+				{
+					exec->line = &line;
+					exec->prompt = &prompt;
+//////////////////////////////////////
+/* 					t_env *test;
+					test = find_value_with_key_env(env_list, "EXIT_STATUS");
+					printf("exit status AVANT EXEC = %d\n", ft_atoi(test->value)); */
+					
+					ft_execute(cmd_list, &env_list, exec);
+
+/* 					test = find_value_with_key_env(env_list, "EXIT_STATUS");
+					printf("exit status APRES EXEC = %d\n", ft_atoi(test->value)); */
+
+//////////////////////////////////////	
+					free_cmd_arr(exec); //double free qd heredoc
+					free_cmd_list(cmd_list);
+          ft_unlink(cmd_list);
+				}
 			}
 		}
 		free(line);

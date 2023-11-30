@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/29 13:32:16 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/11/29 19:39:33 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,15 @@ t_element	*parsing(char *line, t_env *env_list)
 		parsing_advance_to_next_word(line, &start, &i);
 		parsing_initialize_next(&current_cmd, line, &i);
 	}
-	parsing_fix(&head, env_list);
-	builtin_fix(&head);
-	return (head);
+	if (head)
+		parsing_fix(&head, env_list);
+	if (head != NULL) /*--> comme pas bien freed dans parsing_fix avec delete_node 
+	ça entre dans cette condition et fait une segfault*/
+		builtin_fix(&head);
+	if (head)
+		return (head);
+	else
+		return (NULL);
 }
 
 /* bool	nothing_before(int start, int n, char *line)
@@ -101,10 +107,13 @@ void	parsing_fix(t_element **cmd_list, t_env *env_list)
 		{
 			current->content = dollar(current->content, env_list);
 			if (current->content == NULL)
-				ft_delete_node_cmd(cmd_list, current);
+			{
+				if (ft_delete_node_cmd(cmd_list, current) == 1)
+					return ;
+			}
 		}
 		if (current)
-			current = current->next;
+			current = current->next; //segfault qd $$$$ : current ne se free pas bien (gdb) donc pas NULL donc entre dans la condition
 	}
 	return ;
 }
