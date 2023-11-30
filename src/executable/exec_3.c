@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/30 19:11:12 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/30 12:07:52 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 		if (!exec->cmd_tab[0])
 			ft_putstr_fd("\n", STDERR_FILENO);
 		else
-			return (msg_error(3, exec->cmd_tab[0])/* , free(exec->cmd_tab[0]) */, 127);
+			return (msg_error(3, exec->cmd_tab[0])/* , free(exec->cmd_tab[0]) */, 127); //msg_error_bash(1, exec->cmd_tab[0]); msg_error(3, exec->cmd_tab[0])
 			//command_not_found(cmd, env, exec);
 	}
 	else
@@ -72,8 +72,7 @@ int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 	if (ft_strchr(exec->cmd_tab[0], '/'))
 	{
 		execve(cmd->content, exec->cmd_tab, exec->env_execve);
-		// printf("KARL\n");
-		msg_error(2, exec->cmd_tab[0]);
+		msg_error_bash(0, exec->cmd_tab[0]);
 		perror(" ");
 		//free_child(cmd, &env, exec);
 		// add_exit_status_in_env(&env, 127);
@@ -82,27 +81,6 @@ int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 	// add_exit_status_in_env(&env, 0);
 	return (0);
 }
-
-/* exec continued */
-// int	command_not_found(t_pipe *exec)
-// int	command_not_found(t_element *cmd, t_env *env, t_pipe *exec)
-// {
-// 	// t_env	*exit_status;
-// 	(void)cmd;
-// 	(void)env;
-
-// 	// !!!!!!!! leaks a fix
-
-// 	// t_env *test;
-// 	// test = find_value_with_key_env(env, "EXIT_STATUS");
-// 	// printf("exit status DANS CMD_NOT_FOUND = %d\n", ft_atoi(test->value));
-// 	// printf("JE SUIS LA\n");
-// 	printf(" AVANT exec->cmd_tab[0] = %s\n", exec->cmd_tab[0]);
-	
-// 	msg_error(3, exec->cmd_tab[0]);
-// 	printf(" APRES exec->cmd_tab[0] = %s\n", exec->cmd_tab[0]);
-// 	return (127);
-// }
 
 void	free_child(t_element *cmd, t_env **env, t_pipe *exec)
 {

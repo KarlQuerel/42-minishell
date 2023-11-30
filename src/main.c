@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/30 18:43:44 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/30 12:29:58 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,9 @@ int main (int argc, char **argv, char **env)
 		{
 			if (g_location == IN_PROMPT)
 			{
+				printf("line = %s\n", line);
+				//DANS LE CAS DES REDIRS, LINE EST NULLE
+				printf("ca quitte le zigouigoui\n"); 
 				//printf("cas line = NULL ou control D\n"); 
 				//CARO --> dans le cas de juste des redirections ca rentre dans cette while
 				// par exemple --> '> a > b > c'
@@ -118,11 +121,11 @@ int main (int argc, char **argv, char **env)
 					if (ft_strncmp(line, "$?", 2) != 0) //condition strlen
 						free_cmd_list(cmd_list); //free A REGARDER AVEC KARL
 					//ft_unlink(cmd_list);
-
 				}
 			}
 		}
 		free(line);
+		line = NULL;
 		free(prompt);
 		pwd_update_in_env(&env_list);
 	}

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 18:13:47 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/29 20:39:50 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 19:17:51 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ bool	ft_all_redir(t_element *cmd)
 			return (false);
 		cmd = cmd->next;
 	}
-	cmd = head;
-	ft_only_create(cmd);
+	ft_only_create(head);
 	return (true);
 }
 
@@ -50,8 +49,8 @@ void	ft_only_create(t_element *cmd)
 				return (perror(" "));
 			}
 		}
-		cmd = cmd->next;
 		close (fd);
+		cmd = cmd->next;
 	}
 }
 

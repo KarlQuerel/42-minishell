@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/30 18:42:12 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/30 12:11:09 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec, int option)
 {
 	if (cmd && cmd->builtin == true && cmd->content)
 	{
-		// printf("cmd content = %s\ncmd builtin = %d\n", cmd->content, cmd->builtin);
 		exec->std_in = dup(STDIN_FILENO);
 		exec->std_out = dup(STDOUT_FILENO);
 		if (!ft_redirect(cmd, exec))
@@ -65,9 +64,7 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 		exit(1);
 	}
 	exit_status = find_value_with_key_env(*env, "EXIT_STATUS");
-
 	// printf("exit status DANS HANDLE CMD = %d\n", ft_atoi(exit_status->value));
-
 	if (cmd->builtin == true)
 	{
 		ft_builtins(cmd, env, exec);

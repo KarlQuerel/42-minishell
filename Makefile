@@ -6,7 +6,7 @@
 #    By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/11/30 15:52:48 by casomarr         ###   ########.fr        #
+#    Updated: 2023/11/30 13:03:22 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ SRCS		:=  src/main.c \
 				src/builtins/echo.c \
 				src/builtins/env.c \
 				src/builtins/exit.c \
+				src/builtins/exit_2.c \
 				src/builtins/export.c \
 				src/builtins/export_2.c \
 				src/builtins/history.c \
@@ -79,16 +80,16 @@ SRCS		:=  src/main.c \
 				src/parsing/determine_cmd.c \
 				
 
-OBJS 		:= $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))
-OBJS		:= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
-		
-CC          := cc
-CFLAGS      = -Wall -Wextra -Werror -g3 #-fsanitize=address,undefined
-HFLAGS    	:= -I$(INCLUDE_DIR)
-RFLAGS     	:= -lreadline
+OBJS 		  = $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))
+OBJS		  = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
+
+CC			  = cc
+CFLAGS		= -Wall -Wextra -Werror -g3 #-fsanitize=address,undefined
+HFLAGS		= -I$(INCLUDE_DIR)
+RFLAGS		= -lreadline
 MAKEFLAGS	+= --no-print-directory
 
-LIBFT       := libft/libft.a
+LIBFT		 = libft/libft.a
 
 ifeq ($(debug), true)
 	CFLAGS	+= -fsanitize=address,undefined

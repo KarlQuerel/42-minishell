@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 20:44:11 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/29 20:56:01 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 12:03:19 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 bool	ft_heredoc(t_element *cmd, t_env *env)
 {
 	int			fd;
+	int			fd_heredoc;
 	char		*words;
 	char		*file_name;
 	static int	iteration_nb = 1;
@@ -26,14 +27,16 @@ bool	ft_heredoc(t_element *cmd, t_env *env)
 	file_name = create_heredoc(cmd->content, iteration_nb, &fd);
 	if (!file_name)
 		return (false);
-	cmd->hd_filename = ft_strdup(file_name); // peut etre leak
-
-	int test_fd = dup(STDIN_FILENO);
-
-	// env->fd_heredoc = dup(STDIN_FILENO);
+	cmd->hd_filename = ft_strdup(file_name); // leak
+	fd_heredoc = dup(STDIN_FILENO);
 	while (1)
 	{
 		words = readline("> ");
+		if (g_location == QUIT_HEREDOC)
+		{
+			add_exit_status_in_env(&env, 130);
+			break;
+		}
 		if (ft_strncmp(words, cmd->content, ft_strlen(words)) == 0 && ft_strlen(words) == ft_strlen(cmd->content))
 		{
 			add_exit_status_in_env(&env, 0);
@@ -41,11 +44,6 @@ bool	ft_heredoc(t_element *cmd, t_env *env)
 		}
 		if (words && *words)
 			ft_putendl_fd(words, fd);
-		if (g_location == QUIT_HEREDOC)
-		{
-			add_exit_status_in_env(&env, 130);
-			break;
-		}
 		if (words == NULL)
 		{
 			ft_putstr_fd("bash: warning: here-document delimited by end-of-file (wanted `", STDERR_FILENO);
@@ -59,11 +57,9 @@ bool	ft_heredoc(t_element *cmd, t_env *env)
 	}
 	free(words);
 	words = NULL;
-	// dup2(env->fd_heredoc, STDIN_FILENO);
-	dup2(test_fd, STDIN_FILENO);
+	dup2(fd_heredoc, STDIN_FILENO);
 	close(fd);
-	// close(env->fd_heredoc);
-	// unlink(file_name);
+	close(fd_heredoc);
 	return (true);
 }
 
