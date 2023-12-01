@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/30 21:18:00 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 13:31:15 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ void	free_cmd_list(t_element *cmd_list)
 	{
 		if (ft_delete_node_cmd(head, cmd_list) == 1)
 		{
+			//printf("cmd_list->builtin = %d\n", cmd_list->builtin);
+			//free(cmd_list);
 			cmd_list = NULL;
 			return ;
 		}

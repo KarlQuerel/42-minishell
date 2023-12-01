@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
 /*   Updated: 2023/12/01 14:40:04 by kquerel          ###   ########.fr       */
@@ -69,7 +69,7 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	if (pid < 0)
 		(perror("fork"), exit(127));
 	if (pid == 0)
-		handle_command(cmd, env, exec);
+		handle_command(cmd, env, exec, 0);
 	if (!ft_exit_status_single(env, pid))
 		return ;
 }

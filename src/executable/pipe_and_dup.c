@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_and_dup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:30:50 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/29 17:49:35 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/01 15:48:06 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	middle_dup(t_element *cmd, t_env **env, t_pipe *exec)
 	close(exec->fd[1]);
 	if (!ft_is_builtin(cmd, env, exec, 1))
 		return ;
-	handle_command(cmd, env, exec);
+	handle_command(cmd, env, exec, 1);
 }
 
 /* Being on the middle pipe(s), only stdin fd is sent to dup2 */
@@ -83,5 +83,5 @@ void last_dup(t_element *cmd, t_env **env, t_pipe *exec)
 	close(exec->fd_temp);
 	if (!ft_is_builtin(cmd, env, exec, 1))
 		return ;
-	handle_command(cmd, env, exec);
+	handle_command(cmd, env, exec, 1);
 }

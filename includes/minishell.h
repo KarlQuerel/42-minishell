@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
 /*   Updated: 2023/12/01 14:41:45 by kquerel          ###   ########.fr       */
@@ -345,7 +345,7 @@ void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec);
 /*Exec_continued*/
 void	middle_dup(t_element *cmd, t_env **env, t_pipe *exec);
 void	last_dup(t_element *cmd, t_env **env, t_pipe *exec);
-void	handle_command(t_element *cmd, t_env **env, t_pipe *exec);
+void	handle_command(t_element *cmd, t_env **env, t_pipe *exec, int option);
 int		exec_command(t_element *cmd, t_env *env, t_pipe *exec);
 char	*ft_get_command(char **path, char *argument);
 
@@ -411,7 +411,7 @@ char	*ft_strjoin_free_s2(char *s1, char *s2);
 
 
 
-
+bool	is_exit_status_in_line(char *big, char *little);
 
 
 #endif
