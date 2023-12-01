@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/12/01 15:07:34 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 18:06:42 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,16 @@ int	ft_delete_node_env(t_env **head, t_env *to_delete)
 	{
 		if (ft_strncmp(to_delete->key, "EXIT_STATUS", \
 		ft_strlen(to_delete->key)) == 0 && ft_strlen("EXIT_STATUS") \
-		== ft_strlen(to_delete->key) && to_delete->value != NULL)
+		== ft_strlen(to_delete->key)/*  && to_delete->value != NULL */)
 		{
+			//printf("ICI\n");
 			//printf("value freed in delete_node_cmd: %s\n", to_delete->value);
-			free(to_delete->value);
-			to_delete->value = NULL;
+			if (to_delete->value != NULL)
+			{
+				printf("to_delete->value : %s\n", to_delete->value);
+				free(to_delete->value);
+				to_delete->value = NULL;
+			}
 		}
 		else
 		{
@@ -110,6 +115,8 @@ int	ft_delete_node_cmd(t_element **head, t_element *to_delete)
 	{
 		if (to_delete->content != NULL)
 		{
+			//printf("to_delete->content : %s\n", to_delete->content);
+			//printf("cmd\n");
 			free(to_delete->content);
 			to_delete->content = NULL;
 		}

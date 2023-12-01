@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:36:13 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/01 16:34:18 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 18:04:57 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,13 @@ int	add_exit_status_in_env(t_env **env, int n)
 	else
 	{
 		node = find_value_with_key_env(*env, "EXIT_STATUS");
-		if (node->value != NULL)
-		{
-			//printf("value freed in add_status: %s\n", node->value);
-			free(node->value);
-		}
+		// if (node->value != NULL)
+		// {
+		// 	//printf("env\n");
+		// 	//printf("value freed in add_status: %s\n", node->value);
+		// 	free(node->value);
+		// }
+		free(node->value);
 		node->value = ft_itoa(n);
 	}
 	return (ft_atoi(node->value));

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/01 13:31:15 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 17:44:33 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	free_cmd_arr(t_pipe *exec)
 
 /*Goes back to the head of cmd_list if needed and
 frees everything.*/
-void	free_cmd_list(t_element *cmd_list)
+int	free_cmd_list(t_element *cmd_list)
 {
 	t_element	**head;
 
@@ -88,11 +88,12 @@ void	free_cmd_list(t_element *cmd_list)
 			//printf("cmd_list->builtin = %d\n", cmd_list->builtin);
 			//free(cmd_list);
 			cmd_list = NULL;
-			return ;
+			return 1;
 		}
 	}
 	free(cmd_list);
 	cmd_list = NULL;
+	return 0;
 }
 
 void	free_env_list(t_env *env_list)

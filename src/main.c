@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/01 14:49:55 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/01 17:37:54 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int main (int argc, char **argv, char **env)
 	t_element			*cmd_list;
 	t_pipe				*exec;
 	char				*prompt;
-	char				*path; //ai du le creer pour free ft_prompt correctement
+	char				*path;
 
 	if (argc != 1)
 		return (msg_error(0, ""), EXIT_FAILURE);
@@ -98,25 +98,15 @@ int main (int argc, char **argv, char **env)
 		}
 		if (is_key_in_env(env_list, "EXIT_STATUS") == false)
 			add_exit_status_in_env(&env_list, 0);
-		path = ft_prompt(env_list, NO_PRINT); // attention des fois il y a des mallocs la dedans
+		path = ft_prompt(env_list, NO_PRINT);
 		prompt = ft_strjoin(path, "$ ");
-		// if (!prompt)
-			// free all;
-
 		if (ft_strncmp(path, "/", ft_strlen(path)) != 0 && \
 		ft_strncmp(path, "", ft_strlen(path)) != 0) //if malloc'ed
 			free(path);
-		//printf("line AVANT = %s\n", line);
 		line = readline(prompt);
-		//printf("line APRES = %s\n", line);
 		if (g_location == QUIT)
-		{
 			add_exit_status_in_env(&env_list, 130);
-			//g_location = IN_PROMPT;
-		}
 		add_history(line);
-		// if (line == NULL && g_location != IN_PROMPT)
-		// 	close(STDIN_FILENO);
 		if (line == NULL)
 		{
 			if (g_location == IN_PROMPT)
@@ -144,11 +134,9 @@ int main (int argc, char **argv, char **env)
 					exec->prompt = &prompt;
 					ft_execute(cmd_list, &env_list, exec);
 					free_cmd_arr(exec); //double free qd heredoc
-					// if (ft_strncmp(line, "$?", 2) != 0) //condition strlen
-					// 	free_cmd_list(cmd_list); //free A REGARDER AVEC KARL
-
 					ft_unlink(cmd_list);
-					free(cmd_list->hd_filename);
+					//free(cmd_list->hd_filename);
+					
 /* 					t_env	*exit;
 					exit = NULL;
 					if (is_key_in_env(env_list, "EXIT_STATUS") == true)
@@ -159,8 +147,7 @@ int main (int argc, char **argv, char **env)
 						free_cmd_list(cmd_list);
 						cmd_list = NULL;
 					} */
-
-
+					
  					// if (cmd_list && (ft_strncmp(line, "$?", 2) != 0 || \
 					// (ft_strncmp(line, "$?", 2) == 0 && ft_strlen(line) != 2)) != 0)
 					if (is_exit_status_in_line(line, "$?") == false)
@@ -171,18 +158,7 @@ int main (int argc, char **argv, char **env)
 		//if (is_exit_status_in_line(line, "$?") == false)
 		if (ft_strncmp(line, "$?", 2) == 0 && \
 		ft_strlen(line) == 2)
-			free(cmd_list);
-
-/* 
-		t_env	*exit;
-		exit = NULL;
-		if (is_key_in_env(env_list, "EXIT_STATUS") == true)
-			exit = find_value_with_key_env(env_list, "EXIT_STATUS");
-			
-		if (exit && ft_atoi(exit->value) != 127)
-			free(cmd_list); */
-
-			
+			free(cmd_list);	
 		free(line);
 		line = NULL;
 		free(prompt);
