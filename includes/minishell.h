@@ -208,7 +208,7 @@ bool	pipe_double_or_eof(char *line);
 /*Free*/
 void	exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec);
 void	free_cmd_tab(t_pipe *exec);
-void		free_cmd_list(t_element *cmd_list);
+int		free_cmd_list(t_element *cmd_list);
 void		free_env_list(t_env *env_list);
 void	ctrld_free(char *line, char *prompt, t_env *env, t_pipe *exec);
 

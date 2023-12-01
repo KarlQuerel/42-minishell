@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exec_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
 /*   Updated: 2023/12/01 17:24:48 by kquerel          ###   ########.fr       */
@@ -79,18 +79,15 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec, int option)
 	if (exec->cmd_tab[0] != NULL)
 	{
 		exit_nb = exec_command(cmd, *env, exec);
-		add_exit_status_in_env(env, exit_nb);
+		//add_exit_status_in_env(env, exit_nb);
 	}
 	// if (option == 0 && exec->cmd_tab[0] && (ft_strncmp(*exec->line, "$?", 2) != 0 || \
 	// (ft_strncmp(*exec->line, "$?", 2) == 0 && ft_strlen(*exec->line) != 2)) != 0)
-	// if (is_exit_status_in_line(*exec->line, "$?") == false)
-	if (option == 0 && exec->cmd_tab[0] && (ft_strncmp(*exec->line, "$?", 2) != 0 || \
-	(ft_strncmp(*exec->line, "$?", 2) == 0 && ft_strlen(*exec->line) != 2)) != 0)
-	{
-		//printf("blabla\n");
-		free(exec->cmd_tab[0]);
-		exec->cmd_tab[0] = NULL;
-	}
+	// if (is_exit_status_in_line(*exec->line, "$?") == true)
+	// {
+	// 	free(exec->cmd_tab[0]);
+	// 	exec->cmd_tab[0] = NULL;
+	// }
 	free_child(cmd, env, exec);
 	exit(exit_nb);
 }

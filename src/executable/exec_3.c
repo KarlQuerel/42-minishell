@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/01 13:29:20 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 18:08:54 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,14 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 			return (msg_error_bash(1, exec->cmd_tab[0]), 127);
 	}
 	else
+	{
+		t_env	*exit;
+		exit = NULL;
+		if (is_key_in_env(env, "EXIT_STATUS") == true)
+			exit = find_value_with_key_env(env, "EXIT_STATUS");
+		free(exit->value);
 		execve(path, exec->cmd_tab, exec->env_execve);
+	}
 	return (127);
 }
 
@@ -57,6 +64,11 @@ int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 	path = cmd->content;
 	if (ft_strchr(exec->cmd_tab[0], '/'))
 	{
+		t_env	*exit;
+		exit = NULL;
+		if (is_key_in_env(env, "EXIT_STATUS") == true)
+			exit = find_value_with_key_env(env, "EXIT_STATUS");
+		free(exit->value);
 		execve(path, exec->cmd_tab, exec->env_execve);
 		msg_error_bash(0, exec->cmd_tab[0]);
 		perror(" ");
@@ -70,10 +82,21 @@ int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 
 void	free_child(t_element *cmd, t_env **env, t_pipe *exec)
 {
-	// (void)cmd;
+	//(void)cmd;
 	//(void)env;
 	// (void)exec;
-	free_cmd_list(cmd);
+	//if (is_exit_status_in_line(*exec->line, "$?") == false)
+	if (free_cmd_list(cmd) == 1)
+	{
+		t_env	*exit;
+		exit = NULL;
+		if (is_key_in_env(*env, "EXIT_STATUS") == true)
+		{
+			exit = find_value_with_key_env(*env, "EXIT_STATUS");
+			exit->value = NULL;
+		}
+			
+	}
 	close(exec->std_in);
 	close(exec->std_out);
 	free (*exec->line);
