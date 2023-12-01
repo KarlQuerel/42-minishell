@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/01 15:41:44 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 16:33:54 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,29 @@ void	printlist_test(t_element *head) // A EFFACER A LA FIN
 		head = head->next;
 		i++;
 	}
+}
+
+bool	is_exit_status_in_line(char *big, char *little)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	if (!big || !little)
+		return (false); //?
+	while (big[i])
+	{
+		j = 0;
+		while (big[i + j] == little[j] && little[j])
+		{
+			j++;
+			if (little[j] == '\0')
+				return (true);
+		}
+		i++;
+	}
+	return (false);
 }
 
 
@@ -138,10 +161,10 @@ int main (int argc, char **argv, char **env)
 						cmd_list = NULL;
 					} */
 
-					//cette condition ne semble rien changer
-					
- 					if (cmd_list && (ft_strncmp(line, "$?", 2) != 0 || \
-					(ft_strncmp(line, "$?", 2) == 0 && ft_strlen(line) != 2)) != 0)
+
+ 					// if (cmd_list && (ft_strncmp(line, "$?", 2) != 0 || \
+					// (ft_strncmp(line, "$?", 2) == 0 && ft_strlen(line) != 2)) != 0)
+					if (is_exit_status_in_line(line, "$?") == false)
 						free_cmd_list(cmd_list);
 					
 					// free_cmd_list(cmd_list);
@@ -149,8 +172,9 @@ int main (int argc, char **argv, char **env)
 				}
 			}
 		}
-		if (cmd_list && (ft_strncmp(line, "$?", 2) == 0 && \
-		ft_strlen(line) == 2))
+		//if (is_exit_status_in_line(line, "$?") == false)
+		if (ft_strncmp(line, "$?", 2) == 0 && \
+		ft_strlen(line) == 2)
 			free(cmd_list);
 
 /* 

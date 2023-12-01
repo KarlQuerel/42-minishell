@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/01 15:47:41 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 16:11:33 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -408,7 +408,7 @@ t_pipe	*init_exec();
 void	exit_check_all(t_element *cmd, t_env **env, t_pipe *exec);
 
 
-
+bool	is_exit_status_in_line(char *big, char *little);
 
 
 #endif

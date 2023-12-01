@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/01 15:53:59 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 16:21:13 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec, int option)
 {
 	t_env	*exit_status;
 	int		exit_nb;
-	//(void)option;
+	(void)option;
 
 	exit_nb = 0;
 	if (!ft_redirect(cmd, exec))
@@ -82,13 +82,13 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec, int option)
 		add_exit_status_in_env(env, exit_nb);
 	}
 
-	//if (exec->cmd_tab[0])
-	if (option == 0 && exec->cmd_tab[0] && (ft_strncmp(*exec->line, "$?", 2) != 0 || \
-	(ft_strncmp(*exec->line, "$?", 2) == 0 && ft_strlen(*exec->line) != 2)) != 0)
+	// if (option == 0 && exec->cmd_tab[0] && (ft_strncmp(*exec->line, "$?", 2) != 0 || \
+	// (ft_strncmp(*exec->line, "$?", 2) == 0 && ft_strlen(*exec->line) != 2)) != 0)
+	if (is_exit_status_in_line(*exec->line, "$?") == false)
 	{
-		printf("blabla\n");
-		free(exec->cmd_tab[0]); //free mon exit_status mais enleve les leaks de a
-		exec->cmd_tab[0] = NULL;	
+		//printf("blabla\n");
+		free(exec->cmd_tab[0]);
+		exec->cmd_tab[0] = NULL;
 	}
 	free_child(cmd, env, exec);
 	exit(exit_nb);
