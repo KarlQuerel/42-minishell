@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/12/01 18:06:42 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 18:35:28 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@ int	ft_unset(t_element *cmd, t_env **env)
 		{
 			tmp = find_value_with_key_env(tmp, cmd->content);
 			if (tmp)
+			{
 				if (ft_delete_node_env(env, tmp) == 1)
 				{
 					*env = NULL;
 					return (1);
 				}
+			}
 		}
 		if (cmd)
 			cmd = cmd->next;
@@ -43,7 +45,7 @@ int	ft_delete_node_env(t_env **head, t_env *to_delete)
 {
 	if (!to_delete)
 		return (2);
-	if(!to_delete->prev && !to_delete->next)
+	if (!to_delete->prev && !to_delete->next)
 	{
 		if (ft_strncmp(to_delete->key, "EXIT_STATUS", \
 		ft_strlen(to_delete->key)) == 0 && ft_strlen("EXIT_STATUS") \

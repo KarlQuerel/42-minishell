@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 18:13:47 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/01 14:41:28 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/01 17:09:06 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	ft_only_create(t_element *cmd)
 {
 	int	fd;
 
+	fd = 42;
 	while (cmd)
 	{
 		if (cmd->type == OUTFILE || cmd->type == OUTFILE_APPEND)
@@ -49,7 +50,8 @@ void	ft_only_create(t_element *cmd)
 				return (perror(" "));
 			}
 		}
-		close (fd);
+		if (fd > STDERR_FILENO)
+			close (fd);
 		cmd = cmd->next;
 	}
 }

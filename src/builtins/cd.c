@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:34:22 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/27 14:03:10 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 18:03:03 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,8 @@ void	cd_directory(char *path, t_env *env_list)
 	new_path = fix_path_if_spaces(path);
 	if (chdir(new_path) != 0)
 	{
-		printf("bash : cd : %s: No such file or directory\n", path);
+		msg_error_bash(2, path);
 		free(new_path);
-		//printf errno
 		return ;
 	}
 	free(new_path);
@@ -75,7 +74,7 @@ void	cd_home(t_env *env_list)
 	current_path = pwd(NO_PRINT);
 	if (!is_key_in_env(env_list, "HOME"))
 	{
-		ft_putendl_fd("bash: cd: HOME not set", STDERR_FILENO);
+		msg_error_bash(3, "");
 		free(current_path);
 		return ;
 	}

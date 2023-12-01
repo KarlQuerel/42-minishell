@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/01 18:03:44 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 17:46:30 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,7 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	int	pid;
 
 	if (ft_all_redir(cmd) == true)
-	{
-		// write(2, "vous ne m'attraprez pas!\n", 26);
 		return ;
-	}
 	while (cmd)
 	{
 		if (cmd->type == COMMAND)

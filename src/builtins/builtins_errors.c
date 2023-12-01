@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_errors.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:39:41 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/30 20:40:11 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 17:48:01 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,24 +59,6 @@ bool	env_option(t_element *cmd)
 	{
 		ft_putendl_fd("env cannot take arguments nor options", \
 		STDERR_FILENO);
-		return (false);
-	}
-	return (true);
-}
-
-bool	history_option(t_element *cmd)
-{
-	if (cmd->next && (cmd->next->type < 2 || \
-	(ft_is_num(cmd->next->content) == false || \
-	ft_atoi_check(cmd->next->content) == false)))
-	{
-		msg_error_bash(3, cmd->next->content);
-		return (false);
-	}
-	if (cmd->next && ft_is_num(cmd->next->content) && cmd->next->next && \
-	cmd->next->next->type < 3)
-	{
-		ft_putendl_fd("bash: history: too many arguments", STDERR_FILENO);
 		return (false);
 	}
 	return (true);

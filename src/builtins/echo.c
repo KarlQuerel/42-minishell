@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:35 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/28 22:39:09 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/01 18:06:50 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool	no_further_args(t_element *cmd)
 {
 	cmd = cmd->next;
-	while(cmd)
+	while (cmd)
 	{
 		if (cmd->type == ARGUMENT)
 			return (false);

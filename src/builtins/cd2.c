@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 11:47:20 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/29 14:20:51 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/12/01 18:06:28 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,24 @@ int	forward_loop(char *current_path, char *home_value, int end)
 	char	*word;
 
 	start = end;
-	//word = ft_calloc(size_of_word(home_value, start) + 1, sizeof(char));
 	while (is_cmd(current_path, home_value) == false)
 	{
 		while (home_value[end] != '/' && home_value[end])
 			end++;
-		// free(word);
 		word = strlcpy_middle(word, home_value, start, end - 1);
 		if (chdir(word) != 0)
 		{
 			free(word);
 			free(current_path);
-			return 1;
+			return (1);
 		}
 		if (home_value[end + 1] == '\0')
 			break ;
 		end += 1;
 		start = end;
 		free(word);
-		//word = ft_calloc(size_of_word(home_value, start) + 1, sizeof(char));
 	}
-	// free(word);
-	return 0;
+	return (0);
 }
 
 /*Advances by doing cd(word) (word being what is found in between
@@ -75,7 +71,7 @@ void	go_backwards_until_user(char *current_path, char *home_value)
 		if (chdir("..") != 0)
 		{
 			free(current_path);
-			//printf errno. Dans fo_forward aussi?
+			perror("bash: ");
 			return ;
 		}
 		free(current_path);

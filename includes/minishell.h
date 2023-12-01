@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/01 17:45:55 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 18:31:09 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -412,6 +412,8 @@ char	*ft_strjoin_free_s2(char *s1, char *s2);
 
 
 bool	is_exit_status_in_line(char *big, char *little);
+void	ft_assign_key_and_value(int i, char **ret, char *s);
+
 
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:38 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/30 19:39:34 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/01 18:14:52 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	history(int option, int len)
 
 void	print_all_hist(HISTORY_STATE *info, HIST_ENTRY **list)
 {
-	int	i;
+	int		i;
 	char	*nb;
 
 	i = 0;
@@ -51,8 +51,8 @@ void	print_all_hist(HISTORY_STATE *info, HIST_ENTRY **list)
 
 void	print_hist_until_len(HISTORY_STATE *info, HIST_ENTRY **list, int len)
 {
-	int	reverse;
-	int	i;
+	int		reverse;
+	int		i;
 	char	*nb;
 
 	i = 0;
@@ -81,4 +81,22 @@ void	free_history(HISTORY_STATE *info, HIST_ENTRY **list)
 	}
 	free (info);
 	free (list);
+}
+
+bool	history_option(t_element *cmd)
+{
+	if (cmd->next && (cmd->next->type < 2 || \
+	(ft_is_num(cmd->next->content) == false || \
+	ft_atoi_check(cmd->next->content) == false)))
+	{
+		msg_error_bash(4, cmd->next->content);
+		return (false);
+	}
+	if (cmd->next && ft_is_num(cmd->next->content) && cmd->next->next && \
+	cmd->next->next->type < 3)
+	{
+		msg_error_bash(5, "");
+		return (false);
+	}
+	return (true);
 }
