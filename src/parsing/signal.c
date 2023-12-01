@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/28 17:35:39 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:50:03 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,12 @@ int	set_signals(void)
 	signal.sa_handler = &sigint_handler;
 	if (sigaction(SIGINT, &signal, NULL) == -1)
 		return (EXIT_FAILURE);
-	if (g_location == IN_PROMPT || \
-	g_location == IN_HEREDOC)
+	if (g_location == IN_PROMPT)
 		signal.sa_handler = SIG_IGN;
+	if (g_location == IN_HEREDOC)
+	{
+		signal.sa_handler = SIG_IGN;
+	}
 	else
 		signal.sa_handler = &sigquit_handler;
 	if (sigaction(SIGQUIT, &signal, NULL) == -1)
@@ -33,7 +36,7 @@ int	set_signals(void)
 
 /* void	signal_handler(int signal, \
 siginfo_t *info, void *ucontext) */
-void	sigint_handler(int signal)
+void	sigint_handler(int signal)//, int stdin_la_revanche)
 {
 	(void)signal;
 	if (g_location == IN_PROMPT || g_location == QUIT)
@@ -51,7 +54,7 @@ void	sigint_handler(int signal)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 	}
-	else
+	else if (g_location == IN_HEREDOC)
 	{
 		g_location = QUIT_HEREDOC;
 		ft_putchar_fd('\n', STDERR_FILENO);

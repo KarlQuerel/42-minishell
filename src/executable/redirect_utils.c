@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 18:13:47 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/01 14:44:38 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:41:28 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	ft_only_create(t_element *cmd)
 }
 
 /* Only create - outfile or append */
-int	only_create_outfile_or_append(t_element *cmd, int *fd)
+bool	only_create_outfile_or_append(t_element *cmd, int *fd)
 {
 	if (cmd->type == OUTFILE)
 		*fd = open(cmd->content, O_CREAT | O_RDWR | O_TRUNC, 0644);
@@ -64,9 +64,9 @@ int	only_create_outfile_or_append(t_element *cmd, int *fd)
 	if (*fd < 0)
 	{
 		perror("bash");
-		return (0);
+		return (false);
 	}
-	return (1);
+	return (true);
 }
 
 /* Unlink all tmp_files */

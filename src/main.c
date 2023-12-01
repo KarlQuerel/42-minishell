@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/01 16:33:54 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:49:55 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int main (int argc, char **argv, char **env)
 	if (!exec)
 	{
 		msg_error(1, "");
+		// ft_lst_clear(env_list); // pensez a free ici ;)
 		exit(EXIT_FAILURE);
 	}
 	while (1)
@@ -97,8 +98,11 @@ int main (int argc, char **argv, char **env)
 		}
 		if (is_key_in_env(env_list, "EXIT_STATUS") == false)
 			add_exit_status_in_env(&env_list, 0);
-		path = ft_prompt(env_list, NO_PRINT);
+		path = ft_prompt(env_list, NO_PRINT); // attention des fois il y a des mallocs la dedans
 		prompt = ft_strjoin(path, "$ ");
+		// if (!prompt)
+			// free all;
+
 		if (ft_strncmp(path, "/", ft_strlen(path)) != 0 && \
 		ft_strncmp(path, "", ft_strlen(path)) != 0) //if malloc'ed
 			free(path);
@@ -118,12 +122,6 @@ int main (int argc, char **argv, char **env)
 			if (g_location == IN_PROMPT)
 			{
 				printf("line = %s\n", line);
-				//DANS LE CAS DES REDIRS, LINE EST NULLE
-				printf("ca quitte le zigouigoui\n"); 
-				//printf("cas line = NULL ou control D\n"); 
-				//CARO --> dans le cas de juste des redirections ca rentre dans cette while
-				// par exemple --> '> a > b > c'
-				//PAREIL pour ligne avec juste heredoc --> '<< heredoc'
 				ft_putendl_fd("exit", STDERR_FILENO);
 				ctrld_free(line, prompt, env_list, exec);
 			}
