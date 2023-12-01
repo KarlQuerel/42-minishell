@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/30 21:03:32 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/30 20:57:24 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,22 @@
  */
 int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
+	char *path;
+
 	exec->env_execve = ft_transform_env(env);
 	if (ft_exec_slash(cmd, exec, env))
 		return (127);
 	exec->cmd_path = split_path(env);
-	cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
-	if (!cmd->content)
+	path = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
+	if (!path)
 	{
-		// free_cmd_list(cmd);
 		if (!exec->cmd_tab[0])
 			ft_putstr_fd("\n", STDERR_FILENO);
 		else
-			return (msg_error_bash(1, exec->cmd_tab[0])/* , free(exec->cmd_tab[0]) */, 127);
+			return (msg_error_bash(1, exec->cmd_tab[0]), 127);
 	}
 	else
-		execve(cmd->content, exec->cmd_tab, exec->env_execve);
+		execve(path, exec->cmd_tab, exec->env_execve);
 	return (127);
 }
 
@@ -50,10 +51,12 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 {
 	(void)env;
-	
+	char *path;
+
+	path = cmd->content;
 	if (ft_strchr(exec->cmd_tab[0], '/'))
 	{
-		execve(cmd->content, exec->cmd_tab, exec->env_execve);
+		execve(path, exec->cmd_tab, exec->env_execve);
 		msg_error_bash(0, exec->cmd_tab[0]);
 		perror(" ");
 		//free_child(cmd, &env, exec);
@@ -69,14 +72,12 @@ void	free_child(t_element *cmd, t_env **env, t_pipe *exec)
 	// (void)cmd;
 	//(void)env;
 	// (void)exec;
-
 	free_cmd_list(cmd);
-
 	close(exec->std_in);
 	close(exec->std_out);
 	free (*exec->line);
 	free (*exec->prompt);
 	free_cmd_arr(exec);
 	free(exec);
-	free_env_list(*env); //execve ne free pas env lui
+	free_env_list(*env);
 }

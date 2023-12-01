@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/30 13:21:56 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 21:19:27 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -406,6 +406,9 @@ void	ft_welcome(void);
 t_pipe	*init_exec();
 
 void	exit_check_all(t_element *cmd, t_env **env, t_pipe *exec);
+
+char	*ft_strjoin_free_s2(char *s1, char *s2);
+
 
 
 

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/11/30 21:36:52 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/30 21:38:21 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,11 @@ int	ft_delete_node_cmd(t_element **head, t_element *to_delete)
 			free(to_delete->content);
 			to_delete->content = NULL;
 		}
+		// if (to_delete->content)
+		// {
+		// 	free(to_delete->hd_filename);
+		// 	to_delete->hd_filename = NULL;
+		// }
 		free(to_delete);
 		to_delete = NULL;
 		return (1);
@@ -115,6 +120,11 @@ int	ft_delete_node_cmd(t_element **head, t_element *to_delete)
 		free(to_delete->content);
 		to_delete->content = NULL;
 	}
+	// if (to_delete->content)
+	// {
+	// 	free(to_delete->hd_filename);
+	// 	to_delete->hd_filename = NULL;
+	// }
 	free(to_delete);
 	to_delete = NULL;
 	return (0);

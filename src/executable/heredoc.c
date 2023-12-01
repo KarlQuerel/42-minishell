@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 20:44:11 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/30 12:03:19 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/11/30 21:29:24 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ bool	ft_heredoc(t_element *cmd, t_env *env)
 	file_name = create_heredoc(cmd->content, iteration_nb, &fd);
 	if (!file_name)
 		return (false);
-	cmd->hd_filename = ft_strdup(file_name); // leak
+	cmd->hd_filename = ft_strdup(file_name);
+	free(file_name);
 	fd_heredoc = dup(STDIN_FILENO);
 	while (1)
 	{
@@ -66,7 +67,7 @@ bool	ft_heredoc(t_element *cmd, t_env *env)
 /* Creates heredoc */
 char	*create_heredoc(char *name, int i, int *fd)
 {
-	name = ft_strjoin("tmp_file", ft_itoa(i));
+	name = ft_strjoin_free_s2("tmp_file", ft_itoa(i));
 	if (!name)
 		return (NULL);
 	*fd = open(name, O_WRONLY | O_CREAT | O_EXCL, 0777);
@@ -107,4 +108,32 @@ char	*ft_alban(t_element *cmd)
 		cmd = cmd->next;
 	}
 	return (ret);
+}
+
+/* str_join_free_s2 */
+char	*ft_strjoin_free_s2(char *s1, char *s2)
+{
+	int		i;
+	int		j;
+	int		ft_strlen_total;
+	char	*new_str;
+
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
+	ft_strlen_total = ft_strlen(s1) + ft_strlen(s2);
+	new_str = malloc((sizeof(char)) * (ft_strlen_total + 1));
+	if (new_str == NULL)
+		return (NULL);
+	i = 0;
+	while (s1[i])
+	{
+		new_str[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2[j])
+		new_str[i++] = s2[j++];
+	new_str[i] = '\0';
+	free(s2);
+	return (new_str);
 }
