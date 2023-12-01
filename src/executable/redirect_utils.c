@@ -77,7 +77,10 @@ void	ft_unlink(t_element *cmd)
 	while (cmd)
 	{
 		if (cmd->type == HEREDOC)
+		{
 			unlink(cmd->hd_filename);
+			free(cmd->hd_filename);
+		}
 		cmd = cmd->next;
 	}
 }

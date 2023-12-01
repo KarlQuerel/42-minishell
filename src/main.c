@@ -146,10 +146,11 @@ int main (int argc, char **argv, char **env)
 					exec->prompt = &prompt;
 					ft_execute(cmd_list, &env_list, exec);
 					free_cmd_arr(exec); //double free qd heredoc
-					free(cmd_list->hd_filename);
+					// if (ft_strncmp(line, "$?", 2) != 0) //condition strlen
+					// 	free_cmd_list(cmd_list); //free A REGARDER AVEC KARL
+
 					ft_unlink(cmd_list);
-
-
+					free(cmd_list->hd_filename);
 /* 					t_env	*exit;
 					exit = NULL;
 					if (is_key_in_env(env_list, "EXIT_STATUS") == true)
@@ -166,9 +167,6 @@ int main (int argc, char **argv, char **env)
 					// (ft_strncmp(line, "$?", 2) == 0 && ft_strlen(line) != 2)) != 0)
 					if (is_exit_status_in_line(line, "$?") == false)
 						free_cmd_list(cmd_list);
-					
-					// free_cmd_list(cmd_list);
-					
 				}
 			}
 		}

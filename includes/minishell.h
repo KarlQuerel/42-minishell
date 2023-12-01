@@ -407,6 +407,9 @@ t_pipe	*init_exec();
 
 void	exit_check_all(t_element *cmd, t_env **env, t_pipe *exec);
 
+char	*ft_strjoin_free_s2(char *s1, char *s2);
+
+
 
 bool	is_exit_status_in_line(char *big, char *little);
 
