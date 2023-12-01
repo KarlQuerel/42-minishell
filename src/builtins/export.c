@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/28 22:37:03 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/01 18:33:20 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ bool	ft_is_valid_key_var(char *s)
 char	**split_var(char *s)
 {
 	char	**ret;
-	int	i;
+	int		i;
 
 	ret = ft_calloc(3, sizeof(ret));
 	if (!ret)
@@ -63,26 +63,7 @@ char	**split_var(char *s)
 	}
 	i = ft_strchr_int(s, '=') + 1;
 	if (i != -1)
-	{
-		if (s[i] == '\"' && s[ft_strlen(s) - 1] == '\"')
-		{
-			ret[0] = strlcpy_middle(ret[0], s, 0, i - 2);
-			ret[1] = strlcpy_middle(ret[1], s, i + 1, ft_strlen(s) - 1);
-			ret[2] = NULL;
-		}
-		else if (s[i] == '\'' && s[ft_strlen(s) - 1] == '\'')
-		{
-			ret[0] = strlcpy_middle(ret[0], s, 0, i - 2);
-			ret[1] = strlcpy_middle(ret[1], s, i + 1, ft_strlen(s) - 1);
-			ret[2] = NULL;
-		}
-		else
-		{
-			ret[0] = strlcpy_middle(ret[0], s, 0, i - 2);
-			ret[1] = strlcpy_middle(ret[1], s, i, ft_strlen(s));
-			ret[2] = NULL;
-		}
-	}
+		ft_assign_key_and_value(i, ret, s);
 	return (ret);
 }
 
@@ -93,12 +74,11 @@ void	join_new_var(t_env **env, char *key, char *value)
 		value = "\0";
 	if (!is_key_in_env(*env, key))
 	{
-		put_var_in_env(env, key, value);;
+		put_var_in_env(env, key, value);
 		return ;
 	}
 	replace_var(env, key, value);
 	free(key);
-	//free(value);
 	return ;
 }
 

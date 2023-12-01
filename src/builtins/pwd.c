@@ -6,30 +6,21 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/28 23:36:51 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/01 18:14:26 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /*Gets the current path and prints it if the 
-trigger reqiures it.*/
+trigger requires it.*/
 char	*pwd(int option)
 {
-	char *path;
+	char	*path;
 
-	/*KARL
-	if (!check_next(cmd, 1))
-	{
-		//free
-		return (NULL);
-	}
-	*/
-
-	//on doit envoyer t_element *cmd ici pour check les options cmd->next->type == OPTION
 	path = getcwd(NULL, 0);
-	//if (!path)
-		//printf errno
+	if (!path)
+		perror("bash: ");
 	if (option == PRINT)
 	{
 		ft_putendl_fd(path, STDOUT_FILENO);

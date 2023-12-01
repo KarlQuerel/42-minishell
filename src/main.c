@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/01 14:49:55 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/01 17:46:47 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int main (int argc, char **argv, char **env)
 	ft_welcome();
 	(void)argv;
 	env_list = put_env_in_list(env);
-	using_history(); // initialisation de l'historique
+	using_history();
 	line = NULL;
 	add_exit_status_in_env(&env_list, 0);
 
@@ -148,7 +148,7 @@ int main (int argc, char **argv, char **env)
 					// 	free_cmd_list(cmd_list); //free A REGARDER AVEC KARL
 
 					ft_unlink(cmd_list);
-					free(cmd_list->hd_filename);
+					// free(cmd_list->hd_filename);
 /* 					t_env	*exit;
 					exit = NULL;
 					if (is_key_in_env(env_list, "EXIT_STATUS") == true)

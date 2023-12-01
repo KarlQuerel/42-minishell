@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/01 13:11:02 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/01 17:24:48 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,9 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec, int option)
 	}
 	// if (option == 0 && exec->cmd_tab[0] && (ft_strncmp(*exec->line, "$?", 2) != 0 || \
 	// (ft_strncmp(*exec->line, "$?", 2) == 0 && ft_strlen(*exec->line) != 2)) != 0)
-	if (is_exit_status_in_line(*exec->line, "$?") == false)
+	// if (is_exit_status_in_line(*exec->line, "$?") == false)
+	if (option == 0 && exec->cmd_tab[0] && (ft_strncmp(*exec->line, "$?", 2) != 0 || \
+	(ft_strncmp(*exec->line, "$?", 2) == 0 && ft_strlen(*exec->line) != 2)) != 0)
 	{
 		//printf("blabla\n");
 		free(exec->cmd_tab[0]);
