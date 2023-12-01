@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/30 18:15:00 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:59:09 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ char	*replace_dollar(char *content, char *key_to_find, t_env *env_list)
 	if (is_key_in_env(env_list, key_to_find) == true)
 	{
 		key_in_env = find_value_with_key_env(env_list, key_to_find);
+		//ret = ft_calloc(ft_strlen(key_in_env->value), sizeof(char));
 		ret = key_in_env->value;
 		//content = ft_calloc(ft_strlen(key_in_env->value), sizeof(char));
 		//content = strlcpy_middle(content, key_in_env->value, 0, ft_strlen(key_in_env->value));
@@ -153,8 +154,8 @@ void	new_key(size_t *i, char **key_to_find, char *content)
 char	*dollar(char *content, t_env *env_list)
 {
 	char	*key_to_find;
-	char *ret;
-	size_t i;
+	char	*ret;
+	size_t	i;
 	bool	alpha;
 	
 	ret = NULL;

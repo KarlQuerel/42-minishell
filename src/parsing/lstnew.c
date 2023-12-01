@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/30 20:41:32 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:26:11 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_element	*lstnew(char *line, int i, int type)
 {
 	t_element	*new;
 
+	// new = ft_calloc(1, sizeof(t_element));
 	new = ft_calloc(1, sizeof(t_element));
 	if (!new)
 		return (NULL);
@@ -28,6 +29,7 @@ t_element	*lstnew(char *line, int i, int type)
 	new->change = true;
 	new->prev = NULL;
 	new->next = NULL;
+	// free(line);
 	return (new);
 }
 

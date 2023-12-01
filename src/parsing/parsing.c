@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/30 18:38:34 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:29:39 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,13 @@ t_element	*parsing(char *line, t_env *env_list)
 		parsing_initialize_next(&current_cmd, line, &i);
 	}
 	if (parsing_fix(&head, env_list) == 1)
+	{
+		// free(head);
+		// head = NULL;
 		return (NULL);
+	}
 	builtin_fix(&head);
-		return (head);
+	return (head);
 }
 
 /* bool	nothing_before(int start, int n, char *line)
@@ -104,7 +108,11 @@ int	parsing_fix(t_element **cmd_list, t_env *env_list)
 			if (current->content == NULL)
 			{
 				if (ft_delete_node_cmd(cmd_list, current) == 1) //scotch temp
+				{
+					// free(*cmd_list);
+					// *cmd_list = NULL;
 					return (1); //scoth return 1 put head to NULL with condition
+				}
 			}
 		}
 		if (current)
