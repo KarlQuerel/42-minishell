@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/30 21:19:27 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/01 14:41:45 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -393,7 +393,7 @@ int	ft_exit_status_multiple(t_env **env, t_pipe *exec);
 
 
 char	*ft_alban(t_element *cmd);
-int	only_create_outfile_or_append(t_element *cmd, int fd);
+bool	only_create_outfile_or_append(t_element *cmd, int *fd);
 void	ft_only_create(t_element *cmd);
 void	ft_unlink(t_element *cmd);
 void	ft_top_of_list(t_element *cmd);

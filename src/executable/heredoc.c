@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 20:44:11 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/30 21:29:24 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/01 15:36:01 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool	ft_heredoc(t_element *cmd, t_env *env)
 	char		*words;
 	char		*file_name;
 	static int	iteration_nb = 1;
-	
+
 	iteration_nb++;
 	g_location = IN_HEREDOC;
 	set_signals();
@@ -58,8 +58,8 @@ bool	ft_heredoc(t_element *cmd, t_env *env)
 	}
 	free(words);
 	words = NULL;
-	dup2(fd_heredoc, STDIN_FILENO);
 	close(fd);
+	dup2(fd_heredoc, STDIN_FILENO);
 	close(fd_heredoc);
 	return (true);
 }
