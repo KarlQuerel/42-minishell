@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:39:52 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/29 21:08:39 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/01 20:22:01 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ bool	first_character_error(char *line)
 
 bool	redirecters_error(char *line)
 {
+	//erreur si redirecteurs a la suite sauf si entre "" ou ''
 	int	i;
 
 	i = 0;
@@ -53,7 +54,8 @@ bool	redirecters_error(char *line)
 		(line[i + 1] == '<' || line[i + 1] == '>') && \
 		(line[i + 2] == '<' || line[i + 2] == '>'))
 		{
-			printf("KARL MESSAGE ERREUR\n");
+			// printf("KARL MESSAGE ERREUR\n");
+			//msg_error_bash(5, ""); KARL
 			return (false);
 		}
 		i++;

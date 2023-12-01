@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/01 17:46:47 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/01 20:16:36 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ int main (int argc, char **argv, char **env)
 		{
 			if (g_location == IN_PROMPT)
 			{
-				printf("line = %s\n", line);
 				ft_putendl_fd("exit", STDERR_FILENO);
 				ctrld_free(line, prompt, env_list, exec);
 			}
@@ -155,7 +154,7 @@ int main (int argc, char **argv, char **env)
 			}
 		}
 		//if (is_exit_status_in_line(line, "$?") == false)
-		if (ft_strncmp(line, "$?", 2) == 0 && \
+		if (line && ft_strncmp(line, "$?", 2) == 0 && \
 		ft_strlen(line) == 2)
 			free(cmd_list);	
 		free(line);

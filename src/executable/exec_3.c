@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/01 18:08:54 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 20:11:16 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 	path = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
 	if (!path)
 	{
-		//free_cmd_list(cmd); //caro
 		if (!exec->cmd_tab[0])
 			ft_putstr_fd("\n", STDERR_FILENO);
 		else

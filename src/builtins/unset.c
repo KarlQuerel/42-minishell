@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/12/01 18:35:28 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/01 19:30:39 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	ft_delete_node_env(t_env **head, t_env *to_delete)
 			//printf("value freed in delete_node_cmd: %s\n", to_delete->value);
 			if (to_delete->value != NULL)
 			{
-				printf("to_delete->value : %s\n", to_delete->value);
+				// printf("to_delete->value : %s\n", to_delete->value);
 				free(to_delete->value);
 				to_delete->value = NULL;
 			}

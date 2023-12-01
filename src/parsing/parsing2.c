@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:55:56 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/01 15:25:41 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 19:41:49 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,11 @@ char *separator)
 		GARDER LE SLASH? Cette condition est à la base faite pour le test :
 		echo hola\ncaro -> doit donner holancaro*/
 			(*i)++;
-		(*current_cmd)->content[j++] = line[(*i)++];
+		if (line[(*i)]) //test
+			(*current_cmd)->content[j++] = line[(*i)++];
 	}
 	(*current_cmd)->content[j] = '\0';
-	if (separator[0] == '\'' || separator[0] == '\"')
+	if (line[(*i)] && (separator[0] == '\'' || separator[0] == '\"'))
 		(*i)++;
 }
 

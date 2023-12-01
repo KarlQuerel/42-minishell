@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/01 17:24:48 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/01 19:39:15 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec, int option)
 		exec->std_out = dup(STDOUT_FILENO);
 		if (!ft_redirect(cmd, exec))
 		{
-			//free ?
+			//free ? free child
 			return (0);
 		}
 		ft_builtins(cmd, env, exec);

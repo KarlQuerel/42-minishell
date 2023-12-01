@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_types.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:58:39 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/30 20:33:14 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 19:57:57 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,14 @@ len = where is the begining of the string in the command line
 (command[len] is the first letter of the string, not the first quote)*/
 int	str_type(char *command, int len)
 {
-	int	size;
+	int		size;
+	char	quote;
 
 	size = 0;
+	quote = command[len];
 	while (command[len])
 	{
-		if (command[len + 1] == '\'' || command[len + 1] == '\"')
+		if (command[len + 1] && command[len + 1] == quote)
 		{
 			size += 1;
 			break ;

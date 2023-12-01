@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/01 14:50:03 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/01 20:15:17 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,8 @@ int	set_signals(void)
 	signal.sa_handler = &sigint_handler;
 	if (sigaction(SIGINT, &signal, NULL) == -1)
 		return (EXIT_FAILURE);
-	if (g_location == IN_PROMPT)
+	if (g_location == IN_PROMPT || g_location == IN_HEREDOC)
 		signal.sa_handler = SIG_IGN;
-	if (g_location == IN_HEREDOC)
-	{
-		signal.sa_handler = SIG_IGN;
-	}
 	else
 		signal.sa_handler = &sigquit_handler;
 	if (sigaction(SIGQUIT, &signal, NULL) == -1)
