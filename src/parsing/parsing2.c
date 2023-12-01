@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:55:56 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/30 20:41:57 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:25:41 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 t_element	*parsing_initialisation(char *line, int *i, int *start)
 {
 	int	typestr;
+	// t_element *test; //test
 
 	(*i) = 0;
 	while ((line[(*i)] == '<' || line[(*i)] == '>') && line[(*i)])
@@ -24,6 +25,9 @@ t_element	*parsing_initialisation(char *line, int *i, int *start)
 		(*i)++;
 	(*start) = (*i);
 	typestr = parsing_str_type(line, (*i));
+	// test = lstnew(line, (*start), typestr); //test
+	// free(line); //test
+	// return (test); //test
 	return (lstnew(line, (*start), typestr));
 }
 

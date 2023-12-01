@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/30 13:21:56 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/01 15:47:41 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -345,7 +345,7 @@ void	last_pipe(t_element *cmd, t_env **env, t_pipe *exec);
 /*Exec_continued*/
 void	middle_dup(t_element *cmd, t_env **env, t_pipe *exec);
 void	last_dup(t_element *cmd, t_env **env, t_pipe *exec);
-void	handle_command(t_element *cmd, t_env **env, t_pipe *exec);
+void	handle_command(t_element *cmd, t_env **env, t_pipe *exec, int option);
 int		exec_command(t_element *cmd, t_env *env, t_pipe *exec);
 char	*ft_get_command(char **path, char *argument);
 
@@ -393,7 +393,7 @@ int	ft_exit_status_multiple(t_env **env, t_pipe *exec);
 
 
 char	*ft_alban(t_element *cmd);
-int	only_create_outfile_or_append(t_element *cmd, int fd);
+int	only_create_outfile_or_append(t_element *cmd, int *fd);
 void	ft_only_create(t_element *cmd);
 void	ft_unlink(t_element *cmd);
 void	ft_top_of_list(t_element *cmd);

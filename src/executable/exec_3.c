@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/30 21:03:32 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 13:29:20 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 	cmd->content = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
 	if (!cmd->content)
 	{
-		// free_cmd_list(cmd);
+		//free_cmd_list(cmd);
 		if (!exec->cmd_tab[0])
 			ft_putstr_fd("\n", STDERR_FILENO);
 		else

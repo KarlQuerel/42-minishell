@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/11/30 21:36:52 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:07:34 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,20 @@ int	ft_delete_node_env(t_env **head, t_env *to_delete)
 	{
 		if (ft_strncmp(to_delete->key, "EXIT_STATUS", \
 		ft_strlen(to_delete->key)) == 0 && ft_strlen("EXIT_STATUS") \
-		== ft_strlen(to_delete->key))
+		== ft_strlen(to_delete->key) && to_delete->value != NULL)
+		{
+			//printf("value freed in delete_node_cmd: %s\n", to_delete->value);
 			free(to_delete->value);
+			to_delete->value = NULL;
+		}
 		else
 		{
 			free(to_delete->key);
-			free(to_delete->value);
+			if (to_delete->value != NULL)
+			{
+				free(to_delete->value);
+				to_delete->value = NULL;	
+			}
 		}
 		free(to_delete);
 		to_delete = NULL;
@@ -66,7 +74,7 @@ int	ft_delete_node_env(t_env **head, t_env *to_delete)
 		to_delete->next->prev = to_delete->prev;
 	if (ft_strncmp(to_delete->key, "EXIT_STATUS", \
 	ft_strlen(to_delete->key)) == 0 && ft_strlen("EXIT_STATUS") \
-	== ft_strlen(to_delete->key) && to_delete->value)
+	== ft_strlen(to_delete->key) && to_delete->value != NULL)
 	{
 		free(to_delete->value);
 		to_delete->value = NULL;
@@ -74,9 +82,14 @@ int	ft_delete_node_env(t_env **head, t_env *to_delete)
 	else
 	{
 		free(to_delete->key);
-		free(to_delete->value);
+		if (to_delete->value != NULL)
+		{
+			free(to_delete->value);
+			to_delete->value = NULL;	
+		}
 	}
 	free(to_delete);
+	to_delete = NULL;
 	return (0);
 }
 
@@ -110,7 +123,7 @@ int	ft_delete_node_cmd(t_element **head, t_element *to_delete)
 		*head = to_delete->next;
 	if (to_delete->next)
 		to_delete->next->prev = to_delete->prev;
-	if (to_delete->content)
+	if (to_delete->content != NULL)
 	{
 		free(to_delete->content);
 		to_delete->content = NULL;

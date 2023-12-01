@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/11/30 21:37:29 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:41:44 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int main (int argc, char **argv, char **env)
 		msg_error(1, "");
 		exit(EXIT_FAILURE);
 	}
-	
 	while (1)
 	{
 		g_location = IN_PROMPT;
@@ -80,10 +79,17 @@ int main (int argc, char **argv, char **env)
 		if (ft_strncmp(path, "/", ft_strlen(path)) != 0 && \
 		ft_strncmp(path, "", ft_strlen(path)) != 0) //if malloc'ed
 			free(path);
+		//printf("line AVANT = %s\n", line);
 		line = readline(prompt);
+		//printf("line APRES = %s\n", line);
 		if (g_location == QUIT)
+		{
 			add_exit_status_in_env(&env_list, 130);
+			//g_location = IN_PROMPT;
+		}
 		add_history(line);
+		// if (line == NULL && g_location != IN_PROMPT)
+		// 	close(STDIN_FILENO);
 		if (line == NULL)
 		{
 			if (g_location == IN_PROMPT)
@@ -133,13 +139,30 @@ int main (int argc, char **argv, char **env)
 					} */
 
 					//cette condition ne semble rien changer
-					if (cmd_list && (ft_strncmp(line, "$?", 2) != 0 || \
-					(ft_strncmp(line, "$?", 2) == 0 && ft_strlen(line) != 2)))
+					
+ 					if (cmd_list && (ft_strncmp(line, "$?", 2) != 0 || \
+					(ft_strncmp(line, "$?", 2) == 0 && ft_strlen(line) != 2)) != 0)
 						free_cmd_list(cmd_list);
+					
+					// free_cmd_list(cmd_list);
 					
 				}
 			}
 		}
+		if (cmd_list && (ft_strncmp(line, "$?", 2) == 0 && \
+		ft_strlen(line) == 2))
+			free(cmd_list);
+
+/* 
+		t_env	*exit;
+		exit = NULL;
+		if (is_key_in_env(env_list, "EXIT_STATUS") == true)
+			exit = find_value_with_key_env(env_list, "EXIT_STATUS");
+			
+		if (exit && ft_atoi(exit->value) != 127)
+			free(cmd_list); */
+
+			
 		free(line);
 		line = NULL;
 		free(prompt);
