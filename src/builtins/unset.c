@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
 /*   Updated: 2023/11/30 21:38:21 by kquerel          ###   ########.fr       */
@@ -66,8 +66,11 @@ int	ft_delete_node_env(t_env **head, t_env *to_delete)
 		to_delete->next->prev = to_delete->prev;
 	if (ft_strncmp(to_delete->key, "EXIT_STATUS", \
 	ft_strlen(to_delete->key)) == 0 && ft_strlen("EXIT_STATUS") \
-	== ft_strlen(to_delete->key))
+	== ft_strlen(to_delete->key) && to_delete->value)
+	{
 		free(to_delete->value);
+		to_delete->value = NULL;
+	}
 	else
 	{
 		free(to_delete->key);
@@ -79,6 +82,15 @@ int	ft_delete_node_env(t_env **head, t_env *to_delete)
 
 int	ft_delete_node_cmd(t_element **head, t_element *to_delete)
 {
+
+/////////////// FAIRE TEST QD HEREDOC
+        /* if (to_delete->content)
+        {
+            free(to_delete->hd_filename);
+            to_delete->hd_filename = NULL;
+        } */
+///////////////
+
 	if (!to_delete)
 		return (2);
 	if(!to_delete->prev && !to_delete->next)

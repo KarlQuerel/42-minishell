@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exec_3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
 /*   Updated: 2023/11/30 20:57:24 by kquerel          ###   ########.fr       */
@@ -70,12 +70,9 @@ int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 void	free_child(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	// (void)cmd;
-	(void)env;
+	//(void)env;
 	// (void)exec;
-	// if (free_cmd_list(cmd) == 1)
-	// 	cmd = NULL;
-	free_cmd_list(cmd); // SEULEMENT QUAND COMMAND NOT FOUND
-
+	free_cmd_list(cmd);
 	close(exec->std_in);
 	close(exec->std_out);
 	free (*exec->line);

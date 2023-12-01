@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:07:47 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/30 18:16:59 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/11/30 20:18:47 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ bool	quotes_can_close(char *line, int i)
 			else if (line[i] == '\"')
 				type = '\"';
 			i++;
-			if (line[i] == '\0') //new quote at end of line
+			if (line[i] == '\0')
 				return (false);
 			if (line[i] != type)
 			{
