@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/12/02 17:11:44 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 18:13:32 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	ft_delete_node_env(t_env **head, t_env *to_delete)
 		if (to_delete->value != NULL)
 		{
 			free(to_delete->value);
-			to_delete->value = NULL;	
+			to_delete->value = NULL;
 		}
 		free(to_delete);
 		to_delete = NULL;

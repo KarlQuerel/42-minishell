@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:30:50 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/02 14:20:11 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 19:15:36 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,16 +73,16 @@ void	middle_dup(t_element *cmd, t_env **env, t_pipe *exec)
 	close(exec->fd[1]);
 	if (!ft_is_builtin(cmd, env, exec, 1))
 		return ;
-	handle_command(cmd, env, exec, 1);
+	handle_command(cmd, env, exec);
 }
 
 /* Being on the middle pipe(s), only stdin fd is sent to dup2 */
-void last_dup(t_element *cmd, t_env **env, t_pipe *exec)
+void	last_dup(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	if (dup2(exec->fd_temp, STDIN_FILENO) < 0)
 		perror("dup last");
 	close(exec->fd_temp);
 	if (!ft_is_builtin(cmd, env, exec, 1))
 		return ;
-	handle_command(cmd, env, exec, 1);
+	handle_command(cmd, env, exec);
 }

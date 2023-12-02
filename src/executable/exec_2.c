@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/02 17:58:43 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 19:15:21 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,32 +19,19 @@ int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec, int option)
 	{
 		exec->std_in = dup(STDIN_FILENO);
 		exec->std_out = dup(STDOUT_FILENO);
-		if (!ft_redirect(cmd, exec))
+		if (!ft_redirect(cmd))
 		{
-			//free ? free child
 			close(exec->std_in);
 			close(exec->std_out);
 			return (0);
 		}
 		ft_builtins(cmd, env, exec);
-		
 		dup2(exec->std_in, STDIN_FILENO);
 		dup2(exec->std_out, STDOUT_FILENO);
 		close(exec->std_in);
 		close(exec->std_out);
-		
 		if (option == 1)
-		{
-			free_cmd_list(cmd);
-			free_env_list(*env);
-			free (*exec->line);
-			free (*exec->prompt);
-/* 			int i = 0;
-			while (exec->cmd_tab[i]) //que si strdup
-				free(exec->cmd_tab[i]); */
-			free_cmd_arr(exec);
-			free(exec);
-		}
+			ft_saint_olivier(cmd, env, exec);
 		if (option == 0)
 			return (0);
 		exit (0);
@@ -52,20 +39,29 @@ int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec, int option)
 	return (1);
 }
 
+/* Free builtins in case of pipe */
+void	ft_saint_olivier(t_element *cmd, t_env **env, t_pipe *exec)
+{
+	free_cmd_list(cmd);
+	free_env_list(*env);
+	free (*exec->line);
+	free (*exec->prompt);
+	free_cmd_arr(exec);
+	free(exec);
+}
+
 /* Redirects command based on its input
 --- if a redirection is detected, ft_redirect is called
 --- if a builtin is detected, ft_builtins is called
 ---	if the cmd is not empty, exec_command is called
 */
-// void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
-void	handle_command(t_element *cmd, t_env **env, t_pipe *exec, int option)
+void	handle_command(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	t_env	*exit_status;
 	int		exit_nb;
-	(void)option;
 
 	exit_nb = 0;
-	if (!ft_redirect(cmd, exec))
+	if (!ft_redirect(cmd))
 	{
 		free_child(cmd, env, exec);
 		exit(1);
@@ -79,23 +75,7 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec, int option)
 		return ;
 	}
 	if (exec->cmd_tab[0] != NULL)
-	{
 		exit_nb = exec_command(cmd, *env, exec);
-		//add_exit_status_in_env(env, exit_nb);
-	}
-	// if (option == 0 && exec->cmd_tab[0] && (ft_strncmp(*exec->line, "$?", 2) != 0 || \
-	// (ft_strncmp(*exec->line, "$?", 2) == 0 && ft_strlen(*exec->line) != 2)) != 0)
-	// if (is_in_line(*exec->line, "$?") == true)
-	// {
-	// 	free(exec->cmd_tab[0]);
-	// 	exec->cmd_tab[0] = NULL;
-	// }
 	free_child(cmd, env, exec);
-	
-	// if (cmd)
-	// 	printf("---->cmd\n");
-	// if (env)
-	// 	printf("---->env\n");
-	
 	exit(exit_nb);
 }

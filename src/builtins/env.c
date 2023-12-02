@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:21:09 by karl              #+#    #+#             */
-/*   Updated: 2023/12/02 13:00:09 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 18:18:14 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void	ft_env(t_env *env, t_element *cmd, int option)
 		return ;
 	while (env)
 	{
-		// if (ft_strncmp(env->key, "EXIT_STATUS", ft_strlen("EXIT_STATUS")) \
-		// 	== 0 && ft_strlen(env->key) == ft_strlen("EXIT_STATUS"))
 		if (compare(env->key, "EXIT_STATUS") == true)
 			env = env->next;
 		else
