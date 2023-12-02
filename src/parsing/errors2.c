@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:40:58 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/02 13:14:11 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 13:17:32 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void	and_error(char *line)
 	while (line[i] != ' ' && line[i])
 		i++;
 	if (i == 1)
-		printf("bash: syntax error near unexpected token `&'\n");
+		msg_error_bash(6, "syntax error near unexpected token `&'");
 	else
-		printf("bash: syntax error near unexpected token `&&'\n");
+		msg_error_bash(6, "syntax error near unexpected token `&&'");
 }
 
 bool	pipe_double_or_eof(char *line)
@@ -34,21 +34,19 @@ bool	pipe_double_or_eof(char *line)
 	{
 		if (line[i] == '|' && line[i + 1] == '|')
 		{
-			ft_putendl_fd("bash: syntax error near \
-			unexpected token `||'", STDERR_FILENO);
+			msg_error_bash(8, "");
 			return (false);
 		}
 		i++;
 	}
 	if (line[ft_strlen(line) - 1] == '|')
 	{
-		ft_putendl_fd("bash: syntax error : | at end of line", STDERR_FILENO);
+		msg_error_bash(7, "");
 		return (false);
 	}
 	if (line[ft_strlen(line) - 1] == '<' || line[ft_strlen(line) - 1] == '>')
 	{
-		ft_putendl_fd("bash: syntax error near unexpected token `newline'", \
-		STDERR_FILENO);
+		msg_error_bash(6, "bash: syntax error near unexpected token `newline'");
 		return (false);
 	}
 	return (true);

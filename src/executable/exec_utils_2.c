@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:54:48 by kquerel           #+#    #+#             */
-/*   Updated: 2023/11/30 15:44:46 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 15:06:04 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ char	*ft_get_command(char **path, char *argument)
 	char	*to_return;
 	int		i;
 
+	if (is_only_dots(argument) == true)
+		return (NULL);
 	i = 0;
 	if (argument && path)
 	{
@@ -91,4 +93,16 @@ char	*ft_get_command(char **path, char *argument)
 		}
 	}
 	return (NULL);
+}
+
+/* Checks if a command is only "." or ".." */
+bool	is_only_dots(char *s)
+{
+	if (ft_strncmp(s, "..", ft_strlen("..")) == 0 \
+		&& ft_strlen(s) == ft_strlen(".."))
+		return (true);
+	if (ft_strncmp(s, ".", ft_strlen(".")) == 0 \
+		&& ft_strlen(s) == ft_strlen("."))
+		return (true);
+	return (false);
 }

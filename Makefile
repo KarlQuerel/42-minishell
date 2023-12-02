@@ -6,7 +6,7 @@
 #    By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/12/02 12:32:22 by casomarr         ###   ########.fr        #
+#    Updated: 2023/12/02 14:04:04 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ GREEN			= '\033[0;32m'
 RESET_COLOR		= '\033[0m'
 
 
-NAME        := minishell
+NAME		= minishell
 
 #------------------------------------------------#
 #   DEFINITIONS                                  #
@@ -32,11 +32,11 @@ NAME        := minishell
 # HFLAGS  preprocessor flags
 # DIR_DUP   duplicate directory tree
 
-SRC_DIR     := src
-OBJ_DIR     := obj
-INCLUDE_DIR := includes
+SRC_DIR		= src
+OBJ_DIR		= obj
+INCLUDE_DIR	= includes
 
-SRCS		:=  src/main.c \
+SRCS		=	src/main.c \
 				src/builtins/builtins_errors.c \
 				src/builtins/cd.c \
 				src/builtins/cd2.c \
@@ -70,6 +70,7 @@ SRCS		:=  src/main.c \
 				src/parsing/env_list.c \
 				src/parsing/lstnew.c \
 				src/parsing/free.c \
+				src/parsing/free_2.c \
 				src/parsing/errors.c \
 				src/parsing/errors2.c \
 				src/parsing/utils.c \
@@ -80,16 +81,16 @@ SRCS		:=  src/main.c \
 				src/parsing/determine_cmd.c \
 				
 
-OBJS 		  = $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))
-OBJS		  = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
+OBJS 		= $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))
+OBJS		= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
-CC			  = cc
+CC			= cc
 CFLAGS		= -Wall -Wextra -Werror -g3 #-fsanitize=address,undefined
 HFLAGS		= -I$(INCLUDE_DIR)
 RFLAGS		= -lreadline
 MAKEFLAGS	+= --no-print-directory
 
-LIBFT		 = libft/libft.a
+LIBFT		= libft/libft.a
 
 ifeq ($(debug), true)
 	CFLAGS	+= -fsanitize=address,undefined
@@ -105,9 +106,9 @@ endif
 # %.o       compilation .c -> .o
 
 all: $(NAME)
-	@toilet COMPILED -F border -f wideterm
 
 $(NAME): $(OBJS) $(LIBFT)
+	@toilet COMPILED -F border -f wideterm
 	@toilet MINISHELL -F border -f wideterm
 	$(CC) $(CFLAGS) $(HFLAGS) $^ -o $@ $(RFLAGS)
 

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/02 14:26:22 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 15:03:08 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -414,6 +414,8 @@ char	*ft_strjoin_free_s2(char *s1, char *s2);
 
 bool	is_in_line(char *big, char *little);
 void	ft_assign_key_and_value(int i, char **ret, char *s);
+void	msg_error_bash_2(int err, char *s);
+bool	is_only_dots(char *s);
 
 
 #endif

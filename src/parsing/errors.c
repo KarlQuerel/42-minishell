@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:39:52 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/02 12:29:44 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 13:22:55 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,7 @@ bool	redirecters_error(char *line)
 		(line[i + 1] == '<' || line[i + 1] == '>') && \
 		(line[i + 2] == '<' || line[i + 2] == '>'))
 		{
-			// printf("KARL MESSAGE ERREUR\n");
-			//msg_error_bash(5, ""); KARL
+			msg_error_bash(6, "syntax error near unexpected token `>' or `<'");
 			return (false);
 		}
 		if (line[i])
@@ -83,7 +82,7 @@ void	pipe_error(char *line)
 	while (line[i] != ' ' && line[i])
 		i++;
 	if (i == 1)
-		printf("bash: syntax error near unexpected token `|'\n");
+		msg_error_bash(7, "");
 	else
-		printf("bash: syntax error near HERE HERE unexpected token `||'\n");
+		msg_error_bash(8, "");
 }
