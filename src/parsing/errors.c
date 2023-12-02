@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:39:52 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/02 13:22:55 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 23:26:37 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,24 @@ bool	redirecters_error(char *line)
 			while (line[i] && line[i] != '\"')
 				i++;
 		}
-		else if ((line[i] == '<' || line[i] == '>') && \
-		(line[i + 1] == '<' || line[i + 1] == '>') && \
-		(line[i + 2] == '<' || line[i + 2] == '>'))
-		{
-			msg_error_bash(6, "syntax error near unexpected token `>' or `<'");
+		else if (!redirecters_error_norm(line, i))
 			return (false);
-		}
 		if (line[i])
 			i++;
 	}
 	return (true);
+}
+
+int	redirecters_error_norm(char *line, int i)
+{
+	if ((line[i] == '<' || line[i] == '>') && \
+		(line[i + 1] == '<' || line[i + 1] == '>') && \
+		(line[i + 2] == '<' || line[i + 2] == '>'))
+	{
+		msg_error_bash(6, "syntax error near unexpected token `>' or `<'");
+		return (0);
+	}
+	return (1);
 }
 
 void	pipe_error(char *line)

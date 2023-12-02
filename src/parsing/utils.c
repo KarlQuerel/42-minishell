@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/02 15:21:16 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 23:19:00 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-//EFFACER LE COMMENTAIRE CI DESSOUS
-/*COMMENTAIRE QUI JE CROIS N'EST PLUS D'ACTUALITE MAIS JE GARDES AU CAS OU CA 
-M AIDERAIT A REGLER DES ERREURS DE VALGRIND :
-J'ai fait +2 dans les mallocs de toute cette fonction car en plus du \0
-il y a potentiellement un espace de plus (dans le cas ou il y a plusieurs
-strings a echo et que comme c'est calloc et non malloc on s'en fout que
-ce ne soit pas le bon nombre exact je pense car au pire tout est deja des \0)*/
 
 /*Function used in the echo function to join all the arguments encountered
 between the "echo" cmd and a pipe or the end of the command line.*/
@@ -76,13 +68,7 @@ char	*strlcpy_middle(char *dst, const char *src, size_t start, size_t end)
 	int	i;
 
 	i = 0;
-	// if (src == NULL) //test pour régler invalid free qd cd cd .. cd..
-	// {
-	// 	dst = ft_calloc(1, sizeof(char));
-	// 	return (dst);
-	// }
-	//printf("start : %zu, end : %zu, src : %s\n", start, end, src);
-	if (start > end) //a regle invalid read de 1 mais fait peter exit
+	if (start > end)
 		start = end;
 	dst = ft_calloc(end - start + 2, sizeof(char));
 	while (src[start] && start <= end)
@@ -99,7 +85,7 @@ char	*ft_strjoin_free(char const *s1, char *s2)
 	char	*new_str;
 
 	if (s2 == NULL)
-		return ((char *)s1); // changement karl pour les flags
+		return ((char *)s1);
 	if (s1 == NULL)
 		ft_strlen_total = ft_strlen(s2);
 	else
@@ -109,17 +95,20 @@ char	*ft_strjoin_free(char const *s1, char *s2)
 		return (NULL);
 	i = 0;
 	if (s1 != NULL)
-	{
-		while (s1[i])
-		{
-			new_str[i] = s1[i];
-			i++;
-		}
-	}
+		str_join_fill(s1, new_str, i);
 	j = 0;
 	while (s2[j])
 		new_str[i++] = s2[j++];
 	new_str[i] = '\0';
-	free((char *)s1); // changement karl pour les flags
+	free((char *)s1);
 	return (new_str);
+}
+
+void	str_join_fill(const char *s1, char *new_str, int i)
+{
+	while (s1[i])
+	{
+		new_str[i] = s1[i];
+		i++;
+	}
 }

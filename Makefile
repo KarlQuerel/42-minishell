@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+         #
+#    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/12/02 20:35:18 by kquerel          ###   ########.fr        #
+#    Updated: 2023/12/02 23:29:44 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,6 +66,7 @@ SRCS		=	src/main.c \
 				src/parsing/commands.c \
 				src/parsing/parsing.c \
 				src/parsing/parsing2.c \
+				src/parsing/parsing3.c \
 				src/parsing/erase_spaces.c \
 				src/parsing/checks.c \
 				src/parsing/signal.c \
@@ -81,6 +82,7 @@ SRCS		=	src/main.c \
 				src/parsing/cmd_types.c \
 				src/parsing/prompt.c \
 				src/parsing/determine_cmd.c \
+				src/parsing/determine_cmd_2.c \
 				
 
 OBJS 		= $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))

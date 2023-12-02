@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/02 20:42:47 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/03 00:46:18 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ char		*erase_empty_strings(char *line);
 bool		line_errors_and_fix(char *line);
 bool		first_character_error(char *line);
 bool		redirecters_error(char *line);
+int			redirecters_error_norm(char *line, int i);
 void		pipe_error(char *line);
 
 /*Errors2*/
@@ -183,6 +184,10 @@ int			free_cmd_list(t_element *cmd_list);
 int			free_env_list(t_env *env_list);
 void		ctrld_free(char *line, char *prompt, t_env *env, t_pipe *exec);
 
+/*Free_2*/
+void	ft_free_null_cmd(t_element *to_delete);
+
+
 /*Lstnew*/
 t_element	*lstnew(char *line, int i, int type);
 t_env		*lstnew_env(char *line, int i);
@@ -195,6 +200,13 @@ char type);
 char		*empty_strings_malloc(char *line);
 
 /*Determine_cmd*/
+bool		option(char *line, size_t end, size_t start);
+bool		heredoc(char *line, size_t start);
+bool		infile(char *line, size_t start);
+bool		outfile_append(char *line, size_t start);
+bool		outfile(char *line, size_t start);
+
+/*Determine_cmd_2*/
 int			determine_command_type(char *line, size_t end, size_t start);
 
 /*Parsing*/
@@ -206,11 +218,15 @@ bool		no_cmd_before(t_element *current);
 
 /*Parsing2*/
 t_element	*parsing_initialisation(char *line, int *i, int *start);
-void		parsing_fill_content(t_element **current_cmd, char *line, int *i, \
-char *separator);
+void	parsing_fill_content(t_element **cur, char *line, int *i, \
+char *sep);
 void		parsing_advance_to_next_word(char *line, int *start, int *i);
+
+/*Parsing 3*/
 void		parsing_initialize_next(t_element **current_cmd, char *line, int \
 *i);
+int			parsing_fix_dollar(t_element **cmd_list, t_element *current, \
+t_env *env_list);
 
 /*Prompt*/
 void		home_path_simplified_loop(char *absolute_path, t_env *user, int *i, \
@@ -231,6 +247,8 @@ char		*ft_join_pour_cd(char *line_begining, char *path);
 char		*strlcpy_middle(char *dst, const char *src, size_t start, \
 size_t end);
 char		*ft_strjoin_free(char const *s1, char *s2);
+void		str_join_fill(const char *s1, char *new_str, int i);
+
 
 /*Utils2*/
 char		*type_of_separator(char *line, int i, int str_type);
@@ -321,6 +339,7 @@ void		pwd_update_in_env(t_env **env_list);
 int			ft_unset(t_element *cmd, t_env **env);
 int			ft_delete_node_env(t_env **head, t_env *to_delete);
 int			ft_delete_node_cmd(t_element **head, t_element *to_delete);
+void		ft_free_null(t_env *to_delete);
 
 /*-----------------EXECUTABLE FOLDER ------------------*/
 

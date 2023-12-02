@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/02 18:17:41 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 23:21:50 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec)
 
 void	ctrld_free(char *line, char *prompt, t_env *env, t_pipe *exec)
 {
-	int i;
+	int		i;
 	t_env	*exit_status;
-	int	nb;
+	int		nb;
 
 	i = 0;
 	free(line);
@@ -41,7 +41,6 @@ void	ctrld_free(char *line, char *prompt, t_env *env, t_pipe *exec)
 	nb = ft_atoi(exit_status->value);
 	free_env_list(env);
 	exit(nb);
-
 }
 
 void	free_cmd_arr(t_pipe *exec)
@@ -78,16 +77,13 @@ int	free_cmd_list(t_element *cmd_list)
 	{
 		if (ft_delete_node_cmd(head, cmd_list) == 1)
 		{
-			//printf("cmd_list->builtin = %d\n", cmd_list->builtin);
-			//free(cmd_list);
 			cmd_list = NULL;
-			return 1;
+			return (1);
 		}
 	}
 	free(cmd_list);
-	//printf("cmd_list->content = %s\n", cmd_list->content);
 	cmd_list = NULL;
-	return 0;
+	return (0);
 }
 
 int	free_env_list(t_env *env_list)
@@ -100,10 +96,10 @@ int	free_env_list(t_env *env_list)
 		if (ft_delete_node_env(head, env_list) == 1)
 		{
 			env_list = NULL;
-			return 1;
+			return (1);
 		}
 	}
 	free(env_list);
 	env_list = NULL;
-	return 0;
+	return (0);
 }

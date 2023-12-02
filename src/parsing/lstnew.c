@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:59:32 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/02 17:25:08 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 22:56:27 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ t_element	*lstnew(char *line, int i, int type)
 {
 	t_element	*new;
 
-	// new = ft_calloc(1, sizeof(t_element));
 	new = ft_calloc(1, sizeof(t_element));
 	if (!new)
 		return (NULL);
@@ -29,7 +28,6 @@ t_element	*lstnew(char *line, int i, int type)
 	new->change = true;
 	new->prev = NULL;
 	new->next = NULL;
-	// free(line);
 	return (new);
 }
 
@@ -41,8 +39,6 @@ t_env	*lstnew_env(char *line, int i)
 	new = ft_calloc(1, sizeof(t_env));
 	if (!new)
 		return (NULL);
-	/*LIGNE DU DESSOUS : j'ai mis + 100 pour regler les pb de valgrind mais 
-	je ne peux pas le laisser comme ca!!*/
 	new->key = ft_calloc(size_of_command(line, i, KEY) + 1, sizeof(char));
 	if (!new->key)
 		return (NULL);
