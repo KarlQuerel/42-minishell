@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 20:32:19 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/02 23:43:45 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 23:59:23 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	new_key_loop(size_t *i, char *content, int *alpha)
 	{
 		if (content[(*i)] == '$' && content[(*i) + 1] == '$')
 		{
-			while(content[(*i) + 1] == '$')
+			while (content[(*i) + 1] == '$')
 				(*i)++;
 		}
 		if (ft_isalpha(content[(*i)]) == 1)
@@ -30,12 +30,13 @@ void	new_key_loop(size_t *i, char *content, int *alpha)
 		(*i)++;
 	}
 }
+
 void	new_key(size_t *i, char **key_to_find, char *content)
 {
 	int	start;
 	int	alpha;
 
-	if (content[(*i)] == '\0') //pas sûre
+	if (content[(*i)] == '\0')
 	{
 		if (*key_to_find)
 			free(*key_to_find);
@@ -56,11 +57,10 @@ void	new_key(size_t *i, char **key_to_find, char *content)
 	}
 }
 
-char	*replace_dollar(char *content, char *key_to_find, t_env *env_list)
+char	*replace_dollar(char *key_to_find, t_env *env_list)
 {
-	(void)content; ///
 	t_env	*key_in_env;
-	char *ret;
+	char	*ret;
 
 	ret = NULL;
 	if (is_key_in_env(env_list, key_to_find) == true)
@@ -69,4 +69,17 @@ char	*replace_dollar(char *content, char *key_to_find, t_env *env_list)
 		ret = ft_strdup(key_in_env->value);
 	}
 	return (ret);
+}
+
+void	text_before(char *content, char **ret)
+{
+	int	start;
+
+	start = 0;
+	if (content[0] != '$')
+	{
+		while (content[start] != '$')
+			start++;
+		(*ret) = strlcpy_middle((*ret), content, 0, start - 1);
+	}
 }
