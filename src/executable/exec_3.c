@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/02 17:13:54 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 17:59:00 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,18 +86,7 @@ void	free_child(t_element *cmd, t_env **env, t_pipe *exec)
 	// (void)exec;
 	//if (is_in_line(*exec->line, "$?") == false)
 	if (free_cmd_list(cmd) == 1)
-	{
-		/* t_env	*exit;
-		exit = NULL;
-		if (is_key_in_env(*env, "EXIT_STATUS") == true)
-		{
-			exit = find_value_with_key_env(*env, "EXIT_STATUS");
-			exit->value = NULL;
-		} */
-
 		cmd = NULL;
-			
-	}
 	if (exec->std_in > 2)
 		close(exec->std_in);
 	if (exec->std_out > 2)

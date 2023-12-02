@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/02 17:36:21 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 17:58:43 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,30 +99,3 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec, int option)
 	
 	exit(exit_nb);
 }
-
-
-
-/* 
-==1677443== For lists of detected and suppressed errors, rerun with: -s
-==1677443== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-==1677373== Invalid free() / delete / delete[] / realloc()
-==1677373==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==1677373==    by 0x40841E: ft_delete_node_cmd_parent (free_2.c:77)
-==1677373==    by 0x408540: free_cmd_list_parent (free_2.c:111)
-==1677373==    by 0x40177D: main (main.c:161)
-==1677373==  Address 0x4b705a0 is 0 bytes inside a block of size 4 free'd
-==1677373==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==1677373==    by 0x402E86: add_exit_status_in_env (exit.c:116)
-==1677373==    by 0x404234: ft_exit_status_single (exec.c:82)
-==1677373==    by 0x4040B8: single_command (exec.c:70)
-==1677373==    by 0x403FA6: ft_execute (exec.c:38)
-==1677373==    by 0x401762: main (main.c:135)
-==1677373==  Block was alloc'd at
-==1677373==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==1677373==    by 0x40B437: ft_itoa (in /mnt/nfs/homes/kquerel/Minishell/minishell)
-==1677373==    by 0x402E8E: add_exit_status_in_env (exit.c:117)
-==1677373==    by 0x4042F1: ft_exit_status_multiple (exec.c:132)
-==1677373==    by 0x4041B8: multiple_commands (exec.c:114)
-==1677373==    by 0x403FBC: ft_execute (exec.c:41)
-==1677373==    by 0x401762: main (main.c:135)
- */

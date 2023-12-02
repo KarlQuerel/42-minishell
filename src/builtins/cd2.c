@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 11:47:20 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/02 12:58:00 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 18:06:58 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	go_forward_until_user(char *current_path, char *home_value)
 	end = 0;
 	while (current_path[end] == home_value[end])
 		end++;
-	//if (ft_strncmp(current_path, "/", ft_strlen(current_path)) != 0)
 	if (compare(current_path, "/") == false)
 		end += 1;
 	ret = forward_loop(current_path, home_value, end);

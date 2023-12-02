@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/02 17:42:22 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 18:03:12 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,9 +157,19 @@ int main (int argc, char **argv, char **env)
 					// 	free_cmd_list(cmd_list); //si $? au lieu de $ echo $USER a des leaks
 					
 					
-					//test free parent
-					if (compare(line, "$?") == false)
-						free_cmd_list_parent(cmd_list);
+					// //test free parent
+					// if (compare(line, "$?") == false) //fait que ca marche la premiere fois
+					// {
+					// 	printf("ICI\n");	
+					// 	free_cmd_list_parent(cmd_list);
+					// }
+					//printf("ICI 45\n");	
+					
+					if (compare(line, "$") == false)
+					{
+						if (free_cmd_list_parent(cmd_list) == 1)
+							cmd_list = NULL;
+					}
 
 /* 					t_env	*exit;
 					exit = NULL;
@@ -175,7 +185,10 @@ int main (int argc, char **argv, char **env)
 		// if (line && ft_strncmp(line, "$?", 2) == 0 && \
 		// ft_strlen(line) == 2)
 		if (compare(line, "$") == true)
+		{
 			free(cmd_list);
+			cmd_list = NULL;
+		}
 		free(line);
 		line = NULL;
 		free(prompt);

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/01 17:46:30 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 17:57:47 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,9 @@ int	ft_exit_status_single(t_env **env, int pid)
 		add_exit_status_in_env(env, 128 + WTERMSIG(status));
 	else
 		add_exit_status_in_env(env, status);
+	// while ((*env)->next)
+	// 	(*env) = (*env)->next;
+	// printf("------->exit_status = %s\n", (*env)->value);
 	return (1);
 }
 
