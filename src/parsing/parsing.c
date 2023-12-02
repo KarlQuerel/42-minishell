@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/02 13:57:39 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 17:40:38 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,12 +109,16 @@ int	parsing_fix(t_element **cmd_list, t_env *env_list)
 			{
 				if (ft_delete_node_cmd(cmd_list, current) == 1) //scotch temp
 				{
+					printf("HELLO\n");
 					// free(*cmd_list);
-					// *cmd_list = NULL;
+					*cmd_list = NULL;
 					return (1); //scoth return 1 put head to NULL with condition
 				}
+				current = NULL;
 			}
 		}
+		else
+			current->change = false;
 		if (current)
 			current = current->next;
 	}

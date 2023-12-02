@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/02 15:06:43 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 17:42:22 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int main (int argc, char **argv, char **env)
 	env_list = put_env_in_list(env);
 	using_history();
 	line = NULL;
-	add_exit_status_in_env(&env_list, 0);
+	//add_exit_status_in_env(&env_list, 0);
 
 	exec = ft_calloc(1, sizeof(t_pipe));
 	if (!exec)
@@ -155,6 +155,19 @@ int main (int argc, char **argv, char **env)
 					
 					// if (is_in_line(line, "$") == false) //et que pas entre quotes?
 					// 	free_cmd_list(cmd_list); //si $? au lieu de $ echo $USER a des leaks
+					
+					
+					//test free parent
+					if (compare(line, "$?") == false)
+						free_cmd_list_parent(cmd_list);
+
+/* 					t_env	*exit;
+					exit = NULL;
+					if (is_key_in_env(env_list, "EXIT_STATUS") == true)
+					{
+						exit = find_value_with_key_env(env_list, "EXIT_STATUS");
+						exit->value = NULL;
+					} */
 				}
 			}
 		}

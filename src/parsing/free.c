@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/01 20:17:26 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 17:13:26 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,12 @@ int	free_cmd_list(t_element *cmd_list)
 		}
 	}
 	free(cmd_list);
+	//printf("cmd_list->content = %s\n", cmd_list->content);
 	cmd_list = NULL;
 	return 0;
 }
 
-void	free_env_list(t_env *env_list)
+int	free_env_list(t_env *env_list)
 {
 	t_env	**head;
 
@@ -106,9 +107,10 @@ void	free_env_list(t_env *env_list)
 		if (ft_delete_node_env(head, env_list) == 1)
 		{
 			env_list = NULL;
-			return ;
+			return 1;
 		}
 	}
 	free(env_list);
 	env_list = NULL;
+	return 0;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/02 15:03:08 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 17:14:11 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ bool	pipe_double_or_eof(char *line);
 void	exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec);
 void	free_cmd_tab(t_pipe *exec);
 int		free_cmd_list(t_element *cmd_list);
-void		free_env_list(t_env *env_list);
+int		free_env_list(t_env *env_list);
 void	ctrld_free(char *line, char *prompt, t_env *env, t_pipe *exec);
 
 /*Lstnew*/
@@ -416,6 +416,10 @@ bool	is_in_line(char *big, char *little);
 void	ft_assign_key_and_value(int i, char **ret, char *s);
 void	msg_error_bash_2(int err, char *s);
 bool	is_only_dots(char *s);
+
+int	ft_delete_node_cmd_parent(t_element **head, t_element *to_delete);
+int	free_cmd_list_parent(t_element *cmd_list);
+
 
 
 #endif
