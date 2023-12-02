@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/02 17:57:47 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 19:10:19 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	single_command(t_element *cmd, t_env **env, t_pipe *exec)
 	if (pid < 0)
 		(perror("fork"), exit(127));
 	if (pid == 0)
-		handle_command(cmd, env, exec, 0);
+		handle_command(cmd, env, exec);
 	if (!ft_exit_status_single(env, pid))
 		return ;
 }
@@ -84,9 +84,6 @@ int	ft_exit_status_single(t_env **env, int pid)
 		add_exit_status_in_env(env, 128 + WTERMSIG(status));
 	else
 		add_exit_status_in_env(env, status);
-	// while ((*env)->next)
-	// 	(*env) = (*env)->next;
-	// printf("------->exit_status = %s\n", (*env)->value);
 	return (1);
 }
 

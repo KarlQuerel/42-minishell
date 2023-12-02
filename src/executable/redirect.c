@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/02 12:26:08 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 18:30:58 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,41 +63,43 @@ int	ft_outfile(t_element *cmd)
 }
 
 /* Handles redirections depending on cmd->type */
-int	ft_redirect(t_element *cmd, t_pipe *exec)
+int	ft_redirect(t_element *cmd)
 {
 	t_element	*tmp;
 
-	(void)exec; // peut etre besoin pour les free
 	if (!cmd)
 		return (0);
 	tmp = cmd;
 	ft_top_of_list(tmp);
 	while (tmp != NULL && tmp->type != PIPE)
 	{
-		if (tmp->type == INFILE)
-		{
-			if (!ft_infile(tmp->content))
-			{
-				// gerer les free
-				// gerer les unlink
-				return (0);
-			}
-		}
-		else if (tmp->type == HEREDOC)
-		{
-			if (!ft_infile(ft_alban(cmd)))
-				return (0);
-			unlink(tmp->content);
-		}
-		else if (tmp->type == OUTFILE || tmp->type == OUTFILE_APPEND)
-		{
-			if (!ft_outfile(tmp))
-				// gerer les free
-				return (0);
-		}
+		if (!ft_redir_while(cmd, tmp))
+			return (0);
 		tmp = tmp->next;
 	}
 	tmp = cmd;
+	return (1);
+}
+
+/* For the norminette */
+int	ft_redir_while(t_element *cmd, t_element *tmp)
+{
+	if (tmp->type == INFILE)
+	{
+		if (!ft_infile(tmp->content))
+			return (0);
+	}
+	else if (tmp->type == HEREDOC)
+	{
+		if (!ft_infile(ft_alban(cmd)))
+			return (0);
+		unlink(tmp->content);
+	}
+	else if (tmp->type == OUTFILE || tmp->type == OUTFILE_APPEND)
+	{
+		if (!ft_outfile(tmp))
+			return (0);
+	}
 	return (1);
 }
 

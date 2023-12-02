@@ -6,7 +6,7 @@
 #    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/12/02 15:56:25 by kquerel          ###   ########.fr        #
+#    Updated: 2023/12/02 20:35:18 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,7 @@ SRCS		=	src/main.c \
 				src/executable/exec_errors.c \
 				src/executable/init_and_utils.c \
 				src/executable/heredoc.c \
+				src/executable/heredoc_utils.c \
 				src/executable/pipe_and_dup.c \
 				src/executable/redirect.c \
 				src/executable/redirect_utils.c \

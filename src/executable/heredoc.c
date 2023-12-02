@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 20:44:11 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/02 13:01:20 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 19:49:27 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,112 +29,36 @@ bool	ft_heredoc(t_element *cmd, t_env *env)
 		return (false);
 	cmd->hd_filename = ft_strdup(file_name);
 	free(file_name);
+	words = NULL;
 	fd_heredoc = dup(STDIN_FILENO);
 	while (1)
 	{
-		words = readline("> ");
-		if (g_location == QUIT_HEREDOC)
-		{
-			add_exit_status_in_env(&env, 130);
-			break;
-		}
-		//if (ft_strncmp(words, cmd->content, ft_strlen(words)) == 0 && ft_strlen(words) == ft_strlen(cmd->content))
-		if (compare(words, cmd->content) == true)
-		{
-			add_exit_status_in_env(&env, 0);
-			break;
-		}
-		if (words && *words)
-			ft_putendl_fd(words, fd);
-		if (words == NULL)
-		{
-			ft_putstr_fd("bash: warning: here-document delimited by end-of-file (wanted `", STDERR_FILENO);
-			ft_putstr_fd(cmd->content, STDERR_FILENO);
-			ft_putendl_fd("')", STDERR_FILENO);
-			add_exit_status_in_env(&env, 0);
-			break;
-		}
-		free(words);
-		words = NULL;
+		if (!heredoc_loop(cmd, env, words, fd))
+			break ;
 	}
-	free(words);
-	words = NULL;
-	close(fd);
-	dup2(fd_heredoc, STDIN_FILENO);
-	close(fd_heredoc);
+	free_dup_heredoc(words, fd, fd_heredoc);
 	return (true);
 }
 
-/* Creates heredoc */
-char	*create_heredoc(char *name, int i, int *fd)
+/* Fills heredoc as long as heredoc_loop returns (1) */
+int	heredoc_loop(t_element *cmd, t_env *env, char *words, int fd)
 {
-	name = ft_strjoin_free_s2("tmp_file", ft_itoa(i));
-	if (!name)
-		return (NULL);
-	*fd = open(name, O_WRONLY | O_CREAT | O_EXCL, 0777);
-	if (*fd < 0)
+	words = readline("> ");
+	if (g_location == QUIT_HEREDOC)
+		return (add_exit_status_in_env(&env, 130), 0);
+	if (compare(words, cmd->content) == true)
+		return (add_exit_status_in_env(&env, 0), 0);
+	if (words && *words)
+		ft_putendl_fd(words, fd);
+	if (words == NULL)
 	{
-		perror("bash");
-		return (NULL);
+		ft_putstr_fd(HD_ERR, STDERR_FILENO);
+		ft_putstr_fd(cmd->content, STDERR_FILENO);
+		ft_putendl_fd("')", STDERR_FILENO);
+		add_exit_status_in_env(&env, 0);
+		return (0);
 	}
-	if (access(name, F_OK))
-	{
-		free(name);
-		return (NULL);
-	}
-	return (name);
-}
-
-/* Minishell's backbone */
-char	*ft_alban(t_element *cmd)
-{
-	char	*ret;
-
-	ret = NULL;
-	while (cmd->prev && cmd->prev->type != PIPE)
-	{
-		if (cmd->type == HEREDOC)
-		{
-			ret = cmd->hd_filename;
-			break ;
-		}
-		cmd = cmd->prev;
-	}
-	while (cmd && cmd->type != PIPE)
-	{
-		if (cmd->type == HEREDOC)
-			ret = cmd->hd_filename;
-		if (!cmd->next)
-			break ;
-		cmd = cmd->next;
-	}
-	return (ret);
-}
-
-/* str_join_free_s2 */
-char	*ft_strjoin_free_s2(char *s1, char *s2)
-{
-	int		i;
-	int		j;
-	int		ft_strlen_total;
-	char	*new_str;
-
-	if (s1 == NULL || s2 == NULL)
-		return (NULL);
-	ft_strlen_total = ft_strlen(s1) + ft_strlen(s2);
-	new_str = malloc((sizeof(char)) * (ft_strlen_total + 1));
-	if (new_str == NULL)
-		return (NULL);
-	i = 0;
-	while (s1[i])
-	{
-		new_str[i] = s1[i];
-		i++;
-	}
-	j = 0;
-	while (s2[j])
-		new_str[i++] = s2[j++];
-	new_str[i] = '\0';
-	free(s2);
-	return (new_str);
+	free(words);
+	words = NULL;
+	return (1);
 }

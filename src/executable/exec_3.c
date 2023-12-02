@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/02 17:59:00 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 19:20:00 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@
  */
 int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 {
-	char *path;
+	char	*path;
+	t_env	*exit;
 
 	exec->env_execve = ft_transform_env(env);
-	if (ft_exec_slash(cmd, exec, env))
+	if (ft_exec_slash(cmd, exec))
 		return (127);
 	exec->cmd_path = split_path(env);
 	path = ft_get_command(exec->cmd_path, exec->cmd_tab[0]);
@@ -44,7 +45,6 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 	}
 	else
 	{
-		t_env	*exit;
 		exit = NULL;
 		if (is_key_in_env(env, "EXIT_STATUS") == true)
 			exit = find_value_with_key_env(env, "EXIT_STATUS");
@@ -55,36 +55,23 @@ int	exec_command(t_element *cmd, t_env *env, t_pipe *exec)
 }
 
 /* Execve if a "/" is found in the cmd */
-int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
+int	ft_exec_slash(t_element *cmd, t_pipe *exec)
 {
-	(void)env;
-	char *path;
+	char	*path;
 
 	path = cmd->content;
 	if (ft_strchr(exec->cmd_tab[0], '/'))
 	{
-		t_env	*exit;
-		exit = NULL;
-		if (is_key_in_env(env, "EXIT_STATUS") == true)
-			exit = find_value_with_key_env(env, "EXIT_STATUS");
-		free(exit->value);
 		execve(path, exec->cmd_tab, exec->env_execve);
 		msg_error_bash(0, exec->cmd_tab[0]);
 		perror(" ");
-		//free_child(cmd, &env, exec);
-		// add_exit_status_in_env(&env, 127);
 		return (127);
 	}
-	// add_exit_status_in_env(&env, 0);
 	return (0);
 }
 
 void	free_child(t_element *cmd, t_env **env, t_pipe *exec)
 {
-	//(void)cmd;
-	//(void)env;
-	// (void)exec;
-	//if (is_in_line(*exec->line, "$?") == false)
 	if (free_cmd_list(cmd) == 1)
 		cmd = NULL;
 	if (exec->std_in > 2)

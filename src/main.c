@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/02 18:03:12 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 20:35:32 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,11 @@ int main (int argc, char **argv, char **env)
 
 	if (argc != 1)
 		return (msg_error(0, ""), EXIT_FAILURE);
-	ft_welcome();
 	(void)argv;
 	env_list = put_env_in_list(env);
 	using_history();
 	line = NULL;
 	//add_exit_status_in_env(&env_list, 0);
-
 	exec = ft_calloc(1, sizeof(t_pipe));
 	if (!exec)
 	{
