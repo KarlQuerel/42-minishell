@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/02 17:14:11 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 18:27:42 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,6 @@ typedef struct s_element
 	bool	change;
 	struct s_element *prev;
 	struct s_element *next;
-	// struct s_pipe *exec;
-	// struct s_env *env;
 }	t_element;
 
 /* Environment

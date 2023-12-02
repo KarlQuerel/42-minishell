@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/02 18:03:12 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 18:18:38 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,6 @@ int main (int argc, char **argv, char **env)
 			add_exit_status_in_env(&env_list, 0);
 		path = ft_prompt(env_list, NO_PRINT);
 		prompt = ft_strjoin(path, "$ ");
-		// if (ft_strncmp(path, "/", ft_strlen(path)) != 0 && \
-		// ft_strncmp(path, "", ft_strlen(path)) != 0) //if malloc'ed
 		if (compare(path, "/") == false && compare(path, "") == false) //if malloc'ed
 			free(path);
 		line = readline(prompt);
@@ -135,55 +133,15 @@ int main (int argc, char **argv, char **env)
 					ft_execute(cmd_list, &env_list, exec);
 					free_cmd_arr(exec); //double free qd heredoc
 					ft_unlink(cmd_list);
-					// free(cmd_list->hd_filename);
-/* 					t_env	*exit;
-					exit = NULL;
-					if (is_key_in_env(env_list, "EXIT_STATUS") == true)
-						exit = find_value_with_key_env(env_list, "EXIT_STATUS");
-						
-					if (exit && ft_atoi(exit->value) != 127)
-					{
-						free_cmd_list(cmd_list);
-						cmd_list = NULL;
-					} */
-					
- 					// if (cmd_list && (ft_strncmp(line, "$?", 2) != 0 || \
-					// (ft_strncmp(line, "$?", 2) == 0 && ft_strlen(line) != 2)) != 0)
-					
-					// if (is_in_line(line, "$?") == false)
-					// 	free_cmd_list(cmd_list);
-					
-					// if (is_in_line(line, "$") == false) //et que pas entre quotes?
-					// 	free_cmd_list(cmd_list); //si $? au lieu de $ echo $USER a des leaks
-					
-					
-					// //test free parent
-					// if (compare(line, "$?") == false) //fait que ca marche la premiere fois
-					// {
-					// 	printf("ICI\n");	
-					// 	free_cmd_list_parent(cmd_list);
-					// }
-					//printf("ICI 45\n");	
-					
+				
 					if (compare(line, "$") == false)
 					{
 						if (free_cmd_list_parent(cmd_list) == 1)
 							cmd_list = NULL;
 					}
-
-/* 					t_env	*exit;
-					exit = NULL;
-					if (is_key_in_env(env_list, "EXIT_STATUS") == true)
-					{
-						exit = find_value_with_key_env(env_list, "EXIT_STATUS");
-						exit->value = NULL;
-					} */
 				}
 			}
 		}
-		//if (is_in_line(line, "$?") == false)
-		// if (line && ft_strncmp(line, "$?", 2) == 0 && \
-		// ft_strlen(line) == 2)
 		if (compare(line, "$") == true)
 		{
 			free(cmd_list);

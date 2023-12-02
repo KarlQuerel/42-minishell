@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/02 18:08:06 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 18:32:52 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ char	*replace_dollar(char *content, char *key_to_find, t_env *env_list)
 	{
 		key_in_env = find_value_with_key_env(env_list, key_to_find);
 		//ret = ft_calloc(ft_strlen(key_in_env->value), sizeof(char));
-		ret = key_in_env->value;
+		ret = ft_strdup(key_in_env->value);
+		//ret = key_in_env->value;
 		//content = ft_calloc(ft_strlen(key_in_env->value), sizeof(char));
 		//content = strlcpy_middle(content, key_in_env->value, 0, ft_strlen(key_in_env->value));
 	}
