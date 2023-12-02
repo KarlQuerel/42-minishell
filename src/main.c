@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/02 14:53:09 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 15:05:32 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,8 +153,8 @@ int main (int argc, char **argv, char **env)
 					// if (is_in_line(line, "$?") == false)
 					// 	free_cmd_list(cmd_list);
 					
-					if (is_in_line(line, "$") == false) //et que pas entre quotes?
-						free_cmd_list(cmd_list); //changer le nom de la fonction car n'est plus clair
+					// if (is_in_line(line, "$") == false) //et que pas entre quotes?
+					// 	free_cmd_list(cmd_list); //si $? au lieu de $ echo $USER a des leaks
 				}
 			}
 		}

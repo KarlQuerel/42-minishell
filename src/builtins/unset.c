@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/12/02 14:52:54 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 15:06:02 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,10 @@ int	ft_delete_node_cmd(t_element **head, t_element *to_delete)
 		return (2);
 	if(!to_delete->prev && !to_delete->next)
 	{
-		if (to_delete->content != NULL/*  && is_in_line(to_delete->content, "$") == false */)
+		if (to_delete->content != NULL && \
+		is_in_line(to_delete->content, "$") == false)
 		{
-			//printf("to_delete->content : %s\n", to_delete->content);
-			//printf("cmd\n");
-			free(to_delete->content);
+				free(to_delete->content);
 			to_delete->content = NULL;
 		}
 		free(to_delete);
@@ -108,7 +107,8 @@ int	ft_delete_node_cmd(t_element **head, t_element *to_delete)
 		*head = to_delete->next;
 	if (to_delete->next)
 		to_delete->next->prev = to_delete->prev;
-	if (to_delete->content != NULL)
+	if (to_delete->content != NULL && \
+	is_in_line(to_delete->content, "$") == false)
 	{
 		free(to_delete->content);
 		to_delete->content = NULL;
