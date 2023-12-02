@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exec_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
 /*   Updated: 2023/12/02 14:10:41 by kquerel          ###   ########.fr       */
@@ -85,7 +85,7 @@ void	handle_command(t_element *cmd, t_env **env, t_pipe *exec, int option)
 	}
 	// if (option == 0 && exec->cmd_tab[0] && (ft_strncmp(*exec->line, "$?", 2) != 0 || \
 	// (ft_strncmp(*exec->line, "$?", 2) == 0 && ft_strlen(*exec->line) != 2)) != 0)
-	// if (is_exit_status_in_line(*exec->line, "$?") == true)
+	// if (is_in_line(*exec->line, "$?") == true)
 	// {
 	// 	free(exec->cmd_tab[0]);
 	// 	exec->cmd_tab[0] = NULL;

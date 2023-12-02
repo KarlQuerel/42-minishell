@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:00:17 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/27 14:03:55 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 13:51:56 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,18 +57,23 @@ t_env	*put_env_in_list(char **env)
 t_env	*find_value_with_key_env(t_env *env_list, char *key)
 {
 	int	i;
+	t_env *current;
 
 	i = 0;
-	while (env_list != NULL)
+	current = env_list;
+	while (current != NULL)
 	{
 		i = 0;
-		while (env_list->key[i] == key[i])
+		while (current->key[i] == key[i])
 		{
 			i++;
 			if (key[i] == '\0')
-				return (env_list);
+			{
+				// printf("find value user : %s\n", current->value);
+				return (current);
+			}
 		}
-		env_list = env_list->next;
+		current = current->next;
 	}
 	return (NULL);
 }
@@ -89,8 +94,9 @@ bool	is_key_in_env(t_env *env_list, char *key)
 		shorter = key;
 	while (tmp)
 	{
-		if (ft_strncmp(key, tmp->key, ft_strlen(shorter)) == 0 && \
-		ft_strlen(key) == ft_strlen(tmp->key))
+		// if (ft_strncmp(key, tmp->key, ft_strlen(shorter)) == 0 && \
+		// ft_strlen(key) == ft_strlen(tmp->key))
+		if (compare(key, tmp->key) == true)
 			return (true);
 		tmp = tmp->next;
 	}

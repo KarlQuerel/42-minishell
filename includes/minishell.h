@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
 /*   Updated: 2023/12/02 15:03:08 by kquerel          ###   ########.fr       */
@@ -263,6 +263,7 @@ char	*type_of_separator(char *line, int i, int str_type);
 int		parsing_str_type(char *line, int i);
 bool	ft_is_num(char *s);
 bool	ft_atoi_check(char *str);
+bool	compare(char *s1, char *s2);
 
 /*------------------BUILT-INS FOLDER------------------*/
 
@@ -411,11 +412,10 @@ char	*ft_strjoin_free_s2(char *s1, char *s2);
 
 
 
-bool	is_exit_status_in_line(char *big, char *little);
+bool	is_in_line(char *big, char *little);
 void	ft_assign_key_and_value(int i, char **ret, char *s);
 void	msg_error_bash_2(int err, char *s);
 bool	is_only_dots(char *s);
-
 
 
 #endif

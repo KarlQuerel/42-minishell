@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/29 16:04:52 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 15:21:16 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,9 @@ char	*strlcpy_middle(char *dst, const char *src, size_t start, size_t end)
 	// 	dst = ft_calloc(1, sizeof(char));
 	// 	return (dst);
 	// }
+	//printf("start : %zu, end : %zu, src : %s\n", start, end, src);
+	if (start > end) //a regle invalid read de 1 mais fait peter exit
+		start = end;
 	dst = ft_calloc(end - start + 2, sizeof(char));
 	while (src[start] && start <= end)
 		dst[i++] = src[start++];

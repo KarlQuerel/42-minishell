@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   exec_3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
 /*   Updated: 2023/12/02 14:25:23 by kquerel          ###   ########.fr       */
@@ -84,7 +84,7 @@ void	free_child(t_element *cmd, t_env **env, t_pipe *exec)
 	//(void)cmd;
 	//(void)env;
 	// (void)exec;
-	//if (is_exit_status_in_line(*exec->line, "$?") == false)
+	//if (is_in_line(*exec->line, "$?") == false)
 	if (free_cmd_list(cmd) == 1)
 	{
 		t_env	*exit;

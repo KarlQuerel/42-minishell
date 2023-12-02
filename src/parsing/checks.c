@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:07:47 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/01 14:11:39 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:39:31 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,10 @@ bool	is_builtin(char *cmd_content)
 	i = 0;
 	while (i < 8)
 	{
-		if (ft_strncmp(cmd_content, builtins[i], \
-		ft_strlen(cmd_content)) == 0 && \
-		ft_strlen(cmd_content) == ft_strlen(builtins[i]))
+		// if (ft_strncmp(cmd_content, builtins[i], \
+		// ft_strlen(cmd_content)) == 0 && \
+		// ft_strlen(cmd_content) == ft_strlen(builtins[i]))
+		if (compare(cmd_content, builtins[i]) == true)
 			return (true);
 		i++;
 	}
@@ -81,6 +82,8 @@ bool	is_user_in_path(char *path, t_env *env_list)
 	t_env	*user;
 
 	i = 0;
+	if (is_key_in_env(env_list, "USER") == false)
+		return (false);
 	user = find_value_with_key_env(env_list, "USER");
 	while (path[i])
 	{
@@ -95,4 +98,27 @@ bool	is_user_in_path(char *path, t_env *env_list)
 		i++;
 	}
 	return (false);
+}
+
+bool    is_in_line(char *big, char *little)
+{
+    size_t    i;
+    size_t    j;
+
+    i = 0;
+    j = 0;
+    if (!big || !little)
+        return (false); //?
+    while (big[i])
+    {
+        j = 0;
+        while (big[i + j] == little[j] && little[j])
+        {
+            j++;
+            if (little[j] == '\0')
+                return (true);
+        }
+        i++;
+    }
+    return (false);
 }
