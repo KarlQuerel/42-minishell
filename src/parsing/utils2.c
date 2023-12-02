@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 12:10:49 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/27 14:04:30 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:00:13 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,25 @@ bool	ft_atoi_check(char *str)
 		i++;
 	}
 	return (true);
+}
+
+bool	compare(char *s1, char *s2)
+{
+	size_t	i;
+
+	// if (ft_strncmp(s2, "casomarr", ft_strlen("casomarr")) == 0)
+	// 	printf("user COMPARE : %s\n", s2);
+
+	i = 0;
+	if (!s1 || !s2)
+		return (false);
+	while ((s1[i] || s2[i]))
+	{
+		if (s1[i] != s2[i])
+			return (false);
+		i++;
+	}
+	if (ft_strlen(s1) == ft_strlen(s2))
+		return (true);
+	return (false);
 }

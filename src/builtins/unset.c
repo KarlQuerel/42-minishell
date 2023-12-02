@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/12/01 19:30:39 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 14:52:54 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,27 +47,12 @@ int	ft_delete_node_env(t_env **head, t_env *to_delete)
 		return (2);
 	if (!to_delete->prev && !to_delete->next)
 	{
-		if (ft_strncmp(to_delete->key, "EXIT_STATUS", \
-		ft_strlen(to_delete->key)) == 0 && ft_strlen("EXIT_STATUS") \
-		== ft_strlen(to_delete->key)/*  && to_delete->value != NULL */)
-		{
-			//printf("ICI\n");
-			//printf("value freed in delete_node_cmd: %s\n", to_delete->value);
-			if (to_delete->value != NULL)
-			{
-				// printf("to_delete->value : %s\n", to_delete->value);
-				free(to_delete->value);
-				to_delete->value = NULL;
-			}
-		}
-		else
-		{
+		if (compare(to_delete->key, "EXIT_STATUS") == false)
 			free(to_delete->key);
-			if (to_delete->value != NULL)
-			{
-				free(to_delete->value);
-				to_delete->value = NULL;	
-			}
+		if (to_delete->value != NULL)
+		{
+			free(to_delete->value);
+			to_delete->value = NULL;	
 		}
 		free(to_delete);
 		to_delete = NULL;
@@ -79,21 +64,12 @@ int	ft_delete_node_env(t_env **head, t_env *to_delete)
 		*head = to_delete->next;
 	if (to_delete->next)
 		to_delete->next->prev = to_delete->prev;
-	if (ft_strncmp(to_delete->key, "EXIT_STATUS", \
-	ft_strlen(to_delete->key)) == 0 && ft_strlen("EXIT_STATUS") \
-	== ft_strlen(to_delete->key) && to_delete->value != NULL)
+	if (compare(to_delete->key, "EXIT_STATUS") == false)
+		free(to_delete->key);
+	if (to_delete->value != NULL)
 	{
 		free(to_delete->value);
-		to_delete->value = NULL;
-	}
-	else
-	{
-		free(to_delete->key);
-		if (to_delete->value != NULL)
-		{
-			free(to_delete->value);
-			to_delete->value = NULL;	
-		}
+		to_delete->value = NULL;	
 	}
 	free(to_delete);
 	to_delete = NULL;
@@ -104,7 +80,7 @@ int	ft_delete_node_cmd(t_element **head, t_element *to_delete)
 {
 
 /////////////// FAIRE TEST QD HEREDOC
-        /* if (to_delete->content)
+        /* if (to_delete->hd_filename)
         {
             free(to_delete->hd_filename);
             to_delete->hd_filename = NULL;
@@ -115,18 +91,13 @@ int	ft_delete_node_cmd(t_element **head, t_element *to_delete)
 		return (2);
 	if(!to_delete->prev && !to_delete->next)
 	{
-		if (to_delete->content != NULL)
+		if (to_delete->content != NULL/*  && is_in_line(to_delete->content, "$") == false */)
 		{
 			//printf("to_delete->content : %s\n", to_delete->content);
 			//printf("cmd\n");
 			free(to_delete->content);
 			to_delete->content = NULL;
 		}
-		// if (to_delete->content)
-		// {
-		// 	free(to_delete->hd_filename);
-		// 	to_delete->hd_filename = NULL;
-		// }
 		free(to_delete);
 		to_delete = NULL;
 		return (1);
@@ -142,11 +113,6 @@ int	ft_delete_node_cmd(t_element **head, t_element *to_delete)
 		free(to_delete->content);
 		to_delete->content = NULL;
 	}
-	// if (to_delete->content)
-	// {
-	// 	free(to_delete->hd_filename);
-	// 	to_delete->hd_filename = NULL;
-	// }
 	free(to_delete);
 	to_delete = NULL;
 	return (0);

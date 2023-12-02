@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/01 14:59:09 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:41:59 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,12 +161,14 @@ char	*dollar(char *content, t_env *env_list)
 	ret = NULL;
 	key_to_find = NULL;
 	alpha = false;
-	if (ft_strncmp(content, "$?", 2) == 0 && ft_strlen(content) == 2)
+	//if (ft_strncmp(content, "$?", 2) == 0 && ft_strlen(content) == 2)
+	if (compare(content, "$?") == true)
 	{
 		key_to_find = "EXIT_STATUS";
 		alpha = true;
 	}
-	if (ft_strncmp(content, "$.", 2) == 0 && ft_strlen(content) == 2)
+	// if (ft_strncmp(content, "$.", 2) == 0 && ft_strlen(content) == 2)
+	if (compare(content, "$.") == true)
 		return (ret);
 	i = 1;
 	while (content[i])
@@ -210,8 +212,9 @@ char	*dollar(char *content, t_env *env_list)
 	}
 	free (content);
 	content = NULL;
-	if (key_to_find != NULL && (ft_strncmp(key_to_find, "EXIT_STATUS", ft_strlen(key_to_find)) != 0 || \
-	ft_strlen(key_to_find) != ft_strlen("EXIT_STATUS")))
+	// if (key_to_find != NULL && (ft_strncmp(key_to_find, "EXIT_STATUS", ft_strlen(key_to_find)) != 0 || \
+	// ft_strlen(key_to_find) != ft_strlen("EXIT_STATUS")))
+	 if (key_to_find != NULL && compare(key_to_find, "EXIT_STATUS") == false)
 		free(key_to_find);
 	return (ret);
 }

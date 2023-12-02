@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:40:58 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/27 14:04:04 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 13:14:11 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	pipe_double_or_eof(char *line)
 		if (line[i] == '|' && line[i + 1] == '|')
 		{
 			ft_putendl_fd("bash: syntax error near \
-            unexpected token `||'", STDERR_FILENO);
+			unexpected token `||'", STDERR_FILENO);
 			return (false);
 		}
 		i++;

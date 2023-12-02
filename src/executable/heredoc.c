@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 20:44:11 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/01 15:36:01 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 13:01:20 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ bool	ft_heredoc(t_element *cmd, t_env *env)
 			add_exit_status_in_env(&env, 130);
 			break;
 		}
-		if (ft_strncmp(words, cmd->content, ft_strlen(words)) == 0 && ft_strlen(words) == ft_strlen(cmd->content))
+		//if (ft_strncmp(words, cmd->content, ft_strlen(words)) == 0 && ft_strlen(words) == ft_strlen(cmd->content))
+		if (compare(words, cmd->content) == true)
 		{
 			add_exit_status_in_env(&env, 0);
 			break;

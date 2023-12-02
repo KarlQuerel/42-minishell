@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:36:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/29 14:19:07 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/12/02 14:20:04 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,15 @@ char **path_from_home)
 		temp = NULL;
 		temp = strlcpy_middle(temp, absolute_path, start, (*i));
 		start = (*i) + 2;
-		if (ft_strncmp(temp, user->value, ft_strlen(user->value)) == 0 && \
-		ft_strlen(user->value) == ft_strlen(temp))
+		// if (ft_strncmp(temp, user->value, ft_strlen(user->value)) == 0 && \
+		// ft_strlen(user->value) == ft_strlen(temp))
+		if (compare(temp, user->value) == true)
 		{
 			j = 0;
 			(*i) += 2;
-			(*path_from_home) = malloc(sizeof(char) * (ft_strlen(absolute_path) \
-			- (*i) + 2));
+			// (*path_from_home) = malloc(sizeof(char) * (ft_strlen(absolute_path) \
+			// - (*i) + 2));
+			(*path_from_home) = ft_calloc(ft_strlen(absolute_path) - (*i) + 2, sizeof(char));
 			while (absolute_path[(*i)])
 				(*path_from_home)[j++] = absolute_path[(*i)++];
 			(*path_from_home)[j] = '\0';
@@ -109,11 +111,20 @@ char	*ft_prompt(t_env *env_list, int option)
 	path = pwd(NO_PRINT);
 	word = strlcpy_middle(word, path, get_beggining_of_last_word(), \
 	ft_strlen(path) - 1); //sans le -1 ne change rien mais fait plus de sens!
+	
+	
+/* 	t_env	*user;
+	user = NULL;
+	if (is_key_in_env(env_list, "USER") == true)
+		user = find_value_with_key_env(env_list, "USER");
+	printf("user->value BEFORE: %s\n", user->value); */
+
+	
 	ft_prompt2(&prompt, word, env_list, path);
 	if (option == PRINT)
 		printf("%s", prompt);
 	free(path);
-	free(word);
+	free(word);	
 	return (prompt);
 }
 
@@ -122,16 +133,19 @@ void	ft_prompt2(char **prompt, char *word, t_env *env_list, char *path)
 	t_env	*user;
 	t_env	*gpath;
 
-	user = find_value_with_key_env(env_list, "USER");
-	gpath = find_value_with_key_env(env_list, "PWD");
-	if (ft_strncmp(word, user->value, ft_strlen(user->value)) == 0)
+	user = NULL;
+	gpath = NULL;
+	if (is_key_in_env(env_list, "USER") == true)
+		user = find_value_with_key_env(env_list, "USER");
+	if (is_key_in_env(env_list, "PWD") == true)
+		gpath = find_value_with_key_env(env_list, "PWD");
+	if (/* user != NULL &&  */compare(word, user->value) == true)
 		(*prompt) = "";
-	else if (ft_strncmp(word, "homes", ft_strlen(word) - \
+	else if (/* gpath != NULL &&  */ft_strncmp(word, "homes", ft_strlen(word) - \
 	get_beggining_of_last_word() + 1) == 0)
 		(*prompt) = strlcpy_middle((*prompt), gpath->value, 1, \
 		ft_strlen(gpath->value) - 1);
-	else if (ft_strncmp(word, user->value, ft_strlen(user->value)) != 0 && \
-	is_user_in_path(path, env_list) == true)
+	else if (/* user != NULL &&  */compare(word, user->value) == false && is_user_in_path(path, env_list) == true)
 		(*prompt) = home_path_simplified(path, env_list);
 	else
 		(*prompt) = "/";

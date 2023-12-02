@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/01 20:16:36 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 14:53:09 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,9 @@ int main (int argc, char **argv, char **env)
 			add_exit_status_in_env(&env_list, 0);
 		path = ft_prompt(env_list, NO_PRINT);
 		prompt = ft_strjoin(path, "$ ");
-		if (ft_strncmp(path, "/", ft_strlen(path)) != 0 && \
-		ft_strncmp(path, "", ft_strlen(path)) != 0) //if malloc'ed
+		// if (ft_strncmp(path, "/", ft_strlen(path)) != 0 && \
+		// ft_strncmp(path, "", ft_strlen(path)) != 0) //if malloc'ed
+		if (compare(path, "/") == false && compare(path, "") == false) //if malloc'ed
 			free(path);
 		line = readline(prompt);
 		if (g_location == QUIT)
@@ -148,15 +149,20 @@ int main (int argc, char **argv, char **env)
 					
  					// if (cmd_list && (ft_strncmp(line, "$?", 2) != 0 || \
 					// (ft_strncmp(line, "$?", 2) == 0 && ft_strlen(line) != 2)) != 0)
-					if (is_exit_status_in_line(line, "$?") == false)
-						free_cmd_list(cmd_list);
+					
+					// if (is_in_line(line, "$?") == false)
+					// 	free_cmd_list(cmd_list);
+					
+					if (is_in_line(line, "$") == false) //et que pas entre quotes?
+						free_cmd_list(cmd_list); //changer le nom de la fonction car n'est plus clair
 				}
 			}
 		}
-		//if (is_exit_status_in_line(line, "$?") == false)
-		if (line && ft_strncmp(line, "$?", 2) == 0 && \
-		ft_strlen(line) == 2)
-			free(cmd_list);	
+		//if (is_in_line(line, "$?") == false)
+		// if (line && ft_strncmp(line, "$?", 2) == 0 && \
+		// ft_strlen(line) == 2)
+		if (compare(line, "$") == true)
+			free(cmd_list);
 		free(line);
 		line = NULL;
 		free(prompt);

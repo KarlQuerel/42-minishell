@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_errors.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:39:41 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/01 17:48:01 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 12:57:40 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,10 @@ bool	echo_option(t_element *cmd)
 	{
 		if (cmd->type == ARGUMENT)
 			args_count++;
-		if (cmd->type == OPTION && \
-		(ft_strncmp(cmd->content, "-n", 2) != 0 || \
-		ft_strlen(cmd->content) != 2))
+		//if (cmd->type == OPTION && \
+		// (ft_strncmp(cmd->content, "-n", 2) != 0 || \
+		// ft_strlen(cmd->content) != 2))
+		if (cmd->type == OPTION && compare(cmd->content, "-n") == false)
 		{	
 			ft_putendl_fd("echo only accepts option -n", STDERR_FILENO);
 			return (false);

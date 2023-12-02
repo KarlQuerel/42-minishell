@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:39:52 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/01 20:22:01 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 12:29:44 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,24 @@ bool	first_character_error(char *line)
 
 bool	redirecters_error(char *line)
 {
-	//erreur si redirecteurs a la suite sauf si entre "" ou ''
 	int	i;
 
 	i = 0;
 	while (line[i])
 	{
-		if ((line[i] == '<' || line[i] == '>') && \
+		if (line[i] == '\'' && quotes_can_close(line, i))
+		{
+			i++;
+			while (line[i] && line[i] != '\'')
+				i++;
+		}
+		else if (line[i] == '\"' && quotes_can_close(line, i))
+		{
+			i++;
+			while (line[i] && line[i] != '\"')
+				i++;
+		}
+		else if ((line[i] == '<' || line[i] == '>') && \
 		(line[i + 1] == '<' || line[i + 1] == '>') && \
 		(line[i + 2] == '<' || line[i + 2] == '>'))
 		{
@@ -58,7 +69,8 @@ bool	redirecters_error(char *line)
 			//msg_error_bash(5, ""); KARL
 			return (false);
 		}
-		i++;
+		if (line[i])
+			i++;
 	}
 	return (true);
 }
