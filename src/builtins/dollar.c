@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/02 18:32:52 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 19:04:24 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,10 @@ char	*replace_dollar(char *content, char *key_to_find, t_env *env_list)
 	char *ret;
 
 	ret = NULL;
-	//ne peux pas laisser la ligne usivante comme ca
-	//ret = ft_calloc(1000, sizeof(char)); //pour que ce soit rjes calloc pour free cmd list
 	if (is_key_in_env(env_list, key_to_find) == true)
 	{
 		key_in_env = find_value_with_key_env(env_list, key_to_find);
-		//ret = ft_calloc(ft_strlen(key_in_env->value), sizeof(char));
-		ret = ft_strdup(key_in_env->value);
-		//ret = key_in_env->value;
-		//content = ft_calloc(ft_strlen(key_in_env->value), sizeof(char));
-		//content = strlcpy_middle(content, key_in_env->value, 0, ft_strlen(key_in_env->value));
+		ret = ft_strdup(key_in_env->value);;
 	}
 	else
 	{
@@ -95,20 +89,19 @@ char	*dollar(char *content, t_env *env_list)
 	char	*ret;
 	size_t	i;
 	bool	alpha;
+	int		j;
 	
 	ret = NULL;
 	key_to_find = NULL;
 	alpha = false;
-	//if (ft_strncmp(content, "$?", 2) == 0 && ft_strlen(content) == 2)
 	if (compare(content, "$?") == true)
 	{
 		key_to_find = "EXIT_STATUS";
 		alpha = true;
 	}
-	// if (ft_strncmp(content, "$.", 2) == 0 && ft_strlen(content) == 2)
 	if (compare(content, "$.") == true)
 		return (ret);
-	i = 1;
+	i = 0;
 	while (content[i])
 	{
 		if (content[i] == '$' && content[i + 1] == '$')
@@ -117,13 +110,24 @@ char	*dollar(char *content, t_env *env_list)
 				i++;
 		}
 		if (ft_isalpha(content[i]) == 1) // if true
+		{
+			if (alpha == false) //premiere fois
+				j = i;
 			alpha = true;
+		}
 		if (content[i] == '$' && content[i + 1] != '\0')
 			break;
 		i++;
 	}
 	if (i != ft_strlen(content)) //if multiple $
 	{
+		if (content[0] != '$') // ou si j != 1 /////////////////////////////
+		{
+			int start = j;
+			while (content[j] != '$')
+				j++;
+			ret = strlcpy_middle(ret, content, start, j - 1);
+		} /////////////////////////////////
 		key_to_find = strlcpy_middle(key_to_find, content, 1, i - 1);
 		while (i < ft_strlen(content)) //recursive
 		{
@@ -138,7 +142,13 @@ char	*dollar(char *content, t_env *env_list)
 		{
 			if (key_to_find == NULL)
 				key_to_find = strlcpy_middle(key_to_find, content, 1, ft_strlen(content) - 1);
-			//ret = ft_calloc(4, sizeof(char)); //pour que ce soit rjes calloc pour free cmd list
+			if (content[0] != '$') // ou si j != 1  ////////////////////////////////
+			{
+				int start = j;
+				while (content[j] != '$')
+					j++;
+				ret = strlcpy_middle(ret, content, start, j - 1);
+			}///////////////////////////////////
 			ret = replace_dollar(content, key_to_find, env_list);
 		}
 		else
@@ -150,8 +160,6 @@ char	*dollar(char *content, t_env *env_list)
 	}
 	free (content);
 	content = NULL;
-	// if (key_to_find != NULL && (ft_strncmp(key_to_find, "EXIT_STATUS", ft_strlen(key_to_find)) != 0 || \
-	// ft_strlen(key_to_find) != ft_strlen("EXIT_STATUS")))
 	 if (key_to_find != NULL && compare(key_to_find, "EXIT_STATUS") == false)
 		free(key_to_find);
 	return (ret);
