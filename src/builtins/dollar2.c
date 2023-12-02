@@ -6,16 +6,32 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 20:32:19 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/02 20:47:48 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 22:40:46 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+void	new_key_loop(size_t *i, char *content, int *alpha)
+{
+	while (content[(*i)])
+	{
+		if (content[(*i)] == '$' && content[(*i) + 1] == '$')
+		{
+			while(content[(*i) + 1] == '$')
+				(*i)++;
+		}
+		if (ft_isalpha(content[(*i)]) == 1)
+			(*alpha) = 1;
+		if (content[(*i)] == '$' && content[(*i) + 1] != '\0')
+			break;
+		(*i)++;
+	}
+}
 void	new_key(size_t *i, char **key_to_find, char *content)
 {
 	int	start;
-	bool	alpha;
+	int	alpha;
 
 	if (content[(*i)] == '\0') //pas sûre
 	{
@@ -27,20 +43,7 @@ void	new_key(size_t *i, char **key_to_find, char *content)
 	(*i)++;
 	start = *i;
 	alpha = false;
-	while (content[(*i)])
-	{
-		if (content[(*i)] == '$' && content[(*i) + 1] == '$')
-		{
-			while(content[(*i) + 1] == '$')
-				(*i)++;
-		}
-		if (ft_isalpha(content[(*i)]) == 1) // if true
-			alpha = true;
-		if (content[(*i)] == '$' && content[(*i) + 1] != '\0')
-			break;
-		(*i)++;
-	}
-
+	new_key_loop(i, content, &alpha);
 	if (alpha == true)
 	{
 		if (*key_to_find)
@@ -48,7 +51,6 @@ void	new_key(size_t *i, char **key_to_find, char *content)
 		*key_to_find = NULL;
 		*key_to_find = strlcpy_middle(*key_to_find, content, start, *i - 1);
 	}
-	
 }
 
 char	*replace_dollar(char *content, char *key_to_find, t_env *env_list)
@@ -65,4 +67,3 @@ char	*replace_dollar(char *content, char *key_to_find, t_env *env_list)
 	}
 	return (ret);
 }
-

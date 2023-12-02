@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/02 20:42:47 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 22:39:53 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,6 +268,7 @@ void	multiple_dollars(char *content, size_t i, char **ret, t_env *env);
 char	*dollar(char *content, t_env *env_list);
 
 /*Dollar2*/
+void	new_key_loop(size_t *i, char *content, int *alpha);
 void	new_key(size_t *i, char **key_to_find, char *content);
 char	*replace_dollar(char *content, char *key_to_find, t_env *env_list);
 

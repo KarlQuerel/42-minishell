@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/02 22:24:19 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 22:57:17 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 int	initialize_values(char *content, int *alpha, size_t *i, size_t *j)
 {
+	int dollar_nb;
+
+	dollar_nb = 0;
 	while (content[(*i)])
 	{
 		if (content[(*i)] == '$' && content[(*i) + 1] == '$')
@@ -31,6 +34,10 @@ int	initialize_values(char *content, int *alpha, size_t *i, size_t *j)
 			return 0;
 		if (content[(*i)] == '$' && content[0] == '$')
 			return 1;
+		if (content[(*i)] == '$' && dollar_nb == 1)
+			return 1;
+		if (content[(*i)] == '$')
+			dollar_nb = 1;
 		(*i)++;
 	}
 	return 0;
@@ -61,6 +68,11 @@ void	multiple_dollars(char *content, size_t i, char **ret, t_env *env)
 	key_to_find = NULL;
 	replaced = NULL;
 	key_to_find = strlcpy_middle(key_to_find, content, 1, i - 1);
+	if (compare(key_to_find, "?") == true) //si $?
+	{
+		free(key_to_find);
+		key_to_find = ft_strdup("EXIT_STATUS");
+	}
 	while (i < ft_strlen(content))
 	{
 		replaced = replace_dollar(content, key_to_find, env);
