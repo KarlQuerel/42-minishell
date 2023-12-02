@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/02 19:04:24 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 19:21:12 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	new_key(size_t *i, char **key_to_find, char *content)
 /*
 1. Checks if the $ is followed by alphanumeric
 2. Puts what follows the $ into the variable key_to_find.
-3. Cheks that the key exists in env_list (and key_in_env "takes its rank" if true).
+3. Checks that the key exists in env_list (and key_in_env "takes its rank" if true).
 4. Replaces the content by the key value.
 */
 char	*dollar(char *content, t_env *env_list)
@@ -109,27 +109,27 @@ char	*dollar(char *content, t_env *env_list)
 			while(content[i + 1] == '$')
 				i++;
 		}
-		if (ft_isalpha(content[i]) == 1) // if true
+		if (ft_isalpha(content[i]) == 1)
 		{
-			if (alpha == false) //premiere fois
+			if (alpha == false)
 				j = i;
 			alpha = true;
 		}
-		if (content[i] == '$' && content[i + 1] != '\0')
+		if (content[i] == '$' && content[i + 1] == '\0')
 			break;
 		i++;
 	}
-	if (i != ft_strlen(content)) //if multiple $
+	if (i != ft_strlen(content))
 	{
-		if (content[0] != '$') // ou si j != 1 /////////////////////////////
+		if (content[0] != '$')
 		{
 			int start = j;
 			while (content[j] != '$')
 				j++;
 			ret = strlcpy_middle(ret, content, start, j - 1);
-		} /////////////////////////////////
-		key_to_find = strlcpy_middle(key_to_find, content, 1, i - 1);
-		while (i < ft_strlen(content)) //recursive
+		}
+		key_to_find = strlcpy_middle(key_to_find, content, 1, i);
+		while (i < ft_strlen(content))
 		{
 			ret = ft_strjoin_free(ret, replace_dollar(content, key_to_find, env_list));
 			new_key(&i, &key_to_find, content);
@@ -141,14 +141,14 @@ char	*dollar(char *content, t_env *env_list)
 		if (alpha == true)
 		{
 			if (key_to_find == NULL)
-				key_to_find = strlcpy_middle(key_to_find, content, 1, ft_strlen(content) - 1);
-			if (content[0] != '$') // ou si j != 1  ////////////////////////////////
+				key_to_find = strlcpy_middle(key_to_find, content, 1, ft_strlen(content));
+			if (content[0] != '$')
 			{
 				int start = j;
 				while (content[j] != '$')
 					j++;
 				ret = strlcpy_middle(ret, content, start, j - 1);
-			}///////////////////////////////////
+			}
 			ret = replace_dollar(content, key_to_find, env_list);
 		}
 		else

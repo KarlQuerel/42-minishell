@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/02 18:51:55 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 19:13:13 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ int	parsing_fix(t_element **cmd_list, t_env *env_list)
 			current->type = COMMAND;
 		if (current->type == COMMAND && current->next)
 			type_arg_after_cmd(&current);
-		//if (current->content[0] == '$' && current->change == true)
 		if (is_in_line(current->content, "$") == true && current->change == true) //change sert tjrs?
 		{
 			current->content = dollar(current->content, env_list); //NULL ?
@@ -110,8 +109,6 @@ int	parsing_fix(t_element **cmd_list, t_env *env_list)
 			{
 				if (ft_delete_node_cmd(cmd_list, current) == 1) //scotch temp
 				{
-					printf("HELLO\n");
-					// free(*cmd_list);
 					*cmd_list = NULL;
 					return (1); //scoth return 1 put head to NULL with condition
 				}

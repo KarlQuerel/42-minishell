@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/02 18:18:25 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 19:18:05 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,6 @@ int	ft_exec_slash(t_element *cmd, t_pipe *exec, t_env *env)
 	path = cmd->content;
 	if (ft_strchr(exec->cmd_tab[0], '/'))
 	{
-		t_env	*exit;
-		exit = NULL;
-		if (is_key_in_env(env, "EXIT_STATUS") == true)
-			exit = find_value_with_key_env(env, "EXIT_STATUS");
-		free(exit->value);
 		execve(path, exec->cmd_tab, exec->env_execve);
 		msg_error_bash(0, exec->cmd_tab[0]);
 		perror(" ");
