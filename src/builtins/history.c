@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:43:38 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/01 18:14:52 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 13:18:46 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,13 @@ bool	history_option(t_element *cmd)
 	(ft_is_num(cmd->next->content) == false || \
 	ft_atoi_check(cmd->next->content) == false)))
 	{
-		msg_error_bash(4, cmd->next->content);
+		msg_error_bash(3, cmd->next->content);
 		return (false);
 	}
 	if (cmd->next && ft_is_num(cmd->next->content) && cmd->next->next && \
 	cmd->next->next->type < 3)
 	{
-		msg_error_bash(5, "");
+		msg_error_bash(6, "history: too many arguments");
 		return (false);
 	}
 	return (true);

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/01 20:11:16 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 14:25:23 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,10 @@ void	free_child(t_element *cmd, t_env **env, t_pipe *exec)
 		}
 			
 	}
-	close(exec->std_in);
-	close(exec->std_out);
+	if (exec->std_in > 2)
+		close(exec->std_in);
+	if (exec->std_out > 2)
+		close(exec->std_out);
 	free (*exec->line);
 	free (*exec->prompt);
 	free_cmd_arr(exec);

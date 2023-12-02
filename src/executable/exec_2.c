@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/01 19:39:15 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 14:10:41 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec, int option)
 		if (!ft_redirect(cmd, exec))
 		{
 			//free ? free child
+			close(exec->std_in);
+			close(exec->std_out);
 			return (0);
 		}
 		ft_builtins(cmd, env, exec);

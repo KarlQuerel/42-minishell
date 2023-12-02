@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:34:22 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/01 18:03:03 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 13:18:21 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	cd_home(t_env *env_list)
 	current_path = pwd(NO_PRINT);
 	if (!is_key_in_env(env_list, "HOME"))
 	{
-		msg_error_bash(3, "");
+		msg_error_bash(6, "cd: HOME not set");
 		free(current_path);
 		return ;
 	}

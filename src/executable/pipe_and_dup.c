@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_and_dup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:30:50 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/01 15:48:06 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:20:11 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	middle_dup(t_element *cmd, t_env **env, t_pipe *exec)
 		perror("dup2");
 		exit(0);
 	}
+	close(exec->fd[0]);
 	close(exec->fd[1]);
 	if (!ft_is_builtin(cmd, env, exec, 1))
 		return ;
