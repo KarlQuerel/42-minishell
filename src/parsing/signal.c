@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:39:23 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/01 20:15:17 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 23:03:26 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	set_signals(void)
 
 /* void	signal_handler(int signal, \
 siginfo_t *info, void *ucontext) */
-void	sigint_handler(int signal)//, int stdin_la_revanche)
+void	sigint_handler(int signal)
 {
 	(void)signal;
 	if (g_location == IN_PROMPT || g_location == QUIT)

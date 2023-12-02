@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/02 19:13:13 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/03 00:25:01 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,24 +46,10 @@ t_element	*parsing(char *line, t_env *env_list)
 		parsing_initialize_next(&current_cmd, line, &i);
 	}
 	if (parsing_fix(&head, env_list) == 1)
-	{
-		// free(head);
-		// head = NULL;
 		return (NULL);
-	}
 	builtin_fix(&head);
 	return (head);
 }
-
-/* bool	nothing_before(int start, int n, char *line)
-{
-	if (start - (n + 1) > -1)
-	{
-		if (line[start - (n + 1)] != ' ')
-			return false;
-	}
-	return (true);
-} */
 
 void	type_arg_after_cmd(t_element **current)
 {
@@ -102,19 +88,8 @@ int	parsing_fix(t_element **cmd_list, t_env *env_list)
 			current->type = COMMAND;
 		if (current->type == COMMAND && current->next)
 			type_arg_after_cmd(&current);
-		if (is_in_line(current->content, "$") == true && current->change == true) //change sert tjrs?
-		{
-			current->content = dollar(current->content, env_list); //NULL ?
-			if (current->content == NULL)
-			{
-				if (ft_delete_node_cmd(cmd_list, current) == 1) //scotch temp
-				{
-					*cmd_list = NULL;
-					return (1); //scoth return 1 put head to NULL with condition
-				}
-				current = NULL;
-			}
-		}
+		if (parsing_fix_dollar(cmd_list, current, env_list))
+			return (1);
 		else
 			current->change = false;
 		if (current)

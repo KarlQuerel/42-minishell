@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 12:10:49 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/02 14:00:13 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 22:57:31 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,6 @@ bool	ft_atoi_check(char *str)
 bool	compare(char *s1, char *s2)
 {
 	size_t	i;
-
-	// if (ft_strncmp(s2, "casomarr", ft_strlen("casomarr")) == 0)
-	// 	printf("user COMPARE : %s\n", s2);
 
 	i = 0;
 	if (!s1 || !s2)

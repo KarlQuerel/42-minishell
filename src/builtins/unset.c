@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:25:43 by karl              #+#    #+#             */
-/*   Updated: 2023/12/02 18:13:32 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 22:43:36 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,7 @@ int	ft_delete_node_env(t_env **head, t_env *to_delete)
 	{
 		if (compare(to_delete->key, "EXIT_STATUS") == false)
 			free(to_delete->key);
-		if (to_delete->value != NULL)
-		{
-			free(to_delete->value);
-			to_delete->value = NULL;
-		}
-		free(to_delete);
-		to_delete = NULL;
+		ft_free_null(to_delete);
 		return (1);
 	}
 	if (to_delete->prev)
@@ -66,12 +60,18 @@ int	ft_delete_node_env(t_env **head, t_env *to_delete)
 		to_delete->next->prev = to_delete->prev;
 	if (compare(to_delete->key, "EXIT_STATUS") == false)
 		free(to_delete->key);
+	ft_free_null(to_delete);
+	return (0);
+}
+
+/* Frees and sets it to NULL */
+void	ft_free_null(t_env *to_delete)
+{
 	if (to_delete->value != NULL)
 	{
 		free(to_delete->value);
-		to_delete->value = NULL;	
+		to_delete->value = NULL;
 	}
 	free(to_delete);
 	to_delete = NULL;
-	return (0);
 }

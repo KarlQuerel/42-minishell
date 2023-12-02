@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:07:47 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/02 14:39:31 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 22:57:09 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,6 @@ bool	is_builtin(char *cmd_content)
 	i = 0;
 	while (i < 8)
 	{
-		// if (ft_strncmp(cmd_content, builtins[i], \
-		// ft_strlen(cmd_content)) == 0 && \
-		// ft_strlen(cmd_content) == ft_strlen(builtins[i]))
 		if (compare(cmd_content, builtins[i]) == true)
 			return (true);
 		i++;
@@ -100,25 +97,25 @@ bool	is_user_in_path(char *path, t_env *env_list)
 	return (false);
 }
 
-bool    is_in_line(char *big, char *little)
+bool	is_in_line(char *big, char *little)
 {
-    size_t    i;
-    size_t    j;
+	size_t	i;
+	size_t	j;
 
-    i = 0;
-    j = 0;
-    if (!big || !little)
-        return (false); //?
-    while (big[i])
-    {
-        j = 0;
-        while (big[i + j] == little[j] && little[j])
-        {
-            j++;
-            if (little[j] == '\0')
-                return (true);
-        }
-        i++;
-    }
-    return (false);
+	i = 0;
+	j = 0;
+	if (!big || !little)
+		return (false);
+	while (big[i])
+	{
+		j = 0;
+		while (big[i + j] == little[j] && little[j])
+		{
+			j++;
+			if (little[j] == '\0')
+				return (true);
+		}
+		i++;
+	}
+	return (false);
 }

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:58:39 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/01 19:57:57 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/02 22:49:26 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	cmd_type(char *command, int len)
 	int	size;
 
 	size = 0;
-	if (!command) //KARL -> j'ai ajoute ca pour regler une seg fault
-		return (0); //verifier incidence de rendre 0 en size
+	if (!command)
+		return (0);
 	while (command[len] != ' ' && command[len] != '|' && \
 	command[len] != '<' && command[len] != '>' && command[len] != '\0')
 	{
@@ -39,8 +39,8 @@ int	key_and_value_type(char *command, int len, int type)
 	int	size;
 
 	size = 0;
-	if (!command) // KARL -> j'ai ajoute ca pour regler une seg fault
-		return (0); //verifier incidence de rendre 0 en size
+	if (!command)
+		return (0);
 	while (command[len] != '=')
 	{
 		size++;

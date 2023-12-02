@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/02 13:03:36 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 22:57:38 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ bool	is_cmd(char *buffer, char *command)
 {
 	if (!buffer || !command)
 		return (false);
-	// if (ft_strncmp(buffer, command, ft_strlen(buffer)) == 0 && \
-	// ft_strlen(buffer) == ft_strlen(command))
 	if (compare(buffer, command) == true)
 		return (true);
 	else

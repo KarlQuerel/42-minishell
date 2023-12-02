@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   erase_spaces.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:51:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/11/30 20:37:41 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 23:03:06 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*erase_empty_strings(char *line)
 	j = 0;
 	new_line = empty_strings_malloc(line);
 	if (!new_line)
-		return (NULL); //??
+		return (NULL);
 	while (line[i])
 	{
 		if (line[i] == '\'' && line[i + 1] == '\'')

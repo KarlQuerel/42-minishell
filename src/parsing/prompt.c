@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:36:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/02 15:18:09 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 23:00:24 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,12 @@ char **path_from_home)
 		temp = NULL;
 		temp = strlcpy_middle(temp, absolute_path, start, (*i));
 		start = (*i) + 2;
-		// if (ft_strncmp(temp, user->value, ft_strlen(user->value)) == 0 && \
-		// ft_strlen(user->value) == ft_strlen(temp))
 		if (compare(temp, user->value) == true)
 		{
 			j = 0;
 			(*i) += 2;
-			// (*path_from_home) = malloc(sizeof(char) * (ft_strlen(absolute_path) \
-			// - (*i) + 2));
-			(*path_from_home) = ft_calloc(ft_strlen(absolute_path) - (*i) + 2, sizeof(char));
+			(*path_from_home) = ft_calloc(ft_strlen(absolute_path) \
+			- (*i) + 2, sizeof(char));
 			while (absolute_path[(*i)])
 				(*path_from_home)[j++] = absolute_path[(*i)++];
 			(*path_from_home)[j] = '\0';
@@ -106,16 +103,16 @@ char	*ft_prompt(t_env *env_list, int option)
 
 	word = NULL;
 	if (!is_key_in_env(env_list, "USER") || \
-	!is_key_in_env(env_list, "PWD")) // voir ce que ca rend sur bash a 42
+	!is_key_in_env(env_list, "PWD"))
 		return ("\0");
 	path = pwd(NO_PRINT);
 	word = strlcpy_middle(word, path, get_beggining_of_last_word(), \
-	ft_strlen(path)); //sans le -1 ne change rien mais fait plus de sens!
+	ft_strlen(path));
 	ft_prompt2(&prompt, word, env_list, path);
 	if (option == PRINT)
 		printf("%s", prompt);
 	free(path);
-	free(word);	
+	free(word);
 	return (prompt);
 }
 
@@ -136,10 +133,9 @@ void	ft_prompt2(char **prompt, char *word, t_env *env_list, char *path)
 	get_beggining_of_last_word() + 1) == 0)
 		(*prompt) = strlcpy_middle((*prompt), gpath->value, 1, \
 		ft_strlen(gpath->value) - 1);
-	else if (user != NULL && compare(word, user->value) == false && is_user_in_path(path, env_list) == true)
+	else if (user != NULL && compare(word, user->value) == false && \
+	is_user_in_path(path, env_list) == true)
 		(*prompt) = home_path_simplified(path, env_list);
 	else
 		(*prompt) = "/";
-		// (*prompt) = strlcpy_middle((*prompt), "/", 0, \
-		// 1); //si besoin pour invalid free
 }

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:55:56 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/01 19:41:49 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/03 00:51:58 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 t_element	*parsing_initialisation(char *line, int *i, int *start)
 {
 	int	typestr;
-	// t_element *test; //test
 
 	(*i) = 0;
 	while ((line[(*i)] == '<' || line[(*i)] == '>') && line[(*i)])
@@ -25,9 +24,6 @@ t_element	*parsing_initialisation(char *line, int *i, int *start)
 		(*i)++;
 	(*start) = (*i);
 	typestr = parsing_str_type(line, (*i));
-	// test = lstnew(line, (*start), typestr); //test
-	// free(line); //test
-	// return (test); //test
 	return (lstnew(line, (*start), typestr));
 }
 
@@ -43,54 +39,37 @@ void	parsing_advance_to_next_word(char *line, int *start, int *i)
 		(*start) = (*i);
 }
 
-void	parsing_fill_content(t_element **current_cmd, char *line, int *i, \
-char *separator)
+void	parsing_fill_content(t_element **cur, char *line, int *i, \
+char *sep)
 {
 	int	j;
 	int	x;
 
 	j = 0;
-	if (separator[0] == '\'' || separator[0] == '\"')
+	if (sep[0] == '\'' || sep[0] == '\"')
 		(*i)++;
 	while (line[(*i)])
 	{
 		x = 0;
-		while (separator[x])
+		while (sep[x])
 		{
-			if (line[(*i)] == separator[x])
+			if (line[(*i)] == sep[x])
 			{
-				if (separator[x] == '|' && j == 0)
-					(*current_cmd)->content[j++] = line[(*i)++];
-				(*current_cmd)->content[j] = '\0';
-				if (separator[x] == '\'' || separator[x] == '\"')
+				if (sep[x] == '|' && j == 0)
+					(*cur)->content[j++] = line[(*i)++];
+				(*cur)->content[j] = '\0';
+				if (sep[x] == '\'' || sep[x] == '\"')
 					(*i)++;
 				return ;
 			}
 			x++;
 		}
-		if (line[(*i)] == '\\') /*EST-CE QUE CETTE CONDITION NE DEVRAIT PAS
-		JUSTE ETRE DANS ECHO?? IL Y A PEUT ETRE DES COMMANDES DANS LESQUELS ON VEUT
-		GARDER LE SLASH? Cette condition est à la base faite pour le test :
-		echo hola\ncaro -> doit donner holancaro*/
+		if (line[(*i)] == '\\')
 			(*i)++;
-		if (line[(*i)]) //test
-			(*current_cmd)->content[j++] = line[(*i)++];
+		if (line[(*i)])
+			(*cur)->content[j++] = line[(*i)++];
 	}
-	(*current_cmd)->content[j] = '\0';
-	if (line[(*i)] && (separator[0] == '\'' || separator[0] == '\"'))
+	(*cur)->content[j] = '\0';
+	if (line[(*i)] && (sep[0] == '\'' || sep[0] == '\"'))
 		(*i)++;
-}
-
-/*Sets next to NULL if line is over, otherwise initialises the next command.*/
-void	parsing_initialize_next(t_element **current_cmd, char *line, \
-int *i)
-{
-	if (line[(*i)] == '\0')
-		(*current_cmd)->next = NULL;
-	else
-	{
-		(*current_cmd)->next = lstnew(line, (*i), parsing_str_type(line, (*i)));
-		(*current_cmd)->next->prev = (*current_cmd);
-		(*current_cmd) = (*current_cmd)->next;
-	}
 }

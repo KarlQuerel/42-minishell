@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:00:17 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/02 13:51:56 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 23:02:53 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ t_env	*put_env_in_list(char **env)
 /*Parses all the list until it finds a matching key*/
 t_env	*find_value_with_key_env(t_env *env_list, char *key)
 {
-	int	i;
-	t_env *current;
+	int		i;
+	t_env	*current;
 
 	i = 0;
 	current = env_list;
@@ -68,10 +68,7 @@ t_env	*find_value_with_key_env(t_env *env_list, char *key)
 		{
 			i++;
 			if (key[i] == '\0')
-			{
-				// printf("find value user : %s\n", current->value);
 				return (current);
-			}
 		}
 		current = current->next;
 	}
@@ -94,8 +91,6 @@ bool	is_key_in_env(t_env *env_list, char *key)
 		shorter = key;
 	while (tmp)
 	{
-		// if (ft_strncmp(key, tmp->key, ft_strlen(shorter)) == 0 && \
-		// ft_strlen(key) == ft_strlen(tmp->key))
 		if (compare(key, tmp->key) == true)
 			return (true);
 		tmp = tmp->next;

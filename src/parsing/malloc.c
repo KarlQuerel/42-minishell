@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   malloc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:08:27 by casomarr          #+#    #+#             */
-/*   Updated: 2023/11/28 20:27:13 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 22:56:01 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ char	*erase_spaces_malloc(char *line)
 	new_line = ft_calloc(ft_strlen(line) - spaces + 2, sizeof(char));
 	if (!new_line)
 	{
-		perror("Error");
-		return (NULL); //il faut qd meme un return qd on utilise perror??
+		msg_error(1, "");
+		return (NULL);
 	}
 	return (new_line);
 }
