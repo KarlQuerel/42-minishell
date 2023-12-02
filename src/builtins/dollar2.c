@@ -6,18 +6,37 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 20:32:19 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/02 20:47:48 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 23:59:23 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+void	new_key_loop(size_t *i, char *content, int *alpha)
+{
+	while (content[(*i)])
+	{
+		if (content[(*i)] == '$' && content[(*i) + 1] == '$')
+		{
+			while (content[(*i) + 1] == '$')
+				(*i)++;
+		}
+		if (ft_isalpha(content[(*i)]) == 1)
+			(*alpha) = 1;
+		if (content[(*i)] == '$' && content[(*i) + 1] != '\0')
+			return ;
+		if (content[(*i)] == '$')
+			return ;
+		(*i)++;
+	}
+}
+
 void	new_key(size_t *i, char **key_to_find, char *content)
 {
 	int	start;
-	bool	alpha;
+	int	alpha;
 
-	if (content[(*i)] == '\0') //pas sûre
+	if (content[(*i)] == '\0')
 	{
 		if (*key_to_find)
 			free(*key_to_find);
@@ -26,36 +45,22 @@ void	new_key(size_t *i, char **key_to_find, char *content)
 	}
 	(*i)++;
 	start = *i;
-	alpha = false;
-	while (content[(*i)])
+	alpha = 0;
+	new_key_loop(i, content, &alpha);
+	if (*key_to_find)
+		free(*key_to_find);
+	*key_to_find = strlcpy_middle(*key_to_find, content, start, *i - 1);
+	if (compare(*key_to_find, "?") == true)
 	{
-		if (content[(*i)] == '$' && content[(*i) + 1] == '$')
-		{
-			while(content[(*i) + 1] == '$')
-				(*i)++;
-		}
-		if (ft_isalpha(content[(*i)]) == 1) // if true
-			alpha = true;
-		if (content[(*i)] == '$' && content[(*i) + 1] != '\0')
-			break;
-		(*i)++;
+		free(*key_to_find);
+		*key_to_find = ft_strdup("EXIT_STATUS");
 	}
-
-	if (alpha == true)
-	{
-		if (*key_to_find)
-			free(*key_to_find);
-		*key_to_find = NULL;
-		*key_to_find = strlcpy_middle(*key_to_find, content, start, *i - 1);
-	}
-	
 }
 
-char	*replace_dollar(char *content, char *key_to_find, t_env *env_list)
+char	*replace_dollar(char *key_to_find, t_env *env_list)
 {
-	(void)content; ///
 	t_env	*key_in_env;
-	char *ret;
+	char	*ret;
 
 	ret = NULL;
 	if (is_key_in_env(env_list, key_to_find) == true)
@@ -66,3 +71,15 @@ char	*replace_dollar(char *content, char *key_to_find, t_env *env_list)
 	return (ret);
 }
 
+void	text_before(char *content, char **ret)
+{
+	int	start;
+
+	start = 0;
+	if (content[0] != '$')
+	{
+		while (content[start] != '$')
+			start++;
+		(*ret) = strlcpy_middle((*ret), content, 0, start - 1);
+	}
+}
