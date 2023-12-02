@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/02 18:27:42 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 22:20:52 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,7 +286,15 @@ void	go_forward_until_user(char *current_path, char *home_value);
 void	go_backwards_until_user(char *current_path, char *home_value);
 
 /*Dollar*/
+int		initialize_values(char *content, int *alpha, size_t *i, size_t *j);
+void	text_before(char *content, size_t j, char **ret);
+void	one_dollar(int alpha, char *content, char **ret, t_env *env);
+void	multiple_dollars(char *content, size_t i, char **ret, t_env *env);
 char	*dollar(char *content, t_env *env_list);
+
+/*Dollar2*/
+void	new_key(size_t *i, char **key_to_find, char *content);
+char	*replace_dollar(char *content, char *key_to_find, t_env *env_list);
 
 /*Echo*/
 bool	no_further_args(t_element *cmd);

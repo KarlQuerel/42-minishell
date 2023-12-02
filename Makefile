@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
+#    By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/12/02 15:56:25 by kquerel          ###   ########.fr        #
+#    Updated: 2023/12/02 20:33:05 by casomarr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRCS		=	src/main.c \
 				src/builtins/cd.c \
 				src/builtins/cd2.c \
 				src/builtins/dollar.c \
+				src/builtins/dollar2.c \
 				src/builtins/echo.c \
 				src/builtins/env.c \
 				src/builtins/exit.c \
