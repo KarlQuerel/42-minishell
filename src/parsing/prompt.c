@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:36:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/02 14:20:04 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/02 15:18:09 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,16 +110,7 @@ char	*ft_prompt(t_env *env_list, int option)
 		return ("\0");
 	path = pwd(NO_PRINT);
 	word = strlcpy_middle(word, path, get_beggining_of_last_word(), \
-	ft_strlen(path) - 1); //sans le -1 ne change rien mais fait plus de sens!
-	
-	
-/* 	t_env	*user;
-	user = NULL;
-	if (is_key_in_env(env_list, "USER") == true)
-		user = find_value_with_key_env(env_list, "USER");
-	printf("user->value BEFORE: %s\n", user->value); */
-
-	
+	ft_strlen(path)); //sans le -1 ne change rien mais fait plus de sens!
 	ft_prompt2(&prompt, word, env_list, path);
 	if (option == PRINT)
 		printf("%s", prompt);
@@ -139,13 +130,13 @@ void	ft_prompt2(char **prompt, char *word, t_env *env_list, char *path)
 		user = find_value_with_key_env(env_list, "USER");
 	if (is_key_in_env(env_list, "PWD") == true)
 		gpath = find_value_with_key_env(env_list, "PWD");
-	if (/* user != NULL &&  */compare(word, user->value) == true)
+	if (user != NULL && compare(word, user->value) == true)
 		(*prompt) = "";
-	else if (/* gpath != NULL &&  */ft_strncmp(word, "homes", ft_strlen(word) - \
+	else if (gpath != NULL && ft_strncmp(word, "homes", ft_strlen(word) - \
 	get_beggining_of_last_word() + 1) == 0)
 		(*prompt) = strlcpy_middle((*prompt), gpath->value, 1, \
 		ft_strlen(gpath->value) - 1);
-	else if (/* user != NULL &&  */compare(word, user->value) == false && is_user_in_path(path, env_list) == true)
+	else if (user != NULL && compare(word, user->value) == false && is_user_in_path(path, env_list) == true)
 		(*prompt) = home_path_simplified(path, env_list);
 	else
 		(*prompt) = "/";
