@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:41:23 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/02 22:55:19 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/04 14:46:29 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,18 @@ void	ft_free_null_cmd(t_element *to_delete)
 	}
 	free(to_delete);
 	to_delete = NULL;
+}
+
+void	free_and_update(char *line, t_element *cmd_list, t_pipe *exec, \
+t_env **env_list)
+{
+	if (compare(line, "$") == true)
+	{
+		free(cmd_list);
+		cmd_list = NULL;
+	}
+	free(line);
+	line = NULL;
+	free(exec->prompt);
+	pwd_update_in_env(env_list);
 }
