@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/02 20:35:32 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/04 13:46:04 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int main (int argc, char **argv, char **env)
 			if (line_errors_and_fix(line) == true)
 			{
 				cmd_list = parsing(line, env_list);
-				//printlist(cmd_list);
+				//printlist_test(cmd_list);
 				if (cmd_list != NULL)
 				{
 					exec->line = &line;

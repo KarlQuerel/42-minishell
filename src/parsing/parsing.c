@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/04 13:21:49 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/04 13:46:46 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@ int	parsing_loop(char *line, int *i, int *start, t_element **current_cmd)
 		(*current_cmd)->change = false;
 	parsing_fill_content(current_cmd, line, i, separator);
 	if (parsing_str_type(line, (*start)) == STR)
+	{
 		free(separator);
+		(*current_cmd)->change = false;
+	}
 	(*current_cmd)->type = determine_command_type(line, (*i), (*start));
 	if ((*current_cmd)->type == HEREDOC)
 		return (1);

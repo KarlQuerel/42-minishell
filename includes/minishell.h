@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/04 13:20:24 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/04 13:40:49 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,7 @@ char		*ft_join_pour_cd(char *line_begining, char *path);
 char		*strlcpy_middle(char *dst, const char *src, size_t start, \
 size_t end);
 char		*ft_strjoin_free(char const *s1, char *s2);
-void		str_join_fill(const char *s1, char *new_str, int i);
+void		str_join_fill(const char *s1, char *new_str, int *i);
 
 
 /*Utils2*/

@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 23:29:17 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/04 13:05:38 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/04 13:47:25 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	parsing_fix_dollar(t_element **cmd_list, t_element *current, \
 t_env *env_list)
 {
 	if (is_in_line(current->content, "$") == true && \
-	current->change == true && current->type != ARGUMENT) // FAIRE LE TEST echo "hola $USER"
+	current->change == true)
 	{
 		current->content = dollar(current->content, env_list);
 		if (current->content == NULL)
