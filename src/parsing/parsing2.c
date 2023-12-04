@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:55:56 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/04 13:04:33 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/04 16:55:33 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void	parsing_advance_to_next_word(char *line, int *start, int *i)
 		(*start) = (*i);
 }
 
-static void	skip_quotes(char *sep, int x, int *i)
+static void	skip_quotes(char *sep, int x, int *i, char *line)
 {
-	if (sep[x] == '\'' || sep[x] == '\"')
+	if (line[(*i)] && (sep[x] == '\'' || sep[x] == '\"'))
 		(*i)++;
 }
 
@@ -49,7 +49,7 @@ int	fill_content_loop(t_element **cur, char *line, int *i, \
 char *sep)
 {
 	int	x;
-	int j;
+	int	j;
 
 	j = 0;
 	while (line[(*i)])
@@ -62,13 +62,13 @@ char *sep)
 				if (sep[x] == '|' && j == 0)
 					(*cur)->content[j++] = line[(*i)++];
 				(*cur)->content[j] = '\0';
-				skip_quotes(sep, x, i);
+				skip_quotes(sep, x, i, line);
 				return (-1);
 			}
 			x++;
 		}
-		if (line[(*i)] == '\\')
-		(*i)++;
+		if (line[(*i)] && line[(*i)] == '\\')
+			(*i)++;
 		if (line[(*i)])
 			(*cur)->content[j++] = line[(*i)++];
 	}

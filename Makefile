@@ -6,7 +6,7 @@
 #    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/12/02 23:29:44 by kquerel          ###   ########.fr        #
+#    Updated: 2023/12/04 17:12:38 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ OBJ_DIR		= obj
 INCLUDE_DIR	= includes
 
 SRCS		=	src/main.c \
+				src/init_and_utils.c \
 				src/builtins/builtins_errors.c \
 				src/builtins/cd.c \
 				src/builtins/cd2.c \
@@ -57,7 +58,6 @@ SRCS		=	src/main.c \
 				src/executable/exec_utils.c \
 				src/executable/exec_utils_2.c \
 				src/executable/exec_errors.c \
-				src/executable/init_and_utils.c \
 				src/executable/heredoc.c \
 				src/executable/heredoc_utils.c \
 				src/executable/pipe_and_dup.c \
@@ -89,7 +89,7 @@ OBJS 		= $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))
 OBJS		= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -g3 #-fsanitize=address,undefined
+CFLAGS		= -Wall -Wextra -Werror
 HFLAGS		= -I$(INCLUDE_DIR)
 RFLAGS		= -lreadline
 MAKEFLAGS	+= --no-print-directory
@@ -145,9 +145,6 @@ re: fclean all
 
 v : minishell
 	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes ./minishell
-#--trace-children=yes
-#--show-leak-kinds=indirect,reachable
 
 sv : minishell
 	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell
-#--show-leak-kinds=all

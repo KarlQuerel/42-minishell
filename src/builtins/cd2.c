@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 11:47:20 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/02 18:06:58 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/04 18:24:02 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ int	forward_loop(char *current_path, char *home_value, int end)
 			return (1);
 		}
 		if (home_value[end + 1] == '\0')
+		{
+			free(word);
 			break ;
+		}
 		end += 1;
 		start = end;
 		free(word);

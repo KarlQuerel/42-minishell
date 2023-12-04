@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/02 18:30:58 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/04 18:13:35 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	ft_redirect(t_element *cmd)
 	if (!cmd)
 		return (0);
 	tmp = cmd;
-	ft_top_of_list(tmp);
+	ft_top_of_list(&tmp);
 	while (tmp != NULL && tmp->type != PIPE)
 	{
 		if (!ft_redir_while(cmd, tmp))
@@ -104,10 +104,10 @@ int	ft_redir_while(t_element *cmd, t_element *tmp)
 }
 
 /* Goes at the start of a list */
-void	ft_top_of_list(t_element *cmd)
+void	ft_top_of_list(t_element **cmd)
 {
-	while (cmd->prev && cmd->prev->type != PIPE)
-		cmd = cmd->prev;
-	if (cmd->type == PIPE)
-		cmd = cmd->next;
+	while ((*cmd)->prev && (*cmd)->prev->type != PIPE)
+		(*cmd) = (*cmd)->prev;
+	if ((*cmd)->type == PIPE)
+		(*cmd) = (*cmd)->next;
 }

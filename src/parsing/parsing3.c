@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 23:29:17 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/04 13:47:25 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/04 16:55:23 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ t_env *env_list)
 	}
 	return (0);
 }
-
 
 void	type_arg_after_cmd(t_element **current)
 {

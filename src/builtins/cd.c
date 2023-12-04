@@ -6,61 +6,23 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:34:22 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/02 13:18:21 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/04 16:57:17 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/*Returns the specified path and handles the case where a directory
-contains spaces in its name.
-I calloc new_path to the size of path because that's the max length it
-will have (in case of no spaces to skip).
-The first If's purpouse is to handle white spaces in a filename.*/
-char	*fix_path_if_spaces(char *path)
-{
-	int		j;
-	int		i;
-	char	*new_path;
-
-	j = 0;
-	i = 0;
-	new_path = ft_calloc(ft_strlen(path) + 1, sizeof(char));
-	while (path[i])
-	{
-		if (path[i] == '\\' && path[i + 1] == ' ')
-		{
-			while (path[i] != '/' && (path[i + 1] != ' ' || \
-			path[i + 1] != '\0'))
-			{
-				if (path[i] == '\\')
-					i++;
-				new_path[j++] = path[i++];
-			}
-			i++;
-		}
-		if (path[i] != '\0')
-			new_path[j++] = path[i++];
-	}	
-	new_path[j] = '\0';
-	return (new_path);
-}
-
 /*Moves to the specified directory.*/
 void	cd_directory(char *path, t_env *env_list)
 {
-	char	*new_path;
 	t_env	*home;
 
 	home = find_value_with_key_env(env_list, "HOME");
-	new_path = fix_path_if_spaces(path);
-	if (chdir(new_path) != 0)
+	if (chdir(path) != 0)
 	{
 		msg_error_bash(2, path);
-		free(new_path);
 		return ;
 	}
-	free(new_path);
 }
 
 /*Handles the case where cd has no specified path afterwards by 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/04 13:41:04 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/04 15:15:15 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*ft_joinstr_minishell(char *line, int len, char *str, char type)
 /*Function used in the cd function to join all the arguments encountered
 between the "cd" cmd and a pipe or the end of the command line : it is 
 needed in the case where a folder's name has spaces.*/
-char	*ft_join_pour_cd(char *line_begining, char *path)
+char	*ft_join_for_cd(char *line_begining, char *path)
 {
 	int		i;
 	int		j;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/04 13:46:46 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/04 17:24:38 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ Separator is only freed qhen str_type == str because when
 str_type == cmd it is not malloc'ed (in function type_of_separator).*/
 t_element	*parsing(char *line, t_env *env_list)
 {
-	int	i;
-	int	start;
+	int			i;
+	int			start;
+	int			ret;
 	t_element	*current_cmd;
 	t_element	*head;
-	int ret;
 
 	current_cmd = parsing_initialisation(line, &i, &start);
 	head = current_cmd;
@@ -54,10 +54,7 @@ int	parsing_loop(char *line, int *i, int *start, t_element **current_cmd)
 		(*current_cmd)->change = false;
 	parsing_fill_content(current_cmd, line, i, separator);
 	if (parsing_str_type(line, (*start)) == STR)
-	{
 		free(separator);
-		(*current_cmd)->change = false;
-	}
 	(*current_cmd)->type = determine_command_type(line, (*i), (*start));
 	if ((*current_cmd)->type == HEREDOC)
 		return (1);
@@ -78,4 +75,3 @@ void	builtin_fix(t_element **cmd_list)
 		current = current->next;
 	}
 }
-

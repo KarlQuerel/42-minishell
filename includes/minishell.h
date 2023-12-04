@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/04 14:38:12 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/04 18:12:55 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,12 +131,19 @@ typedef struct s_pipe
 	int		fd_temp;
 	int		fd[2];
 	char	**env;
-	// char	**line;
-	// char	**prompt;
-	char 	*line;
+	char	*line;
 	char	*prompt;
 	char	**env_execve;
 }	t_pipe;
+
+/*------------------MAIN FOLDER------------------*/
+void		set_struct_null(t_env **env, t_element **cmd, t_pipe **exec);
+t_pipe		*init_struct(t_pipe *exec, t_env **env_list, char **env);
+int			ft_mini_prompt(t_env **env_list, char **path, t_pipe *exec, \
+char **line);
+void		line_null(char *line, t_env **env_list, t_pipe *exec);
+void		line_not_null(char **line, t_element *cmd_list, t_env **env_list, \
+t_pipe *exec);
 
 /*------------------PARSING FOLDER------------------*/
 
@@ -144,6 +151,7 @@ typedef struct s_pipe
 bool		quotes_can_close(char *line, int i);
 bool		is_builtin(char *cmd_content);
 bool		is_user_in_path(char *path, t_env *env_list);
+bool		is_in_line(char *big, char *little);
 
 /*Cmd_types*/
 int			cmd_type(char *command, int len);
@@ -181,14 +189,19 @@ bool		pipe_double_or_eof(char *line);
 
 /*Free*/
 void		exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec);
-void		free_cmd_tab(t_pipe *exec);
+void		ctrld_free(char *line, char *prompt, t_env *env, t_pipe *exec);
+void		free_cmd_arr(t_pipe *exec);
 int			free_cmd_list(t_element *cmd_list);
 int			free_env_list(t_env *env_list);
-void		ctrld_free(char *line, char *prompt, t_env *env, t_pipe *exec);
 
 /*Free_2*/
-void	ft_free_null_cmd(t_element *to_delete);
-
+int			ft_delete_node_cmd(t_element **head, t_element *to_delete);
+int			ft_delete_node_cmd_parent(t_element **head, t_element *to_delete);
+int			free_cmd_list_parent(t_element *cmd_list);
+void		ft_free_null_cmd(t_element *to_delete);
+void		free_and_update(char *line, t_element *cmd_list, t_pipe *exec, \
+t_env **env_list);
+void		free_cmd_tab(t_pipe *exec);
 
 /*Lstnew*/
 t_element	*lstnew(char *line, int i, int type);
@@ -213,16 +226,16 @@ int			determine_command_type(char *line, size_t end, size_t start);
 
 /*Parsing*/
 t_element	*parsing(char *line, t_env *env_list);
+int			parsing_loop(char *line, int *i, int *start, \
+t_element **current_cmd);
 void		builtin_fix(t_element **cmd_list);
-int			parsing_loop(char *line, int *i, int *start, t_element **current_cmd);
-
 
 /*Parsing2*/
 t_element	*parsing_initialisation(char *line, int *i, int *start);
-void	parsing_fill_content(t_element **cur, char *line, int *i, \
-char *sep);
 void		parsing_advance_to_next_word(char *line, int *start, int *i);
-int	fill_content_loop(t_element **cur, char *line, int *i, \
+int			fill_content_loop(t_element **cur, char *line, int *i, \
+char *sep);
+void		parsing_fill_content(t_element **cur, char *line, int *i, \
 char *sep);
 
 /*Parsing 3*/
@@ -231,8 +244,8 @@ void		parsing_initialize_next(t_element **current_cmd, char *line, int \
 int			parsing_fix_dollar(t_element **cmd_list, t_element *current, \
 t_env *env_list);
 void		type_arg_after_cmd(t_element **current);
-int			parsing_fix(t_element **cmd_list, t_env *env_list);
 bool		no_cmd_before(t_element *current);
+int			parsing_fix(t_element **cmd_list, t_env *env_list);
 
 /*Prompt*/
 void		home_path_simplified_loop(char *absolute_path, t_env *user, int *i, \
@@ -243,18 +256,17 @@ char		*ft_prompt(t_env *env_list, int option);
 void		ft_prompt2(char **prompt, char *word, t_env *env_list, char *path);
 
 /*Signal*/
+int			set_signals(void);
 void		sigint_handler(int signal);
 void		sigquit_handler(int signal);
-int			set_signals(void);
 
 /*Utils*/
 char		*ft_joinstr_minishell(char *line, int len, char *str, char type);
-char		*ft_join_pour_cd(char *line_begining, char *path);
+char		*ft_join_for_cd(char *line_begining, char *path);
 char		*strlcpy_middle(char *dst, const char *src, size_t start, \
 size_t end);
 char		*ft_strjoin_free(char const *s1, char *s2);
 void		str_join_fill(const char *s1, char *new_str, int *i);
-
 
 /*Utils2*/
 char		*type_of_separator(char *line, int i, int str_type);
@@ -273,7 +285,6 @@ bool		echo_option(t_element *cmd);
 bool		check_next(t_element *cmd, int option);
 
 /*Cd*/
-char		*fix_path_if_spaces(char *path);
 void		cd_directory(char *path, t_env *env_list);
 void		cd_home(t_env *env_list);
 void		cd(t_element *current, t_env *env_list);
@@ -285,17 +296,18 @@ void		go_forward_until_user(char *current_path, char *home_value);
 void		go_backwards_until_user(char *current_path, char *home_value);
 
 /*Dollar*/
-int		initialize_values_loop(char *content, size_t *i, size_t *j, int *dollar_nb);
-int		initialize_values(char *content, size_t *i, size_t *j);
-void	one_dollar(char *content, char **ret, t_env *env);
-void	multiple_dollars(char *content, size_t i, char **ret, t_env *env);
-char	*dollar(char *content, t_env *env_list);
+int			initialize_values_loop(char *content, size_t *i, size_t *j, \
+int *dollar_nb);
+int			initialize_values(char *content, size_t *i, size_t *j);
+void		multiple_dollars(char *content, size_t i, char **ret, t_env *env);
+void		one_dollar(char *content, char **ret, t_env *env);
+char		*dollar(char *content, t_env *env_list);
 
 /*Dollar2*/
-void	new_key_loop(size_t *i, char *content, int *alpha);
-void	new_key(size_t *i, char **key_to_find, char *content);
-char	*replace_dollar(char *key_to_find, t_env *env_list);
-void	text_before(char *content, char **ret);
+void		new_key_loop(size_t *i, char *content, int *alpha);
+void		new_key(size_t *i, char **key_to_find, char *content);
+char		*replace_dollar(char *key_to_find, t_env *env_list);
+void		text_before(char *content, char **ret);
 
 /*Echo*/
 bool		no_further_args(t_element *cmd);
@@ -346,7 +358,6 @@ void		pwd_update_in_env(t_env **env_list);
 /*Unset*/
 int			ft_unset(t_element *cmd, t_env **env);
 int			ft_delete_node_env(t_env **head, t_env *to_delete);
-int			ft_delete_node_cmd(t_element **head, t_element *to_delete);
 void		ft_free_null(t_env *to_delete);
 
 /*-----------------EXECUTABLE FOLDER ------------------*/
@@ -354,8 +365,8 @@ void		ft_free_null(t_env *to_delete);
 /*Exec*/
 void		ft_execute(t_element *cmd, t_env **env, t_pipe *exec);
 void		single_command(t_element *cmd, t_env **env, t_pipe *exec);
-void		multiple_commands(t_element *cmd, t_env **env, t_pipe *exec);
 int			ft_exit_status_single(t_env **env, int pid);
+void		multiple_commands(t_element *cmd, t_env **env, t_pipe *exec);
 int			ft_exit_status_multiple(t_env **env, t_pipe *exec);
 
 /*Exec_2*/
@@ -398,7 +409,7 @@ int			ft_infile(char *filename);
 int			ft_outfile(t_element *cmd);
 int			ft_redirect(t_element *cmd);
 int			ft_redir_while(t_element *cmd, t_element *tmp);
-void		ft_top_of_list(t_element *cmd);
+void		ft_top_of_list(t_element **cmd);
 
 /*Redirect_utils*/
 bool		ft_all_redir(t_element *cmd);
@@ -415,29 +426,5 @@ void		free_dup_heredoc(char *words, int fd, int fd_heredoc);
 char		*ft_alban(t_element *cmd);
 char		*ft_strjoin_free_s2(char *s1, char *s2);
 char		*create_heredoc(char *safeword, int i, int *fd);
-
-//TO DO
-void		handle_sigint(int sig);
-void		free_cmd_arr(t_pipe *exec);
-void		ft_exit_continued(t_element *cmd, t_env **env, t_pipe *exec, t_element *head, int option);
-void		write_heredoc(char *safe_word, t_pipe *exec, int fd);
-int			ft_open_hd(t_pipe *exec, int iteration_nb);
-void		ft_exit_continued_2(t_element *cmd, t_env **env, t_pipe *exec, t_element *head);
-
-void		exit_check_all(t_element *cmd, t_env **env, t_pipe *exec);
-bool		is_in_line(char *big, char *little);
-int			ft_delete_node_cmd_parent(t_element **head, t_element *to_delete);
-int			free_cmd_list_parent(t_element *cmd_list);
-
-
-t_pipe	*init_struct(t_pipe *exec, t_env **env_list, char **env);
-int	ft_mini_prompt(t_env **env_list, char **path, t_pipe *exec, char **line);
-// void	set_null(char **line, t_pipe **exec, char **path);
-void	set_struct_null(t_env **env, t_element **cmd, t_pipe **exec);
-
-void	line_null(char *line, t_env **env_list, t_pipe *exec);
-void	free_and_update(char *line, t_element *cmd_list, t_pipe *exec, t_env **env_list);
-void	line_not_null(char **line, t_element *cmd_list, t_env **env_list, t_pipe *exec);
-
 
 #endif

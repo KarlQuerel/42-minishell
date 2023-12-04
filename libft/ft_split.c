@@ -101,7 +101,6 @@ char	**ft_split(char const *s, char c)
 	return (string);
 }
 
-
 /* int main()
 {
 	char s[] = "ca ro\nka rl\nPATH=             HELLO";
@@ -124,4 +123,3 @@ char	**ft_split(char const *s, char c)
 	free(split);
     return 0;
 } */
-
