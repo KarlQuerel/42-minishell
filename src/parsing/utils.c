@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:50:30 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/02 23:19:00 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/04 13:41:04 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char	*ft_strjoin_free(char const *s1, char *s2)
 		return (NULL);
 	i = 0;
 	if (s1 != NULL)
-		str_join_fill(s1, new_str, i);
+		str_join_fill(s1, new_str, &i);
 	j = 0;
 	while (s2[j])
 		new_str[i++] = s2[j++];
@@ -104,11 +104,11 @@ char	*ft_strjoin_free(char const *s1, char *s2)
 	return (new_str);
 }
 
-void	str_join_fill(const char *s1, char *new_str, int i)
+void	str_join_fill(const char *s1, char *new_str, int *i)
 {
-	while (s1[i])
+	while (s1[(*i)])
 	{
-		new_str[i] = s1[i];
-		i++;
+		new_str[(*i)] = s1[(*i)];
+		(*i)++;
 	}
 }

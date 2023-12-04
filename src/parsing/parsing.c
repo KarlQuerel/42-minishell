@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/03 00:25:01 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/04 13:46:46 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,18 @@ Separator is only freed qhen str_type == str because when
 str_type == cmd it is not malloc'ed (in function type_of_separator).*/
 t_element	*parsing(char *line, t_env *env_list)
 {
-	int			i;
-	int			start;
+	int	i;
+	int	start;
 	t_element	*current_cmd;
 	t_element	*head;
-	char		*separator;
+	int ret;
 
 	current_cmd = parsing_initialisation(line, &i, &start);
 	head = current_cmd;
 	while (line[i])
 	{
-		separator = type_of_separator(line, start, \
-		parsing_str_type(line, start));
-		if (separator[0] == '\'')
-			current_cmd->change = false;
-		parsing_fill_content(&current_cmd, line, &i, separator);
-		if (parsing_str_type(line, start) == STR)
-			free(separator);
-		current_cmd->type = determine_command_type(line, i, start);
-		if (current_cmd->type == HEREDOC)
+		ret = parsing_loop(line, &i, &start, &current_cmd);
+		if (ret == 1)
 		{
 			if (ft_heredoc(current_cmd, env_list) == false)
 				return (NULL);
@@ -51,50 +44,23 @@ t_element	*parsing(char *line, t_env *env_list)
 	return (head);
 }
 
-void	type_arg_after_cmd(t_element **current)
+int	parsing_loop(char *line, int *i, int *start, t_element **current_cmd)
 {
-	t_element	*temp;
+	char		*separator;
 
-	if ((*current)->type == COMMAND && (*current)->next)
+	separator = type_of_separator(line, (*start), \
+	parsing_str_type(line, (*start)));
+	if (separator[0] == '\'')
+		(*current_cmd)->change = false;
+	parsing_fill_content(current_cmd, line, i, separator);
+	if (parsing_str_type(line, (*start)) == STR)
 	{
-		temp = (*current)->next;
-		while (temp->type != PIPE && temp != NULL)
-		{
-			if (temp->type != OPTION && temp->type < 3)
-				temp->type = ARGUMENT;
-			if (temp->next != NULL)
-				temp = temp->next;
-			else
-				break ;
-		}
+		free(separator);
+		(*current_cmd)->change = false;
 	}
-}
-
-/* To fix the type of the arguments that are not in between quotes
-and are therefore considered as a COMMAND instead of an ARGUMENT
-in the parsing function. This functions sets all arguments that are
-not of type OPTION or redirecter after a cmd to ARGUMENT until a 
-type PIPE is found.*/
-int	parsing_fix(t_element **cmd_list, t_env *env_list)
-{
-	t_element	*current;
-
-	current = (*cmd_list);
-	while (current != NULL)
-	{
-		if ((current->prev != NULL && current->prev->type >= 3 && \
-		current->type < 3 && no_cmd_before(current) == true) || \
-		(current->prev == NULL && current->type < 3))
-			current->type = COMMAND;
-		if (current->type == COMMAND && current->next)
-			type_arg_after_cmd(&current);
-		if (parsing_fix_dollar(cmd_list, current, env_list))
-			return (1);
-		else
-			current->change = false;
-		if (current)
-			current = current->next;
-	}
+	(*current_cmd)->type = determine_command_type(line, (*i), (*start));
+	if ((*current_cmd)->type == HEREDOC)
+		return (1);
 	return (0);
 }
 
@@ -113,13 +79,3 @@ void	builtin_fix(t_element **cmd_list)
 	}
 }
 
-bool	no_cmd_before(t_element *current)
-{
-	while (current->prev && current->prev->type != PIPE)
-	{
-		if (current->prev->type == COMMAND)
-			return (false);
-		current = current->prev;
-	}
-	return (true);
-}
