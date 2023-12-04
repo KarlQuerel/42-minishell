@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/03 00:46:18 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/04 13:20:24 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,22 +211,26 @@ int			determine_command_type(char *line, size_t end, size_t start);
 
 /*Parsing*/
 t_element	*parsing(char *line, t_env *env_list);
-void		type_arg_after_cmd(t_element **current);
-int			parsing_fix(t_element **cmd_list, t_env *env_list);
 void		builtin_fix(t_element **cmd_list);
-bool		no_cmd_before(t_element *current);
+int			parsing_loop(char *line, int *i, int *start, t_element **current_cmd);
+
 
 /*Parsing2*/
 t_element	*parsing_initialisation(char *line, int *i, int *start);
 void	parsing_fill_content(t_element **cur, char *line, int *i, \
 char *sep);
 void		parsing_advance_to_next_word(char *line, int *start, int *i);
+int	fill_content_loop(t_element **cur, char *line, int *i, \
+char *sep);
 
 /*Parsing 3*/
 void		parsing_initialize_next(t_element **current_cmd, char *line, int \
 *i);
 int			parsing_fix_dollar(t_element **cmd_list, t_element *current, \
 t_env *env_list);
+void		type_arg_after_cmd(t_element **current);
+int			parsing_fix(t_element **cmd_list, t_env *env_list);
+bool		no_cmd_before(t_element *current);
 
 /*Prompt*/
 void		home_path_simplified_loop(char *absolute_path, t_env *user, int *i, \
