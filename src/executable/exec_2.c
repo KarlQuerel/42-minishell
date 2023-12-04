@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 17:02:19 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/02 19:15:21 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/04 14:12:16 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	ft_saint_olivier(t_element *cmd, t_env **env, t_pipe *exec)
 {
 	free_cmd_list(cmd);
 	free_env_list(*env);
-	free (*exec->line);
-	free (*exec->prompt);
+	free (exec->line);
+	free (exec->prompt);
 	free_cmd_arr(exec);
 	free(exec);
 }

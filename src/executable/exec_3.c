@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:26:49 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/02 19:20:00 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/04 14:12:18 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ void	free_child(t_element *cmd, t_env **env, t_pipe *exec)
 		close(exec->std_in);
 	if (exec->std_out > 2)
 		close(exec->std_out);
-	free (*exec->line);
-	free (*exec->prompt);
+	free (exec->line);
+	free (exec->prompt);
 	free_cmd_arr(exec);
 	free(exec);
 	if (free_env_list(*env) == 1)

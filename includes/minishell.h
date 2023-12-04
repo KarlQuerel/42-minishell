@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/03 00:46:18 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/04 14:38:12 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,10 @@ typedef struct s_pipe
 	int		fd_temp;
 	int		fd[2];
 	char	**env;
-	char	**line;
-	char	**prompt;
+	// char	**line;
+	// char	**prompt;
+	char 	*line;
+	char	*prompt;
 	char	**env_execve;
 }	t_pipe;
 
@@ -422,5 +424,16 @@ void		exit_check_all(t_element *cmd, t_env **env, t_pipe *exec);
 bool		is_in_line(char *big, char *little);
 int			ft_delete_node_cmd_parent(t_element **head, t_element *to_delete);
 int			free_cmd_list_parent(t_element *cmd_list);
+
+
+t_pipe	*init_struct(t_pipe *exec, t_env **env_list, char **env);
+int	ft_mini_prompt(t_env **env_list, char **path, t_pipe *exec, char **line);
+// void	set_null(char **line, t_pipe **exec, char **path);
+void	set_struct_null(t_env **env, t_element **cmd, t_pipe **exec);
+
+void	line_null(char *line, t_env **env_list, t_pipe *exec);
+void	free_and_update(char *line, t_element *cmd_list, t_pipe *exec, t_env **env_list);
+void	line_not_null(char **line, t_element *cmd_list, t_env **env_list, t_pipe *exec);
+
 
 #endif
