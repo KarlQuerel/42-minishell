@@ -34,6 +34,8 @@ void	cd_home(t_env *env_list)
 	char	*current_path;
 
 	current_path = pwd(NO_PRINT);
+	if (!current_path)
+		return ;
 	if (!is_key_in_env(env_list, "HOME"))
 	{
 		msg_error_bash(6, "cd: HOME not set");

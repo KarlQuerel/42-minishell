@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/05 15:40:59 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/05 17:48:27 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,15 @@ void	pwd_update_in_env(t_env **env_list)
 	if (is_key_in_env((*env_list), "PWD"))
 	{
 		key = find_value_with_key_env((*env_list), "PWD");
-		free(key->value);
+		if (!key)
+			return ;
 		temp_pwd = pwd(NO_PRINT);
-		//KARL
 		if (!temp_pwd)
 			return ;
-		//KARL
-		key->value = ft_calloc(ft_strlen(temp_pwd) + 1, sizeof(char));
-		ft_strlcpy(key->value, temp_pwd, ft_strlen(temp_pwd) + 1);
+		free(key->value);
+		key->value = ft_strdup(temp_pwd);
+		// key->value = ft_calloc(ft_strlen(temp_pwd) + 1, sizeof(char));
+		// ft_strlcpy(key->value, temp_pwd, ft_strlen(temp_pwd) + 1);
 		free(temp_pwd);
 	}
 }

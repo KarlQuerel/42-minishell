@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:36:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/05 15:39:16 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/05 17:53:13 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,8 @@ int	get_beggining_of_last_word(void)
 	char	*temp;
 
 	temp = pwd(NO_PRINT);
-	//KARL
 	if (!temp)
-		return (0);
-	//KARL
+		return (-1);
 	i = ft_strlen(temp) - 2;
 	while (i > 0)
 	{
@@ -104,16 +102,19 @@ char	*ft_prompt(t_env *env_list, int option)
 	char	*word;
 	char	*prompt;
 	char	*path;
+	int		ret;
 
+	ret = 0;
 	word = NULL;
 	if (!is_key_in_env(env_list, "USER") || \
 	!is_key_in_env(env_list, "PWD"))
 		return ("\0");
 	path = pwd(NO_PRINT);
-	//KARL
 	if (!path)
 		return ("\0");
-	//KARL
+	ret = get_beggining_of_last_word();
+	if (ret < 0)
+		return ("\0");
 	word = strlcpy_middle(word, path, get_beggining_of_last_word(), \
 	ft_strlen(path));
 	ft_prompt2(&prompt, word, env_list, path);
