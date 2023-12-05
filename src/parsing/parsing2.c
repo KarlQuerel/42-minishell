@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:55:56 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/04 16:55:33 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/05 15:48:53 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,43 @@ static void	skip_quotes(char *sep, int x, int *i, char *line)
 	if (line[(*i)] && (sep[x] == '\'' || sep[x] == '\"'))
 		(*i)++;
 }
+int	skip_first_quote(char *line, int *i)
+{
+	int start;
+	int	temp;
+
+	start = (*i);
+	temp = (*i);
+	if (line[(*i)] == '\'' || line[(*i)] == '\"')
+	{
+		(*i)++;
+		while (line[temp] != line[start])
+			temp++;
+		return (temp);
+	}
+	return (-1);
+}
 
 int	fill_content_loop(t_element **cur, char *line, int *i, \
 char *sep)
 {
 	int	x;
 	int	j;
+	int	closing_quote;
 
 	j = 0;
+	closing_quote = -1;
 	while (line[(*i)])
 	{
 		x = 0;
 		while (sep[x])
 		{
+			closing_quote = skip_first_quote(line, i);
+			if (closing_quote != -1)
+			{
+				while((*i) < closing_quote && line[(*i)])
+					(*cur)->content[j++] = line[(*i)++];
+			}
 			if (line[(*i)] == sep[x])
 			{
 				if (sep[x] == '|' && j == 0)
