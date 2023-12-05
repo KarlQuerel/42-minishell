@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:21:09 by karl              #+#    #+#             */
-/*   Updated: 2023/12/02 18:18:14 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/05 15:26:11 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@ reproduces export behaviour when used without an argument
 */
 void	ft_env(t_env *env, t_element *cmd, int option)
 {
-	if (!check_next(cmd, 0))
+	if (!check_next(cmd, 0) || !env)
 		return ;
 	while (env)
 	{
 		if (compare(env->key, "EXIT_STATUS") == true)
 			env = env->next;
+		if (!env || env->key[0] == '\0')
+			break ;
 		else
 		{
 			if (option == 1)
