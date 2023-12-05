@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:55:56 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/05 15:48:53 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/05 16:39:43 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,6 @@ void	parsing_advance_to_next_word(char *line, int *start, int *i)
 		(*start) = (*i);
 }
 
-static void	skip_quotes(char *sep, int x, int *i, char *line)
-{
-	if (line[(*i)] && (sep[x] == '\'' || sep[x] == '\"'))
-		(*i)++;
-}
 int	skip_first_quote(char *line, int *i)
 {
 	int start;
@@ -61,7 +56,7 @@ int	skip_first_quote(char *line, int *i)
 	return (-1);
 }
 
-int	fill_content_loop(t_element **cur, char *line, int *i, \
+void	fill_content_loop(t_element **cur, char *line, int *i, \
 char *sep)
 {
 	int	x;
@@ -81,36 +76,16 @@ char *sep)
 				while((*i) < closing_quote && line[(*i)])
 					(*cur)->content[j++] = line[(*i)++];
 			}
-			if (line[(*i)] == sep[x])
+			if (line[(*i)] && line[(*i)] == sep[x])
 			{
 				if (sep[x] == '|' && j == 0)
 					(*cur)->content[j++] = line[(*i)++];
 				(*cur)->content[j] = '\0';
-				skip_quotes(sep, x, i, line);
-				return (-1);
+				return ;
 			}
-			x++;
+				x++;
 		}
-		if (line[(*i)] && line[(*i)] == '\\')
-			(*i)++;
 		if (line[(*i)])
 			(*cur)->content[j++] = line[(*i)++];
 	}
-	return (j);
-}
-
-void	parsing_fill_content(t_element **cur, char *line, int *i, \
-char *sep)
-{
-	int	j;
-
-	if (sep[0] == '\'' || sep[0] == '\"')
-		(*i)++;
-	j = fill_content_loop(cur, line, i, sep);
-	if (j == -1)
-		return ;
-	else
-		(*cur)->content[j] = '\0';
-	if (line[(*i)] && (sep[0] == '\'' || sep[0] == '\"'))
-		(*i)++;
 }

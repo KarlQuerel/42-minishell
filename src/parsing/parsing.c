@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/04 17:24:38 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/05 16:32:45 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	parsing_loop(char *line, int *i, int *start, t_element **current_cmd)
 	parsing_str_type(line, (*start)));
 	if (separator[0] == '\'')
 		(*current_cmd)->change = false;
-	parsing_fill_content(current_cmd, line, i, separator);
+	fill_content_loop(current_cmd, line, i, separator);
 	if (parsing_str_type(line, (*start)) == STR)
 		free(separator);
 	(*current_cmd)->type = determine_command_type(line, (*i), (*start));
