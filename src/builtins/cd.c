@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:34:22 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/05 15:57:08 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/05 18:00:53 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,23 @@ void	cd_home(t_env *env_list)
 	home = find_value_with_key_env(env_list, "HOME");
 	if (is_cmd(current_path, home->value) == false)
 	{
-		if (is_user_in_path(current_path, env_list) == true)
+/* 		if (is_user_in_path(current_path, env_list) == true)
 			go_backwards_until_user(current_path, home->value);
 		else
-			go_forward_until_user(current_path, home->value);
+			go_forward_until_user(current_path, home->value); */
 
-/* 		if (chdir(home->value) != 0)
+
+		if (is_user_in_path(current_path, env_list) == false)
+			go_forward_until_user(current_path, home->value);
+		else //test pour qd dans tmp au leu de fare cd .. jusqu a home
 		{
-			free(current_path);
-			perror("bash: ");
-			return ;
-		} */
-		
+			if (chdir(home->value) != 0)
+			{
+				free(current_path);
+				perror("bash: ");
+				return ;
+			}
+		}
 	}
 	free(current_path);
 }

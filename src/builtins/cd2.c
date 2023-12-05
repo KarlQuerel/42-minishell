@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 11:47:20 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/04 18:24:02 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/05 18:01:48 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,22 +63,22 @@ void	go_forward_until_user(char *current_path, char *home_value)
 	if (compare(current_path, "/") == false)
 		end += 1;
 	ret = forward_loop(current_path, home_value, end);
-	if (ret == 0)
-		free(current_path);
+	// if (ret == 0)
+	// 	free(current_path);
 }
 
-void	go_backwards_until_user(char *current_path, char *home_value)
-{
-	while (is_cmd(current_path, home_value) == false)
-	{
-		if (chdir("..") != 0)
-		{
-			free(current_path);
-			perror("bash: ");
-			return ;
-		}
-		free(current_path);
-		current_path = pwd(NO_PRINT);
-	}
-	free(current_path);
-}
+// void	go_backwards_until_user(char *current_path, char *home_value)
+// {
+// 	while (is_cmd(current_path, home_value) == false)
+// 	{
+// 		if (chdir("..") != 0)
+// 		{
+// 			free(current_path);
+// 			perror("bash: ");
+// 			return ;
+// 		}
+// 		free(current_path);
+// 		current_path = pwd(NO_PRINT);
+// 	}
+// 	free(current_path);
+// }
