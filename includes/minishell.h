@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/04 18:12:55 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/05 16:35:23 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,9 +233,7 @@ void		builtin_fix(t_element **cmd_list);
 /*Parsing2*/
 t_element	*parsing_initialisation(char *line, int *i, int *start);
 void		parsing_advance_to_next_word(char *line, int *start, int *i);
-int			fill_content_loop(t_element **cur, char *line, int *i, \
-char *sep);
-void		parsing_fill_content(t_element **cur, char *line, int *i, \
+void		fill_content_loop(t_element **cur, char *line, int *i, \
 char *sep);
 
 /*Parsing 3*/
