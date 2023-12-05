@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:55:33 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/02 14:05:17 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/05 15:40:59 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ void	pwd_update_in_env(t_env **env_list)
 		key = find_value_with_key_env((*env_list), "PWD");
 		free(key->value);
 		temp_pwd = pwd(NO_PRINT);
+		//KARL
+		if (!temp_pwd)
+			return ;
+		//KARL
 		key->value = ft_calloc(ft_strlen(temp_pwd) + 1, sizeof(char));
 		ft_strlcpy(key->value, temp_pwd, ft_strlen(temp_pwd) + 1);
 		free(temp_pwd);
