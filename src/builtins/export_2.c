@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 17:04:29 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/01 18:34:49 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/05 18:57:36 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,22 +71,7 @@ int	ft_strchr_int(char *s, char c)
 /* Assigns key and value for the export function */
 void	ft_assign_key_and_value(int i, char **ret, char *s)
 {
-	if (s[i] == '\"' && s[ft_strlen(s) - 1] == '\"')
-	{
-		ret[0] = strlcpy_middle(ret[0], s, 0, i - 2);
-		ret[1] = strlcpy_middle(ret[1], s, i + 1, ft_strlen(s) - 1);
-		ret[2] = NULL;
-	}
-	else if (s[i] == '\'' && s[ft_strlen(s) - 1] == '\'')
-	{
-		ret[0] = strlcpy_middle(ret[0], s, 0, i - 2);
-		ret[1] = strlcpy_middle(ret[1], s, i + 1, ft_strlen(s) - 1);
-		ret[2] = NULL;
-	}
-	else
-	{
-		ret[0] = strlcpy_middle(ret[0], s, 0, i - 2);
-		ret[1] = strlcpy_middle(ret[1], s, i, ft_strlen(s));
-		ret[2] = NULL;
-	}
+	ret[0] = strlcpy_middle(ret[0], s, 0, i - 2);
+	ret[1] = strlcpy_middle(ret[1], s, i, ft_strlen(s));
+	ret[2] = NULL;
 }

@@ -6,36 +6,13 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/04 14:43:48 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/05 19:15:54 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 int	g_location;
-
-bool	is_exit_status_in_line(char *big, char *little)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	if (!big || !little)
-		return (false);
-	while (big[i])
-	{
-		j = 0;
-		while (big[i + j] == little[j] && little[j])
-		{
-			j++;
-			if (little[j] == '\0')
-				return (true);
-		}
-		i++;
-	}
-	return (false);
-}
 
 int	main(int argc, char **argv, char **env)
 {
@@ -58,7 +35,7 @@ int	main(int argc, char **argv, char **env)
 			return (1);
 		if (line == NULL)
 			line_null(line, &env_list, exec);
-		if (line != NULL)
+		else if (line != NULL)
 			line_not_null(&line, cmd_list, &env_list, exec);
 		free_and_update(line, cmd_list, exec, &env_list);
 	}

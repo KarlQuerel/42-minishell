@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:55:56 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/05 16:39:43 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/05 19:20:51 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,17 @@ char *sep)
 			{
 				while((*i) < closing_quote && line[(*i)])
 					(*cur)->content[j++] = line[(*i)++];
+				//(*i)++; //caro
+				/*CARO : ne plus faire le parsing en fonction du type de separateur. 
+				J'en ai besoin pour current->change = true qd entre simple quotes
+				mais le reste du temps j'ai besoin que ca s'arrete pas aux quotes
+				comme dans l'exemple : echo export "hello"=hi qui du coup s'arrete
+				bien apres hi.*/
+
+				/* export test="ls -la" donne export cannot take options, -la est considere
+				comme une option.
+				Comme current->content ne commence pas par une quote, le separator est de type espace.
+				*/
 			}
 			if (line[(*i)] && line[(*i)] == sep[x])
 			{
