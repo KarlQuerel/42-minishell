@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/04 13:37:43 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/05 15:19:00 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	initialize_values_loop(char *content, size_t *i, size_t *j, int *dollar_nb)
 		first = 1;
 	}
 	if (content[(*i)] == '$' && content[(*i) + 1] == '\0')
-		return (0);
+		return (2);
 	if (content[(*i)] == '$' && content[0] == '$')
 		return (1);
 	if (content[(*i)] == '$' && *dollar_nb == 1)
@@ -43,12 +43,16 @@ int	initialize_values_loop(char *content, size_t *i, size_t *j, int *dollar_nb)
 int	initialize_values(char *content, size_t *i, size_t *j)
 {
 	int	dollar_nb;
+	int	ret;
 
 	dollar_nb = 0;
 	while (content[(*i)])
 	{
-		if (initialize_values_loop(content, i, j, &dollar_nb) == 1)
+		ret = initialize_values_loop(content, i, j, &dollar_nb);
+		if (ret == 1)
 			return (1);
+		if (ret == 2)
+			return (0);
 	}
 	return (0);
 }
@@ -119,7 +123,7 @@ char	*dollar(char *content, t_env *env_list)
 	int		nb;
 
 	ret = NULL;
-	i = 1;
+	i = 1; //devrat etre 0 sinon "$#$" compte un seul $
 	j = 0;
 	nb = initialize_values(content, &i, &j);
 	text_before(content, &ret);

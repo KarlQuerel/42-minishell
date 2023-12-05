@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_and_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 21:18:09 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/04 17:05:23 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/05 14:52:11 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	line_null(char *line, t_env **env_list, t_pipe *exec)
 void	line_not_null(char **line, t_element *cmd_list, t_env **env_list, \
 t_pipe *exec)
 {
-	if (is_in_line(*line, "\\") == true)
+	if (is_in_line(*line, "\\") == true || 	quotes_can_close(*line, 0) == false)
 	{
 		ft_putendl_fd("Syntax error", STDERR_FILENO);
 		return ;
