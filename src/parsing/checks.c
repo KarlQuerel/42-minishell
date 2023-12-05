@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:07:47 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/04 15:36:40 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/05 17:56:47 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ bool	is_in_line(char *big, char *little)
 	while (big[i])
 	{
 		j = 0;
-		while (big[i + j] && big[i + j] == little[j] && little[j])
+		while (big[i + j] && little[j] &&  big[i + j] == little[j])
 		{
 			j++;
 			if (little[j] == '\0')
