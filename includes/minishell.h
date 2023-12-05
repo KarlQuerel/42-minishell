@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/05 16:35:23 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/05 18:10:33 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,10 +288,10 @@ void		cd_home(t_env *env_list);
 void		cd(t_element *current, t_env *env_list);
 
 /*Cd2*/
-size_t		size_of_word(char *path, int i);
-int			forward_loop(char *current_path, char *home_value, int end);
-void		go_forward_until_user(char *current_path, char *home_value);
-void		go_backwards_until_user(char *current_path, char *home_value);
+//size_t		size_of_word(char *path, int i);
+// int			forward_loop(char *current_path, char *home_value, int end);
+// void		go_forward_until_user(char *current_path, char *home_value);
+// void		go_backwards_until_user(char *current_path, char *home_value);
 
 /*Dollar*/
 int			initialize_values_loop(char *content, size_t *i, size_t *j, \
