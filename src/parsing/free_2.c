@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:41:23 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/04 14:46:29 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/05 15:27:36 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 int	ft_delete_node_cmd(t_element **head, t_element *to_delete)
 {
+	int	no_next;
+	
+	no_next = 0;
 	if (!to_delete)
 		return (2);
 	if (!to_delete->prev && !to_delete->next)
@@ -27,8 +30,10 @@ int	ft_delete_node_cmd(t_element **head, t_element *to_delete)
 		*head = to_delete->next;
 	if (to_delete->next)
 		to_delete->next->prev = to_delete->prev;
+	else
+		no_next = 3;
 	ft_free_null_cmd(to_delete);
-	return (0);
+	return (no_next);
 }
 
 /* Fonction free parent test. seule diff : condition to_delete->change*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 23:29:17 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/04 16:55:23 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/05 15:28:35 by casomarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,23 @@ int *i)
 int	parsing_fix_dollar(t_element **cmd_list, t_element *current, \
 t_env *env_list)
 {
+	int	ret;
+	
 	if (is_in_line(current->content, "$") == true && \
 	current->change == true)
 	{
 		current->content = dollar(current->content, env_list);
 		if (current->content == NULL)
 		{
-			if (ft_delete_node_cmd(cmd_list, current) == 1)
+			ret = ft_delete_node_cmd(cmd_list, current);
+			if ( ret == 1)
 			{
 				*cmd_list = NULL;
 				return (1);
 			}
 			current = NULL;
+			if (ret == 3)
+				return (2);
 		}
 	}
 	return (0);
@@ -84,6 +89,7 @@ type PIPE is found.*/
 int	parsing_fix(t_element **cmd_list, t_env *env_list)
 {
 	t_element	*current;
+	int	ret;
 
 	current = (*cmd_list);
 	while (current != NULL)
@@ -94,10 +100,13 @@ int	parsing_fix(t_element **cmd_list, t_env *env_list)
 			current->type = COMMAND;
 		if (current->type == COMMAND && current->next)
 			type_arg_after_cmd(&current);
-		if (parsing_fix_dollar(cmd_list, current, env_list))
+		ret = parsing_fix_dollar(cmd_list, current, env_list);
+		if (ret == 1)
 			return (1);
-		else
+		else if (ret == 0)
 			current->change = false;
+		else if (ret == 2)
+			current = NULL;
 		if (current)
 			current = current->next;
 	}
