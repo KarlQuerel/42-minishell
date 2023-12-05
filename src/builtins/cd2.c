@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 11:47:20 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/04 18:24:02 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/05 16:08:57 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ void	go_backwards_until_user(char *current_path, char *home_value)
 		}
 		free(current_path);
 		current_path = pwd(NO_PRINT);
+		if (!current_path)
+			return ;
 	}
 	free(current_path);
 }

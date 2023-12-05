@@ -6,7 +6,7 @@
 /*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:34:22 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/05 15:57:08 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/05 16:08:29 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	cd_home(t_env *env_list)
 	char	*current_path;
 
 	current_path = pwd(NO_PRINT);
+	if (!current_path)
+		return ;
 	if (!is_key_in_env(env_list, "HOME"))
 	{
 		msg_error_bash(6, "cd: HOME not set");
