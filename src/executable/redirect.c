@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/04 18:13:35 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/05 18:34:49 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	ft_redir_while(t_element *cmd, t_element *tmp)
 	}
 	else if (tmp->type == HEREDOC)
 	{
-		if (!ft_infile(ft_alban(cmd)))
+		if (!ft_infile(ft_palbon(cmd)))
 			return (0);
 		unlink(tmp->content);
 	}

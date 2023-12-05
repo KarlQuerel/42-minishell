@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/05 18:10:33 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/05 18:34:03 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -421,7 +421,7 @@ int			heredoc_loop(t_element *cmd, t_env *env, char *words, int fd);
 
 /*Heredoc_utils*/
 void		free_dup_heredoc(char *words, int fd, int fd_heredoc);
-char		*ft_alban(t_element *cmd);
+char		*ft_palbon(t_element *cmd);
 char		*ft_strjoin_free_s2(char *s1, char *s2);
 char		*create_heredoc(char *safeword, int i, int *fd);
 
