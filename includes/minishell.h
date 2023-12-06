@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/06 13:08:43 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/12/06 19:36:31 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -155,8 +155,9 @@ bool		is_in_line(char *big, char *little);
 
 /*Cmd_types*/
 int			cmd_type(char *command, int len);
+void		cmd_type_loop(char *command, int len, int size);
 int			key_and_value_type(char *command, int len, int type);
-int			str_type(char *command, int len);
+// int			str_type(char *command, int len); A SUPPRIMER
 
 /*Commands*/
 bool		is_cmd(char *buffer, char *command);
@@ -233,9 +234,9 @@ void		builtin_fix(t_element **cmd_list);
 /*Parsing2*/
 t_element	*parsing_initialisation(char *line, int *i, int *start);
 void		parsing_advance_to_next_word(char *line, int *start, int *i);
+int			skip_first_quote(char *line, int *i);
 void		fill_content_loop(t_element **cur, char *line, int *i/* , \
-char *sep */);
-int	skip_first_quote(char *line, int *i); //verifier que c est bien ici
+char *sep */); //NORMINETTE SUPPRIMER MAIS CHECK AVEC CARO
 
 /*Parsing 3*/
 void		parsing_initialize_next(t_element **current_cmd, char *line, int \
@@ -288,7 +289,7 @@ void		cd_directory(char *path, t_env *env_list);
 void		cd_home(t_env *env_list);
 void		cd(t_element *current, t_env *env_list);
 
-/*Cd2*/
+/*Cd2*/ // TO REMOVE CD2
 //size_t		size_of_word(char *path, int i);
 // int			forward_loop(char *current_path, char *home_value, int end);
 // void		go_forward_until_user(char *current_path, char *home_value);
