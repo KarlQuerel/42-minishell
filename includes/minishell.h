@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/06 19:36:31 by karl             ###   ########.fr       */
+/*   Updated: 2023/12/06 20:01:44 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -155,7 +155,7 @@ bool		is_in_line(char *big, char *little);
 
 /*Cmd_types*/
 int			cmd_type(char *command, int len);
-void		cmd_type_loop(char *command, int len, int size);
+// void		cmd_type_loop(char *command, int len, int *size);
 int			key_and_value_type(char *command, int len, int type);
 // int			str_type(char *command, int len); A SUPPRIMER
 
