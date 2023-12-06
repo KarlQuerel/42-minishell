@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   erase_spaces.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:51:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/02 23:03:06 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/06 13:12:15 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*The first condition checks if there are quotes and quotes
 can close. It is meant to skip the spaces in between quotes,
 so that they are kept in new_line. It keeps the separators.*/
-void	erase_spaces_loop(char *line, char **new_line, int *i, int *j)
+/* void	erase_spaces_loop(char *line, char **new_line, int *i, int *j)
 {
 	char	*separator;
 
@@ -27,6 +27,31 @@ void	erase_spaces_loop(char *line, char **new_line, int *i, int *j)
 			(*new_line)[(*j)++] = line[(*i)++];
 		(*new_line)[(*j)++] = line[(*i)++];
 		free(separator);
+	}
+	else if ((line[(*i)] == ' ' && line[(*i) + 1] == ' ') || \
+	(line[(*i)] == ' ' && line[(*i) + 1] == '\0'))
+		(*i) += 1;
+	else
+		(*new_line)[(*j)++] = line[(*i)++];
+} */
+
+void	erase_spaces_loop(char *line, char **new_line, int *i, int *j)
+{
+	char	*separator;
+
+	if (line[(*i)] == '\'')
+	{
+		(*new_line)[(*j)++] = line[(*i)++];
+		while(line[(*i)] && line[(*i)] != '\'')
+			(*new_line)[(*j)++] = line[(*i)++];
+		(*new_line)[(*j)++] = line[(*i)++];
+	}
+	else if (line[(*i)] == '\"')
+	{
+		(*new_line)[(*j)++] = line[(*i)++];
+		while(line[(*i)] && line[(*i)] != '\"')
+			(*new_line)[(*j)++] = line[(*i)++];
+		(*new_line)[(*j)++] = line[(*i)++];
 	}
 	else if ((line[(*i)] == ' ' && line[(*i) + 1] == ' ') || \
 	(line[(*i)] == ' ' && line[(*i) + 1] == '\0'))

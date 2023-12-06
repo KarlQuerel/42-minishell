@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_errors.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:39:41 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/05 19:18:57 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/06 12:57:46 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ bool	no_option(t_element *cmd, t_element *head)
 {
 	while (cmd && cmd->type != PIPE)
 	{
-		printf("cmd->content = %s\n", cmd->content); //KARL
 		if (cmd->type == OPTION)
 		{
 			ft_putstr_fd(head->content, STDERR_FILENO);

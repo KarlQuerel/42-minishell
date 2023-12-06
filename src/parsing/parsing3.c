@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 23:29:17 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/05 18:00:07 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/06 12:23:58 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int *i)
 		(*current_cmd)->next = NULL;
 	else
 	{
-		(*current_cmd)->next = lstnew(line, (*i), parsing_str_type(line, (*i)));
+		(*current_cmd)->next = lstnew(line, (*i), CMD); //parsing_str_type(line, (*i))
 		(*current_cmd)->next->prev = (*current_cmd);
 		(*current_cmd) = (*current_cmd)->next;
 	}

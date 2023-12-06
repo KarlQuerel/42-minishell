@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:42:36 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/02 22:57:38 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/06 12:06:39 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	size_of_command(char *command, int len, int type)
 		size = cmd_type(command, len);
 	else if (type == KEY || type == VALUE)
 		size = key_and_value_type(command, len, type);
-	else if (type == STR)
-		size = str_type(command, len);
+/* 	else if (type == STR)
+		size = str_type(command, len); */
 	return (size + 1);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 12:10:49 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/02 22:57:31 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/06 12:08:24 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 on the type of string.
 The second condition (else) is for strings not within quotes
 as for strings when quotes can't close.*/
-char	*type_of_separator(char *line, int i, int str_type)
+/* char	*type_of_separator(char *line, int i, int str_type)
 {
 	char	*type;
 
@@ -29,17 +29,17 @@ char	*type_of_separator(char *line, int i, int str_type)
 	else
 		type = " |<>";
 	return (type);
-}
+} */
 
 /*Returns the type of string to know if quotes have to be skipped*/
-int	parsing_str_type(char *line, int i)
+/* int	parsing_str_type(char *line, int i)
 {
 	if ((line[i] == '\'' || line[i] == '\"') && \
 	quotes_can_close(line, i) == true)
 		return (STR);
 	else
 		return (CMD);
-}
+} */
 
 /*Checks if s is only numeric*/
 bool	ft_is_num(char *s)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/05 16:32:45 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/06 13:07:02 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,20 @@ t_element	*parsing(char *line, t_env *env_list)
 
 int	parsing_loop(char *line, int *i, int *start, t_element **current_cmd)
 {
-	char		*separator;
+	// char		*separator;
 
-	separator = type_of_separator(line, (*start), \
-	parsing_str_type(line, (*start)));
-	if (separator[0] == '\'')
+/* 	separator = type_of_separator(line, (*start), \
+	parsing_str_type(line, (*start))); */
+	// separator = " |<>";
+/* 	if (parsing_str_type(line, (*start)) == STR)
+	free(separator); */
+	fill_content_loop(current_cmd, line, i/* , separator */);
+	//printf("current->content = %s\n", (*current_cmd)->content);
+/* 	if ((*current_cmd)->content[0] == '\'') //faudra modifier ça : singel quote dans content ou signel quote dans content[0]?
+	{
+		printf("no change : %s\n", (*current_cmd)->content);
 		(*current_cmd)->change = false;
-	fill_content_loop(current_cmd, line, i, separator);
-	if (parsing_str_type(line, (*start)) == STR)
-		free(separator);
+	} */
 	(*current_cmd)->type = determine_command_type(line, (*i), (*start));
 	if ((*current_cmd)->type == HEREDOC)
 		return (1);

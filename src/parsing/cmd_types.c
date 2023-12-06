@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_types.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:58:39 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/04 16:56:10 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/06 12:05:47 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,31 @@ int	cmd_type(char *command, int len)
 	while (command[len] != ' ' && command[len] != '|' && \
 	command[len] != '<' && command[len] != '>' && command[len] != '\0')
 	{
-		size++;
-		len++;
+		if (command[len] == '\'')
+		{
+			len++; //skip first quote
+			while (command[len] != '\'')
+			{
+				size++;
+				len++;
+			}
+			len++; //skip last quote
+		}
+		else if (command[len] == '\"')
+		{
+			len++; //skip first quote
+			while (command[len] != '\"')
+			{
+				size++;
+				len++;
+			}
+			len++; //skip last quote
+		}
+		else
+		{
+			size++;
+			len++;
+		}
 	}
 	return (size);
 }
@@ -63,7 +86,7 @@ no need to add 1 because the last size++ does the job.
 Command = command line
 len = where is the begining of the string in the command line
 (command[len] is the first letter of the string, not the first quote)*/
-int	str_type(char *command, int len)
+/* int	str_type(char *command, int len)
 {
 	int		size;
 	char	quote;
@@ -81,4 +104,4 @@ int	str_type(char *command, int len)
 		len++;
 	}
 	return (size);
-}
+} */
