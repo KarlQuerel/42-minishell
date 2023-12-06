@@ -6,7 +6,7 @@
 /*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 21:18:09 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/06 12:56:25 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/12/06 19:13:07 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ t_pipe *exec)
 		return ;
 	}
 	*line = erase_spaces(*line);
+	if (*line[0] == '\0') //test invalid free ""
+		return ;
 	if (line_errors_and_fix(*line) == true)
 	{
 		cmd_list = parsing(*line, *env_list);
