@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   erase_spaces.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:51:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/06 19:20:15 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/12/06 20:00:06 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -101,6 +101,19 @@ char	*erase_empty_strings(char *line)
 	new_line = empty_strings_malloc(line);
 	if (!new_line)
 		return (NULL);
+	while (line[i]) //test "''"'""
+	{
+		if (line[i] != '\'' && line[i] != '\"')
+			break;
+		i++;
+	}
+	if (line[i] == '\0')
+	{
+		free(line);
+		new_line[j] = '\0';
+		return (new_line);
+	}
+	i = 0;
 	while (line[i])
 	{
 		if (line[i] == '\'' && line[i + 1] == '\'')

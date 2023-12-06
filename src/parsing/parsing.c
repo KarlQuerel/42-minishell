@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/06 18:57:34 by karl             ###   ########.fr       */
+/*   Updated: 2023/12/06 20:21:19 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -35,6 +35,8 @@ t_element	*parsing(char *line, t_env *env_list)
 			if (ft_heredoc(current_cmd, env_list) == false)
 				return (NULL);
 		}
+		if (current_cmd->type == PIPE)
+			i++;
 		parsing_advance_to_next_word(line, &start, &i);
 		parsing_initialize_next(&current_cmd, line, &i);
 	}

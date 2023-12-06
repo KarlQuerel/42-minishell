@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cmd_types.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:58:39 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/06 19:31:48 by karl             ###   ########.fr       */
+/*   Updated: 2023/12/06 19:59:29 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -25,65 +25,65 @@ int	cmd_type(char *command, int len)
 	while (command[len] != ' ' && command[len] != '|' && \
 	command[len] != '<' && command[len] != '>' && command[len] != '\0')
 	{
-		cmd_type_loop(command, len, size);
-		//LOOP INITIALE CI DESSOUS:
-		// if (command[len] == '\'')
-		// {
-		// 	len++; //skip first quote
-		// 	while (command[len] != '\'')
-		// 	{
-		// 		size++;
-		// 		len++;
-		// 	}
-		// 	len++; //skip last quote
-		// }
-		// else if (command[len] == '\"')
-		// {
-		// 	len++; //skip first quote
-		// 	while (command[len] != '\"')
-		// 	{
-		// 		size++;
-		// 		len++;
-		// 	}
-		// 	len++; //skip last quote
-		// }
-		// else
-		// {
-		// 	size++;
-		// 	len++;
-		// }
+		//cmd_type_loop(command, len, &size);
+		// LOOP INITIALE CI DESSOUS:
+		if (command[len] == '\'')
+		{
+			len++; //skip first quote
+			while (command[len] != '\'')
+			{
+				size++;
+				len++;
+			}
+			len++; //skip last quote
+		}
+		else if (command[len] == '\"')
+		{
+			len++; //skip first quote
+			while (command[len] != '\"')
+			{
+				size++;
+				len++;
+			}
+			len++; //skip last quote
+		}
+		else
+		{
+			size++;
+			len++;
+		}
 	}
 	return (size);
 }
 
-void		cmd_type_loop(char *command, int len, int size)
-{
-	if (command[len] == '\'')
-	{
-		len++; //skip first quote
-		while (command[len] != '\'')
-		{
-			size++;
-			len++;
-		}
-		len++; //skip last quote
-	}
-	else if (command[len] == '\"')
-	{
-		len++; //skip first quote
-		while (command[len] != '\"')
-		{
-			size++;
-			len++;
-		}
-		len++; //skip last quote
-	}
-	else
-	{
-		size++;
-		len++;
-	}
-}
+// void		cmd_type_loop(char *command, int len, int *size)
+// {
+// 	if (command[len] == '\'')
+// 	{
+// 		len++; //skip first quote
+// 		while (command[len] != '\'')
+// 		{
+// 			(*size)++;
+// 			len++;
+// 		}
+// 		len++; //skip last quote
+// 	}
+// 	else if (command[len] == '\"')
+// 	{
+// 		len++; //skip first quote
+// 		while (command[len] != '\"')
+// 		{
+// 			(*size)++;
+// 			len++;
+// 		}
+// 		len++; //skip last quote
+// 	}
+// 	else
+// 	{
+// 		(*size)++;
+// 		len++;
+// 	}
+// }
 
 /*Returns the size of the environment key or its value,
 depending on the trigger.

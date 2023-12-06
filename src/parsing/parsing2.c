@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parsing2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:55:56 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/06 19:20:59 by karl             ###   ########.fr       */
+/*   Updated: 2023/12/06 20:15:59 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -31,10 +31,10 @@ t_element	*parsing_initialisation(char *line, int *i, int *start)
 /*Advances the i and start variables until the beginning of the next word*/
 void	parsing_advance_to_next_word(char *line, int *start, int *i)
 {
-	while ((line[(*i)] == ' ' || line[(*i)] == '<' || \
-	line[(*i)] == '>') && line[(*i)])
+	while (line[(*i)] && (line[(*i)] == ' ' || line[(*i)] == '<' || \
+	line[(*i)] == '>'))
 		(*i)++;
-	if (line[(*i)] == ' ' || line[(*i)] == '<' || line[(*i)] == '>')
+	if (line[(*i)] == ' ' || line[(*i)] == '<' || line[(*i)] == '>') //caro	
 		(*start) = (*i) + 1;
 	else
 		(*start) = (*i);
