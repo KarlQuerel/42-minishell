@@ -6,7 +6,7 @@
 /*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:51:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/06 19:35:16 by karl             ###   ########.fr       */
+/*   Updated: 2023/12/06 19:20:15 by octonaute        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -54,7 +54,8 @@ void	erase_spaces_loop(char *line, char **new_line, int *i, int *j)
 		(*new_line)[(*j)++] = line[(*i)++];
 	}
 	else if ((line[(*i)] == ' ' && line[(*i) + 1] == ' ') || \
-	(line[(*i)] == ' ' && line[(*i) + 1] == '\0'))
+	(line[(*i)] == ' ' && line[(*i) + 1] == '\0') || \
+	(line[(*i)] >= 9 && line[(*i)] <= 13))
 		(*i) += 1;
 	else
 		(*new_line)[(*j)++] = line[(*i)++];
