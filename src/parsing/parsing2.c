@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parsing2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:55:56 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/06 13:11:01 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/12/06 19:20:59 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -40,9 +40,9 @@ void	parsing_advance_to_next_word(char *line, int *start, int *i)
 		(*start) = (*i);
 }
 
-int	skip_first_quote(char *line, int *i) //mettre dans .h
+int	skip_first_quote(char *line, int *i)
 {
-	int start;
+	int	start;
 	int	temp;
 
 	start = (*i);
@@ -75,7 +75,7 @@ char *sep */) //je peux rajouter un parametre pour norme!!
 		{
 			if (line[(*i) - 1] == '\'')
 				(*cur)->change = false;
-			while(line[(*i)] && (*i) < closing_quote)
+			while (line[(*i)] && (*i) < closing_quote)
 				(*cur)->content[j++] = line[(*i)++];
 			(*i)++; //skip last quote
 		}
@@ -84,6 +84,3 @@ char *sep */) //je peux rajouter un parametre pour norme!!
 	}
 	(*cur)->content[j] = '\0';
 }
-
-
-

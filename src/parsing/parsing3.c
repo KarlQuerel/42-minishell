@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parsing3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 23:29:17 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/06 12:23:58 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/12/06 19:34:21 by karl             ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -30,7 +30,7 @@ int	parsing_fix_dollar(t_element **cmd_list, t_element *current, \
 t_env *env_list)
 {
 	int	ret;
-	
+
 	if (is_in_line(current->content, "$") == true && \
 	current->change == true)
 	{
@@ -38,7 +38,7 @@ t_env *env_list)
 		if (current->content == NULL)
 		{
 			ret = ft_delete_node_cmd(cmd_list, current);
-			if ( ret == 1)
+			if (ret == 1)
 			{
 				*cmd_list = NULL;
 				return (1);
@@ -89,7 +89,7 @@ type PIPE is found.*/
 int	parsing_fix(t_element **cmd_list, t_env *env_list)
 {
 	t_element	*current;
-	int	ret;
+	int			ret;
 
 	current = (*cmd_list);
 	while (current != NULL)

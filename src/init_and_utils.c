@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   init_and_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: karl <karl@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 21:18:09 by kquerel           #+#    #+#             */
 /*   Updated: 2023/12/06 19:13:07 by octonaute        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../includes/minishell.h"
 
@@ -72,7 +72,7 @@ void	line_null(char *line, t_env **env_list, t_pipe *exec)
 void	line_not_null(char **line, t_element *cmd_list, t_env **env_list, \
 t_pipe *exec)
 {
-	if (is_in_line(*line, "\\") == true || 	quotes_can_close(*line, 0) == false)
+	if (is_in_line(*line, "\\") == true || quotes_can_close(*line, 0) == false)
 	{
 		ft_putendl_fd("Syntax error", STDERR_FILENO);
 		return ;
