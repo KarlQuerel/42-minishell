@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/07 18:04:41 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 22:16:49 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,13 +290,12 @@ void		cd(t_element *current, t_env *env_list);
 /*Dollar*/
 int			initialize_values_loop(char *content, size_t *i, size_t *j, \
 int *dollar_nb);
-int			initialize_values(char *content, size_t *i, size_t *j);
+int			initialize_values(char *content);
 void		multiple_dollars(char *content, char **ret, t_env *env);
 void		one_dollar(char *content, char **ret, t_env *env);
 char		*dollar(char *content, t_env *env_list);
 
 /*Dollar2*/
-void		new_key_loop(size_t *i, char *content, int *alpha);
 void		new_key(size_t *i, char **key_to_find, char *content);
 char		*replace_dollar(char *key_to_find, t_env *env_list);
 void		text_before(char *content, char **ret);
@@ -361,6 +360,8 @@ void		single_command(t_element *cmd, t_env **env, t_pipe *exec);
 int			ft_exit_status_single(t_env **env, int pid);
 void		multiple_commands(t_element *cmd, t_env **env, t_pipe *exec);
 int			ft_exit_status_multiple(t_env **env, t_pipe *exec);
+/*Ft_close*/
+void		ft_close(int *fd);
 
 /*Exec_2*/
 int			ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec, \

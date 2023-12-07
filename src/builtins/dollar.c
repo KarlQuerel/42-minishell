@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/07 18:03:58 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 19:30:00 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,19 @@ int	initialize_values_loop(char *content, size_t *i, size_t *j, int *dollar_nb)
 	return (0);
 }
 
-int	initialize_values(char *content, size_t *i, size_t *j)
+int	initialize_values(char *content)
 {
+	size_t	j;
+	size_t	i;
 	int	dollar_nb;
 	int	ret;
 
+	i = 1;
+	j = 0;
 	dollar_nb = 0;
-	while (content[(*i)])
+	while (content[i])
 	{
-		ret = initialize_values_loop(content, i, j, &dollar_nb);
+		ret = initialize_values_loop(content, &i, &j, &dollar_nb);
 		if (ret == 1)
 			return (1);
 		if (ret == 2)
@@ -89,6 +93,7 @@ void	multiple_dollars(char *content, char **ret, t_env *env)
 		(*ret) = ft_strjoin_free((*ret), replaced);
 		free(replaced);
 		after = text_after(content, &end);
+		start = end;
 		(*ret) = ft_strjoin_free((*ret), after);
 		free(after);
 		new_key(&end, &key_to_find, content);
@@ -96,12 +101,16 @@ void	multiple_dollars(char *content, char **ret, t_env *env)
 	replaced = replace_dollar(key_to_find, env);
 	(*ret) = ft_strjoin_free((*ret), replaced);
 	free(replaced);
-	while (content[start] && (content[start] < 9 || content[start] > 13) && content[start] != 32)
+	while(content[start] != '$')
+		start--;
+	while(content[start] && (content[start] < 9 || content[start] > 13) && content[start] != 32)
 		start++;
 	after = strlcpy_middle(after, content, start, end);
 	(*ret) = ft_strjoin_free((*ret), after);
 	free(after);
 	free(key_to_find);
+	if (content[ft_strlen(content) - 1] == '$' && content[ft_strlen(content)] == '\0')
+		(*ret) = ft_strjoin_free((*ret), "$");
 }
 
 void	one_dollar(char *content, char **ret, t_env *env)
@@ -118,6 +127,8 @@ void	one_dollar(char *content, char **ret, t_env *env)
 	while (content[i] != '$')
 		i++;
 	tmp = i + 1;
+	while (content[tmp] && (content[tmp] < 9 || content[tmp] > 13) && content[tmp] != 32)
+		tmp++;
 	after = text_after(content, &tmp);
 	if (is_in_line(content, "$?") == true)
 		key_to_find = "EXIT_STATUS";
@@ -131,6 +142,8 @@ void	one_dollar(char *content, char **ret, t_env *env)
 	free(after);
 	if (key_to_find != NULL && compare(key_to_find, "EXIT_STATUS") == false)
 		free(key_to_find);
+	if (content[ft_strlen(content) - 1] == '$' && content[ft_strlen(content)] == '\0')
+		(*ret) = ft_strjoin_free((*ret), "$");
 }
 
 /*
@@ -143,14 +156,10 @@ void	one_dollar(char *content, char **ret, t_env *env)
 char	*dollar(char *content, t_env *env_list)
 {
 	char	*ret;
-	size_t	j;
-	size_t	i;
 	int		nb;
 
 	ret = NULL;
-	i = 1; //caro avant c'etait i=1
-	j = 0;
-	nb = initialize_values(content, &i, &j);
+	nb = initialize_values(content);
 	text_before(content, &ret);
 	if (nb == 1)
 		multiple_dollars(content/* , i */, &ret, env_list);

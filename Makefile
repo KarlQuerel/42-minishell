@@ -6,7 +6,7 @@
 #    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/12/07 14:40:06 by kquerel          ###   ########.fr        #
+#    Updated: 2023/12/07 20:17:51 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ SRCS		=	src/main.c \
 				src/builtins/history.c \
 				src/builtins/pwd.c \
 				src/builtins/unset.c \
+				src/executable/ft_close.c \
 				src/executable/exec.c \
 				src/executable/exec_2.c \
 				src/executable/exec_3.c \

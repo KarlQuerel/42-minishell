@@ -6,30 +6,11 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 20:32:19 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/07 18:06:22 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 18:57:33 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void	new_key_loop(size_t *i, char *content, int *alpha)
-{
-	while (content[(*i)])
-	{
-		if (content[(*i)] == '$' && content[(*i) + 1] == '$')
-		{
-			while (content[(*i) + 1] == '$')
-				(*i)++;
-		}
-		if (ft_isalpha(content[(*i)]) == 1)
-			(*alpha) = 1;
-		if (content[(*i)] == '$' && content[(*i) + 1] != '\0')
-			return ;
-		if (content[(*i)] == '$')
-			return ;
-		(*i)++;
-	}
-}
 
 void	new_key(size_t *i, char **key_to_find, char *content)
 {

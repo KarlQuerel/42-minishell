@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 23:29:17 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/07 18:33:23 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 18:44:47 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,21 +103,19 @@ int	parsing_fix(t_element **cmd_list, t_env *env_list)
 		if (current->type == COMMAND && current->next)
 			type_arg_after_cmd(&current);
 		ret = parsing_fix_dollar(cmd_list, current, env_list);
-		// if (ret == 1)
-		// 	return (1);
-		// else if (ret == 4)
-		// {
-		// 	printf("current->content = ---%s---\n", current->content);
-		// 	current = current->next;
-		// 	break ;
-		// }
-		// else if (ret == 0 && current)
-		// 	current->change = false;
 		if (current->content == NULL)
 		{
 			if (current->next)
+			{
 				current = current->next;
-			ret = ft_delete_node_cmd(cmd_list, current->prev);
+				ret = ft_delete_node_cmd(cmd_list, current->prev);
+			}
+			else
+			{
+				ret = ft_delete_node_cmd(cmd_list, current);
+				current = NULL;
+				return (0);
+			}
 			if (ret == 2)
 				current = NULL;
 		}
