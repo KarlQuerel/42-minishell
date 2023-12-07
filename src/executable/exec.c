@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:46:12 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/02 19:10:19 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 13:41:03 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,13 @@
 */
 void	ft_execute(t_element *cmd, t_env **env, t_pipe *exec)
 {
-	int	i;
 	int	size_cmd;
 
 	if (!cmd)
 		return ;
-	i = 0;
 	size_cmd = get_size_cmd(cmd);
 	exec->pipe_nb = ft_count_pipes(cmd);
-	exec->cmd_tab = ft_calloc(size_cmd + 1, sizeof(char *));
+	exec->cmd_tab = ft_calloc(size_cmd + 2, sizeof(char *));
 	if (!exec->cmd_tab)
 		return ;
 	if (exec->pipe_nb == 0)

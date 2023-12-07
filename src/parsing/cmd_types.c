@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_types.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:58:39 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/06 19:59:29 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/12/07 14:20:20 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,66 +24,38 @@ int	cmd_type(char *command, int len)
 		return (0);
 	while (command[len] != ' ' && command[len] != '|' && \
 	command[len] != '<' && command[len] != '>' && command[len] != '\0')
-	{
-		//cmd_type_loop(command, len, &size);
-		// LOOP INITIALE CI DESSOUS:
-		if (command[len] == '\'')
-		{
-			len++; //skip first quote
-			while (command[len] != '\'')
-			{
-				size++;
-				len++;
-			}
-			len++; //skip last quote
-		}
-		else if (command[len] == '\"')
-		{
-			len++; //skip first quote
-			while (command[len] != '\"')
-			{
-				size++;
-				len++;
-			}
-			len++; //skip last quote
-		}
-		else
-		{
-			size++;
-			len++;
-		}
-	}
+		cmd_type_loop(command, &len, &size);
 	return (size);
 }
 
-// void		cmd_type_loop(char *command, int len, int *size)
-// {
-// 	if (command[len] == '\'')
-// 	{
-// 		len++; //skip first quote
-// 		while (command[len] != '\'')
-// 		{
-// 			(*size)++;
-// 			len++;
-// 		}
-// 		len++; //skip last quote
-// 	}
-// 	else if (command[len] == '\"')
-// 	{
-// 		len++; //skip first quote
-// 		while (command[len] != '\"')
-// 		{
-// 			(*size)++;
-// 			len++;
-// 		}
-// 		len++; //skip last quote
-// 	}
-// 	else
-// 	{
-// 		(*size)++;
-// 		len++;
-// 	}
-// }
+void	cmd_type_loop(char *command, int *len, int *size)
+{
+	if (command[(*len)] == '\'')
+	{
+		(*len)++;
+		while (command[(*len)] != '\'')
+		{
+			(*size)++;
+			(*len)++;
+		}
+		(*len)++;
+	}
+	else if (command[(*len)] == '\"')
+	{
+		(*len)++;
+		while (command[(*len)] != '\"')
+		{
+			(*size)++;
+			(*len)++;
+		}
+		(*len)++;
+	}
+	else
+	{
+		(*size)++;
+		(*len)++;
+	}
+}
 
 /*Returns the size of the environment key or its value,
 depending on the trigger.
@@ -110,29 +82,3 @@ int	key_and_value_type(char *command, int len, int type)
 	}
 	return (size);
 }
-
-/*Returns the size of a str (= argument in between two quotes).
-If quote found returns size + 1 to get the real size. Otherwise,
-no need to add 1 because the last size++ does the job.
-Command = command line
-len = where is the begining of the string in the command line
-(command[len] is the first letter of the string, not the first quote)*/
-/* int	str_type(char *command, int len)
-{
-	int		size;
-	char	quote;
-
-	size = 0;
-	quote = command[len];
-	while (command[len])
-	{
-		if (command[len + 1] && command[len + 1] == quote)
-		{
-			size += 1;
-			break ;
-		}
-		size++;
-		len++;
-	}
-	return (size);
-} */

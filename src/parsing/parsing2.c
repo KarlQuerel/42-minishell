@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:55:56 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/06 20:15:59 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/12/07 14:23:17 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ t_element	*parsing_initialisation(char *line, int *i, int *start)
 	if ((*i) != 0 && line[(*i)] == ' ')
 		(*i)++;
 	(*start) = (*i);
-	//typestr = parsing_str_type(line, (*i));
-	typestr = CMD; //tjrs, alors que avant STR aussi
+	typestr = CMD;
 	return (lstnew(line, (*start), typestr));
 }
 
@@ -34,7 +33,7 @@ void	parsing_advance_to_next_word(char *line, int *start, int *i)
 	while (line[(*i)] && (line[(*i)] == ' ' || line[(*i)] == '<' || \
 	line[(*i)] == '>'))
 		(*i)++;
-	if (line[(*i)] == ' ' || line[(*i)] == '<' || line[(*i)] == '>') //caro	
+	if (line[(*i)] == ' ' || line[(*i)] == '<' || line[(*i)] == '>')
 		(*start) = (*i) + 1;
 	else
 		(*start) = (*i);
@@ -58,10 +57,8 @@ int	skip_first_quote(char *line, int *i)
 	return (-1);
 }
 
-void	fill_content_loop(t_element **cur, char *line, int *i/*,  \
-char *sep */) //je peux rajouter un parametre pour norme!!
+void	fill_content_loop(t_element **cur, char *line, int *i)
 {
-	int		x;
 	int		j;
 	int		closing_quote;
 
@@ -70,14 +67,14 @@ char *sep */) //je peux rajouter un parametre pour norme!!
 	while (line[(*i)] && line[(*i)] != ' ' && line[(*i)] != '|' && \
 	line[(*i)] != '<' && line[(*i)] != '>')
 	{
-		closing_quote = skip_first_quote(line, i); //checks if we are on a quote
-		if (closing_quote != -1) //if yes
+		closing_quote = skip_first_quote(line, i);
+		if (closing_quote != -1)
 		{
 			if (line[(*i) - 1] == '\'')
 				(*cur)->change = false;
 			while (line[(*i)] && (*i) < closing_quote)
 				(*cur)->content[j++] = line[(*i)++];
-			(*i)++; //skip last quote
+			(*i)++;
 		}
 		else
 			(*cur)->content[j++] = line[(*i)++];

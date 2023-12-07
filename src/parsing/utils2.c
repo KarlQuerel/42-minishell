@@ -3,43 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 12:10:49 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/06 12:08:24 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/12/07 13:49:05 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-/*Returns the delimiter to look for depending
-on the type of string.
-The second condition (else) is for strings not within quotes
-as for strings when quotes can't close.*/
-/* char	*type_of_separator(char *line, int i, int str_type)
-{
-	char	*type;
-
-	if (str_type == STR)
-	{
-		type = calloc(2, sizeof(char));
-		type[0] = line[i];
-		type[1] = '\0';
-	}
-	else
-		type = " |<>";
-	return (type);
-} */
-
-/*Returns the type of string to know if quotes have to be skipped*/
-/* int	parsing_str_type(char *line, int i)
-{
-	if ((line[i] == '\'' || line[i] == '\"') && \
-	quotes_can_close(line, i) == true)
-		return (STR);
-	else
-		return (CMD);
-} */
 
 /*Checks if s is only numeric*/
 bool	ft_is_num(char *s)

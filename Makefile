@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+         #
+#    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/12/06 12:35:37 by octonaute        ###   ########.fr        #
+#    Updated: 2023/12/07 11:36:03 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,6 @@ SRCS		=	src/main.c \
 				src/init_and_utils.c \
 				src/builtins/builtins_errors.c \
 				src/builtins/cd.c \
-				src/builtins/cd2.c \
 				src/builtins/dollar.c \
 				src/builtins/dollar2.c \
 				src/builtins/echo.c \
@@ -89,7 +88,7 @@ OBJS 		= $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))
 OBJS		= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
 CC			= cc
-CFLAGS		= -g3 #-Wall -Wextra -Werror -g3
+CFLAGS		= -Wall -Wextra -Werror -g3
 HFLAGS		= -I$(INCLUDE_DIR)
 RFLAGS		= -lreadline
 MAKEFLAGS	+= --no-print-directory

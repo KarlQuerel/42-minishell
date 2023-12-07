@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:56:39 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/04 18:09:11 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 13:42:31 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,12 @@ int	get_size_cmd(t_element *cmd)
 
 	i = 0;
 	while (cmd && cmd->type != PIPE)
-	{
-		if (cmd->type >= 3)
-		{
-			if (cmd->next && cmd->next->type != PIPE)
-				cmd = cmd->next;
-			else
-				break ;
-		}
+{
+		if (cmd->next && cmd->next->type != PIPE)
+			cmd = cmd->next;
 		else
-			i++;
+			break ;
+		i++;
 		cmd = cmd->next;
 	}
 	return (i + 1);

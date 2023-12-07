@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/06 20:01:44 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/12/07 14:35:00 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,9 +155,8 @@ bool		is_in_line(char *big, char *little);
 
 /*Cmd_types*/
 int			cmd_type(char *command, int len);
-// void		cmd_type_loop(char *command, int len, int *size);
+void		cmd_type_loop(char *command, int *len, int *size);
 int			key_and_value_type(char *command, int len, int type);
-// int			str_type(char *command, int len); A SUPPRIMER
 
 /*Commands*/
 bool		is_cmd(char *buffer, char *command);
@@ -176,6 +175,9 @@ bool		is_key_in_env(t_env *env_list, char *key);
 void		erase_spaces_loop(char *line, char **new_line, int *i, int *j);
 char		*erase_spaces(char *line);
 char		*erase_empty_strings(char *line);
+void		erase_empty_strings_loop(char *line, char **new_line, int *i, \
+int *j);
+bool		if_consec_quotes(char *line, int *i);
 
 /*Errors*/
 bool		line_errors_and_fix(char *line);
@@ -213,7 +215,6 @@ int			count_spaces(char *line);
 char		*erase_spaces_malloc(char *line);
 char		*joinstr_minishell_malloc(char *line, int len, char *str, \
 char type);
-char		*empty_strings_malloc(char *line);
 
 /*Determine_cmd*/
 bool		option(char *line, size_t end, size_t start);
@@ -235,8 +236,7 @@ void		builtin_fix(t_element **cmd_list);
 t_element	*parsing_initialisation(char *line, int *i, int *start);
 void		parsing_advance_to_next_word(char *line, int *start, int *i);
 int			skip_first_quote(char *line, int *i);
-void		fill_content_loop(t_element **cur, char *line, int *i/* , \
-char *sep */); //NORMINETTE SUPPRIMER MAIS CHECK AVEC CARO
+void		fill_content_loop(t_element **cur, char *line, int *i);
 
 /*Parsing 3*/
 void		parsing_initialize_next(t_element **current_cmd, char *line, int \
@@ -269,8 +269,6 @@ char		*ft_strjoin_free(char const *s1, char *s2);
 void		str_join_fill(const char *s1, char *new_str, int *i);
 
 /*Utils2*/
-char		*type_of_separator(char *line, int i, int str_type);
-int			parsing_str_type(char *line, int i);
 bool		ft_is_num(char *s);
 bool		ft_atoi_check(char *str);
 bool		compare(char *s1, char *s2);
@@ -288,12 +286,6 @@ bool		check_next(t_element *cmd, int option);
 void		cd_directory(char *path, t_env *env_list);
 void		cd_home(t_env *env_list);
 void		cd(t_element *current, t_env *env_list);
-
-/*Cd2*/ // TO REMOVE CD2
-//size_t		size_of_word(char *path, int i);
-// int			forward_loop(char *current_path, char *home_value, int end);
-// void		go_forward_until_user(char *current_path, char *home_value);
-// void		go_backwards_until_user(char *current_path, char *home_value);
 
 /*Dollar*/
 int			initialize_values_loop(char *content, size_t *i, size_t *j, \
@@ -427,4 +419,5 @@ char		*ft_palbon(t_element *cmd);
 char		*ft_strjoin_free_s2(char *s1, char *s2);
 char		*create_heredoc(char *safeword, int i, int *fd);
 
+void		printlist(t_element *head); // A EFFACER A LA FIN
 #endif

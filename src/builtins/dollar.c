@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: casomarr <casomarr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/05 16:39:22 by casomarr         ###   ########.fr       */
+/*   Updated: 2023/12/07 14:16:00 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ char	*dollar(char *content, t_env *env_list)
 	int		nb;
 
 	ret = NULL;
-	i = 1; //devrat etre 0 sinon "$#$" compte un seul $
+	i = 1;
 	j = 0;
 	nb = initialize_values(content, &i, &j);
 	text_before(content, &ret);

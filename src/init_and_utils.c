@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_and_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: octonaute <octonaute@student.42.fr>        +#+  +:+       +#+        */
+/*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 21:18:09 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/06 20:21:32 by octonaute        ###   ########.fr       */
+/*   Updated: 2023/12/07 14:13:52 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_pipe *exec)
 		return ;
 	}
 	*line = erase_spaces(*line);
-	if (*line[0] == '\0') //test invalid free ""
+	if (*line[0] == '\0')
 		return ;
 	if (line_errors_and_fix(*line) == true)
 	{
