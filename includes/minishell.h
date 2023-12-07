@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/07 14:35:00 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 16:38:50 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,6 +300,7 @@ void		new_key_loop(size_t *i, char *content, int *alpha);
 void		new_key(size_t *i, char **key_to_find, char *content);
 char		*replace_dollar(char *key_to_find, t_env *env_list);
 void		text_before(char *content, char **ret);
+char		*text_after(char *content, size_t *tmp);
 
 /*Echo*/
 bool		no_further_args(t_element *cmd);

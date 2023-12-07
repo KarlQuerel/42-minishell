@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:51:55 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/07 14:33:44 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 15:00:32 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ char	*erase_spaces(char *line)
 	i = 0;
 	j = 0;
 	new_line_a = erase_empty_strings(line);
+	if (new_line_a[0] == '\0')
+		return (free(new_line_a), NULL);
 	new_line = erase_spaces_malloc(new_line_a);
-	if (!new_line)
-		return (NULL);
 	while (new_line_a[i] == ' ')
 		i++;
 	while (new_line_a[i])
@@ -63,6 +63,7 @@ char	*erase_spaces(char *line)
 	}
 	new_line[j] = '\0';
 	free(new_line_a);
+	free(line);
 	return (new_line);
 }
 

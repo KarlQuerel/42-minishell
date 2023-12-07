@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 21:18:09 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/07 14:13:52 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 14:58:15 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_pipe *exec)
 		return ;
 	}
 	*line = erase_spaces(*line);
-	if (*line[0] == '\0')
+	if ((*line && *line[0] == '\0') || *line == NULL)
 		return ;
 	if (line_errors_and_fix(*line) == true)
 	{
