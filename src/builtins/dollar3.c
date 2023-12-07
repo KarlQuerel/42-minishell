@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 22:43:51 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/07 22:50:34 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/08 00:24:25 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int	first_values(size_t *end, char *content, size_t *tmp)
 	while (content[start] && content[start] != '$')
 		start++;
 	(*end) = start + 1;
-	while (content[(*end)] && (content[(*end)] < 9 || content[(*end)] > 13) \
-	&& content[(*end)] != 32 && content[(*end)] != '$')
+	while (content[(*end)] && ft_isalpha(content[*end]) == 1 \
+	&& content[(*end)] != '$')
 		(*end)++;
 	(*tmp) = (*end);
 	after = text_after(content, tmp);
@@ -60,8 +60,8 @@ char	*final_values(size_t *start, char *content, size_t end)
 	after = NULL;
 	while (content[(*start)] != '$')
 		(*start)--;
-	while (content[(*start)] && (content[(*start)] < 9 \
-	|| content[(*start)] > 13) && content[(*start)] != 32)
+	(*start)++;
+	while (content[*start] && ft_isalpha(content[*start]) == 1)
 		(*start)++;
 	after = strlcpy_middle(after, content, *start, end);
 	return (after);

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/07 22:56:07 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/08 00:11:36 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,14 @@ void	one_dollar(char *content, char **ret, t_env *env)
 	while (content[i] != '$')
 		i++;
 	tmp = i + 1;
-	while (content[tmp] && (content[tmp] < 9 \
-	|| content[tmp] > 13) && content[tmp] != 32)
+	while (content[tmp] && ft_isalpha(content[tmp]) == 1)
 		tmp++;
-	after = text_after(content, &tmp);
 	if (is_in_line(content, "$?") == true)
 		key_to_find = "EXIT_STATUS";
 	else
 		key_to_find = strlcpy_middle(key_to_find, content, \
 		i + 1, tmp - 1);
+	after = text_after(content, &tmp);
 	replace_dollar_in_ret(ret, key_to_find, env);
 	(*ret) = ft_strjoin_free((*ret), after);
 	free(after);

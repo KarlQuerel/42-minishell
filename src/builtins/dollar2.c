@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 20:32:19 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/07 22:54:11 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/08 00:24:45 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	new_key(size_t *i, char **key_to_find, char *content)
 			(*i)++;
 	start = *i;
 	(*i)++;
-	while (content[(*i)] && (content[(*i)] < 9 || content[(*i)] > 13) \
-		&& content[(*i)] != 32 && content[(*i)] != '$')
-			(*i)++;
+	while (content[(*i)] && ft_isalpha(content[*i]) == 1 \
+	&& content[(*i)] != '$')
+		(*i)++;
 	if (*key_to_find)
 		free(*key_to_find);
 	*key_to_find = strlcpy_middle(*key_to_find, content, start + 1, (*i) - 1);
@@ -77,13 +77,18 @@ char	*text_after(char *content, size_t *j)
 	after = (*j);
 	while (content[(*j)] && content[(*j)] != '$')
 		(*j)++;
+	text_after = ft_calloc(ft_strlen(content) + 1, sizeof(char));
+	if (!text_after)
+		return (NULL);
+	y = 0;
 	if (content[(*j)] != '\0')
 	{
-		text_after = ft_calloc(ft_strlen(content) + 1, sizeof(char));
-		if (!text_after)
-			return (NULL);
-		y = 0;
 		while (after < *j)
+			text_after[y++] = content[after++];
+	}
+	else
+	{
+		while (content[after] != '\0')
 			text_after[y++] = content[after++];
 	}
 	return (text_after);
