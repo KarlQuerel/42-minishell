@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:42:47 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/07 16:43:06 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 18:03:58 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,107 +57,51 @@ int	initialize_values(char *content, size_t *i, size_t *j)
 	return (0);
 }
 
-void	multiple_dollars(char *content, size_t i, char **ret, t_env *env)
+void	multiple_dollars(char *content, char **ret, t_env *env)
 {
 	char	*key_to_find;
 	char	*replaced;
-	int		j; //i dans one_dollar
-	char	*text_after;
-	size_t	y; //j dans one_dollar
+	size_t	end;
+	char	*after;
 	size_t	tmp;
-	size_t	after;
+	size_t	start;
 
 	key_to_find = NULL;
 	replaced = NULL;
-	text_after = NULL;
-
-
-	printf("content[%zu] = ---%c---\n", i, content[i]);
-	printf("content[%zu + 1] = ---%c---\n", i +1, content[i +1]);
-	
-	j = 0;
-	while (content[j] && content[j] != '$')
-		j++;
-	if (content[j + 1] != '$' && content[j + 1])
-		j++;
-
-/* /////////////////////
-	tmp = j + 1;
-	while (content[tmp] && (content[tmp] < 9 || content[tmp] > 13) \
-	&& content[tmp] != 32 && content[tmp] != '$')
-		tmp++;
-	if (content[tmp] != '\0' && content[tmp] != '$')
-	{
-		after = tmp;
-		tmp--;
-		text_after = ft_calloc(sizeof(content) + 1, sizeof(char));
-		if (!text_after)
-			return ;
-		y = 0;
-		while (content[after] && content[after] != '$')
-			text_after[y++] = content[after++];
-	}
-//////////////////// */
+	after = NULL;	
+	start = 0;
+	while (content[start] && content[start] != '$')
+		start++;
+	end = start + 1;
+	while (content[end] && (content[end] < 9 || content[end] > 13) \
+	&& content[end] != 32 && content[end] != '$')
+		end++;
+	tmp = end;
+	after = text_after(content, &tmp);
+	free(after);
 	if (compare(key_to_find, "?") == true)
 		key_to_find = ft_strdup("EXIT_STATUS");
 	else
-		key_to_find = strlcpy_middle(key_to_find, content, j, i - 1);
-	printf("key_to_find_1 = ---%s---\n", key_to_find);
-	while (i < ft_strlen(content))
+		key_to_find = strlcpy_middle(key_to_find, content, start + 1, end - 1);
+	while (end < ft_strlen(content))
 	{
 		replaced = replace_dollar(key_to_find, env);
 		(*ret) = ft_strjoin_free((*ret), replaced);
 		free(replaced);
-/////////////////////
-	printf("*ret_1 = ---%s---\n", *ret);
-	if (content[i + 1] != '$' && content[i + 1] != '\0')
-	{
-		tmp = i + 1;
-		while (content[i] && content[i] != '$')
-			i++;
-		after = tmp;
-		text_after = ft_calloc(sizeof(content) + 1, sizeof(char));
-		if (!text_after)
-			return ;
-		y = 0;
-	printf("debut text_after = ---%c---\n", content[after]);
-		
-		while (content[after] && content[after] != '$')
-			text_after[y++] = content[after++];
-		(*ret) = ft_strjoin_free((*ret), text_after);
-	printf("*ret_2= ---%s---\n", *ret);
-	
-	}
-////////////////////
-		new_key(&i, &key_to_find, content);
-	printf("key_to_find_2 = ---%s---\n", key_to_find);
-		
+		after = text_after(content, &end);
+		(*ret) = ft_strjoin_free((*ret), after);
+		free(after);
+		new_key(&end, &key_to_find, content);
 	}
 	replaced = replace_dollar(key_to_find, env);
 	(*ret) = ft_strjoin_free((*ret), replaced);
 	free(replaced);
+	while (content[start] && (content[start] < 9 || content[start] > 13) && content[start] != 32)
+		start++;
+	after = strlcpy_middle(after, content, start, end);
+	(*ret) = ft_strjoin_free((*ret), after);
+	free(after);
 	free(key_to_find);
-
-	/////////////////////
-	if (content[i + 1] != '$' && content[i + 1] != '\0')
-	{
-		tmp = i + 1;
-		while (content[i] && content[i] != '$')
-			i++;
-		after = tmp;
-		text_after = ft_calloc(sizeof(content) + 1, sizeof(char));
-		if (!text_after)
-			return ;
-		y = 0;
-	printf("debut text_after = ---%c---\n", content[after]);
-		
-		while (content[after] && content[after] != '$')
-			text_after[y++] = content[after++];
-		(*ret) = ft_strjoin_free((*ret), text_after);
-	printf("*ret_2= ---%s---\n", *ret);
-	
-	}
-////////////////////
 }
 
 void	one_dollar(char *content, char **ret, t_env *env)
@@ -179,13 +123,12 @@ void	one_dollar(char *content, char **ret, t_env *env)
 		key_to_find = "EXIT_STATUS";
 	else
 		key_to_find = strlcpy_middle(key_to_find, content, \
-		i + 1, tmp);
+		i + 1, tmp - 1);
 	replaced = replace_dollar(key_to_find, env);
 	(*ret) = ft_strjoin_free((*ret), replaced);
 	free(replaced);
 	(*ret) = ft_strjoin_free((*ret), after);
-	if (after)
-		free(after);
+	free(after);
 	if (key_to_find != NULL && compare(key_to_find, "EXIT_STATUS") == false)
 		free(key_to_find);
 }
@@ -210,7 +153,7 @@ char	*dollar(char *content, t_env *env_list)
 	nb = initialize_values(content, &i, &j);
 	text_before(content, &ret);
 	if (nb == 1)
-		multiple_dollars(content, i, &ret, env_list);
+		multiple_dollars(content/* , i */, &ret, env_list);
 	else
 		one_dollar(content, &ret, env_list);
 	free(content);

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 20:32:19 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/07 16:39:00 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 18:06:22 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	new_key_loop(size_t *i, char *content, int *alpha)
 void	new_key(size_t *i, char **key_to_find, char *content)
 {
 	int	start;
-	int	alpha;
 
 	if (content[(*i)] == '\0')
 	{
@@ -43,13 +42,16 @@ void	new_key(size_t *i, char **key_to_find, char *content)
 		*key_to_find = NULL;
 		return ;
 	}
-	(*i)++;
+	while (content[(*i)] && content[(*i)] != '$')
+			(*i)++;
 	start = *i;
-	alpha = 0;
-	new_key_loop(i, content, &alpha);
+	(*i)++;
+	while (content[(*i)] && (content[(*i)] < 9 || content[(*i)] > 13) \
+		&& content[(*i)] != 32 && content[(*i)] != '$')
+			(*i)++;
 	if (*key_to_find)
 		free(*key_to_find);
-	*key_to_find = strlcpy_middle(*key_to_find, content, start, *i - 1);
+	*key_to_find = strlcpy_middle(*key_to_find, content, start + 1, (*i) - 1);
 	if (compare(*key_to_find, "?") == true)
 	{
 		free(*key_to_find);
@@ -84,26 +86,24 @@ void	text_before(char *content, char **ret)
 	}
 }
 
-char	*text_after(char *content, size_t *tmp)
+char	*text_after(char *content, size_t *j)
 {
 	size_t	after;
-	size_t	j;
+	size_t	y;
 	char	*text_after;
 
 	text_after = NULL;
-	while (content[(*tmp)] && (content[(*tmp)] < 9 || content[(*tmp)] > 13) \
-	&& content[(*tmp)] != 32)
-		(*tmp)++;
-	if (content[(*tmp)] != '\0')
+	after = (*j);
+	while (content[(*j)] && content[(*j)] != '$')
+		(*j)++;
+	if (content[(*j)] != '\0')
 	{
-		after = (*tmp);
-		(*tmp)--;
 		text_after = ft_calloc(ft_strlen(content) + 1, sizeof(char));
 		if (!text_after)
 			return (NULL);
-		j = 0;
-		while (content[after])
-			text_after[j++] = content[after++];
+		y = 0;
+		while (after < *j)
+			text_after[y++] = content[after++];
 	}
 	return (text_after);
 }

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/07 16:38:50 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 18:04:41 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,7 +291,7 @@ void		cd(t_element *current, t_env *env_list);
 int			initialize_values_loop(char *content, size_t *i, size_t *j, \
 int *dollar_nb);
 int			initialize_values(char *content, size_t *i, size_t *j);
-void		multiple_dollars(char *content, size_t i, char **ret, t_env *env);
+void		multiple_dollars(char *content, char **ret, t_env *env);
 void		one_dollar(char *content, char **ret, t_env *env);
 char		*dollar(char *content, t_env *env_list);
 
@@ -300,7 +300,7 @@ void		new_key_loop(size_t *i, char *content, int *alpha);
 void		new_key(size_t *i, char **key_to_find, char *content);
 char		*replace_dollar(char *key_to_find, t_env *env_list);
 void		text_before(char *content, char **ret);
-char		*text_after(char *content, size_t *tmp);
+char		*text_after(char *content, size_t *j);
 
 /*Echo*/
 bool		no_further_args(t_element *cmd);

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 23:29:17 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/07 14:21:40 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 18:33:23 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,24 +29,26 @@ int *i)
 int	parsing_fix_dollar(t_element **cmd_list, t_element *current, \
 t_env *env_list)
 {
-	int	ret;
-
+	// int	ret;
+(void)cmd_list; //karl
 	if (is_in_line(current->content, "$") == true && \
 	current->change == true)
 	{
 		current->content = dollar(current->content, env_list);
-		if (current->content == NULL)
-		{
-			ret = ft_delete_node_cmd(cmd_list, current);
-			if (ret == 1)
-			{
-				*cmd_list = NULL;
-				return (1);
-			}
-			current = NULL;
-			if (ret == 3)
-				return (2);
-		}
+		// if (current->content == NULL)
+		// {
+		// 	ret = ft_delete_node_cmd(cmd_list, current);
+		// 	if (ret == 0)
+		// 		return (4);
+		// 	if (ret == 1)
+		// 	{
+		// 		*cmd_list = NULL;
+		// 		return (1);
+		// 	}
+		// 	current = NULL;
+		// 	if (ret == 3)
+		// 		return (2);
+		// }
 	}
 	return (0);
 }
@@ -90,7 +92,7 @@ int	parsing_fix(t_element **cmd_list, t_env *env_list)
 {
 	t_element	*current;
 	int			ret;
-
+	
 	current = (*cmd_list);
 	while (current != NULL)
 	{
@@ -101,13 +103,25 @@ int	parsing_fix(t_element **cmd_list, t_env *env_list)
 		if (current->type == COMMAND && current->next)
 			type_arg_after_cmd(&current);
 		ret = parsing_fix_dollar(cmd_list, current, env_list);
-		if (ret == 1)
-			return (1);
-		else if (ret == 0)
-			current->change = false;
-		else if (ret == 2)
-			current = NULL;
-		if (current)
+		// if (ret == 1)
+		// 	return (1);
+		// else if (ret == 4)
+		// {
+		// 	printf("current->content = ---%s---\n", current->content);
+		// 	current = current->next;
+		// 	break ;
+		// }
+		// else if (ret == 0 && current)
+		// 	current->change = false;
+		if (current->content == NULL)
+		{
+			if (current->next)
+				current = current->next;
+			ret = ft_delete_node_cmd(cmd_list, current->prev);
+			if (ret == 2)
+				current = NULL;
+		}
+		else if (current)
 			current = current->next;
 	}
 	return (0);
