@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/07 14:23:49 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 23:29:30 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,15 @@ void	builtin_fix(t_element **cmd_list)
 			current->builtin = true;
 		current = current->next;
 	}
+}
+
+void	parsing_types_fix(t_element **current, t_env *env_list)
+{
+	if (((*current)->prev != NULL && (*current)->prev->type >= 3 && \
+	(*current)->type < 3 && no_cmd_before((*current)) == true) || \
+	((*current)->prev == NULL && (*current)->type < 3))
+		(*current)->type = COMMAND;
+	if ((*current)->type == COMMAND && (*current)->next)
+		type_arg_after_cmd(&(*current));
+	parsing_fix_dollar((*current), env_list);
 }

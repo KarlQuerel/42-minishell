@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 20:32:19 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/07 18:57:33 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 22:54:11 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,13 @@ char	*text_after(char *content, size_t *j)
 			text_after[y++] = content[after++];
 	}
 	return (text_after);
+}
+
+void	free_and_last_dollar(char **key_to_find, char *content, char **ret)
+{
+	if (*key_to_find != NULL && compare(*key_to_find, "EXIT_STATUS") == false)
+		free(*key_to_find);
+	if (content[ft_strlen(content) - 1] == '$' \
+	&& content[ft_strlen(content)] == '\0')
+		(*ret) = ft_strjoin_free((*ret), "$");
 }

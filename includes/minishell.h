@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/07 22:16:49 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 23:31:37 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,18 +231,19 @@ t_element	*parsing(char *line, t_env *env_list);
 int			parsing_loop(char *line, int *i, int *start, \
 t_element **current_cmd);
 void		builtin_fix(t_element **cmd_list);
+void		parsing_types_fix(t_element **current, t_env *env_list);
 
 /*Parsing2*/
 t_element	*parsing_initialisation(char *line, int *i, int *start);
 void		parsing_advance_to_next_word(char *line, int *start, int *i);
 int			skip_first_quote(char *line, int *i);
 void		fill_content_loop(t_element **cur, char *line, int *i);
+int			parsing_if(t_element **current, t_element **cmd_list);
 
 /*Parsing 3*/
 void		parsing_initialize_next(t_element **current_cmd, char *line, int \
 *i);
-int			parsing_fix_dollar(t_element **cmd_list, t_element *current, \
-t_env *env_list);
+int			parsing_fix_dollar(t_element *current, t_env *env_list);
 void		type_arg_after_cmd(t_element **current);
 bool		no_cmd_before(t_element *current);
 int			parsing_fix(t_element **cmd_list, t_env *env_list);
@@ -291,7 +292,6 @@ void		cd(t_element *current, t_env *env_list);
 int			initialize_values_loop(char *content, size_t *i, size_t *j, \
 int *dollar_nb);
 int			initialize_values(char *content);
-void		multiple_dollars(char *content, char **ret, t_env *env);
 void		one_dollar(char *content, char **ret, t_env *env);
 char		*dollar(char *content, t_env *env_list);
 
@@ -300,6 +300,14 @@ void		new_key(size_t *i, char **key_to_find, char *content);
 char		*replace_dollar(char *key_to_find, t_env *env_list);
 void		text_before(char *content, char **ret);
 char		*text_after(char *content, size_t *j);
+void		free_and_last_dollar(char **key_to_find, char *content, char **ret);
+
+/*Dollar3*/
+int			first_values(size_t *end, char *content, size_t *tmp);
+char		*first_key_to_find(char *content, size_t start, size_t end);
+void		replace_dollar_in_ret(char **ret, char *key_to_find, t_env *env);
+char		*final_values(size_t *start, char *content, size_t end);
+void		multiple_dollars(char *content, char **ret, t_env *env);
 
 /*Echo*/
 bool		no_further_args(t_element *cmd);
@@ -421,5 +429,4 @@ char		*ft_palbon(t_element *cmd);
 char		*ft_strjoin_free_s2(char *s1, char *s2);
 char		*create_heredoc(char *safeword, int i, int *fd);
 
-void		printlist(t_element *head); // A EFFACER A LA FIN
 #endif

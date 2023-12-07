@@ -6,17 +6,17 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 20:15:43 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/07 21:38:03 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 22:24:05 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void    ft_close(int *fd)
+void	ft_close(int *fd)
 {
-    if (*fd > 2)
-    {
-        close(*fd);
-        fd = 0;
-    }
+	if (*fd > 2)
+	{
+		close(*fd);
+		fd = 0;
+	}
 }

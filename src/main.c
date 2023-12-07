@@ -6,34 +6,13 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:17:16 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/07 14:14:23 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 22:21:35 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 int	g_location;
-
-void	printlist(t_element *head) // A EFFACER A LA FIN
-{
-	int	i;
-
-	i = 0;
-	while (head)
-	{
-		// if (i != 0)
-		// 	printf("prev cmd = %s\n", head->prev->content);
-		printf("--------------------------------\n");
-		printf("content = ---%s---\n", head->content);
-		printf("type = ---%d---\n", head->type);
-		printf("builtin = ---%d---\n", head->builtin);
-		printf("--------------------------------\n");
-		// if (head->next != NULL)
-		// 	printf("next cmd = %s\n", head->next->content);
-		head = head->next;
-		i++;
-	}
-}
 
 int	main(int argc, char **argv, char **env)
 {

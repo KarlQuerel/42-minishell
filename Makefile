@@ -6,7 +6,7 @@
 #    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/12/07 20:17:51 by kquerel          ###   ########.fr        #
+#    Updated: 2023/12/07 22:44:19 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRCS		=	src/main.c \
 				src/builtins/cd.c \
 				src/builtins/dollar.c \
 				src/builtins/dollar2.c \
+				src/builtins/dollar3.c \
 				src/builtins/echo.c \
 				src/builtins/env.c \
 				src/builtins/exit.c \

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:55:56 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/07 14:23:17 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/07 23:29:58 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,28 @@ void	fill_content_loop(t_element **cur, char *line, int *i)
 			(*cur)->content[j++] = line[(*i)++];
 	}
 	(*cur)->content[j] = '\0';
+}
+
+int	parsing_if(t_element **current, t_element **cmd_list)
+{
+	int	ret;
+
+	if ((*current)->next)
+	{
+		(*current) = (*current)->next;
+		ret = ft_delete_node_cmd(cmd_list, (*current)->prev);
+	}
+	else
+	{
+		ret = ft_delete_node_cmd(cmd_list, (*current));
+		(*current) = NULL;
+		if (ret == 1)
+		{
+			(*current) = NULL;
+			*cmd_list = NULL;
+			return (1);
+		}
+		return (0);
+	}
+	return (2);
 }
