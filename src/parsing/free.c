@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 13:41:24 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/07 20:20:00 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/08 01:01:04 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	exit_free(t_element *cmd_list, t_env **env_list, t_pipe *exec)
 	free_cmd_list(cmd_list);
 	history(FREE_HISTORY, 0);
 	free_env_list(*env_list);
-	ft_close(&exec->std_in);
-	ft_close(&exec->std_out);
+	close(exec->std_in);
+	close(exec->std_out);
 	free (exec->line);
 	free (exec->prompt);
 	free_cmd_arr(exec);

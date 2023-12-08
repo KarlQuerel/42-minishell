@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 20:32:19 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/08 00:24:45 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/08 00:28:20 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*text_after(char *content, size_t *j)
 
 	text_after = NULL;
 	after = (*j);
-	while (content[(*j)] && content[(*j)] != '$')
+	while (content[(*j)] && content[(*j)] != '$' && content[(*j)] != '?')
 		(*j)++;
 	text_after = ft_calloc(ft_strlen(content) + 1, sizeof(char));
 	if (!text_after)

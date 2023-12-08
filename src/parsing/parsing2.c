@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 19:55:56 by octonaute         #+#    #+#             */
-/*   Updated: 2023/12/07 23:29:58 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/08 01:17:02 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	skip_first_quote(char *line, int *i)
 	return (-1);
 }
 
-void	fill_content_loop(t_element **cur, char *line, int *i)
+int	fill_content_loop(t_element **cur, char *line, int *i)
 {
 	int		j;
 	int		closing_quote;
@@ -70,8 +70,8 @@ void	fill_content_loop(t_element **cur, char *line, int *i)
 		closing_quote = skip_first_quote(line, i);
 		if (closing_quote != -1)
 		{
-			if (line[(*i) - 1] == '\'')
-				(*cur)->change = false;
+			if (fill_content_loop_if(cur, line, i, &j) == 1)
+				return (1);
 			while (line[(*i)] && (*i) < closing_quote)
 				(*cur)->content[j++] = line[(*i)++];
 			(*i)++;
@@ -80,28 +80,17 @@ void	fill_content_loop(t_element **cur, char *line, int *i)
 			(*cur)->content[j++] = line[(*i)++];
 	}
 	(*cur)->content[j] = '\0';
+	return (0);
 }
 
-int	parsing_if(t_element **current, t_element **cmd_list)
+int	fill_content_loop_if(t_element **cur, char *line, int *i, int *j)
 {
-	int	ret;
-
-	if ((*current)->next)
-	{
-		(*current) = (*current)->next;
-		ret = ft_delete_node_cmd(cmd_list, (*current)->prev);
+	if (line[(*i) - 1] == '\'' && line[(*i)] == '|' && line[(*i) + 1] == '\'')
+	{	
+		(*cur)->content[(*j)++] = line[(*i)++];
+		return (1);
 	}
-	else
-	{
-		ret = ft_delete_node_cmd(cmd_list, (*current));
-		(*current) = NULL;
-		if (ret == 1)
-		{
-			(*current) = NULL;
-			*cmd_list = NULL;
-			return (1);
-		}
-		return (0);
-	}
-	return (2);
+	if (line[(*i) - 1] == '\'')
+		(*cur)->change = false;
+	return (0);
 }

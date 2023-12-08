@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 18:13:47 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/07 21:38:19 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/08 01:00:46 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	ft_only_create(t_element *cmd)
 			}
 		}
 		if (fd > STDERR_FILENO)
-			ft_close(&fd);
+			close(fd);
 		cmd = cmd->next;
 	}
 }

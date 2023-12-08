@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:45:28 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/07 23:29:30 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/08 01:12:43 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,10 @@ t_element	*parsing(char *line, t_env *env_list)
 
 int	parsing_loop(char *line, int *i, int *start, t_element **current_cmd)
 {
-	fill_content_loop(current_cmd, line, i);
-	(*current_cmd)->type = determine_command_type(line, (*i), (*start));
+	if (fill_content_loop(current_cmd, line, i) == 1)
+		(*current_cmd)->type = ARGUMENT;
+	else
+		(*current_cmd)->type = determine_command_type(line, (*i), (*start));
 	if ((*current_cmd)->type == HEREDOC)
 		return (1);
 	return (0);
@@ -79,4 +81,28 @@ void	parsing_types_fix(t_element **current, t_env *env_list)
 	if ((*current)->type == COMMAND && (*current)->next)
 		type_arg_after_cmd(&(*current));
 	parsing_fix_dollar((*current), env_list);
+}
+
+int	parsing_if(t_element **current, t_element **cmd_list)
+{
+	int	ret;
+
+	if ((*current)->next)
+	{
+		(*current) = (*current)->next;
+		ret = ft_delete_node_cmd(cmd_list, (*current)->prev);
+	}
+	else
+	{
+		ret = ft_delete_node_cmd(cmd_list, (*current));
+		(*current) = NULL;
+		if (ret == 1)
+		{
+			(*current) = NULL;
+			*cmd_list = NULL;
+			return (1);
+		}
+		return (0);
+	}
+	return (2);
 }

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:11:19 by carolina          #+#    #+#             */
-/*   Updated: 2023/12/07 23:31:37 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/08 01:15:57 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,13 +232,14 @@ int			parsing_loop(char *line, int *i, int *start, \
 t_element **current_cmd);
 void		builtin_fix(t_element **cmd_list);
 void		parsing_types_fix(t_element **current, t_env *env_list);
+int			parsing_if(t_element **current, t_element **cmd_list);
 
 /*Parsing2*/
 t_element	*parsing_initialisation(char *line, int *i, int *start);
 void		parsing_advance_to_next_word(char *line, int *start, int *i);
 int			skip_first_quote(char *line, int *i);
-void		fill_content_loop(t_element **cur, char *line, int *i);
-int			parsing_if(t_element **current, t_element **cmd_list);
+int			fill_content_loop(t_element **cur, char *line, int *i);
+int			fill_content_loop_if(t_element **cur, char *line, int *i, int *j);
 
 /*Parsing 3*/
 void		parsing_initialize_next(t_element **current_cmd, char *line, int \
@@ -368,8 +369,6 @@ void		single_command(t_element *cmd, t_env **env, t_pipe *exec);
 int			ft_exit_status_single(t_env **env, int pid);
 void		multiple_commands(t_element *cmd, t_env **env, t_pipe *exec);
 int			ft_exit_status_multiple(t_env **env, t_pipe *exec);
-/*Ft_close*/
-void		ft_close(int *fd);
 
 /*Exec_2*/
 int			ft_is_builtin(t_element *cmd, t_env **env, t_pipe *exec, \

@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:41:08 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/07 22:24:38 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/08 01:00:54 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ft_infile(char *filename)
 		return (0);
 	}
 	if (fd > STDERR_FILENO)
-		ft_close(&fd);
+		close (fd);
 	return (1);
 }
 
@@ -54,10 +54,10 @@ int	ft_outfile(t_element *cmd)
 	if (dup2(fd, STDOUT_FILENO) < 0)
 	{
 		perror("bash");
-		ft_close(&fd);
+		close(fd);
 		return (0);
 	}
-	ft_close(&fd);
+	close(fd);
 	return (1);
 }
 

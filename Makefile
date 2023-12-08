@@ -6,7 +6,7 @@
 #    By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 17:01:08 by carolina          #+#    #+#              #
-#    Updated: 2023/12/07 22:44:19 by kquerel          ###   ########.fr        #
+#    Updated: 2023/12/08 01:17:37 by kquerel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,6 @@ SRCS		=	src/main.c \
 				src/builtins/history.c \
 				src/builtins/pwd.c \
 				src/builtins/unset.c \
-				src/executable/ft_close.c \
 				src/executable/exec.c \
 				src/executable/exec_2.c \
 				src/executable/exec_3.c \
@@ -90,7 +89,7 @@ OBJS 		= $(addprefix $(OBJ_DIR),  $(addsuffix .o, $(SRC_FILES)))
 OBJS		= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -g3
+CFLAGS		= -Wall -Wextra -Werror
 HFLAGS		= -I$(INCLUDE_DIR)
 RFLAGS		= -lreadline
 MAKEFLAGS	+= --no-print-directory
@@ -143,9 +142,3 @@ fclean: clean
 	make -C libft fclean
 
 re: fclean all
-
-v : minishell
-	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes ./minishell
-
-sv : minishell
-	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell

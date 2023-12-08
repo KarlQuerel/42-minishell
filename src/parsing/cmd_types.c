@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 18:58:39 by casomarr          #+#    #+#             */
-/*   Updated: 2023/12/07 14:20:20 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/08 00:51:28 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	cmd_type_loop(char *command, int *len, int *size)
 	if (command[(*len)] == '\'')
 	{
 		(*len)++;
-		while (command[(*len)] != '\'')
+		while (command[(*len)] && command[(*len)] != '\'')
 		{
 			(*size)++;
 			(*len)++;

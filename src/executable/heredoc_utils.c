@@ -6,7 +6,7 @@
 /*   By: kquerel <kquerel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 19:30:11 by kquerel           #+#    #+#             */
-/*   Updated: 2023/12/07 20:20:00 by kquerel          ###   ########.fr       */
+/*   Updated: 2023/12/08 01:00:31 by kquerel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	free_dup_heredoc(char *words, int fd, int fd_heredoc)
 {
 	free(words);
 	words = NULL;
-	ft_close(&fd);
+	close(fd);
 	dup2(fd_heredoc, STDIN_FILENO);
-	ft_close(&fd_heredoc);
+	close(fd_heredoc);
 }
 
 /* Minishell's backbone */
