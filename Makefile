@@ -16,21 +16,7 @@
 GREEN			= '\033[0;32m'
 RESET_COLOR		= '\033[0m'
 
-
 NAME		= minishell
-
-#------------------------------------------------#
-#   DEFINITIONS                                  #
-#------------------------------------------------#
-# SRC_DIR   source directory
-# OBJ_DIR   object directory
-# SRCS      source files
-# OBJS      object files
-#
-# CC        compiler
-# CFLAGS    compiler flags
-# HFLAGS  preprocessor flags
-# DIR_DUP   duplicate directory tree
 
 SRC_DIR		= src
 OBJ_DIR		= obj
@@ -102,13 +88,6 @@ endif
 
 .PHONY: all clean fclean re
 
-#------------------------------------------------#
-#   MAKE                                         #
-#------------------------------------------------#
-# all       default goal
-# $(NAME)   linking .o -> binary
-# %.o       compilation .c -> .o
-
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
@@ -124,14 +103,6 @@ $(OBJ_DIR) $(OBJ_DIR)/parsing $(OBJ_DIR)/executable $(OBJ_DIR)/builtins:
 
 $(LIBFT):
 	make -C libft
-
-#------------------------------------------------#
-#   CLEAN, RE AND PHONY                          #
-#------------------------------------------------#
-# RM        force remove
-# clean     remove .o
-# fclean    remove .o + binary
-# re        remake default goal
 
 clean:
 	$(RM) -r $(OBJ_DIR)
